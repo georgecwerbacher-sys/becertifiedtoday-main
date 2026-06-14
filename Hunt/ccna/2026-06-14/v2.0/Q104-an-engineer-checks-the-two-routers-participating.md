@@ -18,8 +18,11 @@ status: review
 **Exhibit (CLI transcript)**
 
 ```text
-R1 Gi0/0 address: 192.0.2.2/24 R2 Gi0/0 address: 192.0.2.3/24
-Device Int Grp Pri State Master addr Group addr R1 Gi0/0 10 110 Master 192.0.2.2 192.0.2.1 R2 Gi0/0 10 100 Backup 192.0.2.2 192.0.2.1
+R1 Gi0/0 address: 192.0.2.2/24
+R2 Gi0/0 address: 192.0.2.3/24
+Device  Int    Grp  Pri  State   Master addr  Group addr
+R1      Gi0/0  10   110  Master  192.0.2.2    192.0.2.1
+R2      Gi0/0  10   100  Backup  192.0.2.2    192.0.2.1
 ```
 
 An engineer checks the two routers participating in VRRP group 10. What is the best interpretation of the VRRP status?

@@ -7,13 +7,37 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8602
 bct_match_score: 0.17
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 7
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8602-1.jpg)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8602-1.jpg`
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8602-2.jpg)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8602-2.jpg`
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8602-3.jpg)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8602-3.jpg`
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8602-4.jpg)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8602-4.jpg`
 
 Three new switches were just installed and the host A cannot ping host C. Which statements are true regarding the configuration below?
 

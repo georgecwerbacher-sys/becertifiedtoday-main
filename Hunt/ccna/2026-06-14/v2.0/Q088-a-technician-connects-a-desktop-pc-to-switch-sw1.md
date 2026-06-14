@@ -19,9 +19,10 @@ status: review
 
 ```text
 SW1# show interfaces gi1/0/12 status
-Port Name Status Vlan Duplex Speed Type Gi1/0/12 PC-7 notconnect 20 auto auto 10/100/1000BaseTX
+Port      Name   Status      Vlan  Duplex  Speed  Type
+Gi1/0/12  PC-7   notconnect  20    auto    auto   10/100/1000BaseTX
 Cable tag: RJ-45 rollover console cable
-Tester pin map: 1->8 2->7 3->6 4->5 5->4 6->3 7->2 8->1
+Tester pin map: 1->8  2->7  3->6  4->5  5->4  6->3  7->2  8->1
 ```
 
 A technician connects a desktop PC to switch SW1 on Gi1/0/12 , but the PC reports that the network cable is unplugged. The switch port is enabled and assigned to the correct access VLAN. What is the best interpretation or next action?

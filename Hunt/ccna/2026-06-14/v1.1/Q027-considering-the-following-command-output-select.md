@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8627
 bct_match_score: 0.15
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 27
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8627.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8627.png`
 
 Considering the following command output, select all the correct statements.
 

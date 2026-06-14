@@ -7,7 +7,7 @@ source_id: mastery-ccna-public
 source_question_id: 4
 bct_match_score: 0.18
 blueprint: V2.0
-exhibit: missing-image
+exhibit: cli
 status: review
 ---
 
@@ -15,9 +15,20 @@ status: review
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
 
-> [!warning] Exhibit image not captured
-> Hunt poll saved the stem only. The source page likely has a **topology or diagram**.
-> Open the [source page](https://masteryexamprep.com/exams/cisco/ccna/) and save a PNG under `Hunt/ccna/<run>/images/` or transcribe CLI if shown.
+**Exhibit (CLI transcript)**
+
+```text
+SW1# show interfaces gigabitEthernet1/0/18
+GigabitEthernet1/0/18 is up, line protocol is up
+Hardware is Gigabit Ethernet, address is 0c9e.6a11.1212
+MTU 1500 bytes, BW 1000000 Kbit/sec
+Full-duplex, 1000Mb/s, media type is 10/100/1000BaseTX
+5 minute input rate 81000 bits/sec, 70 packets/sec
+5 minute output rate 76000 bits/sec, 65 packets/sec
+186,240 packets input, 0 giants, 0 throttles
+4,912 input errors, 4,887 CRC, 0 frame, 0 overrun
+0 collisions, 0 late collision
+```
 
 A user reports intermittent connectivity from a wired desktop connected to SW1. The VLAN assignment is correct, and the port remains up. Based on the exhibit, what is the best interpretation?
 

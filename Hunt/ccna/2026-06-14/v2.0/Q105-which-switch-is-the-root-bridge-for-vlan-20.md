@@ -7,13 +7,31 @@ source_id: mastery-ccna-public
 source_question_id: 19
 bct_match_score: 0.55
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 105
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+SW1# show spanning-tree vlan 20
+Root ID    Priority 24596
+Address 001e.7a11.2222
+Cost 4
+Port Gi1/0/1
+Bridge ID  Priority 32788
+Address 001e.7a11.1111
+SW2# show spanning-tree vlan 20
+Root ID    Priority 24596
+Address 001e.7a11.2222
+Bridge ID  Priority 24596
+Address 001e.7a11.2222
+This bridge is the root
+```
 
 Which switch is the root bridge for VLAN 20?
 

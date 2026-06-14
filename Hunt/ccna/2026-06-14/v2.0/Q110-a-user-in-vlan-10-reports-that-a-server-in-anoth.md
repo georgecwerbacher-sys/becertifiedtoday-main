@@ -18,7 +18,11 @@ status: review
 **Exhibit (CLI transcript)**
 
 ```text
-Traceroute from
+Tracing route to 10.30.30.20
+1  10.10.10.1       2 ms   1 ms   1 ms
+2  192.0.2.2        4 ms   4 ms   5 ms
+3  *                *      *
+4  *                *      *
 ```
 
 A user in VLAN 10 reports that a server in another building is unreachable. The PC has a valid DHCP address, can ping its default gateway, and the access switch trunk shows VLAN 10 allowed. OSPF between R1 and R2 is FULL. the PC to 10.30.30.20 Tracing route to 10.30.30.20 1 10.10.10.1 2 ms 1 ms 1 ms 2 192.0.2.2 4 ms 4 ms 5 ms 3 * * * 4 * * * Which routed segment is the most likely place to investigate first?

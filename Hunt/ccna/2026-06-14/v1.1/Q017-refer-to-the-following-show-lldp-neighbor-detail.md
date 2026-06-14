@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8615
 bct_match_score: 0.14
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 17
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8615.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8615.png`
 
 Refer to the following 'show lldp neighbor detail' output.
 

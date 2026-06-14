@@ -7,13 +7,17 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8662
 bct_match_score: 0.21
 blueprint: V1.1
-exhibit: none
+exhibit: missing-image
 status: review
 ---
 
 # Question 54
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+> [!warning] Exhibit image not captured
+> Hunt poll saved the stem only. The source page likely has a **topology or diagram**.
+> Open the [source page](https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/) and save a PNG under `Hunt/ccna/<run>/images/` or transcribe CLI if shown.
 
 You need to implement HSRP as per the following topology. When the primary router fails, the secondary needs to be activated. Once the primary becomes online again, it needs to be the active again. Which of the presented script can be used to accomplish the task?
 

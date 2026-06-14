@@ -6,6 +6,8 @@ import argparse
 import csv
 import re
 import sys
+import urllib.request
+from html import unescape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -22,7 +24,20 @@ V20_DIR = "v2.0"
 EXHIBIT_INLINE_RE = re.compile(r"\s+Exhibit:\s+", re.I)
 BARE_EXHIBIT_RE = re.compile(r"^(?:the\s+)?exhibit\.?\s+", re.I)
 REFER_BELOW_ONLY_RE = re.compile(
-    r"^refer to (?:the )?(?:following |command )?(?:output|config|show)[^.]*\.?\s*$",
+    r"^refer to (?:the )?(?:following )?(?:'[^']+' )?(?:command )?(?:outputs?|config|show)[^.]*(?:below)?\.?\s*$",
+    re.I,
+)
+REFER_OUTPUT_INLINE_RE = re.compile(
+    r"\b(?:refer to|regarding) (?:the )?(?:following |command )?(?:'[^']+' )?(?:outputs?|config|show)[^.]*(?:below)?\.?",
+    re.I,
+)
+REFER_TOPOLOGY_RE = re.compile(
+    r"\b(?:refer to |per |as per )(?:the )?following topology\b|\b(?:the )?topology below\b",
+    re.I,
+)
+TABLE_BELOW_RE = re.compile(r"\bon the table below\b", re.I)
+FOLLOWING_OUTPUT_RE = re.compile(
+    r"\b(?:considering|regarding) the following (?:command )?outputs?\b",
     re.I,
 )
 REFER_EXHIBIT_RE = re.compile(r"\b(?:based on|review) the exhibit\b", re.I)
@@ -38,6 +53,14 @@ CLI_HINT_RE = re.compile(
     r"(?:#\s|show\s|interface\s|Gi\d|GigabitEthernet|ip\s|vlan\s|Device\s+Int\s)",
     re.I,
 )
+
+MASTERY_CCNA_URL = "https://masteryexamprep.com/exams/cisco/ccna/"
+HOWTONETWORK_CCNA_URL = "https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/"
+HTTP_HEADERS = {"User-Agent": "BCT-CCNA-Hunt-Export/1.0 (+https://becertifiedtoday.com)"}
+
+_mastery_cli_cache: dict[str, str] | None = None
+_howtonetwork_image_cache: dict[str, list[str]] | None = None
+_examtopics_image_cache: dict[str, dict[str, list[str]]] = {}
 
 
 def slugify(text: str, max_len: int = 48) -> str:
@@ -98,6 +121,270 @@ def normalize_cli_exhibit(text: str) -> str:
     return cleaned.strip()
 
 
+def html_fragment_to_cli_text(fragment: str) -> str:
+    text = re.sub(r"<[^>]+>", "\n", fragment or "")
+    text = unescape(text)
+    return "\n".join(line.strip() for line in text.splitlines() if line.strip())
+
+
+def load_mastery_cli_cache() -> dict[str, str]:
+    """Mastery public CCNA samples render exhibits in <pre><code>, not <img>."""
+    global _mastery_cli_cache
+    if _mastery_cli_cache is not None:
+        return _mastery_cli_cache
+
+    cache: dict[str, str] = {}
+    try:
+        req = urllib.request.Request(
+            MASTERY_CCNA_URL,
+            headers={"User-Agent": "BCT-CCNA-Hunt-Export/1.0 (+https://becertifiedtoday.com)"},
+        )
+        page = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", errors="replace")
+        parts = re.split(r"<h3[^>]*>\s*Question\s+(\d+)\s*</h3>", page, flags=re.I)
+        for i in range(1, len(parts), 2):
+            qnum = parts[i]
+            block = parts[i + 1] if i + 1 < len(parts) else ""
+            pres = re.findall(
+                r"<pre[^>]*>\s*<code[^>]*>(.*?)</code>\s*</pre>",
+                block,
+                re.I | re.DOTALL,
+            )
+            if pres:
+                cache[qnum] = "\n\n".join(html_fragment_to_cli_text(p) for p in pres)
+    except OSError as exc:
+        print(f"Warning: could not fetch Mastery CLI exhibits ({exc})", file=sys.stderr)
+
+    _mastery_cli_cache = cache
+    return cache
+
+
+def apply_mastery_cli_enrichment(
+    row: dict,
+    stem: str,
+    exhibit_text: str | None,
+    exhibit_status: str,
+) -> tuple[str | None, str]:
+    if row.get("source_id") != "mastery-ccna-public":
+        return exhibit_text, exhibit_status
+
+    qid = str(row.get("source_question_id", "")).strip()
+    if not qid:
+        return exhibit_text, exhibit_status
+
+    mastery_cli = load_mastery_cli_cache().get(qid, "").strip()
+    if not mastery_cli:
+        return exhibit_text, exhibit_status
+
+    normalized = normalize_cli_exhibit(mastery_cli)
+    if exhibit_text and len(exhibit_text) >= len(normalized):
+        return exhibit_text, exhibit_status
+
+    return normalized, "cli"
+
+
+def load_howtonetwork_image_cache() -> dict[str, list[str]]:
+    """HowToNetwork walkthrough embeds exhibit screenshots as lazy-loaded PNGs."""
+    global _howtonetwork_image_cache
+    if _howtonetwork_image_cache is not None:
+        return _howtonetwork_image_cache
+
+    cache: dict[str, list[str]] = {}
+    try:
+        req = urllib.request.Request(HOWTONETWORK_CCNA_URL, headers=HTTP_HEADERS)
+        page = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", errors="replace")
+        for qid in re.findall(r"watupro-question-id-(\d+)", page, re.I):
+            if qid in cache:
+                continue
+            m = re.search(
+                rf"watupro-question-id-{qid}[^>]*>(.*?)(?=watupro-question-id-|\Z)",
+                page,
+                re.I | re.DOTALL,
+            )
+            block = m.group(1) if m else ""
+            urls: list[str] = []
+            for pat in (
+                r'data-lazy-src="([^"]+)"',
+                r'<noscript><img[^>]+src="([^"]+)"',
+                r'src="(https?://[^"]+\.(?:png|jpg|jpeg|gif|webp))"',
+            ):
+                urls.extend(re.findall(pat, block, re.I))
+            seen: set[str] = set()
+            deduped: list[str] = []
+            for url in urls:
+                if url.startswith("data:") or ".svg" in url.lower():
+                    continue
+                if url not in seen:
+                    seen.add(url)
+                    deduped.append(url)
+            if deduped:
+                cache[qid] = deduped
+    except OSError as exc:
+        print(f"Warning: could not fetch HowToNetwork exhibits ({exc})", file=sys.stderr)
+
+    _howtonetwork_image_cache = cache
+    return cache
+
+
+def load_examtopics_image_cache(view_url: str) -> dict[str, list[str]]:
+    """ExamTopics view pages: question N maps to the Nth card-body block."""
+    if view_url in _examtopics_image_cache:
+        return _examtopics_image_cache[view_url]
+
+    cache: dict[str, list[str]] = {}
+    try:
+        req = urllib.request.Request(view_url, headers=HTTP_HEADERS)
+        page = urllib.request.urlopen(req, timeout=30).read().decode("utf-8", errors="replace")
+        blocks = re.findall(
+            r'<div class="card-body question-body"[^>]*>(.*?)</div>\s*<!-- exam-view',
+            page,
+            re.I | re.DOTALL,
+        )
+        for index, block in enumerate(blocks, 1):
+            imgs = re.findall(r'<img[^>]+src="([^"]+)"', block, re.I)
+            rel_paths = [u for u in imgs if not u.startswith("data:")]
+            if rel_paths:
+                cache[str(index)] = rel_paths
+    except OSError as exc:
+        print(f"Warning: could not fetch ExamTopics exhibits ({exc})", file=sys.stderr)
+
+    _examtopics_image_cache[view_url] = cache
+    return cache
+
+
+def stem_expects_exhibit(stem: str, exhibit_status: str) -> bool:
+    if exhibit_status in {"missing-cli", "missing-image", "cli", "image"}:
+        return True
+    if BARE_EXHIBIT_RE.match(stem):
+        return True
+    if REFER_BELOW_ONLY_RE.match(stem):
+        return True
+    if REFER_OUTPUT_INLINE_RE.search(stem):
+        return True
+    if REFER_TOPOLOGY_RE.search(stem):
+        return True
+    if TABLE_BELOW_RE.search(stem):
+        return True
+    if FOLLOWING_OUTPUT_RE.search(stem):
+        return True
+    if REFER_EXHIBIT_RE.search(stem):
+        return True
+    return bool(re.search(r"\bexhibit\b", stem, re.I))
+
+
+def download_hunt_image(url: str, dest: Path) -> bool:
+    if dest.is_file() and dest.stat().st_size > 0:
+        return True
+    try:
+        full_url = url if url.startswith("http") else f"https://www.examtopics.com{url}"
+        req = urllib.request.Request(full_url, headers=HTTP_HEADERS)
+        data = urllib.request.urlopen(req, timeout=30).read()
+        if not data:
+            return False
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(data)
+        return True
+    except OSError:
+        return False
+
+
+def auto_hunt_image_paths(
+    run_dir: Path,
+    *,
+    source_id: str,
+    source_qid: str,
+    image_urls: list[str],
+) -> list[Path]:
+    if not image_urls or not source_qid:
+        return []
+    images_dir = run_dir / "images"
+    saved: list[Path] = []
+    for index, url in enumerate(image_urls, 1):
+        suffix = Path(url.split("?")[0]).suffix.lower() or ".png"
+        if suffix not in {".png", ".jpg", ".jpeg", ".gif", ".webp"}:
+            suffix = ".png"
+        name = (
+            f"{source_id}-q{source_qid}{suffix}"
+            if len(image_urls) == 1
+            else f"{source_id}-q{source_qid}-{index}{suffix}"
+        )
+        dest = images_dir / name
+        if download_hunt_image(url, dest):
+            saved.append(dest)
+    return saved
+
+
+def apply_external_image_enrichment(
+    row: dict,
+    run_dir: Path | None,
+    stem: str,
+    exhibit_status: str,
+) -> tuple[str, list[Path]]:
+    if not run_dir:
+        return exhibit_status, []
+
+    source_id = str(row.get("source_id", "")).strip()
+    qid = str(row.get("source_question_id", "")).strip()
+    if not qid or not stem_expects_exhibit(stem, exhibit_status):
+        return exhibit_status, []
+
+    image_urls: list[str] = []
+    if source_id == "howtonetwork-ccna-walkthrough":
+        image_urls = load_howtonetwork_image_cache().get(qid, [])
+    elif source_id == "examtopics-ccna-research":
+        view_url = (row.get("source_url") or "").strip()
+        if view_url:
+            image_urls = load_examtopics_image_cache(view_url).get(qid, [])
+
+    if not image_urls:
+        return exhibit_status, []
+
+    paths = auto_hunt_image_paths(
+        run_dir,
+        source_id=source_id,
+        source_qid=qid,
+        image_urls=image_urls,
+    )
+    if paths:
+        return "image", paths
+    return exhibit_status, []
+
+
+def hunt_image_paths(run_dir: Path, source_id: str, source_qid: str) -> list[Path]:
+    """Optional manual PNGs saved under Hunt/ccna/<run>/images/."""
+    if not source_qid:
+        return []
+    images_dir = run_dir / "images"
+    if not images_dir.is_dir():
+        return []
+    patterns = [
+        f"{source_id}-q{source_qid}.*",
+        f"{source_id}-q{source_qid}-*.*",
+        f"mastery-q{source_qid}.*",
+        f"howtonetwork-q{source_qid}.*",
+        f"examtopics-q{source_qid}.*",
+        f"q{source_qid.zfill(2)}-*",
+        f"q{source_qid.zfill(3)}-*",
+    ]
+    found: list[Path] = []
+    for pattern in patterns:
+        for path in sorted(images_dir.glob(pattern)):
+            if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}:
+                found.append(path)
+    return found
+
+
+def format_exhibit_image_block(run_id: str, image_path: Path) -> list[str]:
+    rel = f"images/{image_path.name}"
+    return [
+        "**Exhibit (diagram)**",
+        "",
+        f"![Exhibit diagram]({rel})",
+        "",
+        f"`Hunt/ccna/{run_id}/{rel}`",
+        "",
+    ]
+
+
 def split_stem_and_exhibit(raw_stem: str) -> tuple[str, str | None, str]:
     """
     Split poll stem into question text, optional exhibit body, and exhibit status.
@@ -132,6 +419,18 @@ def split_stem_and_exhibit(raw_stem: str) -> tuple[str, str | None, str]:
     if REFER_BELOW_ONLY_RE.match(stem):
         return stem, None, "missing-cli"
 
+    if REFER_OUTPUT_INLINE_RE.search(stem):
+        return stem, None, "missing-cli"
+
+    if REFER_TOPOLOGY_RE.search(stem):
+        return stem, None, "missing-image"
+
+    if TABLE_BELOW_RE.search(stem):
+        return stem, None, "missing-cli"
+
+    if FOLLOWING_OUTPUT_RE.search(stem):
+        return stem, None, "missing-cli"
+
     if REFER_EXHIBIT_RE.search(stem) and not EXHIBIT_INLINE_RE.search(stem):
         return stem, None, "missing-image"
 
@@ -139,6 +438,35 @@ def split_stem_and_exhibit(raw_stem: str) -> tuple[str, str | None, str]:
         return stem, None, "missing-image"
 
     return stem, None, "none"
+
+
+def resolve_exhibit(
+    row: dict,
+    run_dir: Path | None,
+) -> tuple[str, str | None, str, list[Path]]:
+    raw_stem = row.get("stem", "") or ""
+    stem, exhibit_text, exhibit_status = split_stem_and_exhibit(raw_stem)
+    exhibit_text, exhibit_status = apply_mastery_cli_enrichment(
+        row, stem, exhibit_text, exhibit_status
+    )
+    exhibit_status, auto_images = apply_external_image_enrichment(
+        row, run_dir, stem, exhibit_status
+    )
+    manual_images = (
+        hunt_image_paths(
+            run_dir,
+            str(row.get("source_id", "")),
+            str(row.get("source_question_id", "")),
+        )
+        if run_dir
+        else []
+    )
+    image_paths = auto_images or manual_images
+    if image_paths and exhibit_status in {"missing-cli", "missing-image", "none"}:
+        exhibit_status = "image"
+    elif manual_images and exhibit_status != "cli":
+        exhibit_status = "image"
+    return stem, exhibit_text, exhibit_status, image_paths
 
 
 def exhibit_warning(status: str, source_url: str) -> list[str]:
@@ -180,9 +508,9 @@ def write_question_note(
     version_dir: str,
 ) -> None:
     revision = revision_for_row(row, blueprint_by_source)
-    raw_stem = row.get("stem", "") or ""
-    stem, exhibit_text, exhibit_status = split_stem_and_exhibit(raw_stem)
     source_url = row.get("source_url", "") or ""
+    run_dir = OUT_BASE / row.get("run", "") if row.get("run") else None
+    stem, exhibit_text, exhibit_status, image_paths = resolve_exhibit(row, run_dir)
 
     external_answer: str | None = None
     external_explanation: str | None = None
@@ -210,6 +538,9 @@ def write_question_note(
         lines.extend([f"**Topic:** {row['topic_notes']}", ""])
 
     lines.extend(exhibit_warning(exhibit_status, source_url))
+
+    for image_path in image_paths:
+        lines.extend(format_exhibit_image_block(run_id, image_path))
 
     if exhibit_text:
         lines.extend(format_exhibit_block(exhibit_text))
@@ -278,7 +609,8 @@ def write_index(
         rev = revision_for_row(row, blueprint_by_source)
         bucket = v20_rows if version_subdir(rev) == V20_DIR else v11_rows
         bucket.append((i, row, rev))
-        _, _, status = split_stem_and_exhibit(row.get("stem", "") or "")
+        run_dir = OUT_BASE / run_id
+        _, _, status, _ = resolve_exhibit(row, run_dir)
         exhibit_counts[status] = exhibit_counts.get(status, 0) + 1
 
     lines = [
@@ -319,7 +651,8 @@ def write_index(
         for i, row, rev in section_rows:
             fname = question_filename(i, row.get("stem", ""))
             rev_bit = f" · {rev}" if rev else ""
-            _, _, ex_status = split_stem_and_exhibit(row.get("stem", "") or "")
+            run_dir = OUT_BASE / run_id
+            _, _, ex_status, _ = resolve_exhibit(row, run_dir)
             ex_bit = f" · exhibit:{ex_status}" if ex_status != "none" else ""
             stem_preview = (row.get("stem") or "")[:72]
             if len(row.get("stem") or "") > 72:
@@ -402,7 +735,7 @@ def export_run(run_id: str) -> int:
         write_question_note(
             run_dir / version_dir / f"{fname}.md",
             index=i,
-            row=row,
+            row={**row, "run": run_id},
             run_id=run_id,
             blueprint_by_source=blueprint_by_source,
             version_dir=version_dir,

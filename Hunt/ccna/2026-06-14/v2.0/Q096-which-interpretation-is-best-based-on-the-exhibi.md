@@ -7,7 +7,7 @@ source_id: mastery-ccna-public
 source_question_id: 10
 bct_match_score: 0.23
 blueprint: V2.0
-exhibit: missing-image
+exhibit: cli
 status: review
 ---
 
@@ -15,9 +15,21 @@ status: review
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
 
-> [!warning] Exhibit image not captured
-> Hunt poll saved the stem only. The source page likely has a **topology or diagram**.
-> Open the [source page](https://masteryexamprep.com/exams/cisco/ccna/) and save a PNG under `Hunt/ccna/<run>/images/` or transcribe CLI if shown.
+**Exhibit (CLI transcript)**
+
+```text
+R1# show running-config | include interface|description|ip address|ip nat|access-list
+interface GigabitEthernet0/0
+description Link to ISP
+ip address 203.0.113.2 255.255.255.252
+ip nat inside
+interface GigabitEthernet0/1
+description LAN users
+ip address 192.168.10.1 255.255.255.0
+ip nat outside
+ip nat inside source list 10 interface GigabitEthernet0/0 overload
+access-list 10 permit 192.168.10.0 0.0.0.255
+```
 
 Which interpretation is best based on the exhibit?
 

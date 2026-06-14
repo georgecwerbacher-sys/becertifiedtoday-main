@@ -18,7 +18,10 @@ status: review
 **Exhibit (CLI transcript)**
 
 ```text
-Expected VLAN 20 prefix: 2001:db8:20:10::/64 R1 Gi0/0.20 IPv6: 2001:db8:20:10::1/64 PC IPv6 address: 2001:db8:20:1::25/64 PC default gateway: 2001:db8:20:10::1
+Expected VLAN 20 prefix: 2001:db8:20:10::/64
+R1 Gi0/0.20 IPv6:       2001:db8:20:10::1/64
+PC IPv6 address:        2001:db8:20:1::25/64
+PC default gateway:     2001:db8:20:10::1
 ```
 
 A user in VLAN 20 reports that a wired PC cannot ping its IPv6 default gateway. The switchport is up/up in VLAN 20, and other VLAN 20 users can reach the gateway. Which root cause is best supported by the facts?

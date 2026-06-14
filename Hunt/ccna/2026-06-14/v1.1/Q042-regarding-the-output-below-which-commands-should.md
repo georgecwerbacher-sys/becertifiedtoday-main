@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8649
 bct_match_score: 0.20
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 42
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8649.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8649.png`
 
 Regarding the output below, which commands should be used to redistribute routes between OSPF and EIGRP? RTR4 must receive the default route either.
 

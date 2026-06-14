@@ -7,7 +7,7 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8646
 bct_match_score: 0.18
 blueprint: V1.1
-exhibit: missing-cli
+exhibit: image
 status: review
 ---
 
@@ -15,9 +15,11 @@ status: review
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
 
-> [!warning] Exhibit CLI not captured
-> Stem references output below, but the competitor poll did not extract the transcript.
-> Open the [source page](https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/) and paste IOS output into a fenced block below before drafting.
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8646.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8646.png`
 
 Refer to the show ip route outputs below.
 

@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8623
 bct_match_score: 0.19
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 23
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8623.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8623.png`
 
 Refer to the 'show interface Gi1/0/1 switchport' output command below.
 

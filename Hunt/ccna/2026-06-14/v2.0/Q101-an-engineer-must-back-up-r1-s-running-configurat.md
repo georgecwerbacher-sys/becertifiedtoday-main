@@ -18,9 +18,15 @@ status: review
 **Exhibit (CLI transcript)**
 
 ```text
-R1# show ip ssh SSH Enabled - version 2.0 Authentication timeout: 120 secs; Authentication retries: 3
-R1# ping 192.0.2.50 Success rate is 100 percent (5/5)
-R1# copy running-config tftp://192.0.2.50/R1-running.cfg Destination filename [R1-running.cfg]?
+R1# show ip ssh
+SSH Enabled - version 2.0
+Authentication timeout: 120 secs; Authentication retries: 3
+R1# ping 192.0.2.50
+Success rate is 100 percent (5/5)
+R1# copy running-config tftp://192.0.2.50/R1-running.cfg
+Destination filename [R1-running.cfg]?
+!!!!!
+[OK - 4821 bytes]
 ```
 
 An engineer must back up R1’s running configuration to a file server. The security requirement says the transfer must protect both credentials and file contents in transit. Review the exhibit and choose the best next action. An engineer must back up R1’s running configuration to a file server. The security requirement says the transfer must protect both credentials and file contents in transit. Review the exhibit and choose the best next action.

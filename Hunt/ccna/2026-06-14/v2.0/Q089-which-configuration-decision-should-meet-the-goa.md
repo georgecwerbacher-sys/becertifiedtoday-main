@@ -7,13 +7,26 @@ source_id: mastery-ccna-public
 source_question_id: 3
 bct_match_score: 0.21
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 89
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+R1# show ip ospf neighbor
+Neighbor ID     Pri   State     Address       Interface
+2.2.2.2           1   FULL/DR   10.0.12.2     Gi0/0
+R1# show ip route 192.168.20.0
+% Network not in table
+R2# show ip route connected
+C 10.0.12.0/30 is directly connected, GigabitEthernet0/0
+C 192.168.20.0/24 is directly connected, GigabitEthernet0/1
+```
 
 Which configuration decision should meet the goal?
 

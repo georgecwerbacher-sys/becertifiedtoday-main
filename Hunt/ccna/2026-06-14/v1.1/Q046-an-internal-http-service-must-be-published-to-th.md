@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8653
 bct_match_score: 0.16
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 46
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8653.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8653.png`
 
 An internal HTTP service must be published to the internet using the standard HTTP port, as per the topology below. You were asked to publish only HTTP service (using the standard port) using the public IP 100.101.102.103. Which commands you need to issue on RTR01 to accomplish this? BTW, the server already reaches RTR1, so don´t need to worry about routing issues.
 

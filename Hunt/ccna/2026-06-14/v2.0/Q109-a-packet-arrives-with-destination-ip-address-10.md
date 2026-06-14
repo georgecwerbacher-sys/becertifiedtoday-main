@@ -7,13 +7,22 @@ source_id: mastery-ccna-public
 source_question_id: 23
 bct_match_score: 0.43
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 109
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+O    10.10.0.0/16    [110/20] via 172.16.1.1
+S    10.10.8.0/24    [1/0]   via 172.16.2.1
+O    10.10.8.64/26   [110/30] via 172.16.3.1
+S    10.10.8.72/29   [5/0]   via 172.16.4.1
+```
 
 A packet arrives with destination IP address 10.10.8.77 . Which next hop will IOS XE select for this packet?
 

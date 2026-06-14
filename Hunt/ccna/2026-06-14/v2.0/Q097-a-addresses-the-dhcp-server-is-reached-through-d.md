@@ -18,8 +18,13 @@ status: review
 **Exhibit (CLI transcript)**
 
 ```text
-SW1# show ip dhcp snooping DHCP snooping is enabled DHCP snooping VLANs: 20 Trusted interfaces: Gi1/0/48
-SW1# show interfaces trunk Port Mode Status Allowed vlans Gi1/0/48 on trunking 10,30
+SW1# show ip dhcp snooping
+DHCP snooping is enabled
+DHCP snooping VLANs: 20
+Trusted interfaces: Gi1/0/48
+SW1# show interfaces trunk
+Port        Mode   Status    Allowed vlans
+Gi1/0/48    on     trunking  10,30
 ```
 
 A addresses. The DHCP server is reached through distribution switch DSW1 on uplink Gi1/0/48, and the VLAN 20 SVI on DSW1 already has the correct helper address. A digital network assistant recommends automatically disabling DHCP snooping for VLAN 20. What is the best next action supported by the evidence?

@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8601
 bct_match_score: 0.56
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 6
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8601.jpg)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8601.jpg`
 
 You have the following topology in your network and a Frame Flooding attack just ended. Just after the attack you connect a new host on the network (host C) and start sending traffic to host A, what happens and what you can do to prevent your environment from this to happening again?
 

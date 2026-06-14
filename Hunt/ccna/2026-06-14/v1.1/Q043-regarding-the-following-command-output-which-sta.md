@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8650
 bct_match_score: 0.25
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 43
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8650.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8650.png`
 
 Regarding the following command output, which statements are true?
 

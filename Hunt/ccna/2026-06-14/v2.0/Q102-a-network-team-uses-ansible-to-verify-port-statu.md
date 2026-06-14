@@ -7,13 +7,27 @@ source_id: mastery-ccna-public
 source_question_id: 16
 bct_match_score: 0.12
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 102
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+[site_a_access]
+SW-A1
+SW-A2
+[site_a_distribution]
+DSW-A1
+DSW-A2
+[all_switches:children]
+site_a_access
+site_a_distribution
+```
 
 A network team uses Ansible to verify port status before a cabling change. The approved scope is read-only command execution on Site-A access switches only . The inventory contains these groups: [site_a_access] SW-A1 SW-A2 [site_a_distribution] DSW-A1 DSW-A2 [all_switches:children] site_a_access site_a_distribution Which Ansible plan best stays within the approved operational scope?
 

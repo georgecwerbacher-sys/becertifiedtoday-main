@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8640
 bct_match_score: 0.38
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 37
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8640.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8640.png`
 
 On the table below, which Next Hop will be used to reach 192.168.1.10?
 

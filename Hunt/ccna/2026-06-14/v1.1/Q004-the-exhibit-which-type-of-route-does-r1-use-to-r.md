@@ -7,7 +7,7 @@ source_id: examtopics-ccna-research
 source_question_id: 1
 bct_match_score: 0.33
 blueprint: community recall
-exhibit: missing-image
+exhibit: image
 status: review
 ---
 
@@ -15,9 +15,11 @@ status: review
 
 **Topic:** Tier C research — community recall; verify answer on Cisco Tier A only
 
-> [!warning] Exhibit image not captured
-> Hunt poll saved the stem only. The source page likely has a **topology or diagram**.
-> Open the [source page](https://www.examtopics.com/exams/cisco/200-301/view/1/) and save a PNG under `Hunt/ccna/<run>/images/` or transcribe CLI if shown.
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/examtopics-ccna-research-q1.png)
+
+`Hunt/ccna/2026-06-14/images/examtopics-ccna-research-q1.png`
 
 Which type of route does R1 use to reach host 10.10.13.10/32?
 

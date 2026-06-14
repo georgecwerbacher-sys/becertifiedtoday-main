@@ -7,13 +7,37 @@ source_id: mastery-ccna-public
 source_question_id: 14
 bct_match_score: 0.26
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 100
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+SW-A# show spanning-tree vlan 10
+Root ID    Priority 24586
+Address  0050.56aa.bbbb
+Cost     4
+Port     Gi1/0/1
+Bridge ID  Priority 32778
+Address  0050.56aa.aaaa
+SW-B# show spanning-tree vlan 10
+Root ID    Priority 24586
+Address  0050.56aa.bbbb
+Bridge ID  Priority 24586
+Address  0050.56aa.bbbb
+SW-C# show spanning-tree vlan 10
+Root ID    Priority 24586
+Address  0050.56aa.bbbb
+Cost     8
+Port     Gi1/0/2
+Bridge ID  Priority 32778
+Address  0050.56aa.cccc
+```
 
 A network engineer is preparing an IOS XE change to preserve the current Rapid PVST+ root bridge for VLAN 10 after maintenance. Based on the spanning-tree evidence, which configuration target is correct?
 

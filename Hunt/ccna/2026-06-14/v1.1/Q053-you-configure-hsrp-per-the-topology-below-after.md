@@ -7,13 +7,19 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8661
 bct_match_score: 0.12
 blueprint: V1.1
-exhibit: none
+exhibit: image
 status: review
 ---
 
 # Question 53
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+**Exhibit (diagram)**
+
+![Exhibit diagram](images/howtonetwork-ccna-walkthrough-q8661.png)
+
+`Hunt/ccna/2026-06-14/images/howtonetwork-ccna-walkthrough-q8661.png`
 
 You configure HSRP per the topology below. After the implementation, you notice the following message:
 

@@ -7,13 +7,21 @@ source_id: mastery-ccna-public
 source_question_id: 8
 bct_match_score: 0.24
 blueprint: V2.0
-exhibit: none
+exhibit: cli
 status: review
 ---
 
 # Question 94
 
 **Topic:** Tier B — 24 on-page samples; verify answer on Cisco Tier A
+
+**Exhibit (CLI transcript)**
+
+```text
+R1# show standby brief
+Interface  Grp  Pri  P  State    Active       Standby  Virtual IP
+Vl10       10   110  P  Standby  10.10.10.3  local    10.10.10.1
+```
 
 Which device is currently forwarding traffic sent to the virtual gateway?
 
