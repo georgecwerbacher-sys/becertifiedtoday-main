@@ -125,27 +125,37 @@
     return "Filtered set";
   }
 
+  /** Hub-order slice for version filters (positions 1–300 = v1.1, 301+ = v2.0). */
+  function slugsForVersionBounds(filter) {
+    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
+    if (!Array.isArray(all)) return [];
+    if (filter.versionMin && filter.versionMin >= 1) {
+      return all.slice(filter.versionMin - 1);
+    }
+    if (filter.versionMax && filter.versionMax >= 1) {
+      return all.slice(0, filter.versionMax);
+    }
+    return all.slice();
+  }
+
   function applySlugsFilters(slugs, filter, assignments) {
     var out = slugs.slice();
     if (filter.domain) {
       if (!assignments || typeof assignments !== "object") return [];
       out = filterSlugsByMajor(out, assignments, filter.domain);
     }
-    if (filter.versionMax) out = filterSlugsByHubMax(out, filter.versionMax);
-    if (filter.versionMin) out = filterSlugsByHubMin(out, filter.versionMin);
     return out;
   }
 
   /** Full hub slice for an active portal filter; null when domain filter needs topic map still loading. */
   function collectFilteredSlugs(filter) {
-    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
-    if (!Array.isArray(all)) return [];
     if (filter.domain) {
       var map = window.CCNA_PRACTICE_100._topicAssignments;
       if (map === null) return null;
       if (map === false) return [];
     }
-    return applySlugsFilters(all, filter, window.CCNA_PRACTICE_100._topicAssignments);
+    var pool = slugsForVersionBounds(filter);
+    return applySlugsFilters(pool, filter, window.CCNA_PRACTICE_100._topicAssignments);
   }
 
   /** @deprecated use getSelectedPracticeFilter */
@@ -348,6 +358,18 @@
     meta.className = "ccna-bank-version-tag";
     if (pending) {
       meta.textContent = "Loading question count…";
+    } else if (filter.versionMin) {
+      meta.textContent =
+        (count === 1 ? "1 Version 2.0 2026 question" : count + " Version 2.0 2026 questions") +
+        " (hub positions " +
+        VERSION_20_MIN +
+        "+). Version 1.1 questions are excluded.";
+    } else if (filter.versionMax) {
+      meta.textContent =
+        (count === 1 ? "1 Version 1.1 2026 question" : count + " Version 1.1 2026 questions") +
+        " (hub positions 1–" +
+        VERSION_11_2026_MAX +
+        "). Version 2.0 questions are excluded.";
     } else if (count === 1) {
       meta.textContent = "1 question across the full hub (not a numbered bank)";
     } else {

@@ -305,6 +305,12 @@
     return meta;
   }
 
+  function bakedVersionLabelFromDom() {
+    var el = document.querySelector(".question-topic-meta__version");
+    if (!el) return "";
+    return String(el.textContent || "").trim();
+  }
+
   function versionLabelForSlug(slug) {
     if (document.body && document.body.classList.contains("dragdrop-exercise")) {
       return CCNA_UPDATED_LABEL;
@@ -312,9 +318,15 @@
     if (/\/CCNA_labs\//i.test(location.pathname)) {
       return CCNA_UPDATED_LABEL;
     }
+    var session = readSession();
+    if (session && session.versionMin) return CCNA_VERSION_20_LABEL;
+    if (session && session.versionMax) return CCNA_VERSION_11_LABEL;
     var hub = window.CCNA_PRACTICE_100 || {};
     var minV20 = hub.VERSION_20_MIN || CCNA_VERSION_20_MIN;
     var all = hub.ALL_SLUGS;
+    if (!Array.isArray(all) || !all.length) {
+      return bakedVersionLabelFromDom() || CCNA_VERSION_11_LABEL;
+    }
     var idx = hubIndexForSlug(slug, all);
     if (idx && idx >= minV20) return CCNA_VERSION_20_LABEL;
     return CCNA_VERSION_11_LABEL;
@@ -343,7 +355,13 @@
     }
     if (!versionEl && !subjectEl) return;
 
-    if (versionEl) versionEl.textContent = versionLabelForSlug(slug);
+    function applyVersionLabel() {
+      if (versionEl) versionEl.textContent = versionLabelForSlug(slug);
+    }
+    applyVersionLabel();
+    getAllSlugs().then(function () {
+      applyVersionLabel();
+    });
 
     getTopicAssignments().then(function (assignments) {
       if (!subjectEl) return;
