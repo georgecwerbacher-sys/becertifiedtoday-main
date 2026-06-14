@@ -313,75 +313,89 @@ export async function fetchSessionsByCampaign(client, propertyId, range, limit =
   }));
 }
 
-/** GA4 requires eventName with eventCount when mixing event + session/item dimensions. */
-const BEGIN_CHECKOUT_EVENT_DIMENSION = { name: "eventName" };
+/** Event-scoped filter only — do not mix gaCustomerTrafficDimensionFilter with eventCount. */
+function beginCheckoutEventFilter() {
+  return {
+    filter: {
+      fieldName: "eventName",
+      stringFilter: { matchType: "EXACT", value: "begin_checkout" },
+    },
+  };
+}
 
-async function runBeginCheckoutCountReport(
+async function runBeginCheckoutEventReport(
   client,
   propertyId,
   range,
-  { dimensions = [], extraFilter, limit, orderByMetric = "eventCount" }
+  { metrics, dimensions = [], extraFilter, orderBys, limit }
 ) {
   return runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
     dimensionFilter: mergeDimensionFilters(beginCheckoutEventFilter(), extraFilter),
-    dimensions: [BEGIN_CHECKOUT_EVENT_DIMENSION, ...dimensions],
-    metrics: [{ name: "eventCount" }],
-    orderBys: orderByMetric
-      ? [{ metric: { metricName: orderByMetric }, desc: true }]
-      : undefined,
+    dimensions,
+    metrics,
+    orderBys,
     limit,
   });
 }
 
-async function runBeginCheckoutUsersReport(client, propertyId, range, { dimensions = [], extraFilter }) {
-  return runReportSafe(client, {
-    property: propertyName(propertyId),
-    dateRanges: [range],
-    dimensionFilter: mergeDimensionFilters(beginCheckoutEventFilter(), extraFilter),
-    dimensions: [BEGIN_CHECKOUT_EVENT_DIMENSION, ...dimensions],
-    metrics: [{ name: "activeUsers" }],
-  });
+async function fetchBeginCheckoutEventCount(client, propertyId, range, extraFilter) {
+  try {
+    const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+      metrics: [{ name: "eventCount" }],
+      extraFilter,
+    });
+    return Number(response.rows?.[0]?.metricValues?.[0]?.value || 0);
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (extraFilter && msg.includes("INVALID_ARGUMENT")) return 0;
+    throw err;
+  }
+}
+
+async function fetchBeginCheckoutActiveUsers(client, propertyId, range, extraFilter) {
+  try {
+    const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+      metrics: [{ name: "activeUsers" }],
+      extraFilter,
+    });
+    return Number(response.rows?.[0]?.metricValues?.[0]?.value || 0);
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (extraFilter && msg.includes("INVALID_ARGUMENT")) return 0;
+    throw err;
+  }
 }
 
 /**
  * begin_checkout event counts by session campaign (Google Ads attribution).
+ * eventCount is incompatible with sessionCampaignName — use sessions with an event filter.
  */
 export async function fetchBeginCheckoutByCampaign(client, propertyId, range, limit = 25) {
-  const response = await runBeginCheckoutCountReport(client, propertyId, range, {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), beginCheckoutEventFilter()),
     dimensions: [{ name: "sessionCampaignName" }],
+    metrics: [{ name: "sessions" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
     limit,
   });
 
   return (response.rows || []).map((row) => ({
-    campaign: row.dimensionValues?.[1]?.value || "(not set)",
+    campaign: row.dimensionValues?.[0]?.value || "(not set)",
     beginCheckout: Number(row.metricValues?.[0]?.value || 0),
   }));
 }
 
-function beginCheckoutEventFilter() {
-  return mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
-    filter: {
-      fieldName: "eventName",
-      stringFilter: { matchType: "EXACT", value: "begin_checkout" },
-    },
-  });
-}
-
 /** Total begin_checkout clicks and unique users (Stripe button → payment page). */
 export async function fetchBeginCheckoutSummary(client, propertyId, range) {
-  const [countResponse, usersResponse] = await Promise.all([
-    runBeginCheckoutCountReport(client, propertyId, range, { orderByMetric: null }),
-    runBeginCheckoutUsersReport(client, propertyId, range, {}),
+  const [checkoutClicks, uniqueUsers] = await Promise.all([
+    fetchBeginCheckoutEventCount(client, propertyId, range),
+    fetchBeginCheckoutActiveUsers(client, propertyId, range),
   ]);
-
-  const countRow = countResponse.rows?.[0];
-  const usersRow = usersResponse.rows?.[0];
-  return {
-    checkoutClicks: Number(countRow?.metricValues?.[0]?.value || 0),
-    uniqueUsers: Number(usersRow?.metricValues?.[0]?.value || 0),
-  };
+  return { checkoutClicks, uniqueUsers };
 }
 
 /** begin_checkout for itemIds matching a prefix (e.g. ccna, encor, secplus). */
@@ -396,47 +410,38 @@ export async function fetchBeginCheckoutByItemPrefix(client, propertyId, range, 
     },
   };
 
-  const [countResponse, usersResponse] = await Promise.all([
-    runBeginCheckoutCountReport(client, propertyId, range, {
-      extraFilter: itemFilter,
-      orderByMetric: null,
-    }),
-    runBeginCheckoutUsersReport(client, propertyId, range, { extraFilter: itemFilter }),
+  const [checkoutClicks, uniqueUsers] = await Promise.all([
+    fetchBeginCheckoutEventCount(client, propertyId, range, itemFilter),
+    fetchBeginCheckoutActiveUsers(client, propertyId, range, itemFilter),
   ]);
 
-  const countRow = countResponse.rows?.[0];
-  const usersRow = usersResponse.rows?.[0];
-  return {
-    checkoutClicks: Number(countRow?.metricValues?.[0]?.value || 0),
-    uniqueUsers: Number(usersRow?.metricValues?.[0]?.value || 0),
-  };
+  return { checkoutClicks, uniqueUsers };
 }
 
 /** begin_checkout by GA4 itemId (portal / simulation SKU from data-bcc-item-id). */
-export async function fetchBeginCheckoutByItemId(client, propertyId, range, limit = 30) {
-  const [countResponse, usersResponse] = await Promise.all([
-    runBeginCheckoutCountReport(client, propertyId, range, {
-      dimensions: [{ name: "itemId" }],
-      limit,
-    }),
-    runBeginCheckoutUsersReport(client, propertyId, range, {
-      dimensions: [{ name: "itemId" }],
-    }),
-  ]);
+export async function fetchBeginCheckoutByItemId(client, propertyId, range, itemIds = [], limit = 30) {
+  const ids = (Array.isArray(itemIds) ? itemIds : [])
+    .map((id) => String(id || "").trim())
+    .filter(Boolean)
+    .slice(0, limit);
 
-  const usersByItem = Object.create(null);
-  for (const row of usersResponse.rows || []) {
-    const itemId = row.dimensionValues?.[1]?.value || "";
-    if (itemId) usersByItem[itemId] = Number(row.metricValues?.[0]?.value || 0);
-  }
+  const rows = await Promise.all(
+    ids.map(async (itemId) => {
+      const itemFilter = {
+        filter: {
+          fieldName: "itemId",
+          stringFilter: { matchType: "EXACT", value: itemId },
+        },
+      };
+      const [checkoutClicks, uniqueUsers] = await Promise.all([
+        fetchBeginCheckoutEventCount(client, propertyId, range, itemFilter),
+        fetchBeginCheckoutActiveUsers(client, propertyId, range, itemFilter),
+      ]);
+      return { itemId, checkoutClicks, uniqueUsers };
+    })
+  );
 
-  return (countResponse.rows || [])
-    .map((row) => ({
-      itemId: row.dimensionValues?.[1]?.value || "(not set)",
-      checkoutClicks: Number(row.metricValues?.[0]?.value || 0),
-      uniqueUsers: Number(usersByItem[row.dimensionValues?.[1]?.value || ""] || 0),
-    }))
-    .filter((row) => row.itemId && row.itemId !== "(not set)");
+  return rows.filter((row) => row.checkoutClicks > 0 || row.uniqueUsers > 0);
 }
 
 /**

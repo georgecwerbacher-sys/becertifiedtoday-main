@@ -12,7 +12,7 @@ export const DEFAULT_LEADS_REPO = {
   repo: "becertifiedtoday-main",
 };
 
-const CSV_HEADER = "captured_at_utc,email,product,page_path,message,status";
+const CSV_HEADER = "captured_at_utc,email,product,page_path,message,status,admin_completed";
 
 const VALID_PRODUCTS = new Set(["ccna", "encor", "secplus", "general"]);
 
@@ -32,9 +32,39 @@ function formatRow(row) {
     row.page_path,
     row.message,
     row.status,
+    adminCompletedToCsv(row.admin_completed),
   ]
     .map(csvCell)
     .join(",");
+}
+
+function adminCompletedToCsv(raw) {
+  return isAdminCompleted(raw) ? "yes" : "no";
+}
+
+export function isAdminCompleted(raw) {
+  const v = String(raw || "")
+    .trim()
+    .toLowerCase();
+  return v === "yes" || v === "1" || v === "true" || v === "completed";
+}
+
+/** Stable id for admin updates (legacy rows without a stored id). */
+export function visitorQuestionId(row) {
+  const cap = String(row.captured_at_utc || row.capturedAt || "").trim();
+  const email = String(row.email || "")
+    .trim()
+    .toLowerCase();
+  const msg = String(row.message || "").trim().slice(0, 80);
+  return `${cap}|${email}|${msg}`;
+}
+
+function serializeVisitorQuestionsCsv(rows) {
+  const lines = [CSV_HEADER];
+  for (const row of rows || []) {
+    lines.push(formatRow(row));
+  }
+  return lines.join("\n") + "\n";
 }
 
 function parseCsvLine(line) {
@@ -205,6 +235,40 @@ async function putGithubFile({ token, owner, repo, filePath, content, sha, messa
   return true;
 }
 
+async function writeVisitorQuestionsToGithub(rows, attempt = 0) {
+  const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
+  const repoInfo = resolveGithubRepo();
+  if (!token || !repoInfo) return { ok: false, reason: "github_not_configured" };
+
+  const file = await fetchGithubFile({ token, ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL });
+  const content = serializeVisitorQuestionsCsv(rows);
+
+  try {
+    await putGithubFile({
+      token,
+      ...repoInfo,
+      filePath: VISITOR_QUESTIONS_CSV_REL,
+      content,
+      sha: file.sha,
+      message: "Admin: update visitor question status",
+    });
+    return { ok: true, backend: "github" };
+  } catch (err) {
+    const msg = String(err?.message || err);
+    if (attempt < 2 && msg.includes("github_put_409")) {
+      return writeVisitorQuestionsToGithub(rows, attempt + 1);
+    }
+    throw err;
+  }
+}
+
+function writeVisitorQuestionsToLocal(rows) {
+  const filePath = path.join(process.cwd(), VISITOR_QUESTIONS_CSV_REL);
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, serializeVisitorQuestionsCsv(rows), "utf8");
+  return { ok: true, backend: "local" };
+}
+
 async function appendToGithub(row, attempt = 0) {
   const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
   const repoInfo = resolveGithubRepo();
@@ -234,6 +298,14 @@ async function appendToGithub(row, attempt = 0) {
     }
     throw err;
   }
+}
+
+async function writeVisitorQuestions(rows) {
+  const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
+  const repoInfo = resolveGithubRepo();
+  if (token && repoInfo) return writeVisitorQuestionsToGithub(rows);
+  if (canWriteLocal()) return writeVisitorQuestionsToLocal(rows);
+  return { ok: false, reason: "not_configured" };
 }
 
 function appendToLocal(row) {
@@ -276,7 +348,34 @@ export function buildVisitorQuestionRow(body) {
       .trim()
       .slice(0, 2000),
     status,
+    admin_completed: "no",
   };
+}
+
+export async function updateVisitorQuestionCompleted(questionId, completed) {
+  const id = String(questionId || "").trim();
+  if (!id) return { ok: false, reason: "missing_id" };
+
+  const rows = await readVisitorQuestions();
+  let found = false;
+  const updated = rows.map((row) => {
+    if (visitorQuestionId(row) !== id) return row;
+    found = true;
+    return {
+      ...row,
+      admin_completed: completed ? "yes" : "no",
+    };
+  });
+  if (!found) return { ok: false, reason: "not_found" };
+
+  try {
+    const result = await writeVisitorQuestions(updated);
+    if (!result.ok) return result;
+    return { ok: true, questionId: id, completed: Boolean(completed), backend: result.backend || null };
+  } catch (err) {
+    console.error("[visitor-question] update failed:", err?.message || err);
+    return { ok: false, reason: "error", detail: String(err?.message || err).slice(0, 200) };
+  }
 }
 
 export async function appendVisitorQuestion(body) {
@@ -365,12 +464,14 @@ export function aggregateVisitorQuestionsReport(rows) {
       .toLowerCase();
     if (!email) continue;
     items.push({
+      id: visitorQuestionId(row),
       capturedAt: row.captured_at_utc || "",
       email,
       product: normalizeQuestionProduct(row.product),
       pagePath: row.page_path || "",
       message: row.message || "",
       status: row.status || "new",
+      adminCompleted: isAdminCompleted(row.admin_completed),
     });
   }
   items.sort((a, b) => (b.capturedAt || "").localeCompare(a.capturedAt || ""));
@@ -378,11 +479,14 @@ export function aggregateVisitorQuestionsReport(rows) {
   for (const item of items) {
     byProduct[item.product] = (byProduct[item.product] || 0) + 1;
   }
+  const completedCount = items.filter((i) => i.adminCompleted).length;
   return {
     items,
     total: items.length,
     byProduct,
     newCount: items.filter((i) => i.status === "new").length,
     verifiedCount: items.filter((i) => i.status === "verified").length,
+    completedCount,
+    openCount: items.length - completedCount,
   };
 }

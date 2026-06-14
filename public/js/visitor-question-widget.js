@@ -168,7 +168,9 @@
   }
 
   function wireFooterLinks(root) {
-    document.querySelectorAll("a.footer-mailto").forEach(function (link) {
+    document.querySelectorAll("a.footer-mailto, a[href='#ask']").forEach(function (link) {
+      if (link.dataset.bccVqBound === "1") return;
+      link.dataset.bccVqBound = "1";
       link.setAttribute("href", "#ask");
       link.setAttribute("role", "button");
       link.addEventListener("click", function (e) {

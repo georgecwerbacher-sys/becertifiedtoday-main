@@ -25,6 +25,8 @@ const ITEM_LABELS = {
   secplus_portal_30d: "Security+ 30-day portal",
 };
 
+export const BEGIN_CHECKOUT_ITEM_IDS = Object.keys(ITEM_LABELS);
+
 function productKeyFromItemId(itemId) {
   const id = String(itemId || "").toLowerCase();
   if (id.startsWith("ccna")) return "ccna";
@@ -55,11 +57,25 @@ async function fetchByProduct(client, propertyId, range) {
  * @param {{ startDate: string, endDate: string }} range
  */
 export async function buildSampleCheckoutReport(client, propertyId, range) {
-  const [summary, byItemRaw, byProduct] = await Promise.all([
+  const [summaryResult, byItemResult, byProductResult] = await Promise.allSettled([
     fetchBeginCheckoutSummary(client, propertyId, range),
-    fetchBeginCheckoutByItemId(client, propertyId, range, 30),
+    fetchBeginCheckoutByItemId(client, propertyId, range, BEGIN_CHECKOUT_ITEM_IDS),
     fetchByProduct(client, propertyId, range),
   ]);
+
+  const errors = [summaryResult, byItemResult, byProductResult]
+    .filter((r) => r.status === "rejected")
+    .map((r) => r.reason?.message || String(r.reason));
+  if (errors.length === 3) {
+    throw new Error(errors[0] || "begin_checkout report failed");
+  }
+
+  const summary =
+    summaryResult.status === "fulfilled"
+      ? summaryResult.value
+      : { checkoutClicks: 0, uniqueUsers: 0 };
+  const byItemRaw = byItemResult.status === "fulfilled" ? byItemResult.value : [];
+  const byProduct = byProductResult.status === "fulfilled" ? byProductResult.value : [];
 
   const byItem = (byItemRaw || []).map((row) => ({
     itemId: row.itemId,
@@ -76,8 +92,10 @@ export async function buildSampleCheckoutReport(client, propertyId, range) {
     },
     byProduct,
     byItem,
+    partialErrors: errors.length ? errors : undefined,
     note:
       "GA4 begin_checkout fires when a visitor clicks a Stripe checkout button (portal or timed simulation). " +
+      "Campaign breakdown uses sessions with a begin_checkout filter (eventCount is incompatible with session dimensions). " +
       "Unique users reached the payment step; completed purchases appear under Portal subscribers after Stripe webhook.",
   };
 }

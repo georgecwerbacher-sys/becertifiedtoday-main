@@ -164,7 +164,7 @@ export default async function handler(req, res) {
         ? {
             ...campaignResult,
             note:
-              "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout counts are event totals in range. " +
+              "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout by campaign uses sessions with an event filter (GA4 disallows eventCount with session dimensions). " +
               "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
               "Setup docs: scripts/*-google-ads.txt in the repo.",
           }

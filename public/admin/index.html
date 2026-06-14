@@ -89,7 +89,25 @@
       text-align: left;
       padding: 8px 10px;
       border-bottom: 1px solid var(--border);
+      vertical-align: top;
     }
+    .vq-done-cell { width: 52px; text-align: center; }
+    .vq-done-cell input[type="checkbox"] { width: auto; margin: 0; cursor: pointer; }
+    .vq-reply-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #4f84d8;
+      background: #2f66bf;
+      color: #f4f7ff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .vq-reply-btn:hover { filter: brightness(1.08); color: #fff; }
+    tr.vq-completed td { color: #7f92b0; }
+    tr.vq-completed .vq-message { opacity: 0.85; }
     th { color: var(--muted); font-weight: 600; }
     td.path { font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
     td.email { word-break: break-all; }
@@ -420,6 +438,7 @@
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
         <p class="section-note">
           Messages from the site <strong>Ask a question</strong> footer form, shown after visitors verify their email.
+          Check <strong>Done</strong> when answered (saved to CSV). <strong>Reply</strong> opens your email client to the sender.
           Filtered by the
           <strong>date range</strong> selector above (UTC).
         </p>
@@ -431,11 +450,13 @@
           <table>
             <thead>
               <tr>
+                <th>Done</th>
                 <th>When (UTC)</th>
                 <th>Email</th>
                 <th>Product</th>
                 <th>Page</th>
                 <th>Message</th>
+                <th>Reply</th>
               </tr>
             </thead>
             <tbody id="visitorQuestionsBody"></tbody>
@@ -1107,11 +1128,82 @@
         document.getElementById("campaignCheckoutBody").innerHTML = "";
       }
 
+      function escapeAttr(s) {
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      }
+
+      function visitorQuestionReplyHref(q) {
+        var track = SAMPLE_PRODUCT_LABELS[q.product] || "exam prep";
+        var subject = "Re: Your " + track + " question — Be Certified Today";
+        var body =
+          "Hi,\n\nThanks for contacting Be Certified Today about " +
+          track +
+          ".\n\nYou asked:\n> " +
+          String(q.message || "").replace(/\r?\n/g, "\n> ") +
+          "\n\n[Your reply here]\n\n— Be Certified Today\nhttps://becertifiedtoday.com";
+        return (
+          "mailto:" +
+          encodeURIComponent(q.email || "") +
+          "?subject=" +
+          encodeURIComponent(subject) +
+          "&body=" +
+          encodeURIComponent(body)
+        );
+      }
+
+      function bindVisitorQuestionActions() {
+        document.querySelectorAll("[data-vq-done]").forEach(function (cb) {
+          if (cb.dataset.vqBound === "1") return;
+          cb.dataset.vqBound = "1";
+          cb.addEventListener("change", function () {
+            var row = cb.closest("tr");
+            var id = cb.getAttribute("data-vq-id");
+            var completed = cb.checked;
+            var statusEl = document.getElementById("visitorQuestionsStatus");
+            if (statusEl) {
+              statusEl.textContent = "Saving…";
+              statusEl.className = "status";
+            }
+            cb.disabled = true;
+            postJson("/api/sample-lead", {
+              action: "update_question",
+              question_id: id,
+              completed: completed,
+            })
+              .then(function (res) {
+                if (!res.ok || !res.body || res.body.ok === false) {
+                  cb.checked = !completed;
+                  throw new Error(
+                    (res.body && (res.body.error || res.body.reason)) || "Could not save Done status"
+                  );
+                }
+                if (row) row.classList.toggle("vq-completed", completed);
+                if (statusEl) {
+                  statusEl.textContent = completed ? "Marked done." : "Marked open.";
+                  statusEl.className = "status ok";
+                }
+              })
+              .catch(function (err) {
+                if (statusEl) {
+                  statusEl.textContent = err.message || "Could not save Done status";
+                  statusEl.className = "status err";
+                }
+              })
+              .finally(function () {
+                cb.disabled = false;
+              });
+          });
+        });
+      }
+
       function renderVisitorQuestionsReport(data) {
         var items = data.items || [];
         document.getElementById("visitorQuestionsSummaryCards").innerHTML = [
-          ["Verified questions", fmt(data.total)],
-          ["Email verified", fmt(data.verifiedCount != null ? data.verifiedCount : data.total)],
+          ["Open", fmt(data.openCount != null ? data.openCount : data.total)],
+          ["Done", fmt(data.completedCount || 0)],
           ["Security+", fmt((data.byProduct && data.byProduct.secplus) || 0)],
           ["CCNA", fmt((data.byProduct && data.byProduct.ccna) || 0)],
         ]
@@ -1129,12 +1221,20 @@
         var body = document.getElementById("visitorQuestionsBody");
         if (!items.length) {
           body.innerHTML =
-            '<tr><td colspan="5" style="color:var(--muted)">No visitor questions yet.</td></tr>';
+            '<tr><td colspan="7" style="color:var(--muted)">No visitor questions yet.</td></tr>';
         } else {
           body.innerHTML = items
             .map(function (q) {
+              var done = Boolean(q.adminCompleted);
+              var rowClass = done ? " class=\"vq-completed\"" : "";
               return (
-                "<tr><td>" +
+                "<tr" +
+                rowClass +
+                '><td class="vq-done-cell"><input type="checkbox" data-vq-done="1" data-vq-id="' +
+                escapeAttr(q.id || "") +
+                '" title="Mark answered"' +
+                (done ? " checked" : "") +
+                " /></td><td>" +
                 fmtIsoUtcShort(q.capturedAt) +
                 '</td><td class="email">' +
                 (q.email || "—") +
@@ -1142,12 +1242,15 @@
                 (SAMPLE_PRODUCT_LABELS[q.product] || q.product) +
                 '</td><td class="path">' +
                 (q.pagePath || "—") +
-                '</td><td class="path">' +
+                '</td><td class="path vq-message">' +
                 (q.message || "").replace(/</g, "&lt;") +
-                "</td></tr>"
+                '</td><td><a class="vq-reply-btn" href="' +
+                escapeAttr(visitorQuestionReplyHref(q)) +
+                '">Reply</a></td></tr>'
               );
             })
             .join("");
+          bindVisitorQuestionActions();
         }
 
         var note = data.note || "";
@@ -1266,7 +1369,7 @@
             if (!res.ok) {
               document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
               document.getElementById("visitorQuestionsBody").innerHTML =
-                '<tr><td colspan="5" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
+                '<tr><td colspan="7" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
               var vq = (res.body && res.body.error) || "Visitor questions failed";
               if (res.body && res.body.hint) vq += " — " + res.body.hint;
               document.getElementById("visitorQuestionsStatus").textContent = vq;
@@ -1278,7 +1381,7 @@
           .catch(function (err) {
             document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
             document.getElementById("visitorQuestionsBody").innerHTML =
-              '<tr><td colspan="5" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
+              '<tr><td colspan="7" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
             document.getElementById("visitorQuestionsStatus").textContent =
               err.message || "Failed to load visitor questions";
             document.getElementById("visitorQuestionsStatus").className = "status err";

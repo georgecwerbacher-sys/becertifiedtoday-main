@@ -18,6 +18,7 @@ import {
   aggregateVisitorQuestionsReport,
   readVisitorQuestions,
   resolveGithubRepo,
+  updateVisitorQuestionCompleted,
 } from "../server-lib/visitor-questions.js";
 import {
   confirmVisitorQuestionVerification,
@@ -182,6 +183,48 @@ function normalizeRangePreset(raw) {
   return "7d";
 }
 
+async function handleQuestionUpdate(req, res, body) {
+  const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
+  const token = bearerToken(req) || (body.token || "");
+
+  if (!jwtSecret) {
+    return res.status(503).json({ ok: false, error: "Admin analytics is not configured" });
+  }
+
+  if (!verifyAnalyticsAdminToken(token, jwtSecret)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+
+  const questionId = typeof body.question_id === "string" ? body.question_id.trim() : "";
+  const completed = body.completed === true || body.completed === "true" || body.completed === 1;
+
+  if (!questionId) {
+    return res.status(400).json({ ok: false, error: "Missing question_id" });
+  }
+
+  try {
+    const result = await updateVisitorQuestionCompleted(questionId, completed);
+    if (!result.ok) {
+      const status = result.reason === "not_found" ? 404 : result.reason === "not_configured" ? 503 : 502;
+      return res.status(status).json({
+        ok: false,
+        error: result.reason === "not_found" ? "Question not found" : "Could not save completed status",
+        reason: result.reason || "error",
+        detail: result.detail || null,
+      });
+    }
+    return res.status(200).json({
+      ok: true,
+      questionId: result.questionId,
+      completed: result.completed,
+      backend: result.backend || null,
+    });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Update failed";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
 async function handleQuestionsReport(req, res, body) {
   const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
   const token = bearerToken(req) || (body.token || "");
@@ -285,6 +328,10 @@ export default async function handler(req, res) {
 
   if (action === "questions_report") {
     return handleQuestionsReport(req, res, body);
+  }
+
+  if (action === "update_question") {
+    return handleQuestionUpdate(req, res, body);
   }
 
   const isReport =
