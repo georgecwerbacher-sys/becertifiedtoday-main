@@ -1,6 +1,16 @@
-# CCNA Google Ads — ad group `ccna_portal_10d`
+# CCNA Google Ads — campaign `ccna_portal`
 
-Paste-ready setup for Google Ads UI. Landing: `public/ccna-home.html` with `utm_content=portal-10d` shows **$9.99 / 10-day** as the only primary purchase CTA.
+**Campaign setup checklist (primary):** `scripts/ccna-google-ads-campaign-checklist.csv` · README: `scripts/ccna-google-ads-campaign-checklist-README.txt`
+
+One Search campaign · **$25/day** · two ad groups: `ccna_portal_10v1` (~$17) + `ccna_browser_labs` (~$8).
+
+This file is extended reference for **locations**, **products**, and **US metros**. For keywords, RSA copy, negatives, and launch steps, use the checklist CSV.
+
+---
+
+# CCNA Google Ads — legacy single ad group notes
+
+_Paste-ready setup for Google Ads UI. Landing: `public/ccna-home.html` with `utm_content=portal-10d` shows **$9.99 / 10-day** as the only primary purchase CTA._
 
 **Source of truth:** this file in `scripts/` (not deployed to the public site).
 
@@ -223,7 +233,7 @@ Washington DC, Arlington VA, Alexandria VA, Fairfax VA, Bethesda MD, Colorado Sp
 
 | Setting | Value |
 |---------|--------|
-| Ad group name | `ccna_portal_10d` |
+| Ad group name | `ccna_portal_10v1` |
 | Display path | `CCNA` / `10-Day-Access` |
 | Primary conversion | GA4 `begin_checkout` (`ccna_portal_10d`) |
 
@@ -393,7 +403,7 @@ Timed Sim Included | 120-min exam-style run | With 10-day portal access | https:
 
 ## Setup checklist
 
-- [ ] Ad group enabled: `ccna_portal_10d`
+- [ ] Ad group enabled: `ccna_portal_10v1`
 - [ ] Final URL includes `#purchase` and `utm_content=portal-10d`
 - [ ] Products list pasted (5 items above)
 - [ ] RSA + keywords pasted

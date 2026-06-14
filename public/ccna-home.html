@@ -625,6 +625,62 @@
       letter-spacing: 0.08em;
       color: #6b8ab8;
     }
+    .landing-tagline {
+      margin: 0 0 12px;
+      font-size: clamp(1.02rem, 2.4vw, 1.15rem);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      color: #2f66bf;
+    }
+    .landing-mission-pitch {
+      margin: clamp(24px, 4vw, 32px) 0 0;
+      padding: clamp(18px, 3vw, 24px) 0 0;
+      max-width: 48rem;
+      border-top: 1px solid rgba(79, 132, 216, 0.28);
+    }
+    .landing-mission-pitch h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0b1020;
+    }
+    .landing-mission-pitch .landing-mission-lead {
+      margin: 0 0 clamp(14px, 2.5vw, 18px);
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.6;
+      color: var(--page-muted);
+    }
+    .landing-mission-pitch .landing-mission-pillars {
+      margin: 0 0 clamp(16px, 3vw, 20px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .landing-mission-pitch .landing-mission-pillars li {
+      font-size: clamp(0.88rem, 2vw, 0.94rem);
+      line-height: 1.5;
+      color: var(--page-muted);
+    }
+    .landing-mission-pitch .landing-mission-pillars strong {
+      color: #0b1020;
+    }
+    .landing-mission-pitch .landing-mission-cta {
+      margin: 0;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      font-weight: 700;
+    }
+    .landing-mission-pitch .landing-mission-cta a {
+      color: #2f66bf;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .landing-mission-pitch .landing-mission-cta a:hover {
+      color: #3a74d4;
+    }
     h1 {
       margin: 0 0 16px;
       font-size: clamp(1.65rem, 4.2vw, 2.25rem);
@@ -2773,6 +2829,7 @@
 
           <div class="funnel-intro" id="exam-audience">
             <p class="eyebrow">Cisco CCNA 200-301 · exam prep · practice tests</p>
+            <p class="landing-tagline">Practice like test day. Walk in ready.</p>
             <h1>CCNA 200-301 Exam Prep: Practice Tests &amp; Simulation</h1>
             <p class="lead lead--full">
               You prepare for CCNA 200-301 in your browser.
@@ -2962,6 +3019,24 @@
               <p class="landing-compare-cta">
                 <a href="#home-ccna-samples-title">Try free CCNA samples →</a>
               </p>
+              <div class="landing-mission-pitch" id="ccna-mission" aria-labelledby="ccna-mission-title">
+                <h3 id="ccna-mission-title">Why I built Be Certified Today</h3>
+                <p class="landing-mission-lead">
+                  I built this for CCNA prep you can trust: current 200-301 practice with timed simulations, drag-and-drop, and CLI labs —
+                  presented the way the real exam does — with answers verified against official Cisco sources.
+                  Try free samples first, no account required. When you are ready, unlock the full library for one payment, one period —
+                  no membership, no ads inside the portal.
+                </p>
+                <ul class="landing-mission-pillars" aria-label="What I promise">
+                  <li><strong>Current material</strong> — aligned to CCNA 200-301 objectives (v1.1), not a stale PDF.</li>
+                  <li><strong>Exam-realistic practice</strong> — timed sim, drag-and-drop, and browser CLI labs on phone, tablet, or desktop.</li>
+                  <li><strong>Verified answers</strong> — keys and explanations tied to official sources, not dump sites.</li>
+                  <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
+                </ul>
+                <p class="landing-mission-cta">
+                  <a href="#purchase">Unlock CCNA access when you are ready →</a>
+                </p>
+              </div>
               <p class="landing-compare-note">
                 Cisco does not endorse third-party braindumps. Practice on this site is for preparation only; see the disclaimer below.
               </p>
@@ -3144,6 +3219,23 @@
                     <strong>Yes. No checkout required.</strong>
                     <a class="faq-cta-link" href="#home-ccna-samples-title">Open the free sample questions, drag-and-drop set, and VLAN lab</a>
                     on your phone or laptop first. Each preview includes verified explanations and the same browser UI as full access.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">Why did you build Be Certified Today?</summary>
+                <div class="faq-answer">
+                  <p>
+                    I know what exam day feels like — the pressure and the worry that your prep is already out of date.
+                    I built Be Certified Today so you can practice in peace with <strong>current, exam-realistic CCNA 200-301 prep</strong>,
+                    <strong>verified explanations</strong>, and <strong>no membership noise</strong>.
+                    My tagline is simple: <strong>Practice like test day. Walk in ready.</strong>
+                  </p>
+                  <p>
+                    <a class="faq-cta-link" href="#home-ccna-samples-title">Try free samples first →</a>
+                    or <a class="faq-cta-link" href="#purchase">unlock access when you are ready</a>.
                   </p>
                 </div>
               </details>

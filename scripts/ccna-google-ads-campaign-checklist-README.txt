@@ -12,11 +12,11 @@ Columns
 -------
   Done      — set to TRUE when complete (or convert to checkbox in Numbers)
   Section   — Setup | Headline | Description | Ops
-  Phase     — Pre-launch, Campaign, Ad group 1, ccna_practice_test, etc.
+  Phase     — Pre-launch, Campaign, Ad group 1, ccna_portal_10v1, etc.
   Step      — step number within that phase
   Task      — what to do
   Value     — paste value, URL, keyword, headline text, or description text
-  Ad group  — ccna_practice_test, ccna_browser_labs, Campaign, Both
+  Ad group  — ccna_portal_10v1, ccna_browser_labs, Campaign, Both
   Notes     — pins, char counts, reminders
 
 Open in Numbers
@@ -28,8 +28,9 @@ Open in Numbers
 
 Campaign summary
 ----------------
+Status:     Initial AdWords test (7 days) — 2026-06-14 through 2026-06-21
 Budget:     $25.00/day
-Ad groups:  ccna_practice_test (~$17/day) + ccna_browser_labs (~$8/day)
+Ad groups:  ccna_portal_10v1 (~$17/day) + ccna_browser_labs (~$8/day)
 Landing:    https://becertifiedtoday.com/ccna-home.html#purchase
 UTM:        utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
 

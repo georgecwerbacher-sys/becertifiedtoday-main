@@ -18,7 +18,59 @@ Paste-ready setup for Google Ads UI. Landing: `public/ccnp-home.html` — **prim
 | Locations | **Countries + cities below** (presence-only) |
 | Language | English |
 
-**Location targeting:** Same Tier A/B country lists as `scripts/ccna-portal-10d-google-ads.md`. Start with Tier A (16 countries) on $10/day; expand after search-term review.
+**Location targeting**
+
+**Goal:** Reach searchers where CCNP / ENCOR certification and network engineering hiring are prominent — US and international.
+
+**Setup:**
+
+1. **Location options:** **Presence: People in or regularly in your targeted locations** (not interest)
+2. On **$10/day:** start with **Tier 1** only; add Tier 2 after 30-day search-term review
+
+### Tier 1 — Countries (highest CCNP / ENCOR / network engineer volume)
+
+Add whole country in Google Ads → Locations:
+
+```
+India
+United States
+United Kingdom
+Canada
+Australia
+Philippines
+United Arab Emirates
+Singapore
+Nigeria
+Pakistan
+South Africa
+Saudi Arabia
+Malaysia
+Ireland
+Germany
+Netherlands
+New Zealand
+```
+
+**Quick paste (comma-separated, 16 countries):**
+
+```
+India, United States, United Kingdom, Canada, Australia, Philippines, United Arab Emirates, Singapore, Nigeria, Pakistan, South Africa, Saudi Arabia, Malaysia, Ireland, Germany, Netherlands, New Zealand
+```
+
+### Tier 1 city boosts (optional — search in Google Ads)
+
+| Country | Cities |
+|---------|--------|
+| India | Bengaluru · Hyderabad · Mumbai · Chennai · Pune · New Delhi · Noida · Gurugram |
+| United States | Washington DC · Arlington VA · Dallas TX · Atlanta GA · Seattle WA · San Jose CA |
+| United Kingdom | London · Manchester · Birmingham |
+| Canada | Toronto · Vancouver · Ottawa · Montreal |
+| Australia | Sydney · Melbourne · Brisbane |
+| Philippines | Manila · Quezon City · Cebu City |
+| UAE | Dubai · Abu Dhabi |
+| Singapore | Singapore |
+
+**Tier 2 countries** (expand after baseline): see `scripts/ccna-portal-10d-google-ads.md` Tier B list.
 
 **Federal US landing (optional):** `ccnp-home.html#exam-audience` · `utm_content=federal-{market}`
 
@@ -251,6 +303,7 @@ After 30 days: pause search terms with spend but no `begin_checkout` (`encor_por
 ## Setup checklist
 
 - [ ] Ad group enabled: `encor_portal`
+- [ ] **Initial 7-day test** (2026-06-14 → 2026-06-21) — baseline only; no scaling until day-7 review
 - [ ] Final URL points to `#purchase` (no `utm_content=portal-10d`)
 - [ ] Products list pasted (5 items above — no 10-day product line)
 - [ ] RSA + keywords pasted (30-day pricing, not $9.99 headlines)

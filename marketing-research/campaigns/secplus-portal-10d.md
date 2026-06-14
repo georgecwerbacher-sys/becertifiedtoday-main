@@ -1,0 +1,1 @@
+../../scripts/secplus-portal-10d-google-ads.md

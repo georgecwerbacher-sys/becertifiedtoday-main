@@ -1,0 +1,1 @@
+../../scripts/encor-portal-10d-google-ads.md

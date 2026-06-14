@@ -534,84 +534,217 @@
     (document.head || document.body).appendChild(s);
   }
 
-  function showFreeSimUpsellModal(session, finishHome) {
-    if (document.getElementById("ciscoSampleFreeSimUpsell")) return;
+  var CCNA_LIBRARY_STATS = {
+    questions: "700+",
+    labs: "9",
+    dnd: "99",
+  };
+
+  var CCNA_PORTAL_CHECKOUT = {
+    "10d": {
+      url: "https://buy.stripe.com/00wcN458x6Szglq6Ruc3m04",
+      id: "ccna_portal_10d",
+      name: "CCNA 10-day access",
+      value: "9.99",
+      label: "Get 10-day access · $9.99",
+      sub: "10 days · one-time",
+    },
+    "30d": {
+      url: "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03",
+      id: "ccna_portal_30d",
+      name: "CCNA 30-day access",
+      value: "19.99",
+      label: "Get 30-day access · $19.99",
+      sub: "30 days · one-time",
+    },
+  };
+
+  function hasCcnaPortalAccess() {
+    return (
+      typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive()
+    );
+  }
+
+  function detectCcnaSampleKind(session) {
+    var kind = sampleKindHint();
+    if (kind === "ccna-questions") return "questions";
+    if (kind === "ccna-dnd") return "dnd";
+    if (kind === "ccna-lab" || kind === "ccna-vlan" || kind === "ccna-trunk") return "lab";
+    if (!session || !Array.isArray(session.order) || !session.order.length) return "questions";
+    var t = session.order[0].type;
+    if (t === "lab") return "lab";
+    if (t === "dnd") return "dnd";
+    return "questions";
+  }
+
+  function ccnaPortalOfferLead(session, kind) {
+    var q = CCNA_LIBRARY_STATS.questions;
+    var labs = CCNA_LIBRARY_STATS.labs;
+    var dnd = CCNA_LIBRARY_STATS.dnd;
+    if (kind === "lab") {
+      return (
+        "You finished the sample CLI lab. Unlock <strong>" +
+        labs +
+        " browser CLI lab simulations</strong>—the same interactive format you just used—plus <strong>" +
+        q +
+        " practice questions</strong> and <strong>" +
+        dnd +
+        " drag-and-drop</strong> items with verified explanations."
+      );
+    }
+    if (kind === "dnd") {
+      return (
+        "You finished the sample drag-and-drop set. Unlock <strong>" +
+        dnd +
+        " performance-style drag-and-drop</strong> items plus <strong>" +
+        q +
+        " practice questions</strong> and <strong>" +
+        labs +
+        " CLI labs</strong>—all in your browser on phone, tablet, or desktop."
+      );
+    }
+    return (
+      "You finished the sample questions. Unlock <strong>" +
+      q +
+      " CCNA 200-301 practice questions</strong> with verified explanations, plus <strong>" +
+      labs +
+      " CLI labs</strong>, <strong>" +
+      dnd +
+      " drag-and-drop</strong> sets, and timed simulation practice."
+    );
+  }
+
+  function wireCcnaPortalCheckoutBtn(btn, tier, session) {
+    var product = CCNA_PORTAL_CHECKOUT[tier];
+    if (!product || !btn) return;
+    btn.type = "button";
+    btn.className = "cisco-ccna-offer-tier-btn" + (tier === "10d" ? " cisco-ccna-offer-tier-btn--featured" : "");
+    btn.textContent = product.label;
+    btn.setAttribute("data-ccna-portal-checkout-tier", tier);
+    btn.addEventListener("click", function (ev) {
+      ev.preventDefault();
+      if (btn.dataset.loading === "1") return;
+      logSampleEvent(session, "ccna_portal_offer_checkout", { tier: tier });
+      if (typeof window.bccTrackBeginCheckout === "function") {
+        btn.setAttribute("data-bcc-item-id", product.id);
+        btn.setAttribute("data-bcc-item-name", product.name);
+        btn.setAttribute("data-bcc-value", product.value);
+        btn.setAttribute("data-bcc-currency", "USD");
+        window.bccTrackBeginCheckout(btn);
+      }
+      btn.dataset.loading = "1";
+      btn.disabled = true;
+      btn.textContent = "Redirecting…";
+      clearSampleSession(session);
+      window.location.href = product.url;
+    });
+  }
+
+  function showCcnaPortalOfferModal(session, finishHome) {
+    if (document.getElementById("ciscoCcnaPortalOffer")) return;
 
     ensureSampleLeadAnalytics();
-    logSampleEvent(session, "sample_finished");
+    finalizeSampleResults(session);
 
-    var cfg = resolveLeadConfig(session);
-    var kind =
-      session.order[0] && session.order[0].type === "lab"
-        ? "lab"
-        : session.order[0] && session.order[0].type === "dnd"
-          ? "drag-and-drop"
-          : "questions";
+    var kind = detectCcnaSampleKind(session);
+    logSampleEvent(session, "ccna_portal_offer_shown", { sampleKind: kind });
 
-    var lead =
+    var lead = ccnaPortalOfferLead(session, kind);
+    var scoreHtml = "";
+    if (kind === "questions") {
+      var summary = buildSampleScoreSummary(session);
+      var totals = summary.totals;
+      if (totals.total) {
+        var pct = Math.round((totals.correct / totals.total) * 100);
+        scoreHtml =
+          '<p class="cisco-ccna-offer-score"><strong>' +
+          totals.correct +
+          "/" +
+          totals.total +
+          "</strong> correct on this sample (" +
+          pct +
+          "%)</p>";
+      }
+    }
+
+    var title =
       kind === "lab"
-        ? "You finished the sample lab. Unlock the free <strong>45-minute timed simulation</strong>—20 multiple-choice questions, 2 drag-and-drop items, and 1 CLI lab, with a scorecard when you finish."
-        : kind === "drag-and-drop"
-          ? "You finished the sample drag-and-drop. Try the free <strong>45-minute timed simulation</strong> next—20 multiple-choice questions, 2 drag-and-drop items, and 1 CLI lab, with Back and Next navigation like test day."
-          : "You finished the sample questions. Try the free <strong>45-minute timed simulation</strong> next—20 multiple-choice questions, 2 drag-and-drop items, and 1 CLI lab, with a scorecard when you finish.";
+        ? "Ready for the full CCNA lab library?"
+        : kind === "dnd"
+          ? "Ready for the full drag-and-drop bank?"
+          : "Ready for the full CCNA question bank?";
 
     var root = document.createElement("div");
-    root.id = "ciscoSampleFreeSimUpsell";
-    root.className = "cisco-sample-upsell-root";
+    root.id = "ciscoCcnaPortalOffer";
+    root.className = "cisco-ccna-offer-root";
     root.setAttribute("role", "presentation");
     root.innerHTML =
-      '<div class="cisco-sample-upsell-backdrop" data-cisco-upsell-dismiss tabindex="-1"></div>' +
-      '<div class="cisco-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="ciscoSampleFreeSimUpsellTitle" tabindex="-1">' +
-      '<button type="button" class="cisco-sample-upsell-close" data-cisco-upsell-dismiss aria-label="Close dialog">×</button>' +
-      '<p class="cisco-sample-upsell-eyebrow">Free ' +
-      cfg.examLabel +
-      " timed simulation</p>" +
-      '<h2 id="ciscoSampleFreeSimUpsellTitle">Ready for a full timed dry run?</h2>' +
-      '<p class="cisco-sample-upsell-lead">' +
+      '<div class="cisco-ccna-offer-backdrop" data-cisco-ccna-offer-dismiss tabindex="-1"></div>' +
+      '<div class="cisco-ccna-offer-panel" role="dialog" aria-modal="true" aria-labelledby="ciscoCcnaPortalOfferTitle" tabindex="-1">' +
+      '<button type="button" class="cisco-ccna-offer-close" data-cisco-ccna-offer-dismiss aria-label="Close dialog">×</button>' +
+      '<p class="cisco-ccna-offer-eyebrow">Sample complete · CCNA 200-301</p>' +
+      '<h2 id="ciscoCcnaPortalOfferTitle">' +
+      title +
+      "</h2>" +
+      scoreHtml +
+      '<p class="cisco-ccna-offer-lead">' +
       lead +
       "</p>" +
-      '<div class="cisco-sample-upsell-actions">' +
-      '<button type="button" class="cisco-sample-upsell-primary">Start free timed simulation</button>' +
-      '<button type="button" class="cisco-sample-upsell-secondary" data-cisco-upsell-home>Return to ' +
-      cfg.productLabel +
-      " home</button>" +
+      '<p class="cisco-ccna-offer-tagline">Practice like test day. Walk in ready.</p>' +
+      '<div class="cisco-ccna-offer-tiers" aria-label="CCNA access options">' +
+      '<div class="cisco-ccna-offer-tier cisco-ccna-offer-tier--featured">' +
+      '<p class="cisco-ccna-offer-tier-label">10-day full access</p>' +
+      '<p class="cisco-ccna-offer-tier-price">$9.99 <span>/ 10 days</span></p>' +
+      '<p class="cisco-ccna-offer-tier-note">One-time · no subscription</p>' +
+      '<button type="button" class="cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured" data-tier="10d"></button>' +
+      "</div>" +
+      '<div class="cisco-ccna-offer-tier">' +
+      '<p class="cisco-ccna-offer-tier-label">30-day full access</p>' +
+      '<p class="cisco-ccna-offer-tier-price">$19.99 <span>/ 30 days</span></p>' +
+      '<p class="cisco-ccna-offer-tier-note">Same library · longer study window</p>' +
+      '<button type="button" class="cisco-ccna-offer-tier-btn" data-tier="30d"></button>' +
+      "</div>" +
+      "</div>" +
+      '<div class="cisco-ccna-offer-actions">' +
+      '<button type="button" class="cisco-ccna-offer-secondary" data-cisco-ccna-offer-home>Return to CCNA home</button>' +
       "</div>" +
       "</div>";
 
     document.body.appendChild(root);
-    document.body.classList.add("cisco-sample-upsell-open");
+    document.body.classList.add("cisco-ccna-offer-open");
 
-    var panel = root.querySelector(".cisco-sample-upsell-panel");
+    wireCcnaPortalCheckoutBtn(root.querySelector('[data-tier="10d"]'), "10d", session);
+    wireCcnaPortalCheckoutBtn(root.querySelector('[data-tier="30d"]'), "30d", session);
+
+    var panel = root.querySelector(".cisco-ccna-offer-panel");
     var prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    var homeUrl = (finishHome || session.finishHome || "/ccna-home.html") + "#purchase";
 
-    function closeModal() {
+    function closeModal(navigateHome) {
       root.remove();
-      document.body.classList.remove("cisco-sample-upsell-open");
+      document.body.classList.remove("cisco-ccna-offer-open");
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
+      if (navigateHome) navigateAfterSample(homeUrl, session);
     }
 
     function onKey(ev) {
       if (ev.key === "Escape") {
         ev.preventDefault();
-        closeModal();
+        closeModal(false);
       }
     }
 
     document.addEventListener("keydown", onKey);
-
-    root.querySelectorAll("[data-cisco-upsell-dismiss]").forEach(function (el) {
-      el.addEventListener("click", closeModal);
+    root.querySelectorAll("[data-cisco-ccna-offer-dismiss]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        closeModal(false);
+      });
     });
-
-    root.querySelector("[data-cisco-upsell-home]").addEventListener("click", function () {
-      navigateAfterSample(finishHome || session.finishHome, session);
-    });
-
-    root.querySelector(".cisco-sample-upsell-primary").addEventListener("click", function () {
-      closeModal();
-      openFreeSimLeadModal(session, finishHome);
+    root.querySelector("[data-cisco-ccna-offer-home]").addEventListener("click", function () {
+      logSampleEvent(session, "ccna_portal_offer_dismiss", { action: "home" });
+      closeModal(true);
     });
 
     if (panel) panel.focus();
@@ -625,6 +758,17 @@
     var home = finishHome || session.finishHome;
     var index = currentItemIndex(session);
     if (index >= 0) captureCurrentAnswer(session, index);
+
+    var isCcna =
+      session.product === "ccna" ||
+      resolveLeadConfig(session).key === SESSIONS.ccna.key ||
+      sampleKindHint().indexOf("ccna") === 0;
+
+    if (isCcna && !hasCcnaPortalAccess()) {
+      showCcnaPortalOfferModal(session, home);
+      return;
+    }
+
     if (isMcqOnlySample(session)) {
       showSampleScorecard(session, home);
       return;
@@ -948,7 +1092,31 @@
       ".cisco-sample-scorecard-table-wrap tbody tr:last-child th,.cisco-sample-scorecard-table-wrap tbody tr:last-child td{border-bottom:none}" +
       ".cisco-sample-scorecard-actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}" +
       ".cisco-sample-scorecard-primary{border:1px solid #2f66bf;background:#2f66bf;color:#f8fafc;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%}" +
-      ".cisco-sample-scorecard-primary:hover{filter:brightness(1.06)}";
+      ".cisco-sample-scorecard-primary:hover{filter:brightness(1.06)}" +
+      ".cisco-ccna-offer-root{position:fixed;inset:0;z-index:20004;display:flex;align-items:center;justify-content:center;padding:16px}" +
+      ".cisco-ccna-offer-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.78);backdrop-filter:blur(4px)}" +
+      ".cisco-ccna-offer-panel{position:relative;z-index:1;width:min(560px,100%);max-height:min(92vh,760px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px);border-radius:16px;border:1px solid #4f84d8;background:linear-gradient(165deg,rgba(22,32,52,.98) 0%,rgba(14,20,36,.99) 100%);color:#e6edf3;box-shadow:0 24px 64px rgba(0,0,0,.45)}" +
+      ".cisco-ccna-offer-close{position:absolute;top:10px;right:12px;border:0;background:transparent;color:#9fb0cc;font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 8px}" +
+      ".cisco-ccna-offer-eyebrow{margin:0 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#a8c4f0}" +
+      ".cisco-ccna-offer-panel h2{margin:0 0 10px;font-size:clamp(1.15rem,3vw,1.45rem);line-height:1.25;color:#fff}" +
+      ".cisco-ccna-offer-score{margin:0 0 10px;font-size:1rem;color:#dbeafe}" +
+      ".cisco-ccna-offer-lead{margin:0 0 12px;font-size:.95rem;line-height:1.55;color:#cbd5e1}" +
+      ".cisco-ccna-offer-lead strong{color:#f8fafc}" +
+      ".cisco-ccna-offer-tagline{margin:0 0 18px;font-size:.9rem;font-style:italic;font-weight:700;color:#93c5fd}" +
+      ".cisco-ccna-offer-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:0 0 16px}" +
+      ".cisco-ccna-offer-tier{border:1px solid rgba(79,132,216,.35);border-radius:12px;padding:14px;background:rgba(13,21,40,.55)}" +
+      ".cisco-ccna-offer-tier--featured{border-color:rgba(251,191,36,.55);box-shadow:0 0 0 1px rgba(251,191,36,.2) inset}" +
+      ".cisco-ccna-offer-tier-label{margin:0 0 4px;font-size:.82rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#9fb0cc}" +
+      ".cisco-ccna-offer-tier-price{margin:0 0 4px;font-size:1.35rem;font-weight:800;color:#fff}" +
+      ".cisco-ccna-offer-tier-price span{font-size:.82rem;font-weight:700;color:#94a3b8}" +
+      ".cisco-ccna-offer-tier-note{margin:0 0 12px;font-size:.8rem;line-height:1.4;color:#94a3b8}" +
+      ".cisco-ccna-offer-tier-btn{display:inline-flex;justify-content:center;align-items:center;border:1px solid #4f84d8;background:#2f66bf;color:#f4f7ff;border-radius:10px;padding:11px 14px;font:inherit;font-weight:800;cursor:pointer;width:100%;box-sizing:border-box}" +
+      ".cisco-ccna-offer-tier-btn--featured{border-color:rgba(251,191,36,.65);background:linear-gradient(165deg,#3b82f6 0%,#2563eb 100%)}" +
+      ".cisco-ccna-offer-tier-btn:hover{filter:brightness(1.08)}" +
+      ".cisco-ccna-offer-tier-btn:disabled{opacity:.7;cursor:wait}" +
+      ".cisco-ccna-offer-actions{display:flex;flex-direction:column;gap:10px}" +
+      ".cisco-ccna-offer-secondary{border:1px solid rgba(159,176,204,.45);background:transparent;color:#e6edf3;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}" +
+      ".cisco-ccna-offer-secondary:hover{background:rgba(255,255,255,.06)}";
     document.head.appendChild(s);
   }
 

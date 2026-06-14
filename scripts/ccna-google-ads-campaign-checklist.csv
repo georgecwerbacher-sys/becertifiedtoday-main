@@ -15,24 +15,24 @@ FALSE,Setup,Locations,1,Location option,Presence: people in or regularly in targ
 FALSE,Setup,Locations,2,Add Tier A countries (16),India · US · UK · Canada · Australia · Philippines · UAE · Singapore · Nigeria · Pakistan · South Africa · Saudi Arabia · Malaysia · Ireland · Germany · Netherlands · New Zealand,Campaign,
 FALSE,Setup,Locations,3,Verify Stripe checkout works for targeted non-US countries,,Campaign,Before scaling international spend
 FALSE,Setup,Locations,4,Optional: add US metro bid boosts,See scripts/ccna-portal-10d-google-ads.md,Campaign,After week 2 if US converts
-FALSE,Setup,Ad group 1,1,Create ad group,ccna_practice_test,ccna_practice_test,~68% budget (~$17/day)
-FALSE,Setup,Ad group 1,2,Set display path,CCNA / Practice-Test,ccna_practice_test,
-FALSE,Setup,Ad group 1,3,Set final URL,https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d,ccna_practice_test,
-FALSE,Setup,Ad group 1,4,Add exact keyword,[ccna practice test],ccna_practice_test,
-FALSE,Setup,Ad group 1,5,Add exact keyword,[ccna 200-301 practice test],ccna_practice_test,
-FALSE,Setup,Ad group 1,6,Add exact keyword,[ccna mock exam],ccna_practice_test,
-FALSE,Setup,Ad group 1,7,Add exact keyword,[ccna practice exam],ccna_practice_test,
-FALSE,Setup,Ad group 1,8,Add exact keyword,[ccna exam simulation],ccna_practice_test,
-FALSE,Setup,Ad group 1,9,Add exact keyword,[ccna question bank],ccna_practice_test,
-FALSE,Setup,Ad group 1,10,Add exact keyword,[ccna 200-301 question bank],ccna_practice_test,
-FALSE,Setup,Ad group 1,11,Add exact keyword,[cisco ccna practice test],ccna_practice_test,
-FALSE,Setup,Ad group 1,12,Add phrase keyword,"ccna practice test online",ccna_practice_test,
-FALSE,Setup,Ad group 1,13,Add phrase keyword,"ccna mock exam online",ccna_practice_test,
-FALSE,Setup,Ad group 1,14,Add phrase keyword,"ccna timed practice test",ccna_practice_test,
-FALSE,Setup,Ad group 1,15,Add phrase keyword,"ccna practice questions online",ccna_practice_test,
-FALSE,Setup,Ad group 1,16,Add phrase keyword,"ccna 200-301 exam prep",ccna_practice_test,
-FALSE,Setup,Ad group 1,17,Paste all 15 RSA headlines,See Headline rows below,ccna_practice_test,Pin rows marked Pin H1 and Pin H2
-FALSE,Setup,Ad group 1,18,Paste all 4 RSA descriptions,See Description rows below,ccna_practice_test,
+FALSE,Setup,Ad group 1,1,Create ad group,ccna_portal_10v1,ccna_portal_10v1,~68% budget (~$17/day)
+FALSE,Setup,Ad group 1,2,Set display path,CCNA / 10-Day-Access,ccna_portal_10v1,
+FALSE,Setup,Ad group 1,3,Set final URL,https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d,ccna_portal_10v1,
+FALSE,Setup,Ad group 1,4,Add exact keyword,[ccna practice test],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,5,Add exact keyword,[ccna 200-301 practice test],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,6,Add exact keyword,[ccna mock exam],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,7,Add exact keyword,[ccna practice exam],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,8,Add exact keyword,[ccna exam simulation],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,9,Add exact keyword,[ccna question bank],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,10,Add exact keyword,[ccna 200-301 question bank],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,11,Add exact keyword,[cisco ccna practice test],ccna_portal_10v1,
+FALSE,Setup,Ad group 1,12,Add phrase keyword,"ccna practice test online",ccna_portal_10v1,
+FALSE,Setup,Ad group 1,13,Add phrase keyword,"ccna mock exam online",ccna_portal_10v1,
+FALSE,Setup,Ad group 1,14,Add phrase keyword,"ccna timed practice test",ccna_portal_10v1,
+FALSE,Setup,Ad group 1,15,Add phrase keyword,"ccna practice questions online",ccna_portal_10v1,
+FALSE,Setup,Ad group 1,16,Add phrase keyword,"ccna 200-301 exam prep",ccna_portal_10v1,
+FALSE,Setup,Ad group 1,17,Paste all 15 RSA headlines,See Headline rows below,ccna_portal_10v1,Pin rows marked Pin H1 and Pin H2
+FALSE,Setup,Ad group 1,18,Paste all 4 RSA descriptions,See Description rows below,ccna_portal_10v1,
 FALSE,Setup,Ad group 2,1,Create ad group,ccna_browser_labs,ccna_browser_labs,~32% budget (~$8/day)
 FALSE,Setup,Ad group 2,2,Set display path,CCNA / Browser-Labs,ccna_browser_labs,
 FALSE,Setup,Ad group 2,3,Set final URL,https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d,ccna_browser_labs,
@@ -79,32 +79,38 @@ FALSE,Setup,Launch,2,Open final URL — purchase fold shows $9.99 10-day CTA,,Bo
 FALSE,Setup,Launch,3,Click through to Stripe — confirm $9.99,,Both,
 FALSE,Setup,Launch,4,Confirm GA4 begin_checkout in Realtime,,Both,
 FALSE,Setup,Launch,5,Test free sample sitelinks load on mobile,,Campaign,
-FALSE,Ops,Week 1,1,Review Search terms report,Add junk as campaign negatives,Campaign,Every 5-7 days
+FALSE,Ops,Initial test (7 days),1,Status,Live — initial AdWords test,Campaign,2026-06-14 through 2026-06-21
+FALSE,Ops,Initial test (7 days),2,Do not change,Budget bidding locations or RSA copy,Campaign,Collect baseline data only
+FALSE,Ops,Initial test (7 days),3,Daily,Check impressions clicks spend by ad group,Both,
+FALSE,Ops,Initial test (7 days),4,Daily,Check GA4 begin_checkout count,Campaign,ccna_portal_10d and ccna_portal_30d
+FALSE,Ops,Initial test (7 days),5,Day 3,Search terms review — add obvious junk negatives,Campaign,
+FALSE,Ops,Initial test (7 days),6,Day 7,Review CTR CPC CPA portal_10v1 vs browser_labs,Campaign,Decide scale pause or optimize
+FALSE,Ops,Week 1,1,Review Search terms report,Add junk as campaign negatives,Campaign,After day-7 review; every 5-7 days
 FALSE,Ops,Week 1,2,Check CTR by ad group,Target 1.5-3%+,Both,
 FALSE,Ops,Week 1,3,Check avg CPC,Adjust max CPC if needed,Campaign,
 FALSE,Ops,Week 1,4,Note top converting search terms,,Both,Promote to exact if not already added
-FALSE,Ops,Week 2-4,1,Review CPA per ad group,Compare practice_test vs browser_labs,Both,
+FALSE,Ops,Week 2-4,1,Review CPA per ad group,Compare portal_10v1 vs browser_labs,Both,
 FALSE,Ops,Week 2-4,2,Pause keywords with spend and zero checkouts,,Both,
 FALSE,Ops,Week 2-4,3,Consider switch to Maximize conversions,After 15-20 begin_checkout events,Campaign,
 FALSE,Ops,Week 2-4,4,Drop countries with junk terms and no conversions,,Campaign,
-FALSE,Ops,Scale,1,Optional: add ad group ccna_mobile_prep,$5/day from practice_test budget,Campaign,Only if search terms show mobile intent
-FALSE,Ops,Scale,2,Optional: test portal-30d final URL,$19.99 / 30 days,ccna_practice_test,For price-vs-PDF angle
+FALSE,Ops,Scale,1,Optional: add ad group ccna_mobile_prep,$5/day from portal_10v1 budget,Campaign,Only if search terms show mobile intent
+FALSE,Ops,Scale,2,Optional: test portal-30d final URL,$19.99 / 30 days,ccna_portal_10v1,For price-vs-PDF angle
 FALSE,Ops,Scale,3,Optional: add Tier B countries,See scripts/ccna-portal-10d-google-ads.md Tier B,Campaign,After stable CPA in Tier A
-FALSE,Headline,ccna_practice_test,1,RSA headline,CCNA 200-301 Practice Test,Pin H1,26 chars
-FALSE,Headline,ccna_practice_test,2,RSA headline,$9.99 for 10-Day Access,Pin H2,23 chars
-FALSE,Headline,ccna_practice_test,3,RSA headline,CCNA Mock Exam Online,,21 chars
-FALSE,Headline,ccna_practice_test,4,RSA headline,700+ Questions · v1.1 2026,,24 chars
-FALSE,Headline,ccna_practice_test,5,RSA headline,Timed Sim + Scorecard,,21 chars
-FALSE,Headline,ccna_practice_test,6,RSA headline,Browser Labs — No GNS3,,23 chars
-FALSE,Headline,ccna_practice_test,7,RSA headline,CCNA Prep on Phone & Tablet,,27 chars
-FALSE,Headline,ccna_practice_test,8,RSA headline,No PDFs — Interactive Prep,,26 chars
-FALSE,Headline,ccna_practice_test,9,RSA headline,CCNA Question Bank Online,,25 chars
-FALSE,Headline,ccna_practice_test,10,RSA headline,Practice Tests & Simulation,,28 chars
-FALSE,Headline,ccna_practice_test,11,RSA headline,Cisco CCNA Practice Test,,24 chars
-FALSE,Headline,ccna_practice_test,12,RSA headline,Free Samples — Try First,,24 chars
-FALSE,Headline,ccna_practice_test,13,RSA headline,No Auto-Renew · One Payment,,27 chars
-FALSE,Headline,ccna_practice_test,14,RSA headline,Drag-Drop + CLI Lab Prep,,24 chars
-FALSE,Headline,ccna_practice_test,15,RSA headline,CCNA 200-301 Exam Prep,,22 chars
+FALSE,Headline,ccna_portal_10v1,1,RSA headline,CCNA 200-301 Practice Test,Pin H1,26 chars
+FALSE,Headline,ccna_portal_10v1,2,RSA headline,$9.99 for 10-Day Access,Pin H2,23 chars
+FALSE,Headline,ccna_portal_10v1,3,RSA headline,CCNA Mock Exam Online,,21 chars
+FALSE,Headline,ccna_portal_10v1,4,RSA headline,700+ Questions · v1.1 2026,,24 chars
+FALSE,Headline,ccna_portal_10v1,5,RSA headline,Timed Sim + Scorecard,,21 chars
+FALSE,Headline,ccna_portal_10v1,6,RSA headline,Browser Labs — No GNS3,,23 chars
+FALSE,Headline,ccna_portal_10v1,7,RSA headline,CCNA Prep on Phone & Tablet,,27 chars
+FALSE,Headline,ccna_portal_10v1,8,RSA headline,No PDFs — Interactive Prep,,26 chars
+FALSE,Headline,ccna_portal_10v1,9,RSA headline,CCNA Question Bank Online,,25 chars
+FALSE,Headline,ccna_portal_10v1,10,RSA headline,Practice Tests & Simulation,,28 chars
+FALSE,Headline,ccna_portal_10v1,11,RSA headline,Cisco CCNA Practice Test,,24 chars
+FALSE,Headline,ccna_portal_10v1,12,RSA headline,Free Samples — Try First,,24 chars
+FALSE,Headline,ccna_portal_10v1,13,RSA headline,No Auto-Renew · One Payment,,27 chars
+FALSE,Headline,ccna_portal_10v1,14,RSA headline,Drag-Drop + CLI Lab Prep,,24 chars
+FALSE,Headline,ccna_portal_10v1,15,RSA headline,CCNA 200-301 Exam Prep,,22 chars
 FALSE,Headline,ccna_browser_labs,1,RSA headline,Browser CLI Labs — No GNS3,Pin H1,27 chars
 FALSE,Headline,ccna_browser_labs,2,RSA headline,$9.99 for 10-Day Access,Pin H2,23 chars
 FALSE,Headline,ccna_browser_labs,3,RSA headline,CCNA Labs in Your Browser,,25 chars
@@ -120,10 +126,10 @@ FALSE,Headline,ccna_browser_labs,12,RSA headline,CCNA 200-301 Practice Test,,26 
 FALSE,Headline,ccna_browser_labs,13,RSA headline,Free Samples — Try First,,24 chars
 FALSE,Headline,ccna_browser_labs,14,RSA headline,No Auto-Renew · One Payment,,27 chars
 FALSE,Headline,ccna_browser_labs,15,RSA headline,CCNA 200-301 Exam Prep,,22 chars
-FALSE,Description,ccna_practice_test,1,RSA description,CCNA 200-301 practice test: 700+ questions timed sim scorecard. Labs & D&D in browser.,,82 chars
-FALSE,Description,ccna_practice_test,2,RSA description,$9.99 for 10-day access. No GNS3 no PDFs. Study on phone tablet or desktop.,,78 chars
-FALSE,Description,ccna_practice_test,3,RSA description,Try free CCNA samples first. One payment — no membership or auto-renew.,,72 chars
-FALSE,Description,ccna_practice_test,4,RSA description,CCNA practice questions with verified explanations. Timed simulation included.,,76 chars
+FALSE,Description,ccna_portal_10v1,1,RSA description,CCNA 200-301 practice test: 700+ questions timed sim scorecard. Labs & D&D in browser.,,82 chars
+FALSE,Description,ccna_portal_10v1,2,RSA description,$9.99 for 10-day access. No GNS3 no PDFs. Study on phone tablet or desktop.,,78 chars
+FALSE,Description,ccna_portal_10v1,3,RSA description,Try free CCNA samples first. One payment — no membership or auto-renew.,,72 chars
+FALSE,Description,ccna_portal_10v1,4,RSA description,CCNA practice questions with verified explanations. Timed simulation included.,,76 chars
 FALSE,Description,ccna_browser_labs,1,RSA description,CCNA CLI labs in your browser. No GNS3 or Packet Tracer install required.,,72 chars
 FALSE,Description,ccna_browser_labs,2,RSA description,$9.99 for 10-day access. VLAN lab drag-drop and 700+ questions included.,,72 chars
 FALSE,Description,ccna_browser_labs,3,RSA description,Try the free VLAN CLI lab sample. Full library unlocks at checkout.,,68 chars
