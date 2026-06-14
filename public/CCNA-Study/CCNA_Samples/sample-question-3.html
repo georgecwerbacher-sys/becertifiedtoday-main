@@ -6,7 +6,7 @@
   <meta name="description" content="Free CCNA 200-301 exam prep sample — interactive practice in your browser with verified explanations. No PDFs or third-party software." />
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNA 200-301 exam prep sample — 802.11 frame types (question 3 of 5)</title>
+  <title>CCNA 200-301 exam prep sample — HSRP active router (question 3 of 5)</title>
   <link rel="stylesheet" href="../../css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -141,15 +141,24 @@
       <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
     </span>
     <main class="card">
-        <h1>Which 802.11 frame type is Association Response?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show standby brief">
+        <pre>R1# show standby brief
+             P indicates configured to preempt.
+             |
+Interface   Grp  Pri P State   Active          Standby         Virtual IP
+Gi0/0        1    110   Standby 10.10.10.3      10.10.10.1      10.10.10.1</pre>
+      </div>
+    </div>
+        <h1>Refer to the exhibit. R1 and R2 run HSRP group 1 for virtual IP 10.10.10.1. The output is from R1. R2 uses interface address 10.10.10.3. Which device is currently forwarding traffic sent to the virtual gateway?</h1>
 
-    <label class="choice"><input type="radio" name="q3" value="A" />A. management</label>
+    <label class="choice"><input type="radio" name="q3" value="A" />A. R1, because it has priority 110</label>
 
-    <label class="choice"><input type="radio" name="q3" value="B" />B. protected frame</label>
+    <label class="choice"><input type="radio" name="q3" value="B" />B. Both routers, because HSRP load-balances by default</label>
 
-    <label class="choice"><input type="radio" name="q3" value="C" />C. action</label>
+    <label class="choice"><input type="radio" name="q3" value="C" />C. R1, because it is local</label>
 
-    <label class="choice"><input type="radio" name="q3" value="D" />D. control</label>
+    <label class="choice"><input type="radio" name="q3" value="D" />D. R2, because 10.10.10.3 is Active</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -157,8 +166,8 @@
         <div class="question-progress-block">
           <span class="ccna-practice-progress" aria-live="polite">Question 3 of 5</span>
           <p class="question-topic-meta">
-            <span class="question-topic-meta__version">Version 1.1 2026</span>
-            <span class="question-topic-meta__subject"></span>
+            <span class="question-topic-meta__version">Version 2.0 2026</span>
+            <span class="question-topic-meta__subject">4.0 — IP Services</span>
           </p>
         </div>
       </div>
@@ -180,8 +189,8 @@
   </nav>
   <script>
     (function () {
-      var CORRECT = "A";
-      var CORRECT_MSG = "Correct. A. Association Response is an 802.11 management frame (join/process with an AP). Control frames include RTS, CTS, and ACK; \u201cprotected\u201d refers to encryption, not a frame type classification.";
+      var CORRECT = "D";
+      var CORRECT_MSG = "Correct. D \u2014 HSRP uses one Active router to forward traffic for the virtual IP. The output is from R1, but R1\u2019s state is Standby. The Active column lists 10.10.10.3 (R2), so R2 forwards traffic sent to 10.10.10.1. Priority affects election; the current state in the output is the deciding evidence.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");

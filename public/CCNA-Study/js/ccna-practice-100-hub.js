@@ -299,7 +299,7 @@
           "; then the next bank appears automatically. ";
       }
       summaryText +=
-        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, Version 2.0, and adaptive learning apply to the bank you start.";
+        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, Version 2.0 2026, and adaptive learning apply to the bank you start.";
       summary.textContent = summaryText;
       summary.hidden = false;
     }
@@ -347,11 +347,11 @@
       var verTag = document.createElement("p");
       verTag.className = "ccna-bank-version-tag";
       if (firstNum >= VERSION_20_MIN) {
-        verTag.textContent = "Version 2.0";
+        verTag.textContent = "Version 2.0 2026";
       } else if (endIdx <= VERSION_11_2026_MAX) {
         verTag.textContent = "Version 1.1 2026";
       } else {
-        verTag.textContent = "Version 1.1 2026 & Version 2.0";
+        verTag.textContent = "Version 1.1 2026 & Version 2.0 2026";
       }
       article.appendChild(verTag);
 

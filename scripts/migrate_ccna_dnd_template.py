@@ -12,6 +12,14 @@ SAMPLE_DND = ROOT / "public" / "CCNA-Study" / "CCNA_Samples" / "dragdrop-ftp-vs-
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
 PORTAL_HOME = "/CCNA-Study/CCNA_Training_Portal.html"
 SAMPLE_HOME = "/ccna-home.html"
+UPDATED_LABEL = "Updated for 2026"
+FORMAT_META_CSS = "/CCNA-Study/js/ccna-format-topic-meta.css"
+FORMAT_META_JS = "/CCNA-Study/js/ccna-format-topic-meta.js"
+
+FORMAT_TOPIC_META = f"""    <p class="question-topic-meta ccna-format-topic-meta" aria-label="Format and topic">
+      <span class="question-topic-meta__version">{UPDATED_LABEL}</span>
+      <span class="question-topic-meta__subject"></span>
+    </p>"""
 
 KEEP_CSS_KEYWORDS = (
     "exhibit",
@@ -391,6 +399,7 @@ def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) ->
     nav_css = "/css/bcc-question-link-nav.css"
     touch_css = "/CCNA-Study/CCNA_Samples/ccna-sample-touch.css"
     dnd_css = "/CCNA-Study/js/ccna-dnd-page.css"
+    format_css = FORMAT_META_CSS
     robots = "index, follow" if is_sample else "noindex, nofollow"
     lines = [
         "<head>",
@@ -406,6 +415,7 @@ def build_head(*, title: str, extras: str, exhibit_css: str, is_sample: bool) ->
             f'  <link rel="stylesheet" href="{nav_css}" />',
             f'  <link rel="stylesheet" href="{touch_css}" />',
             f'  <link rel="stylesheet" href="{dnd_css}" />',
+            f'  <link rel="stylesheet" href="{format_css}" />',
         ]
     )
     if exhibit_css:
@@ -446,10 +456,12 @@ def build_body_shell(
 {logo_corner}
     <main class="card">
 {main_inner}
+{FORMAT_TOPIC_META}
     </main>
   </div>
 
 {tail}
+  <script src="{FORMAT_META_JS}" defer></script>
 </body>"""
 
 

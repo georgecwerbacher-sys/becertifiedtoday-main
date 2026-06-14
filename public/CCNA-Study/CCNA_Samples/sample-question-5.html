@@ -141,15 +141,29 @@
       <img src="../../../images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="" />
     </span>
     <main class="card">
-        <h1>Which IPv6 address is reserved for the loopback interface on a device?</h1>
+    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ipv6 interface loopback 0">
+        <pre>R1# show ipv6 interface loopback 0
+Loopback0 is up, line protocol is up
+  IPv6 is enabled, link-local address is FE80::1
+  Global unicast address(es):
+    2001:DB8:1::1, subnet is 2001:DB8:1::/64
+    ::1, subnet is ::1/128 [valid lifetime preferred lifetime]
+  Joined group address(es):
+    FF02::1
+    FF02::2
+    FF02::1:FF00:1</pre>
+      </div>
+    </div>
+        <h1>Refer to the exhibit. Which IPv6 address on this router is reserved for the loopback interface?</h1>
 
     <label class="choice"><input type="radio" name="q5" value="A" />A. ::</label>
 
     <label class="choice"><input type="radio" name="q5" value="B" />B. ::1</label>
 
-    <label class="choice"><input type="radio" name="q5" value="C" />C. fe80::/10</label>
+    <label class="choice"><input type="radio" name="q5" value="C" />C. 2001:DB8:1::1</label>
 
-    <label class="choice"><input type="radio" name="q5" value="D" />D. ff02::1</label>
+    <label class="choice"><input type="radio" name="q5" value="D" />D. FE80::1</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -157,8 +171,8 @@
         <div class="question-progress-block">
           <span class="ccna-practice-progress" aria-live="polite">Question 5 of 5</span>
           <p class="question-topic-meta">
-            <span class="question-topic-meta__version">Version 1.1 2026</span>
-            <span class="question-topic-meta__subject"></span>
+            <span class="question-topic-meta__version">Version 2.0 2026</span>
+            <span class="question-topic-meta__subject">1.0 — Network Fundamentals</span>
           </p>
         </div>
       </div>
@@ -181,7 +195,7 @@
   <script>
     (function () {
       var CORRECT = "B";
-      var CORRECT_MSG = "Correct. B. ::1 is the IPv6 loopback address, analogous to 127.0.0.1 in IPv4.";
+      var CORRECT_MSG = "Correct. B \u2014 ::1/128 is the IPv6 loopback address, analogous to 127.0.0.1 in IPv4. 2001:DB8:1::1 is a global unicast on Loopback0. FE80::1 is link-local. :: is the unspecified address.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");

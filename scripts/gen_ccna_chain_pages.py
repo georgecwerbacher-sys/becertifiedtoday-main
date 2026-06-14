@@ -15,7 +15,14 @@ OUT = ROOT / "public/CCNA-Study/CCNA_questions"
 HUB_JS = ROOT / "public/CCNA-Study/js/ccna-practice-100-hub.js"
 # Last hub slug before the generated chain (hand-maintained prefix stays first in ALL_SLUGS).
 HUB_CHAIN_ANCHOR = "vty-access-list-ssh-secure"
+VERSION_11_LABEL = "Version 1.1 2026"
+VERSION_20_LABEL = "Version 2.0 2026"
+VERSION_20_MIN = 301
 # Topology / exhibit raster files live in OUT/images/ (see .cursor/rules/ccna-extra-question-chain.mdc).
+
+
+def version_label_for_hub_index(index_1based: int) -> str:
+    return VERSION_20_LABEL if index_1based >= VERSION_20_MIN else VERSION_11_LABEL
 
 STYLE = r"""  <style>
     :root {
@@ -345,6 +352,7 @@ def page(
     stem_after_exhibit_tail: str | None = None,
     prepend_html: str | None = None,
     stem_br: bool = False,
+    version_label: str = VERSION_11_LABEL,
 ) -> str:
     mono = " mono" if mono_choices else ""
     nav = build_question_nav(prev_slug, next_slug)
@@ -414,7 +422,7 @@ def page(
         <div class="question-progress-block">
           <span class="ccna-practice-progress" aria-live="polite"></span>
           <p class="question-topic-meta">
-            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__version">{html.escape(version_label)}</span>
             <span class="question-topic-meta__subject"></span>
           </p>
         </div>
@@ -513,6 +521,7 @@ def page_checkbox(
     post_stem_html: str | None = None,
     stem_after_exhibit: str | None = None,
     prepend_html: str | None = None,
+    version_label: str = VERSION_11_LABEL,
 ) -> str:
     nav = build_question_nav(prev_slug, next_slug, show_check=True)
     cor_json = json.dumps(sorted(correct_letters))
@@ -566,7 +575,7 @@ def page_checkbox(
         <div class="question-progress-block">
           <span class="ccna-practice-progress" aria-live="polite"></span>
           <p class="question-topic-meta">
-            <span class="question-topic-meta__version">Version 1.1 2026</span>
+            <span class="question-topic-meta__version">{html.escape(version_label)}</span>
             <span class="question-topic-meta__subject"></span>
           </p>
         </div>
@@ -16383,9 +16392,17 @@ line vty 0 4
         },
     ]
 
+    hub_text = HUB_JS.read_text(encoding="utf-8")
+    hub_slugs = _slugs_from_hub_js(hub_text)
+    try:
+        prefix_len = hub_slugs.index(HUB_CHAIN_ANCHOR) + 1
+    except ValueError:
+        prefix_len = 12
+
     prev = "vty-access-list-ssh-secure"
     for idx, q in enumerate(chain):
-        i = 13 + idx
+        hub_index = prefix_len + idx + 1
+        version_label = version_label_for_hub_index(hub_index)
         slug = q["slug"]
         next_slug = chain[idx + 1]["slug"] if idx + 1 < len(chain) else None
         if q.get("choose_two"):
@@ -16407,6 +16424,7 @@ line vty 0 4
                 post_stem_html=q.get("post_stem_html"),
                 stem_after_exhibit=q.get("stem_after_exhibit"),
                 prepend_html=q.get("prepend_html"),
+                version_label=version_label,
             )
         else:
             ch_lines = "\n".join(
@@ -16430,6 +16448,7 @@ line vty 0 4
                 stem_after_exhibit_tail=q.get("stem_after_exhibit_tail"),
                 prepend_html=q.get("prepend_html"),
                 stem_br=q.get("stem_br", False),
+                version_label=version_label,
             )
         (OUT / f"{slug}.html").write_text(html, encoding="utf-8")
         prev = slug

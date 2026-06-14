@@ -1,0 +1,23 @@
+.ccna-format-topic-meta {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #1a3d6e;
+}
+
+body.bcc-ccna-lab-top-chrome .wrap > .ccna-format-topic-meta {
+  margin-top: 0;
+  padding: 0 4px 8px;
+}
+
+body.ccna-dnd-ui .ccna-format-topic-meta {
+  margin-top: 12px;
+}
+
+.ccna-format-topic-meta .question-topic-meta__subject:empty {
+  display: none;
+}
+
+.ccna-format-topic-meta .question-topic-meta__version:not(:empty) + .question-topic-meta__subject:not(:empty)::before {
+  content: " · ";
+}

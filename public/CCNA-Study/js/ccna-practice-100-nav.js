@@ -78,7 +78,8 @@
     "6.0": "Automation and Programmability",
   };
   var CCNA_VERSION_11_LABEL = "Version 1.1 2026";
-  var CCNA_VERSION_20_LABEL = "Version 2.0";
+  var CCNA_VERSION_20_LABEL = "Version 2.0 2026";
+  var CCNA_UPDATED_LABEL = "Updated for 2026";
   var CCNA_VERSION_20_MIN = 301;
 
   function reviewMarkKey(slug, practiceIndex) {
@@ -305,6 +306,12 @@
   }
 
   function versionLabelForSlug(slug) {
+    if (document.body && document.body.classList.contains("dragdrop-exercise")) {
+      return CCNA_UPDATED_LABEL;
+    }
+    if (/\/CCNA_labs\//i.test(location.pathname)) {
+      return CCNA_UPDATED_LABEL;
+    }
     var hub = window.CCNA_PRACTICE_100 || {};
     var minV20 = hub.VERSION_20_MIN || CCNA_VERSION_20_MIN;
     var all = hub.ALL_SLUGS;
