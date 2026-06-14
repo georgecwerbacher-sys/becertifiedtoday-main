@@ -23,11 +23,29 @@
   IOS `?` help (cli-lab-container.js — required in <head> before lab script):
   - DEFAULT_ROUTER_CLI_HELP — baseline for all routers (sample: cli-lab-static-routing.html)
   - DEFAULT_SWITCH_CLI_HELP — baseline for all switches (sample: cli-lab-vlan-sim.html)
-  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router"|"switch", promptText, labHelp))
-  - ROUTER_CLI_HELP / SWITCH_CLI_HELP: null uses defaults; override keys per lab
-  - Router keys: exec, show, configGlobal, configIf, ip, ipRoute, …
-  - Switch keys: exec, show, configGlobal, configIf, interface, interfaceEthernet, switchport,
-    switchportMode, switchportAccess, lldp, username, usernameName, usernamePrivilege, usernamePrivilegeLevel
+  - Per lab (once, in script): var ROUTER_CLI_HELP = null; var SWITCH_CLI_HELP = null;
+  - Every router/switch submit handler — after empty-line guard, before lab logic:
+      if (cliLabContainer.tryAppendIosHelp(line, appendFn,
+        cliLabContainer.iosHelpOpts("router"|"switch", promptText, ROUTER_CLI_HELP|SWITCH_CLI_HELP))) return;
+  - Help is read-only: using ? never changes config, advances steps, or affects lab completion.
+  - appendFn: (cls, text) => void — e.g. appendSw, or (cls, text) => appendBlock(scrollR1, cls, text)
+  - promptText: current prompt element .textContent (e.g. swPrompt.textContent, promptR1.textContent)
+  - ROUTER_CLI_HELP / SWITCH_CLI_HELP: null uses all shared defaults; set { key: [...] } to override one list
+  - Re-run scripts/patch-lab-ios-help.py when adding new IOS device submit handlers
+  - Router keys: exec, show, configGlobal, configIf, configLine, configRouter, configRouterRouterId, configIfIpOspf, configIfIpOspfProcess, configIfIpOspfProcessArea, configIfIpOspfPriority, configAcl, configAclPermit,
+    configAclPermitTcp, configAclPermitTcpSrcWildcard, configAclPermitTcpDest, configAclPermitTcpDestAny,
+    configAclPermitTcpDestAnyEq, ip, ipRoute, router, routerOspf, ipAccessList, ipAccessListExtended, ipAccessGroup,
+    ipAccessGroupDir, ipDhcp, ipDhcpSnooping, noIpDhcpSnoopingInformation, ipDhcpSnoopingVerify, …
+  - OSPF router `?` chain (DEFAULT_ROUTER_CLI_HELP — all routers when ROUTER_CLI_HELP = null):
+      (config)# router ?  →  router ospf ?
+      (config-router)# ?  |  router-id ?
+      (config-if)# ip ospf ?  →  ip ospf <pid> ?  →  ip ospf <pid> area ?  |  ip ospf priority ?
+  - OSPF reference lab: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html
+  - Switch keys: same router ACL/DHCP/ip keys where inherited, plus interface, interfaceEthernet,
+    switchport, switchportMode, switchportAccess, lldp, line, lineVty, transport, transportInput,
+    login, username, usernameName, usernamePrivilege, usernamePrivilegeLevel, usernameAlgorithmType,
+    usernameAlgorithmTypeHash, usernameAlgorithmTypeHashPrivilege, usernameAlgorithmTypeHashPrivilegeLevel,
+    usernameAlgorithmTypeHashPrivilegeLevelPassword
 
   CLI login banner (auto on CCNA lab pages when a modal opens):
   - BCT_CLI_HELP_NOTICE / EXAM_SIM_CLI_BANNER_TEXT — context-sensitive help limited to scenario
@@ -67,7 +85,11 @@
     </div>
     <footer class="cli-modal-footer">
       <p class="cli-hint" style="margin:0;font-size:0.82rem;color:#9fb0cc;">
-        Wire with <code>cliLabEngine.createIosDevice()</code> or hand-rolled <code>submit*()</code>
+        Sync block — after <code>if (!trimmed) return;</code>: switch
+        <code>tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))</code>;
+        router (R1, submitSw2, submitR10, …)
+        <code>iosHelpOpts("router", promptText, ROUTER_CLI_HELP)</code> — includes OSPF
+        <code>router ?</code> / <code>ip ospf ?</code> chain when <code>ROUTER_CLI_HELP = null</code>.
       </p>
     </footer>
   </div>

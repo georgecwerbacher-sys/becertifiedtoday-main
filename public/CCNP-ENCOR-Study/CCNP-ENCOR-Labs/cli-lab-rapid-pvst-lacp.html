@@ -1363,6 +1363,16 @@ SW20# copy running-config startup-config</pre>
       if (sw10PassBanner) sw10PassBanner.classList.remove("visible");
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitSw10() {
       if (!sw10Cmdline) return;
       const prompt = sw10PromptEl ? sw10PromptEl.textContent : "Sw10#";
@@ -1370,6 +1380,7 @@ SW20# copy running-config startup-config</pre>
       appendLineSw10("line-user", `${prompt} ${line}`);
       sw10Cmdline.value = "";
       if (!line.trim()) return;
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(sw10Scrollback, cls, text); }, cliLabContainer.iosHelpOpts("switch", sw10PromptEl ? sw10PromptEl.textContent : "Sw10#", SWITCH_CLI_HELP))) return;
       const u = normalize(line);
 
       if (matchShowRun(line) || (u === "do show run" || u === "do show running-config")) {

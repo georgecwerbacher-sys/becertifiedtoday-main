@@ -11,7 +11,11 @@
   - Login banner (BCT_CLI_HELP_NOTICE) — auto-injected when each router/switch CLI modal opens
   - Per device: cliLabContainer.tryAppendIosHelp(line, appendFn,
     cliLabContainer.iosHelpOpts("router"|"switch", promptText, ROUTER_CLI_HELP|SWITCH_CLI_HELP))
+  - Help is read-only — using ? does not change config, advance steps, or affect completion.
   - PC prompts: HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG
+  - OSPF router chain (ROUTER_CLI_HELP = null): router ?, router ospf ?, (config-router)# ?, router-id ?,
+    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
+  - OSPF reference: public/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html
 
   Reference labs (router / switch samples):
   - public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (multi-router + ROUTER_CLI_HELP override stub)

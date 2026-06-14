@@ -1338,6 +1338,16 @@ router ospf 100
       openSelectedCliBtn.focus();
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitR10() {
       const raw = cmdR10.value;
       if (!String(raw).trim()) {
@@ -1345,6 +1355,7 @@ router ospf 100
         return;
       }
       const line = stripLeadingDevicePrompts(raw);
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(scrollR10, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR10.textContent, ROUTER_CLI_HELP))) return;
 
       if (matchShowRun(line)) {
         cmdR10.value = "";
@@ -1492,6 +1503,7 @@ router ospf 100
         return;
       }
       const line = stripLeadingDevicePrompts(raw);
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(scrollR20, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR20.textContent, ROUTER_CLI_HELP))) return;
 
       if (matchShowRun(line)) {
         cmdR20.value = "";

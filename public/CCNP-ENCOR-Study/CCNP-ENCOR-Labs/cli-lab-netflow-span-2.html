@@ -1135,6 +1135,16 @@ Sw1# copy running-config startup-config</pre>
       onSlaStepsComplete();
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitR1SlaSteps(line) {
       if (!slaStepsPending()) return false;
 
@@ -1604,6 +1614,7 @@ Sw1# copy running-config startup-config</pre>
         cmdR1.value = "";
         return;
       }
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollR1, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR1.textContent, ROUTER_CLI_HELP))) return;
 
       if (
         phase === "R1_NF" ||
@@ -1660,6 +1671,8 @@ Sw1# copy running-config startup-config</pre>
         cmdSw1.value = "";
         return;
       }
+
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollSw1, cls, text); }, cliLabContainer.iosHelpOpts("switch", promptSw1.textContent, SWITCH_CLI_HELP))) return;
 
       if (matchShowRun(line)) {
         const p = sw1PromptForDisplay();

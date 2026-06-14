@@ -1086,7 +1086,21 @@ end`;
       applyPhaseUI();
     }
 
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+    var ROUTER_CLI_HELP = null;
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+    var SWITCH_CLI_HELP = null;
+
     function submitSW10() {
+      const lineProbe = cmdSW10.value;
+      if (String(lineProbe || "").trim()) {
+        if (cliLabContainer.tryAppendIosHelp(lineProbe, function (cls, text) { appendBlock(scrollSW10, cls, text); }, cliLabContainer.iosHelpOpts("switch", promptSW10.textContent, SWITCH_CLI_HELP))) {
+          appendLine(scrollSW10, "line-user", `${promptSW10.textContent} ${lineProbe}`);
+          cmdSW10.value = "";
+          return;
+        }
+      }
+
       if (phase === "SAVE") {
         const line = cmdSW10.value;
         if (!line.trim()) {

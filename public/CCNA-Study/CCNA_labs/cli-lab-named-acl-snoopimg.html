@@ -3,6 +3,11 @@
   CCNA CLI lab — Named ACL and DHCP Snooping Simulation V2 (R1, SW1, SW3, PC1).
   Baseline patterns: templates/labs/cli-lab-baseline.html, templates/containers/cli-container-template.html.
   Kin labs for multi-modal wiring: cli-lab-nat-dhcp-sim.html, cli-lab-ospf_config_sim_v3.html.
+
+  IOS `?` help — ROUTER_CLI_HELP = null → DEFAULT_ROUTER_CLI_HELP (/js/cli-lab-container.js):
+  tryAppendIosHelp(..., iosHelpOpts("router", promptText, ROUTER_CLI_HELP)) in every router submit handler.
+  OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,
+    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
 -->
 <html lang="en">
 <head>
@@ -1295,8 +1300,8 @@ Sw3# copy running-config startup-config</pre>
        * Lowercase, trim, collapse spaces, strip trailing . or ; then expand helpful IOS abbreviations for matching.
        */
       function normalize(s) {
-        var t = String(s)
-          .trim()
+        var t = cliLabContainer.stripPastedIosPrompts(s);
+        t = t
           .toLowerCase()
           .replace(/^#+\s*/, "")
           .replace(/\s+/g, " ")
@@ -1598,7 +1603,7 @@ Sw3# copy running-config startup-config</pre>
 
       function submitPc() {
         var promptText = pcPrompt.textContent;
-        var line = pcCmdline.value;
+        var line = cliLabContainer.stripPastedIosPrompts(pcCmdline.value);
         var rawTrim = String(line || "").trim();
         pcCmdline.value = "";
         if (!rawTrim) return;
@@ -1742,7 +1747,7 @@ Sw3# copy running-config startup-config</pre>
       // BEGIN sync block: templates/containers/cli-container-template.html -> submitSw()
       function submitSw() {
         var promptText = swPrompt.textContent;
-        var line = swCmdline.value;
+        var line = cliLabContainer.stripPastedIosPrompts(swCmdline.value);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
@@ -1870,7 +1875,7 @@ Sw3# copy running-config startup-config</pre>
 
       function submitSw2() {
         var promptText = sw2Prompt.textContent;
-        var line = sw2Cmdline.value;
+        var line = cliLabContainer.stripPastedIosPrompts(sw2Cmdline.value);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
@@ -2005,7 +2010,7 @@ Sw3# copy running-config startup-config</pre>
 
       function submitSw3() {
         var promptText = sw3Prompt.textContent;
-        var line = sw3Cmdline.value;
+        var line = cliLabContainer.stripPastedIosPrompts(sw3Cmdline.value);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);

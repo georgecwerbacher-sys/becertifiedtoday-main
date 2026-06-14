@@ -1390,12 +1390,19 @@ R1# copy running-config startup-config</pre>
       openDeviceCliLink.focus();
     }
 
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+    var ROUTER_CLI_HELP = null;
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+    var SWITCH_CLI_HELP = null;
+
     function submitR2() {
       const line = cmdlineR2.value;
       if (!line.trim()) {
         cmdlineR2.value = "";
         return;
       }
+
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollbackR2, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR2.textContent, ROUTER_CLI_HELP))) return;
 
       const execShow = matchShowRunExec(line) && r2Mode === "exec" && !r2ExploreNav.getMode();
       const doShowFromExec =
@@ -1458,6 +1465,8 @@ R1# copy running-config startup-config</pre>
         cmdlineR3.value = "";
         return;
       }
+
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollbackR3, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR3.textContent, ROUTER_CLI_HELP))) return;
 
       const execShow = matchShowRunExec(line) && r3Mode === "exec" && !r3ExploreNav.getMode();
       const doShowFromExec = matchDoShowRun(line) && r3Mode !== "exec";

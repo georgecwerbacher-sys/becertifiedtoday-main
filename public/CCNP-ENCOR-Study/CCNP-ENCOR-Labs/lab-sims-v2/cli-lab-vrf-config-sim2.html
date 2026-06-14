@@ -1126,6 +1126,16 @@ R22# copy running-config startup-config</pre>
       openDeviceCliLink.focus();
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitR22() {
       if (cmdR22.disabled) return;
       const p = promptFor(R22_STEPS, stepR22, "R22");
@@ -1133,6 +1143,7 @@ R22# copy running-config startup-config</pre>
       appendLine(scrollR22, "line-user", `${p} ${line}`);
       cmdR22.value = "";
       if (!line.trim()) return;
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(scrollR22, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR22.textContent, ROUTER_CLI_HELP))) return;
       pushHistory(historyR22, "r22", line);
 
       if (matchShowRun(line)) {
@@ -1212,6 +1223,7 @@ R22# copy running-config startup-config</pre>
       appendLine(scrollSw22, "line-user", `${promptSw22.textContent} ${line}`);
       cmdSw22.value = "";
       if (!line.trim()) return;
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(scrollSw22, cls, text); }, cliLabContainer.iosHelpOpts("switch", promptSw22.textContent, SWITCH_CLI_HELP))) return;
       pushHistory(historySw22, "sw22", line);
       if (matchShowRunStrictSw22(line)) {
         appendLine(scrollSw22, "line-showrun", SW22_SHOW_RUN);

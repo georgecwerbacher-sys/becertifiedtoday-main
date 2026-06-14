@@ -913,6 +913,16 @@
       return u === "show ip ospf neighbor" || u === "sh ip ospf neighbor" || u === "show ip ospf nei";
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitR3() {
       if (phase === "R3_PTP") {
         if (stepR3 >= R3_PTP.length) return;
@@ -921,6 +931,7 @@
         appendLine(scrollR3, "line-user", `${p} ${line}`);
         cmdR3.value = "";
         if (!line.trim()) return;
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollR3, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR3.textContent, ROUTER_CLI_HELP))) return;
         if (R3_PTP[stepR3].test(line)) {
           stepR3 += 1;
           if (stepR3 >= R3_PTP.length) {
@@ -990,6 +1001,12 @@
     }
 
     function submitR20() {
+      const helpLineR20 = cmdR20.value;
+      if (String(helpLineR20 || "").trim() && cliLabContainer.tryAppendIosHelp(helpLineR20, function (cls, text) { appendBlock(scrollR20, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR20.textContent, ROUTER_CLI_HELP))) {
+        appendLine(scrollR20, "line-user", `${promptR20.textContent} ${helpLineR20}`);
+        cmdR20.value = "";
+        return;
+      }
       if (phase === "R20_PTP") {
         if (stepR20 >= R20_PTP.length) return;
         const p = promptForConfig(R20_PTP, stepR20, "R20");
@@ -1074,6 +1091,12 @@
     }
 
     function submitR10() {
+      const helpLineR10 = cmdR10.value;
+      if (String(helpLineR10 || "").trim() && cliLabContainer.tryAppendIosHelp(helpLineR10, function (cls, text) { appendBlock(scrollR10, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR10.textContent, ROUTER_CLI_HELP))) {
+        appendLine(scrollR10, "line-user", `${promptR10.textContent} ${helpLineR10}`);
+        cmdR10.value = "";
+        return;
+      }
       if (phase === "R10_PRI") {
         if (stepR10 >= R10_PRI.length) return;
         const p = promptForConfig(R10_PRI, stepR10, "R10");
@@ -1138,6 +1161,12 @@
     }
 
     function submitR2() {
+      const helpLineR2 = cmdR2.value;
+      if (String(helpLineR2 || "").trim() && cliLabContainer.tryAppendIosHelp(helpLineR2, function (cls, text) { appendBlock(scrollR2, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR2.textContent, ROUTER_CLI_HELP))) {
+        appendLine(scrollR2, "line-user", `${promptR2.textContent} ${helpLineR2}`);
+        cmdR2.value = "";
+        return;
+      }
       if (phase === "R2_CLEAR") {
         const p = stepR2Clear === 0 ? "R2#" : OSPF_CLEAR_PROMPT;
         const line = cmdR2.value;

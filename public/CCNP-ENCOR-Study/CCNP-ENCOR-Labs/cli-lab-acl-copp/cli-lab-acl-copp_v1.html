@@ -1200,6 +1200,16 @@ control-plane
       openDeviceCliLink.focus();
     }
 
+
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+
+    var ROUTER_CLI_HELP = null;
+
+    /** null = DEFAULT_SWITCH_CLI_HELP — shared IOS ? help for all switches in this lab. */
+
+    var SWITCH_CLI_HELP = null;
+
+
     function submitR10() {
       if (
         phase === "R10_NEI1" ||
@@ -1226,6 +1236,7 @@ control-plane
         appendLine(scrollR10, "line-user", `${disp} ${line}`);
         cmdR10.value = "";
         if (!line.trim()) return;
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollR10, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR10.textContent, ROUTER_CLI_HELP))) return;
         if (matchCopy(line)) {
           appendLine(scrollR10, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           r10ExploreNav.reset();
@@ -1366,6 +1377,7 @@ control-plane
         appendLine(scrollR20, "line-user", `${disp} ${line}`);
         cmdR20.value = "";
         if (!line.trim()) return;
+        if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollR20, cls, text); }, cliLabContainer.iosHelpOpts("router", promptR20.textContent, ROUTER_CLI_HELP))) return;
         if (matchCopy(line)) {
           appendLine(scrollR20, "line-sys", cliLabContainer.COPY_RUN_START_OK_MSG);
           r20ExploreNav.reset();

@@ -1046,16 +1046,21 @@ end`;
       openR20CliBtn.focus();
     }
 
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+    var ROUTER_CLI_HELP = null;
+
     function submit() {
       if (phase === "DONE") return;
       const steps = currentSteps();
+      const line = cmdline.value;
       if (phase !== "SAVE" && stepIndex >= steps.length && !matchCopy(line)) return;
 
-      const line = cmdline.value;
       if (!line.trim()) {
         cmdline.value = "";
         return;
       }
+
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendBlock(scrollback, cls, text); }, cliLabContainer.iosHelpOpts("router", promptEl.textContent, ROUTER_CLI_HELP))) return;
 
       if (matchShowRun(line)) {
         const prompt = promptEl.textContent;

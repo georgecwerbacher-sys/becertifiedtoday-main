@@ -350,18 +350,14 @@
         return;
       }
 
+      // IOS `?` help — read-only; return before step tests or graded command logic.
       if (
-        container &&
-        typeof container.tryAppendIosHelp === "function" &&
-        container.tryAppendIosHelp(line, function (cls, text) {
           appendBlock(el.scroll, cls, text);
-        }, {
-          deviceType: deviceType,
-          extra: opts.showHelpExtra,
-          configExtra: opts.configHelpExtra,
-          modeExtra: opts.modeHelpExtra,
-          promptText: el.prompt ? el.prompt.textContent : "",
-        })
+        }, container.iosHelpOpts(
+          deviceType,
+          el.prompt ? el.prompt.textContent : "",
+          deviceType === "switch" ? opts.switchHelp : opts.routerHelp
+        ))
       ) {
         echoCommand(line, normalized);
         el.cmdline.value = "";

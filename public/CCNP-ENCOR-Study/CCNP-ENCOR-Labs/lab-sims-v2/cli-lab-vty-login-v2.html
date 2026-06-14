@@ -676,6 +676,9 @@
       }
     }
 
+    /** null = DEFAULT_ROUTER_CLI_HELP — shared IOS ? help for all routers in this lab. */
+    var ROUTER_CLI_HELP = null;
+
     function submit() {
       if (stepIndex >= STEPS.length) return;
       const h = getHostname();
@@ -684,6 +687,8 @@
         cmdline.value = "";
         return;
       }
+
+      if (cliLabContainer.tryAppendIosHelp(line, function (cls, text) { appendLine(cls, text); }, cliLabContainer.iosHelpOpts("router", promptEl.textContent, ROUTER_CLI_HELP))) return;
 
       const nav = exploreNavFor(h);
       if (

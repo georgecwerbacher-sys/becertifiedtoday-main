@@ -31,6 +31,19 @@
     return s;
   }
 
+  /**
+   * Remove leading IOS prompt tokens pasted from helper/spoiler blocks
+   * (e.g. "Sw3(config)# Sw1(config)# username …" → "username …").
+   */
+  function stripPastedIosPrompts(raw) {
+    var t = String(raw || "").trim();
+    var re = /^[\w.-]+(?:\([^)]+\))?#\s*/i;
+    while (re.test(t)) {
+      t = t.replace(re, "").trim();
+    }
+    return t;
+  }
+
   var CLI_UNSUPPORTED_MSG = "% command not supported in this lab simulation";
   var CLI_UNSUPPORTED_NUMERIC_HINT_MSG =
     "% command not supported in this lab simulation — check the lab Tasks and Verification sections for the exact values.";
@@ -309,7 +322,8 @@
   /** Shown in router/switch CLI login banners (CCNA lab modals and engine boot banner). */
   var BCT_CLI_HELP_NOTICE =
     "Some context-sensitive help (?) is limited in this scenario.\n" +
-    "Help for commands required to complete the lab remains available.";
+    "Help for commands required to complete the lab remains available.\n" +
+    "Using ? help is read-only — it does not change configuration, advance lab steps, or affect completion.";
 
   var EXAM_SIM_CLI_BANNER_TEXT =
     "================================================================================\n" +
@@ -609,6 +623,10 @@
    * Override per lab: `var ROUTER_CLI_HELP = { ipRoute: [...] }` (null = all defaults) and
    * `cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP)`.
    *
+   * Non-impact contract: help handlers only append scrollback text. They never mutate lab
+   * state (steps, modes, config snapshots, pass/fail). Submit handlers must call
+   * tryAppendIosHelp and return before step tests or graded command logic.
+   *
    * Keys / triggers:
    *   exec         — host# ?
    *   show         — show ?
@@ -617,9 +635,30 @@
    *   configIf     — (config-if)# ?
    *   configLine   — (config-line)# ?
    *   configRouter — (config-router)# ?
+   *   configRouterRouterId — (config-router)# router-id ?
+   *   configIfIpOspf — (config-if)# ip ospf ?
+   *   configIfIpOspfProcess — (config-if)# ip ospf <process-id> ?
+   *   configIfIpOspfProcessArea — (config-if)# ip ospf <process-id> area ?
+   *   configIfIpOspfPriority — (config-if)# ip ospf priority ?
    *   configAcl    — (config-*-nacl)# ?
+   *   configAclPermit — (config-ext-nacl)# permit ?
+   *   configAclPermitTcp — permit tcp ?
+   *   configAclPermitTcpSrcWildcard — permit tcp <src> ?
+   *   configAclPermitTcpDest — permit tcp <src> <wildcard> ?
+   *   configAclPermitTcpDestAny — permit tcp <src> <wildcard> any ?
+   *   configAclPermitTcpDestAnyEq — permit tcp … any eq ?
    *   ip           — (config)# ip ?
    *   ipRoute      — (config)# ip route ?
+   *   router       — (config)# router ?
+   *   routerOspf   — (config)# router ospf ?
+   *   ipAccessList — (config)# ip access-list ?
+   *   ipAccessListExtended — (config)# ip access-list extended ?
+   *   ipAccessGroup — (config-if)# ip access-group ?
+   *   ipAccessGroupDir — (config-if)# ip access-group <name> ?
+   *   ipDhcp       — (config)# ip dhcp ?
+   *   ipDhcpSnooping — (config)# ip dhcp snooping ?
+   *   noIpDhcpSnoopingInformation — no ip dhcp snooping information ?
+   *   ipDhcpSnoopingVerify — ip dhcp snooping verify ?
    */
   var DEFAULT_ROUTER_CLI_HELP = {
     /** Privileged EXEC — host# ? */
@@ -689,26 +728,309 @@
       { cmd: "end" },
     ],
     configLine: [
-      { cmd: "exec-timeout <minutes> <seconds>" },
-      { cmd: "logging synchronous" },
+      { cmd: "access-class" },
+      { cmd: "accounting" },
+      { cmd: "activation-character" },
+      { cmd: "autocommand" },
+      { cmd: "autohangup" },
+      { cmd: "databits" },
+      { cmd: "data-rate" },
+      { cmd: "disconnect-character" },
+      { cmd: "dispatch-character" },
+      { cmd: "dispatch-timeout" },
+      { cmd: "editing" },
+      { cmd: "escape-character" },
+      { cmd: "exec" },
+      { cmd: "exec-banner" },
+      { cmd: "exec-character-bits" },
+      { cmd: "exec-timeout" },
+      { cmd: "flowcontrol" },
+      { cmd: "full-help" },
+      { cmd: "history" },
+      { cmd: "inactivity-timeout" },
+      { cmd: "ip" },
+      { cmd: "ipv6" },
+      { cmd: "length" },
+      { cmd: "location" },
+      { cmd: "logging" },
+      { cmd: "login" },
+      { cmd: "logout-warning" },
+      { cmd: "media-type" },
+      { cmd: "modem" },
+      { cmd: "monitor" },
+      { cmd: "motd-banner" },
+      { cmd: "notify" },
+      { cmd: "padding" },
+      { cmd: "parity" },
+      { cmd: "password" },
+      { cmd: "privilege" },
+      { cmd: "refuse-message" },
+      { cmd: "rotary" },
+      { cmd: "rxspeed" },
+      { cmd: "session-limit" },
+      { cmd: "session-timeout" },
+      { cmd: "special-character-bits" },
+      { cmd: "speed" },
+      { cmd: "start-character" },
+      { cmd: "stop-character" },
+      { cmd: "stopbits" },
+      { cmd: "terminal-type" },
+      { cmd: "timeout" },
+      { cmd: "transport" },
+      { cmd: "txspeed" },
+      { cmd: "vacant-message" },
+      { cmd: "width" },
       { cmd: "exit" },
-      { cmd: "do <command>" },
       { cmd: "end" },
     ],
+    /** (config-router)# ? — OSPF router submode */
     configRouter: [
-      { cmd: "network" },
-      { cmd: "passive-interface" },
-      { cmd: "router-id" },
+      { cmd: "area" },
+      { cmd: "auto-cost" },
+      { cmd: "bfd" },
+      { cmd: "compatible" },
+      { cmd: "default" },
+      { cmd: "default-information" },
+      { cmd: "default-metric" },
+      { cmd: "discard-route" },
+      { cmd: "distance" },
+      { cmd: "distribute-list" },
+      { cmd: "domain-id" },
+      { cmd: "domain-tag" },
       { cmd: "exit" },
+      { cmd: "help" },
+      { cmd: "log-adjacency-changes" },
+      { cmd: "max-lsa" },
+      { cmd: "max-metric" },
+      { cmd: "maximum-paths" },
+      { cmd: "neighbor" },
+      { cmd: "network" },
+      { cmd: "no" },
+      { cmd: "nsf" },
+      { cmd: "overflow" },
+      { cmd: "passive-interface" },
+      { cmd: "plns" },
+      { cmd: "prefix-suppression" },
+      { cmd: "queue-depth" },
+      { cmd: "redistribute" },
+      { cmd: "router-id" },
+      { cmd: "shutdown" },
+      { cmd: "summary-address" },
+      { cmd: "timers" },
+      { cmd: "traffic-share" },
+      { cmd: "ttl-security" },
     ],
-    configAcl: [{ cmd: "deny" }, { cmd: "permit" }, { cmd: "exit" }],
+    /** (config-router)# router-id ? */
+    configRouterRouterId: [{ cmd: "A.B.C.D  OSPF router-id in IP address format" }],
+    /** (config-if)# ip ospf ? */
+    configIfIpOspf: [
+      { cmd: "<1-65535>" },
+      { cmd: "area" },
+      { cmd: "authentication" },
+      { cmd: "authentication-key" },
+      { cmd: "bfd" },
+      { cmd: "cost" },
+      { cmd: "dead-interval" },
+      { cmd: "demand-circuit" },
+      { cmd: "database-filter" },
+      { cmd: "hello-interval" },
+      { cmd: "lsatransmit-delay" },
+      { cmd: "message-digest-key" },
+      { cmd: "mtu-ignore" },
+      { cmd: "network" },
+      { cmd: "priority" },
+      { cmd: "retransmit-interval" },
+      { cmd: "transmit-delay" },
+    ],
+    /** (config-if)# ip ospf <process-id> ? */
+    configIfIpOspfProcess: [{ cmd: "area" }],
+    /** (config-if)# ip ospf <process-id> area ? */
+    configIfIpOspfProcessArea: [{ cmd: "<0-4294967295>" }, { cmd: "A.B.C.D" }],
+    /** (config-if)# ip ospf priority ? */
+    configIfIpOspfPriority: [{ cmd: "<0-255>" }],
+    configAcl: [
+      { cmd: "<10-2147483647>" },
+      { cmd: "default" },
+      { cmd: "deny" },
+      { cmd: "evaluate" },
+      { cmd: "exit" },
+      { cmd: "no" },
+      { cmd: "permit" },
+      { cmd: "remark" },
+    ],
+    /** (config-ext-nacl)# permit ? */
+    configAclPermit: [
+      { cmd: "<0-255>" },
+      { cmd: "ahp" },
+      { cmd: "esp" },
+      { cmd: "gre" },
+      { cmd: "icmp" },
+      { cmd: "igmp" },
+      { cmd: "igrp" },
+      { cmd: "ip" },
+      { cmd: "ipinip" },
+      { cmd: "nos" },
+      { cmd: "ospf" },
+      { cmd: "pcp" },
+      { cmd: "pim" },
+      { cmd: "tcp" },
+      { cmd: "udp" },
+    ],
+    /** (config-ext-nacl)# permit tcp ? — source address */
+    configAclPermitTcp: [
+      { cmd: "A.B.C.D  Source address" },
+      { cmd: "any      Any source host" },
+      { cmd: "host     A single source host" },
+    ],
+    /** (config-ext-nacl)# permit tcp <network> ? — source wildcard mask */
+    configAclPermitTcpSrcWildcard: [{ cmd: "A.B.C.D" }],
+    /** (config-ext-nacl)# permit tcp <src> <wildcard> ? — destination / port */
+    configAclPermitTcpDest: [
+      { cmd: "A.B.C.D  Destination address" },
+      { cmd: "any      Any destination host" },
+      { cmd: "eq       Match only packets on a given port number" },
+      { cmd: "gt       Match only packets with a greater port number" },
+      { cmd: "host     A single destination host" },
+      { cmd: "lt       Match only packets with a lower port number" },
+      { cmd: "neq      Match only packets not on a given port number" },
+      { cmd: "range    Match only packets in the range of port numbers" },
+    ],
+    /** (config-ext-nacl)# permit tcp <src> <wildcard> any ? — TCP flags / port / log */
+    configAclPermitTcpDestAny: [
+      { cmd: "ack" },
+      { cmd: "dscp" },
+      { cmd: "eq" },
+      { cmd: "established" },
+      { cmd: "fin" },
+      { cmd: "gt" },
+      { cmd: "log" },
+      { cmd: "log-input" },
+      { cmd: "lt" },
+      { cmd: "neq" },
+      { cmd: "precedence" },
+      { cmd: "psh" },
+      { cmd: "range" },
+      { cmd: "rst" },
+      { cmd: "syn" },
+      { cmd: "time-range" },
+      { cmd: "tos" },
+      { cmd: "urg" },
+      { cmd: "<cr>" },
+    ],
+    /** (config-ext-nacl)# permit tcp <src> <wildcard> any eq ? — destination port */
+    configAclPermitTcpDestAnyEq: [
+      { cmd: "<0-65535>" },
+      { cmd: "bgp" },
+      { cmd: "chargen" },
+      { cmd: "cmd" },
+      { cmd: "daytime" },
+      { cmd: "discard" },
+      { cmd: "domain" },
+      { cmd: "echo" },
+      { cmd: "exec" },
+      { cmd: "finger" },
+      { cmd: "ftp" },
+      { cmd: "ftp-data" },
+      { cmd: "gopher" },
+      { cmd: "hostname" },
+      { cmd: "ident" },
+      { cmd: "irc" },
+      { cmd: "klogin" },
+      { cmd: "kshell" },
+      { cmd: "login" },
+      { cmd: "lpd" },
+      { cmd: "nntp" },
+      { cmd: "pim-auto-rp" },
+      { cmd: "pop2" },
+      { cmd: "pop3" },
+      { cmd: "smtp" },
+      { cmd: "sunrpc" },
+      { cmd: "tacacs" },
+      { cmd: "talk" },
+      { cmd: "telnet" },
+      { cmd: "time" },
+      { cmd: "uucp" },
+      { cmd: "whois" },
+      { cmd: "www" },
+    ],
     ip: [
-      { cmd: "route" },
-      { cmd: "routing" },
+      { cmd: "access-list" },
+      { cmd: "address" },
+      { cmd: "admission" },
+      { cmd: "alias" },
+      { cmd: "arp" },
+      { cmd: "as-path" },
+      { cmd: "auth-proxy" },
+      { cmd: "authentication" },
+      { cmd: "bandwidth-percent" },
+      { cmd: "boot" },
       { cmd: "cef" },
-      { cmd: "subnet-zero" },
+      { cmd: "certificates" },
+      { cmd: "cgmp" },
+      { cmd: "classless" },
+      { cmd: "community-list" },
+      { cmd: "crypto" },
       { cmd: "default-gateway" },
       { cmd: "default-network" },
+      { cmd: "device" },
+      { cmd: "dhcp" },
+      { cmd: "dns" },
+      { cmd: "domain" },
+      { cmd: "domain-lookup" },
+      { cmd: "domain-name" },
+      { cmd: "dscp" },
+      { cmd: "extcommunity-list" },
+      { cmd: "finger" },
+      { cmd: "flow" },
+      { cmd: "flow-export" },
+      { cmd: "forward-protocol" },
+      { cmd: "ftp" },
+      { cmd: "gcl" },
+      { cmd: "general-prefix" },
+      { cmd: "local" },
+      { cmd: "mrm" },
+      { cmd: "mroute" },
+      { cmd: "multicast" },
+      { cmd: "multicast-routing" },
+      { cmd: "name-server" },
+      { cmd: "nat" },
+      { cmd: "nbar" },
+      { cmd: "neighborhood" },
+      { cmd: "network-performance" },
+      { cmd: "nhrp" },
+      { cmd: "options" },
+      { cmd: "ospf" },
+      { cmd: "packet" },
+      { cmd: "pmsn" },
+      { cmd: "port-map" },
+      { cmd: "prefix-list" },
+      { cmd: "primes" },
+      { cmd: "radius" },
+      { cmd: "rcmd" },
+      { cmd: "redirects" },
+      { cmd: "reflexive-list" },
+      { cmd: "route" },
+      { cmd: "route-map" },
+      { cmd: "routing" },
+      { cmd: "rsvp" },
+      { cmd: "rtp" },
+      { cmd: "sap" },
+      { cmd: "sctp" },
+      { cmd: "security" },
+      { cmd: "source-route" },
+      { cmd: "ssh" },
+      { cmd: "sticky" },
+      { cmd: "subnet-zero" },
+      { cmd: "tacacs" },
+      { cmd: "tcp" },
+      { cmd: "telnet" },
+      { cmd: "tftp" },
+      { cmd: "tos" },
+      { cmd: "trigger-authentication" },
+      { cmd: "unreachables" },
+      { cmd: "urpf" },
+      { cmd: "vrf" },
+      { cmd: "wccp" },
     ],
     ipRoute: [
       { cmd: "ip route <destination_network> <subnet_mask> <next_hop_or_interface>" },
@@ -718,6 +1040,62 @@
       { cmd: "track" },
       { cmd: "multicast" },
     ],
+    /** (config)# router ? */
+    router: [
+      { cmd: "bgp" },
+      { cmd: "eigrp" },
+      { cmd: "isis" },
+      { cmd: "iso-igrp" },
+      { cmd: "mobile" },
+      { cmd: "odr" },
+      { cmd: "ospf" },
+      { cmd: "ospfv3" },
+      { cmd: "rip" },
+    ],
+    /** (config)# router ospf ? */
+    routerOspf: [{ cmd: "<1-65535>" }, { cmd: "vrf" }],
+    /** (config)# ip access-list ? */
+    ipAccessList: [
+      { cmd: "extended" },
+      { cmd: "log-update" },
+      { cmd: "logging" },
+      { cmd: "resequence" },
+      { cmd: "standard" },
+    ],
+    /** (config)# ip access-list extended ? */
+    ipAccessListExtended: [{ cmd: "<100-199>" }, { cmd: "<2000-2699>" }, { cmd: "WORD" }],
+    /** (config-if)# ip access-group ? */
+    ipAccessGroup: [{ cmd: "<1-199>" }, { cmd: "<1300-2699>" }, { cmd: "WORD" }],
+    /** (config-if)# ip access-group <name> ? — traffic direction */
+    ipAccessGroupDir: [{ cmd: "in" }, { cmd: "out" }],
+    /** (config)# ip dhcp ? */
+    ipDhcp: [
+      { cmd: "binding" },
+      { cmd: "class" },
+      { cmd: "compatibility" },
+      { cmd: "database" },
+      { cmd: "excluded-address" },
+      { cmd: "limit" },
+      { cmd: "ping" },
+      { cmd: "pool" },
+      { cmd: "relay" },
+      { cmd: "route" },
+      { cmd: "snooping" },
+      { cmd: "subscriber-id" },
+    ],
+    /** (config)# ip dhcp snooping ? */
+    ipDhcpSnooping: [
+      { cmd: "database" },
+      { cmd: "information" },
+      { cmd: "limit" },
+      { cmd: "verify" },
+      { cmd: "vlan" },
+      { cmd: "<cr>" },
+    ],
+    /** (config)# no ip dhcp snooping information ? */
+    noIpDhcpSnoopingInformation: [{ cmd: "option" }],
+    /** (config)# ip dhcp snooping verify ? */
+    ipDhcpSnoopingVerify: [{ cmd: "mac-address" }],
     /** Switch (config)# interface ? — empty on router; use lab override on router if needed */
     interface: [],
     interfaceEthernet: [],
@@ -745,6 +1123,37 @@
       { cmd: "password" },
       { cmd: "secret" },
     ],
+    /** (config)# username <name> algorithm-type ? */
+    usernameAlgorithmType: [{ cmd: "md5" }, { cmd: "scrypt" }, { cmd: "sha256" }],
+    /** (config)# username <name> algorithm-type <hash> ? */
+    usernameAlgorithmTypeHash: [
+      { cmd: "autocommand" },
+      { cmd: "nocrop" },
+      { cmd: "password" },
+      { cmd: "privilege" },
+      { cmd: "secret" },
+    ],
+    /** (config)# username <name> algorithm-type <hash> privilege ? */
+    usernameAlgorithmTypeHashPrivilege: [{ cmd: "<0-15>  User privilege level" }],
+    /** (config)# username <name> algorithm-type <hash> privilege <level> ? */
+    usernameAlgorithmTypeHashPrivilegeLevel: [
+      { cmd: "autocommand" },
+      { cmd: "nocrop" },
+      { cmd: "password" },
+      { cmd: "secret" },
+    ],
+    /** (config)# username <name> algorithm-type <hash> privilege <level> password ? */
+    usernameAlgorithmTypeHashPrivilegeLevelPassword: [{ cmd: "<0-8>" }, { cmd: "LINE" }],
+    /** (config)# line ? */
+    line: [{ cmd: "<0-16>" }, { cmd: "aux" }, { cmd: "console" }, { cmd: "vty" }],
+    /** (config)# line vty ? */
+    lineVty: [{ cmd: "<0-15>" }],
+    /** (config-line)# transport ? */
+    transport: [{ cmd: "input" }, { cmd: "output" }, { cmd: "preferred" }],
+    /** (config-line)# transport input ? */
+    transportInput: [{ cmd: "all" }, { cmd: "none" }, { cmd: "ssh" }, { cmd: "telnet" }],
+    /** (config-line)# login ? */
+    login: [{ cmd: "authentication" }, { cmd: "block-for" }, { cmd: "local" }],
   };
 
   /**
@@ -752,13 +1161,29 @@
    * Override per lab: `var SWITCH_CLI_HELP = { configIf: [...] }` (null = all defaults) and
    * `cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)`.
    *
+   * Non-impact contract: same as DEFAULT_ROUTER_CLI_HELP — help is read-only scrollback only.
+   *
    * Keys / triggers:
    *   exec              — host# ?
    *   show              — show ?
    *   configExec        — configure ? / config ?
    *   configGlobal      — (config)# ?
    *   configIf          — (config-if)# ?
+   *   configIfIpOspf    — (config-if)# ip ospf ?
+   *   configIfIpOspfProcess — (config-if)# ip ospf <process-id> ?
    *   configLine        — (config-line)# ?
+   *   ip                — (config)# ip ?
+   *   ipAccessList      — (config)# ip access-list ?
+   *   ipAccessListExtended — (config)# ip access-list extended ?
+   *   ipAccessGroup     — (config-if)# ip access-group ?
+   *   ipAccessGroupDir  — (config-if)# ip access-group <name> ?
+   *   ipDhcp            — (config)# ip dhcp ?
+   *   router            — (config)# router ?
+   *   routerOspf        — (config)# router ospf ?
+   *   ipDhcpSnooping    — (config)# ip dhcp snooping ?
+   *   noIpDhcpSnoopingInformation — no ip dhcp snooping information ?
+   *   ipDhcpSnoopingVerify — ip dhcp snooping verify ?
+   *   configAcl / configAclPermit / configAclPermitTcp* — extended ACL ACE chain (routers)
    *   interface         — (config)# interface ?
    *   interfaceEthernet — (config)# interface ethernet ?
    *   switchport        — (config-if)# switchport ?
@@ -769,6 +1194,16 @@
    *   usernameName      — (config)# username <name> ?
    *   usernamePrivilege — (config)# username <name> privilege ?
    *   usernamePrivilegeLevel — (config)# username <name> privilege <level> ?
+   *   usernameAlgorithmType — (config)# username <name> algorithm-type ?
+   *   usernameAlgorithmTypeHash — (config)# username <name> algorithm-type <hash> ?
+   *   usernameAlgorithmTypeHashPrivilege — (config)# username <name> algorithm-type <hash> privilege ?
+   *   usernameAlgorithmTypeHashPrivilegeLevel — (config)# username <name> algorithm-type <hash> privilege <level> ?
+   *   usernameAlgorithmTypeHashPrivilegeLevelPassword — (config)# username <name> algorithm-type <hash> privilege <level> password ?
+   *   line              — (config)# line ?
+   *   lineVty           — (config)# line vty ?
+   *   transport         — (config-line)# transport ?
+   *   transportInput    — (config-line)# transport input ?
+   *   login             — (config-line)# login ?
    */
   var DEFAULT_SWITCH_CLI_HELP = {
     exec: DEFAULT_ROUTER_CLI_HELP.exec,
@@ -830,10 +1265,31 @@
       { cmd: "tx-ring-limit" },
     ],
     configLine: DEFAULT_ROUTER_CLI_HELP.configLine,
-    configRouter: [],
+    configRouter: DEFAULT_ROUTER_CLI_HELP.configRouter,
+    configRouterRouterId: DEFAULT_ROUTER_CLI_HELP.configRouterRouterId,
+    configIfIpOspf: DEFAULT_ROUTER_CLI_HELP.configIfIpOspf,
+    configIfIpOspfProcess: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfProcess,
+    configIfIpOspfProcessArea: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfProcessArea,
+    configIfIpOspfPriority: DEFAULT_ROUTER_CLI_HELP.configIfIpOspfPriority,
     configAcl: DEFAULT_ROUTER_CLI_HELP.configAcl,
-    ip: [],
+    configAclPermit: DEFAULT_ROUTER_CLI_HELP.configAclPermit,
+    configAclPermitTcp: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcp,
+    configAclPermitTcpSrcWildcard: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpSrcWildcard,
+    configAclPermitTcpDest: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpDest,
+    configAclPermitTcpDestAny: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpDestAny,
+    configAclPermitTcpDestAnyEq: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpDestAnyEq,
+    ip: DEFAULT_ROUTER_CLI_HELP.ip,
     ipRoute: [],
+    router: DEFAULT_ROUTER_CLI_HELP.router,
+    routerOspf: DEFAULT_ROUTER_CLI_HELP.routerOspf,
+    ipAccessList: DEFAULT_ROUTER_CLI_HELP.ipAccessList,
+    ipAccessListExtended: DEFAULT_ROUTER_CLI_HELP.ipAccessListExtended,
+    ipAccessGroup: DEFAULT_ROUTER_CLI_HELP.ipAccessGroup,
+    ipAccessGroupDir: DEFAULT_ROUTER_CLI_HELP.ipAccessGroupDir,
+    ipDhcp: DEFAULT_ROUTER_CLI_HELP.ipDhcp,
+    ipDhcpSnooping: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnooping,
+    noIpDhcpSnoopingInformation: DEFAULT_ROUTER_CLI_HELP.noIpDhcpSnoopingInformation,
+    ipDhcpSnoopingVerify: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnoopingVerify,
     /** (config)# interface ? — interface types before entering config-if */
     interface: [
       { cmd: "port-channel" },
@@ -891,6 +1347,27 @@
     usernamePrivilege: DEFAULT_ROUTER_CLI_HELP.usernamePrivilege,
     /** (config)# username <name> privilege <level> ? */
     usernamePrivilegeLevel: DEFAULT_ROUTER_CLI_HELP.usernamePrivilegeLevel,
+    /** (config)# username <name> algorithm-type ? */
+    usernameAlgorithmType: DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmType,
+    /** (config)# username <name> algorithm-type <hash> ? */
+    usernameAlgorithmTypeHash: DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmTypeHash,
+    /** (config)# username <name> algorithm-type <hash> privilege ? */
+    usernameAlgorithmTypeHashPrivilege: DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmTypeHashPrivilege,
+    /** (config)# username <name> algorithm-type <hash> privilege <level> ? */
+    usernameAlgorithmTypeHashPrivilegeLevel: DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmTypeHashPrivilegeLevel,
+    /** (config)# username <name> algorithm-type <hash> privilege <level> password ? */
+    usernameAlgorithmTypeHashPrivilegeLevelPassword:
+      DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmTypeHashPrivilegeLevelPassword,
+    /** (config)# line ? */
+    line: DEFAULT_ROUTER_CLI_HELP.line,
+    /** (config)# line vty ? */
+    lineVty: DEFAULT_ROUTER_CLI_HELP.lineVty,
+    /** (config-line)# transport ? */
+    transport: DEFAULT_ROUTER_CLI_HELP.transport,
+    /** (config-line)# transport input ? */
+    transportInput: DEFAULT_ROUTER_CLI_HELP.transportInput,
+    /** (config-line)# login ? */
+    login: DEFAULT_ROUTER_CLI_HELP.login,
   };
 
   /** @deprecated use DEFAULT_ROUTER_CLI_HELP.show */
@@ -951,6 +1428,18 @@
       else o.routerHelp = labHelp;
     }
     return o;
+  }
+
+  /**
+   * Convenience wrapper for lab submit handlers.
+   * @param {string} raw
+   * @param {Function} appendFn
+   * @param {'router'|'switch'} deviceType
+   * @param {string} promptText
+   * @param {object|null|undefined} labHelp
+   */
+  function tryLabDeviceIosHelp(raw, appendFn, deviceType, promptText, labHelp) {
+    return tryAppendIosHelp(raw, appendFn, iosHelpOpts(deviceType, promptText, labHelp));
   }
 
   function isShowHelpQuery(raw) {
@@ -1022,7 +1511,384 @@
     return true;
   }
 
-  /** Router global `ip ?` at host(config)# — subcommands after `ip`. */
+  /** `(config-if)# ip ospf priority ?` — DR/BDR priority. */
+
+  function isConfigIfIpOspfPriorityHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip ospf priority ?" || t === "do ip ospf priority ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpOspfPriorityExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpOspfPriorityCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpOspfPriority"),
+      opts.configIfIpOspfPriorityExtra
+    );
+  }
+
+  /**
+   * `ip ospf priority ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpOspfPriorityHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpOspfPriorityHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpOspfPriorityCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip ospf <process-id> area ?` — OSPF area ID. */
+
+  function isConfigIfIpOspfProcessAreaHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip ospf \d+ area \?$/.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpOspfProcessAreaExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpOspfProcessAreaCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpOspfProcessArea"),
+      opts.configIfIpOspfProcessAreaExtra
+    );
+  }
+
+  /**
+   * `ip ospf <process-id> area ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpOspfProcessAreaHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpOspfProcessAreaHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpOspfProcessAreaCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip ospf <process-id> ?` — OSPF area assignment. */
+
+  function isConfigIfIpOspfProcessHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip ospf \d+ \?$/.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpOspfProcessExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpOspfProcessCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpOspfProcess"),
+      opts.configIfIpOspfProcessExtra
+    );
+  }
+
+  /**
+   * `ip ospf <process-id> ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpOspfProcessHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpOspfProcessHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpOspfProcessCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip ospf ?` — OSPF interface parameters. */
+
+  function isConfigIfIpOspfHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip ospf ?" || t === "do ip ospf ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configIfIpOspfExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configIfIpOspfCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpOspf"),
+      opts.configIfIpOspfExtra
+    );
+  }
+
+  /**
+   * `ip ospf ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigIfIpOspfHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpOspfHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpOspfCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip access-group <name> ?` — in / out. */
+
+  function isIpAccessGroupDirHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^(?:do )?ip access-group \S+ \?$/.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipAccessGroupDirExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipAccessGroupDirCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipAccessGroupDir"),
+      opts.ipAccessGroupDirExtra
+    );
+  }
+
+  /**
+   * `ip access-group <name> ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpAccessGroupDirHelp(raw, appendFn, opts) {
+    if (!isIpAccessGroupDirHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = ipAccessGroupDirCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip access-group ?` — ACL number or name. */
+
+  function isIpAccessGroupHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip access-group ?" || t === "do ip access-group ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipAccessGroupExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipAccessGroupCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipAccessGroup"),
+      opts.ipAccessGroupExtra
+    );
+  }
+
+  /**
+   * `ip access-group ?` at (config-if)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpAccessGroupHelp(raw, appendFn, opts) {
+    if (!isIpAccessGroupHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = ipAccessGroupCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# no ip dhcp snooping information ?` */
+
+  function isNoIpDhcpSnoopingInformationHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "no ip dhcp snooping information ?" || t === "do no ip dhcp snooping information ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', noIpDhcpSnoopingInformationExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function noIpDhcpSnoopingInformationCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "noIpDhcpSnoopingInformation"),
+      opts.noIpDhcpSnoopingInformationExtra
+    );
+  }
+
+  /**
+   * `no ip dhcp snooping information ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendNoIpDhcpSnoopingInformationHelp(raw, appendFn, opts) {
+    if (!isNoIpDhcpSnoopingInformationHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = noIpDhcpSnoopingInformationCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip dhcp snooping verify ?` */
+
+  function isIpDhcpSnoopingVerifyHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip dhcp snooping verify ?" || t === "do ip dhcp snooping verify ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipDhcpSnoopingVerifyExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipDhcpSnoopingVerifyCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipDhcpSnoopingVerify"),
+      opts.ipDhcpSnoopingVerifyExtra
+    );
+  }
+
+  /**
+   * `ip dhcp snooping verify ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpDhcpSnoopingVerifyHelp(raw, appendFn, opts) {
+    if (!isIpDhcpSnoopingVerifyHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipDhcpSnoopingVerifyCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip dhcp snooping ?` — DHCP snooping global subcommands. */
+
+  function isIpDhcpSnoopingHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip dhcp snooping ?" || t === "do ip dhcp snooping ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipDhcpSnoopingExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipDhcpSnoopingCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipDhcpSnooping"),
+      opts.ipDhcpSnoopingExtra
+    );
+  }
+
+  /**
+   * `ip dhcp snooping ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpDhcpSnoopingHelp(raw, appendFn, opts) {
+    if (!isIpDhcpSnoopingHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipDhcpSnoopingCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip dhcp ?` — DHCP global subcommands. */
+
+  function isIpDhcpHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip dhcp ?" || t === "do ip dhcp ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipDhcpExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipDhcpCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ipDhcp"), opts.ipDhcpExtra);
+  }
+
+  /**
+   * `ip dhcp ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpDhcpHelp(raw, appendFn, opts) {
+    if (!isIpDhcpHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipDhcpCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Global `ip ?` at host(config)# — subcommands after `ip`. */
 
   function isIpHelpQuery(raw) {
     var t = String(raw || "")
@@ -1037,20 +1903,171 @@
    */
   function ipCommandHelpText(opts) {
     opts = opts || {};
-    return formatHelpEntries(resolveHelpList(opts, "router", "ip"), opts.ipExtra);
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ip"), opts.ipExtra);
   }
 
   /**
-   * `ip ?` at router (config)# only.
+   * `ip ?` at (config)# on router or switch.
    * @param {Function} appendFn - (className, text) => void
    */
   function tryAppendIpHelp(raw, appendFn, opts) {
     if (!isIpHelpQuery(raw)) return false;
     opts = opts || {};
-    if ((opts.deviceType || "router") !== "router") return false;
     if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipCommandHelpText(opts);
+    if (!text) return false;
     if (typeof appendFn === "function") {
-      appendFn("line-sys line-show-help", ipCommandHelpText(opts));
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Global `ip access-list extended ?` at host(config)#. */
+
+  function isIpAccessListExtendedHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip access-list extended ?" || t === "do ip access-list extended ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipAccessListExtendedExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipAccessListExtendedCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipAccessListExtended"),
+      opts.ipAccessListExtendedExtra
+    );
+  }
+
+  /**
+   * `ip access-list extended ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpAccessListExtendedHelp(raw, appendFn, opts) {
+    if (!isIpAccessListExtendedHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipAccessListExtendedCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Global `ip access-list ?` at host(config)#. */
+
+  function isIpAccessListHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip access-list ?" || t === "do ip access-list ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipAccessListExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipAccessListCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipAccessList"),
+      opts.ipAccessListExtra
+    );
+  }
+
+  /**
+   * `ip access-list ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpAccessListHelp(raw, appendFn, opts) {
+    if (!isIpAccessListHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipAccessListCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# router ospf ?` — OSPF process ID or VRF. */
+
+  function isRouterOspfHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "router ospf ?" || t === "do router ospf ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', routerOspfExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function routerOspfCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "routerOspf"),
+      opts.routerOspfExtra
+    );
+  }
+
+  /**
+   * `router ospf ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendRouterOspfHelp(raw, appendFn, opts) {
+    if (!isRouterOspfHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = routerOspfCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# router ?` — routing protocol selection. */
+
+  function isRouterHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "router ?" || t === "do router ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', routerExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function routerCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "router"), opts.routerExtra);
+  }
+
+  /**
+   * `router ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendRouterHelp(raw, appendFn, opts) {
+    if (!isRouterHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = routerCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
     }
     return true;
   }
@@ -1286,6 +2303,226 @@
     return true;
   }
 
+  /** Match privilege keyword with common misspellings in username ? help. */
+  var USERNAME_PRIVILEGE_WORD = "priv(?:ilege|ledge|iledge)";
+
+  /** Switch `username <name> algorithm-type <hash> privilege <level> password ?` at host(config)#. */
+
+  function isUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    var re = new RegExp(
+      "^username \\S+ algorithm-type \\S+ " +
+        USERNAME_PRIVILEGE_WORD +
+        " \\d+ password \\?$"
+    );
+    var doRe = new RegExp(
+      "^do username \\S+ algorithm-type \\S+ " +
+        USERNAME_PRIVILEGE_WORD +
+        " \\d+ password \\?$"
+    );
+    return re.test(t) || doRe.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameAlgorithmTypeHashPrivilegeLevelPasswordExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameAlgorithmTypeHashPrivilegeLevelPasswordCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameAlgorithmTypeHashPrivilegeLevelPassword"),
+      opts.usernameAlgorithmTypeHashPrivilegeLevelPasswordExtra
+    );
+  }
+
+  /**
+   * `username <name> algorithm-type <hash> privilege <level> password ?` at (config)#.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelp(raw, appendFn, opts) {
+    if (!isUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameAlgorithmTypeHashPrivilegeLevelPasswordCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> algorithm-type <hash> privilege <level> ?` at host(config)#. */
+
+  function isUsernameAlgorithmTypeHashPrivilegeLevelHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    var re = new RegExp(
+      "^username \\S+ algorithm-type \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ \\?$"
+    );
+    var doRe = new RegExp(
+      "^do username \\S+ algorithm-type \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ \\?$"
+    );
+    return re.test(t) || doRe.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameAlgorithmTypeHashPrivilegeLevelExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameAlgorithmTypeHashPrivilegeLevelCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameAlgorithmTypeHashPrivilegeLevel"),
+      opts.usernameAlgorithmTypeHashPrivilegeLevelExtra
+    );
+  }
+
+  /**
+   * `username <name> algorithm-type <hash> privilege <level> ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameAlgorithmTypeHashPrivilegeLevelHelp(raw, appendFn, opts) {
+    if (!isUsernameAlgorithmTypeHashPrivilegeLevelHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameAlgorithmTypeHashPrivilegeLevelCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> algorithm-type <hash> privilege ?` at host(config)#. */
+
+  function isUsernameAlgorithmTypeHashPrivilegeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    var re = new RegExp(
+      "^username \\S+ algorithm-type \\S+ " + USERNAME_PRIVILEGE_WORD + " \\?$"
+    );
+    var doRe = new RegExp(
+      "^do username \\S+ algorithm-type \\S+ " + USERNAME_PRIVILEGE_WORD + " \\?$"
+    );
+    return re.test(t) || doRe.test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameAlgorithmTypeHashPrivilegeExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameAlgorithmTypeHashPrivilegeCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameAlgorithmTypeHashPrivilege"),
+      opts.usernameAlgorithmTypeHashPrivilegeExtra
+    );
+  }
+
+  /**
+   * `username <name> algorithm-type <hash> privilege ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameAlgorithmTypeHashPrivilegeHelp(raw, appendFn, opts) {
+    if (!isUsernameAlgorithmTypeHashPrivilegeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameAlgorithmTypeHashPrivilegeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> algorithm-type <hash> ?` at host(config)#. */
+
+  function isUsernameAlgorithmTypeHashHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      /^username \S+ algorithm-type \S+ \?$/.test(t) ||
+      /^do username \S+ algorithm-type \S+ \?$/.test(t)
+    );
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameAlgorithmTypeHashExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameAlgorithmTypeHashCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameAlgorithmTypeHash"),
+      opts.usernameAlgorithmTypeHashExtra
+    );
+  }
+
+  /**
+   * `username <name> algorithm-type <hash> ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameAlgorithmTypeHashHelp(raw, appendFn, opts) {
+    if (!isUsernameAlgorithmTypeHashHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameAlgorithmTypeHashCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `username <name> algorithm-type ?` at host(config)#. */
+
+  function isUsernameAlgorithmTypeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      /^username \S+ algorithm-type \?$/.test(t) || /^do username \S+ algorithm-type \?$/.test(t)
+    );
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', usernameAlgorithmTypeExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function usernameAlgorithmTypeCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernameAlgorithmType"),
+      opts.usernameAlgorithmTypeExtra
+    );
+  }
+
+  /**
+   * `username <name> algorithm-type ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendUsernameAlgorithmTypeHelp(raw, appendFn, opts) {
+    if (!isUsernameAlgorithmTypeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernameAlgorithmTypeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Switch `username <name> privilege <level> ?` at host(config)#. */
 
   function isUsernamePrivilegeLevelHelpQuery(raw) {
@@ -1294,8 +2531,8 @@
       .toLowerCase()
       .replace(/\s+/g, " ");
     return (
-      /^username \S+ priv(?:ilege|ledge) \d+ \?$/.test(t) ||
-      /^do username \S+ priv(?:ilege|ledge) \d+ \?$/.test(t)
+      new RegExp("^username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ \\?$").test(t) ||
+      new RegExp("^do username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ \\?$").test(t)
     );
   }
 
@@ -1335,8 +2572,8 @@
       .toLowerCase()
       .replace(/\s+/g, " ");
     return (
-      /^username \S+ priv(?:ilege|ledge) \?$/.test(t) ||
-      /^do username \S+ priv(?:ilege|ledge) \?$/.test(t)
+      new RegExp("^username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\?$").test(t) ||
+      new RegExp("^do username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\?$").test(t)
     );
   }
 
@@ -1441,6 +2678,184 @@
     return true;
   }
 
+  /** Switch `line vty ?` at host(config)#. */
+
+  function isLineVtyHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "line vty ?" || t === "do line vty ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', lineVtyExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function lineVtyCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "lineVty"), opts.lineVtyExtra);
+  }
+
+  /**
+   * `line vty ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendLineVtyHelp(raw, appendFn, opts) {
+    if (!isLineVtyHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = lineVtyCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `line ?` at host(config)#. */
+
+  function isLineHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "line ?" || t === "do line ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', lineExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function lineCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "line"), opts.lineExtra);
+  }
+
+  /**
+   * `line ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendLineHelp(raw, appendFn, opts) {
+    if (!isLineHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = lineCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `login ?` at host(config-line)#. */
+
+  function isLoginHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "login ?" || t === "do login ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', loginExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function loginCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "login"), opts.loginExtra);
+  }
+
+  /**
+   * `login ?` at (config-line)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendLoginHelp(raw, appendFn, opts) {
+    if (!isLoginHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-line") return false;
+    var text = loginCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `transport input ?` at host(config-line)#. */
+
+  function isTransportInputHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "transport input ?" || t === "do transport input ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', transportInputExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function transportInputCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "transportInput"),
+      opts.transportInputExtra
+    );
+  }
+
+  /**
+   * `transport input ?` at (config-line)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendTransportInputHelp(raw, appendFn, opts) {
+    if (!isTransportInputHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-line") return false;
+    var text = transportInputCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Switch `transport ?` at host(config-line)#. */
+
+  function isTransportHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "transport ?" || t === "do transport ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', transportExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function transportCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "transport"), opts.transportExtra);
+  }
+
+  /**
+   * `transport ?` at (config-line)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendTransportHelp(raw, appendFn, opts) {
+    if (!isTransportHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-line") return false;
+    var text = transportCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Switch `lldp ?` at host(config-if)#. */
 
   function isLldpHelpQuery(raw) {
@@ -1477,22 +2892,330 @@
     return true;
   }
 
-  /** Handle partial-command `?` help and config-mode bare `?` in one call. */
+  /** `(config-ext-nacl)# permit tcp <src> <wildcard> any eq ?` — destination port. */
+
+  function isConfigAclPermitTcpDestAnyEqHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return new RegExp(
+      "^(?:do )?permit tcp " + CONFIG_ACL_IPV4 + " " + CONFIG_ACL_IPV4 + " any eq \\?$"
+    ).test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitTcpDestAnyEqExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitTcpDestAnyEqCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermitTcpDestAnyEq"),
+      opts.configAclPermitTcpDestAnyEqExtra
+    );
+  }
+
+  /**
+   * `permit tcp <src> <wildcard> any eq ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitTcpDestAnyEqHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitTcpDestAnyEqHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitTcpDestAnyEqCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-ext-nacl)# permit tcp <src> <wildcard> any ?` — TCP flags / port / log. */
+
+  var CONFIG_ACL_IPV4 = "(\\d{1,3}\\.){3}\\d{1,3}";
+
+  function isConfigAclPermitTcpDestAnyHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return new RegExp(
+      "^(?:do )?permit tcp " + CONFIG_ACL_IPV4 + " " + CONFIG_ACL_IPV4 + " any \\?$"
+    ).test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitTcpDestAnyExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitTcpDestAnyCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermitTcpDestAny"),
+      opts.configAclPermitTcpDestAnyExtra
+    );
+  }
+
+  /**
+   * `permit tcp <src> <wildcard> any ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitTcpDestAnyHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitTcpDestAnyHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitTcpDestAnyCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-ext-nacl)# permit tcp <src> <wildcard> ?` — destination / port. */
+
+  function isConfigAclPermitTcpDestHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return new RegExp(
+      "^(?:do )?permit tcp " + CONFIG_ACL_IPV4 + " " + CONFIG_ACL_IPV4 + " \\?$"
+    ).test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitTcpDestExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitTcpDestCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermitTcpDest"),
+      opts.configAclPermitTcpDestExtra
+    );
+  }
+
+  /**
+   * `permit tcp <src> <wildcard> ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitTcpDestHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitTcpDestHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitTcpDestCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-ext-nacl)# permit tcp <network> ?` — source wildcard mask. */
+
+  function isConfigAclPermitTcpSrcWildcardHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return new RegExp("^(?:do )?permit tcp " + CONFIG_ACL_IPV4 + " \\?$").test(t);
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitTcpSrcWildcardExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitTcpSrcWildcardCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermitTcpSrcWildcard"),
+      opts.configAclPermitTcpSrcWildcardExtra
+    );
+  }
+
+  /**
+   * `permit tcp <network> ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitTcpSrcWildcardHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitTcpSrcWildcardHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitTcpSrcWildcardCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-ext-nacl)# permit tcp ?` — TCP ACE source address. */
+
+  function isConfigAclPermitTcpHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "permit tcp ?" || t === "do permit tcp ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitTcpExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitTcpCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermitTcp"),
+      opts.configAclPermitTcpExtra
+    );
+  }
+
+  /**
+   * `permit tcp ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitTcpHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitTcpHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitTcpCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-ext-nacl)# permit ?` at named/numbered extended ACL submode. */
+
+  function isConfigAclPermitHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "permit ?" || t === "do permit ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configAclPermitExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configAclPermitCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configAclPermit"),
+      opts.configAclPermitExtra
+    );
+  }
+
+  /**
+   * `permit ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigAclPermitHelp(raw, appendFn, opts) {
+    if (!isConfigAclPermitHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-acl") return false;
+    var text = configAclPermitCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-router)# router-id ?` — OSPF router ID. */
+
+  function isConfigRouterRouterIdHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "router-id ?" || t === "do router-id ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configRouterRouterIdExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configRouterRouterIdCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configRouterRouterId"),
+      opts.configRouterRouterIdExtra
+    );
+  }
+
+  /**
+   * `router-id ?` at (config-router)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigRouterRouterIdHelp(raw, appendFn, opts) {
+    if (!isConfigRouterRouterIdHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-router") return false;
+    var text = configRouterRouterIdCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Handle partial-command `?` help and config-mode bare `?` in one call.
+   *  Read-only: prints help text only; never advances lab steps or changes device state.
+   *  Callers must `return` immediately when this returns true, before graded logic. */
   function tryAppendIosHelp(raw, appendFn, opts) {
+    raw = stripPastedIosPrompts(raw);
     if (tryAppendShowHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigHelp(raw, appendFn, opts)) return true;
+    if (tryAppendRouterOspfHelp(raw, appendFn, opts)) return true;
+    if (tryAppendRouterHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpRouteHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpAccessListExtendedHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpAccessListHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpOspfProcessAreaHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpOspfProcessHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpOspfPriorityHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpOspfHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpAccessGroupDirHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpAccessGroupHelp(raw, appendFn, opts)) return true;
+    if (tryAppendNoIpDhcpSnoopingInformationHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpDhcpSnoopingVerifyHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpDhcpSnoopingHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpDhcpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceEthernetHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceHelp(raw, appendFn, opts)) return true;
+    if (tryAppendLineVtyHelp(raw, appendFn, opts)) return true;
+    if (tryAppendLineHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportAccessHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportModeHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
+    if (tryAppendLoginHelp(raw, appendFn, opts)) return true;
+    if (tryAppendTransportInputHelp(raw, appendFn, opts)) return true;
+    if (tryAppendTransportHelp(raw, appendFn, opts)) return true;
     if (tryAppendLldpHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernamePrivilegeLevelHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameAlgorithmTypeHashPrivilegeLevelHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameAlgorithmTypeHashPrivilegeHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameAlgorithmTypeHashHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernameAlgorithmTypeHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernamePrivilegeHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernameNameHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernameHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitTcpDestAnyEqHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitTcpDestAnyHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitTcpDestHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitTcpSrcWildcardHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitTcpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigAclPermitHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigRouterRouterIdHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
   }
 
@@ -1591,6 +3314,7 @@
   var api = {
     isModeNavigationCommand: isModeNavigationCommand,
     expandInterfaceEcho: expandInterfaceEcho,
+    stripPastedIosPrompts: stripPastedIosPrompts,
     CLI_UNSUPPORTED_MSG: CLI_UNSUPPORTED_MSG,
     CLI_UNSUPPORTED_NUMERIC_HINT_MSG: CLI_UNSUPPORTED_NUMERIC_HINT_MSG,
     CLI_VERIFY_INSTRUCTIONS_MSG: CLI_VERIFY_INSTRUCTIONS_MSG,
@@ -1614,18 +3338,78 @@
     isConfigHelpQuery: isConfigHelpQuery,
     configCommandHelpText: configCommandHelpText,
     tryAppendConfigHelp: tryAppendConfigHelp,
+    isRouterHelpQuery: isRouterHelpQuery,
+    routerCommandHelpText: routerCommandHelpText,
+    tryAppendRouterHelp: tryAppendRouterHelp,
+    isRouterOspfHelpQuery: isRouterOspfHelpQuery,
+    routerOspfCommandHelpText: routerOspfCommandHelpText,
+    tryAppendRouterOspfHelp: tryAppendRouterOspfHelp,
+    isConfigRouterRouterIdHelpQuery: isConfigRouterRouterIdHelpQuery,
+    configRouterRouterIdCommandHelpText: configRouterRouterIdCommandHelpText,
+    tryAppendConfigRouterRouterIdHelp: tryAppendConfigRouterRouterIdHelp,
     isIpHelpQuery: isIpHelpQuery,
     ipCommandHelpText: ipCommandHelpText,
     tryAppendIpHelp: tryAppendIpHelp,
     isIpRouteHelpQuery: isIpRouteHelpQuery,
     ipRouteCommandHelpText: ipRouteCommandHelpText,
     tryAppendIpRouteHelp: tryAppendIpRouteHelp,
+    isIpAccessListHelpQuery: isIpAccessListHelpQuery,
+    ipAccessListCommandHelpText: ipAccessListCommandHelpText,
+    tryAppendIpAccessListHelp: tryAppendIpAccessListHelp,
+    isIpAccessListExtendedHelpQuery: isIpAccessListExtendedHelpQuery,
+    ipAccessListExtendedCommandHelpText: ipAccessListExtendedCommandHelpText,
+    tryAppendIpAccessListExtendedHelp: tryAppendIpAccessListExtendedHelp,
+    isIpAccessGroupHelpQuery: isIpAccessGroupHelpQuery,
+    ipAccessGroupCommandHelpText: ipAccessGroupCommandHelpText,
+    tryAppendIpAccessGroupHelp: tryAppendIpAccessGroupHelp,
+    isIpAccessGroupDirHelpQuery: isIpAccessGroupDirHelpQuery,
+    ipAccessGroupDirCommandHelpText: ipAccessGroupDirCommandHelpText,
+    tryAppendIpAccessGroupDirHelp: tryAppendIpAccessGroupDirHelp,
+    isConfigIfIpOspfHelpQuery: isConfigIfIpOspfHelpQuery,
+    configIfIpOspfCommandHelpText: configIfIpOspfCommandHelpText,
+    tryAppendConfigIfIpOspfHelp: tryAppendConfigIfIpOspfHelp,
+    isConfigIfIpOspfProcessHelpQuery: isConfigIfIpOspfProcessHelpQuery,
+    configIfIpOspfProcessCommandHelpText: configIfIpOspfProcessCommandHelpText,
+    tryAppendConfigIfIpOspfProcessHelp: tryAppendConfigIfIpOspfProcessHelp,
+    isConfigIfIpOspfProcessAreaHelpQuery: isConfigIfIpOspfProcessAreaHelpQuery,
+    configIfIpOspfProcessAreaCommandHelpText: configIfIpOspfProcessAreaCommandHelpText,
+    tryAppendConfigIfIpOspfProcessAreaHelp: tryAppendConfigIfIpOspfProcessAreaHelp,
+    isConfigIfIpOspfPriorityHelpQuery: isConfigIfIpOspfPriorityHelpQuery,
+    configIfIpOspfPriorityCommandHelpText: configIfIpOspfPriorityCommandHelpText,
+    tryAppendConfigIfIpOspfPriorityHelp: tryAppendConfigIfIpOspfPriorityHelp,
+    isIpDhcpHelpQuery: isIpDhcpHelpQuery,
+    ipDhcpCommandHelpText: ipDhcpCommandHelpText,
+    tryAppendIpDhcpHelp: tryAppendIpDhcpHelp,
+    isIpDhcpSnoopingHelpQuery: isIpDhcpSnoopingHelpQuery,
+    ipDhcpSnoopingCommandHelpText: ipDhcpSnoopingCommandHelpText,
+    tryAppendIpDhcpSnoopingHelp: tryAppendIpDhcpSnoopingHelp,
+    isNoIpDhcpSnoopingInformationHelpQuery: isNoIpDhcpSnoopingInformationHelpQuery,
+    noIpDhcpSnoopingInformationCommandHelpText: noIpDhcpSnoopingInformationCommandHelpText,
+    tryAppendNoIpDhcpSnoopingInformationHelp: tryAppendNoIpDhcpSnoopingInformationHelp,
+    isIpDhcpSnoopingVerifyHelpQuery: isIpDhcpSnoopingVerifyHelpQuery,
+    ipDhcpSnoopingVerifyCommandHelpText: ipDhcpSnoopingVerifyCommandHelpText,
+    tryAppendIpDhcpSnoopingVerifyHelp: tryAppendIpDhcpSnoopingVerifyHelp,
     isInterfaceHelpQuery: isInterfaceHelpQuery,
     interfaceCommandHelpText: interfaceCommandHelpText,
     tryAppendInterfaceHelp: tryAppendInterfaceHelp,
     isInterfaceEthernetHelpQuery: isInterfaceEthernetHelpQuery,
     interfaceEthernetCommandHelpText: interfaceEthernetCommandHelpText,
     tryAppendInterfaceEthernetHelp: tryAppendInterfaceEthernetHelp,
+    isLineHelpQuery: isLineHelpQuery,
+    lineCommandHelpText: lineCommandHelpText,
+    tryAppendLineHelp: tryAppendLineHelp,
+    isLineVtyHelpQuery: isLineVtyHelpQuery,
+    lineVtyCommandHelpText: lineVtyCommandHelpText,
+    tryAppendLineVtyHelp: tryAppendLineVtyHelp,
+    isTransportHelpQuery: isTransportHelpQuery,
+    transportCommandHelpText: transportCommandHelpText,
+    tryAppendTransportHelp: tryAppendTransportHelp,
+    isTransportInputHelpQuery: isTransportInputHelpQuery,
+    transportInputCommandHelpText: transportInputCommandHelpText,
+    tryAppendTransportInputHelp: tryAppendTransportInputHelp,
+    isLoginHelpQuery: isLoginHelpQuery,
+    loginCommandHelpText: loginCommandHelpText,
+    tryAppendLoginHelp: tryAppendLoginHelp,
     isSwitchportHelpQuery: isSwitchportHelpQuery,
     switchportCommandHelpText: switchportCommandHelpText,
     tryAppendSwitchportHelp: tryAppendSwitchportHelp,
@@ -1647,9 +3431,47 @@
     isUsernamePrivilegeLevelHelpQuery: isUsernamePrivilegeLevelHelpQuery,
     usernamePrivilegeLevelCommandHelpText: usernamePrivilegeLevelCommandHelpText,
     tryAppendUsernamePrivilegeLevelHelp: tryAppendUsernamePrivilegeLevelHelp,
+    isUsernameAlgorithmTypeHelpQuery: isUsernameAlgorithmTypeHelpQuery,
+    usernameAlgorithmTypeCommandHelpText: usernameAlgorithmTypeCommandHelpText,
+    tryAppendUsernameAlgorithmTypeHelp: tryAppendUsernameAlgorithmTypeHelp,
+    isUsernameAlgorithmTypeHashHelpQuery: isUsernameAlgorithmTypeHashHelpQuery,
+    usernameAlgorithmTypeHashCommandHelpText: usernameAlgorithmTypeHashCommandHelpText,
+    tryAppendUsernameAlgorithmTypeHashHelp: tryAppendUsernameAlgorithmTypeHashHelp,
+    isUsernameAlgorithmTypeHashPrivilegeHelpQuery: isUsernameAlgorithmTypeHashPrivilegeHelpQuery,
+    usernameAlgorithmTypeHashPrivilegeCommandHelpText: usernameAlgorithmTypeHashPrivilegeCommandHelpText,
+    tryAppendUsernameAlgorithmTypeHashPrivilegeHelp: tryAppendUsernameAlgorithmTypeHashPrivilegeHelp,
+    isUsernameAlgorithmTypeHashPrivilegeLevelHelpQuery: isUsernameAlgorithmTypeHashPrivilegeLevelHelpQuery,
+    usernameAlgorithmTypeHashPrivilegeLevelCommandHelpText:
+      usernameAlgorithmTypeHashPrivilegeLevelCommandHelpText,
+    tryAppendUsernameAlgorithmTypeHashPrivilegeLevelHelp:
+      tryAppendUsernameAlgorithmTypeHashPrivilegeLevelHelp,
+    isUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelpQuery:
+      isUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelpQuery,
+    usernameAlgorithmTypeHashPrivilegeLevelPasswordCommandHelpText:
+      usernameAlgorithmTypeHashPrivilegeLevelPasswordCommandHelpText,
+    tryAppendUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelp:
+      tryAppendUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelp,
     isUsernameNameHelpQuery: isUsernameNameHelpQuery,
     usernameNameCommandHelpText: usernameNameCommandHelpText,
     tryAppendUsernameNameHelp: tryAppendUsernameNameHelp,
+    isConfigAclPermitHelpQuery: isConfigAclPermitHelpQuery,
+    configAclPermitCommandHelpText: configAclPermitCommandHelpText,
+    tryAppendConfigAclPermitHelp: tryAppendConfigAclPermitHelp,
+    isConfigAclPermitTcpHelpQuery: isConfigAclPermitTcpHelpQuery,
+    configAclPermitTcpCommandHelpText: configAclPermitTcpCommandHelpText,
+    tryAppendConfigAclPermitTcpHelp: tryAppendConfigAclPermitTcpHelp,
+    isConfigAclPermitTcpDestHelpQuery: isConfigAclPermitTcpDestHelpQuery,
+    configAclPermitTcpDestCommandHelpText: configAclPermitTcpDestCommandHelpText,
+    tryAppendConfigAclPermitTcpDestHelp: tryAppendConfigAclPermitTcpDestHelp,
+    isConfigAclPermitTcpDestAnyHelpQuery: isConfigAclPermitTcpDestAnyHelpQuery,
+    configAclPermitTcpDestAnyCommandHelpText: configAclPermitTcpDestAnyCommandHelpText,
+    tryAppendConfigAclPermitTcpDestAnyHelp: tryAppendConfigAclPermitTcpDestAnyHelp,
+    isConfigAclPermitTcpDestAnyEqHelpQuery: isConfigAclPermitTcpDestAnyEqHelpQuery,
+    configAclPermitTcpDestAnyEqCommandHelpText: configAclPermitTcpDestAnyEqCommandHelpText,
+    tryAppendConfigAclPermitTcpDestAnyEqHelp: tryAppendConfigAclPermitTcpDestAnyEqHelp,
+    isConfigAclPermitTcpSrcWildcardHelpQuery: isConfigAclPermitTcpSrcWildcardHelpQuery,
+    configAclPermitTcpSrcWildcardCommandHelpText: configAclPermitTcpSrcWildcardCommandHelpText,
+    tryAppendConfigAclPermitTcpSrcWildcardHelp: tryAppendConfigAclPermitTcpSrcWildcardHelp,
     tryAppendIosHelp: tryAppendIosHelp,
     isBareHelpQuery: isBareHelpQuery,
     parsePromptMode: parsePromptMode,
@@ -1659,6 +3481,7 @@
     DEFAULT_SWITCH_CLI_HELP: DEFAULT_SWITCH_CLI_HELP,
     resolveHelpList: resolveHelpList,
     iosHelpOpts: iosHelpOpts,
+    tryLabDeviceIosHelp: tryLabDeviceIosHelp,
     SHOW_HELP_ROUTER: SHOW_HELP_ROUTER,
     SHOW_HELP_SWITCH: SHOW_HELP_SWITCH,
     CONFIG_HELP_EXEC: CONFIG_HELP_EXEC,
