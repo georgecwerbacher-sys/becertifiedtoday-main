@@ -5,6 +5,7 @@
 import fs from "fs";
 import path from "path";
 import { isInternalAnalyticsEmail } from "./analytics-internal.js";
+import { readGithubLeadsCsv, resolveGithubRepo } from "./visitor-questions.js";
 
 export const SAMPLE_LEAD_CSV_REL = "data/leads/home-sample-email-capture.csv";
 
@@ -92,16 +93,8 @@ function parseCsvContent(content) {
   return rows;
 }
 
-function resolveGithubRepo() {
-  const combined = (process.env.GITHUB_LEADS_REPO || "").trim();
-  if (combined.includes("/")) {
-    const [owner, name] = combined.split("/", 2);
-    if (owner && name) return { owner, repo: name };
-  }
-  const owner = (process.env.GITHUB_LEADS_REPO_OWNER || process.env.VERCEL_GIT_REPO_OWNER || "").trim();
-  const repo = (process.env.GITHUB_LEADS_REPO_NAME || process.env.VERCEL_GIT_REPO_SLUG || "").trim();
-  if (!owner || !repo) return null;
-  return { owner, repo };
+function resolveGithubRepoForAppend() {
+  return resolveGithubRepo();
 }
 
 function decodeGithubContent(data) {
@@ -165,7 +158,7 @@ async function putGithubFile({ token, owner, repo, filePath, content, sha, messa
 
 async function appendToGithub(row, attempt = 0) {
   const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
-  const repoInfo = resolveGithubRepo();
+  const repoInfo = resolveGithubRepoForAppend();
   if (!token || !repoInfo) return { ok: false, reason: "github_not_configured" };
 
   const file = await fetchGithubFile({ token, ...repoInfo, filePath: SAMPLE_LEAD_CSV_REL });
@@ -253,9 +246,10 @@ export async function appendSampleLeadEvent(body) {
 
   try {
     const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
-    if (token) return await appendToGithub(row);
+    const repoInfo = resolveGithubRepoForAppend();
+    if (token && repoInfo) return await appendToGithub(row);
     if (canWriteLocal()) return appendToLocal(row);
-    console.warn("[sample-lead] not persisted (no GITHUB_LEADS_TOKEN):", row.event, row.product);
+    console.warn("[sample-lead] not persisted (GITHUB_LEADS_TOKEN or repo):", row.event, row.product);
     return { ok: false, reason: "not_configured" };
   } catch (err) {
     console.error("[sample-lead] append failed:", err?.message || err);
@@ -264,15 +258,33 @@ export async function appendSampleLeadEvent(body) {
 }
 
 export async function readSampleLeadEvents() {
-  const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
-  const repoInfo = resolveGithubRepo();
-  if (token && repoInfo) {
-    const file = await fetchGithubFile({ token, ...repoInfo, filePath: SAMPLE_LEAD_CSV_REL });
-    return parseCsvContent(file.content);
+  try {
+    return await readGithubLeadsCsv(SAMPLE_LEAD_CSV_REL);
+  } catch (err) {
+    if (err && err.code === "github_not_configured") throw err;
+    console.error("[sample-lead] read failed:", err?.message || err);
+    throw err;
   }
-  const filePath = path.join(process.cwd(), SAMPLE_LEAD_CSV_REL);
-  if (!fs.existsSync(filePath)) return [];
-  return parseCsvContent(fs.readFileSync(filePath, "utf8"));
+}
+
+function isSampleCompletionEvent(event) {
+  return event === "sample_finished" || event === "email_modal_open";
+}
+
+export function normalizeSampleKind(raw) {
+  const k = String(raw || "")
+    .trim()
+    .toLowerCase();
+  if (!k) return "unknown";
+  if (k === "dnd" || k === "drag") return "dnd";
+  if (k === "lab" || k === "labs" || k === "vlan" || k === "trunk") return "lab";
+  if (k === "simulation" || k === "sim" || k.startsWith("sim-")) return "simulation";
+  if (k === "questions" || k === "mcq") return "questions";
+  return k;
+}
+
+function emptyKindCounts() {
+  return { questions: 0, dnd: 0, lab: 0, simulation: 0, other: 0 };
 }
 
 function isSubmitEvent(event) {
@@ -304,6 +316,7 @@ export function aggregateSampleLeadReport(rows) {
       },
     ])
   );
+  const byKind = Object.fromEntries(products.map((p) => [p, emptyKindCounts()]));
 
   /** @type {Map<string, { email: string, product: string, submitAttempts: number, successes: number, lastAt: string, sampleKind: string }>} */
   const byEmailProduct = new Map();
@@ -319,7 +332,16 @@ export function aggregateSampleLeadReport(rows) {
     if (email && isInternalAnalyticsEmail(email)) continue;
 
     const s = summary[product];
-    if (event === "sample_finished") s.sampleCompletions++;
+    const kind = normalizeSampleKind(row.sample_kind);
+    if (isSampleCompletionEvent(event)) {
+      s.sampleCompletions++;
+      const bucket = byKind[product];
+      if (kind === "questions") bucket.questions++;
+      else if (kind === "dnd") bucket.dnd++;
+      else if (kind === "lab") bucket.lab++;
+      else if (kind === "simulation") bucket.simulation++;
+      else bucket.other++;
+    }
     if (event === "email_modal_open") s.emailModalOpens++;
     if (isSubmitEvent(event)) s.submitAttempts++;
     if (isSuccessEvent(event)) s.captureSuccesses++;
@@ -355,8 +377,15 @@ export function aggregateSampleLeadReport(rows) {
     summary[p].uniqueEmails = people.filter((r) => r.product === p).length;
   }
 
+  const totals = {
+    sampleCompletions: products.reduce((n, p) => n + summary[p].sampleCompletions, 0),
+    captureSuccesses: products.reduce((n, p) => n + summary[p].captureSuccesses, 0),
+  };
+
   return {
     summary,
+    byKind,
+    totals,
     people,
     rowCount: (rows || []).length,
   };

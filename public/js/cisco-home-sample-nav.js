@@ -304,6 +304,8 @@
   function showSampleScorecard(session, finishHome) {
     if (document.getElementById("ciscoSampleScorecard")) return;
 
+    ensureSampleLeadAnalytics();
+    logSampleEvent(session, "sample_finished");
     finalizeSampleResults(session);
     var summary = buildSampleScoreSummary(session);
     var totals = summary.totals;
@@ -647,6 +649,7 @@
     finalizeSampleResults(session);
 
     var kind = detectCcnaSampleKind(session);
+    logSampleEvent(session, "sample_finished", { sampleKind: kind });
     logSampleEvent(session, "ccna_portal_offer_shown", { sampleKind: kind });
 
     var lead = ccnaPortalOfferLead(session, kind);
@@ -773,6 +776,8 @@
       showSampleScorecard(session, home);
       return;
     }
+    ensureSampleLeadAnalytics();
+    logSampleEvent(session, "sample_finished");
     navigateAfterSample(home, session);
   }
 

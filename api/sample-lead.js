@@ -187,8 +187,13 @@ async function handleReport(req, res, body) {
       ...report,
       fetchedAt: new Date().toISOString(),
       note:
-        "Homepage sample questions → email capture for free timed simulation. Submit attempts count each form try; successes are completed unlocks.",
+        "Free sample completions (questions, drag-and-drop, labs, simulations) logged when visitors finish a sample track. " +
+        "Email capture counts are timed-simulation unlocks after the sample funnel.",
       csvPath: "data/leads/home-sample-email-capture.csv",
+      storageRepo: (() => {
+        const repo = resolveGithubRepo();
+        return repo ? `${repo.owner}/${repo.repo}` : null;
+      })(),
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Sample lead report error";

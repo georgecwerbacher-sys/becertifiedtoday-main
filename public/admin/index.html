@@ -292,6 +292,7 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-traffic">Traffic</a>
+        <a href="#section-sample-completions">Samples</a>
         <a href="#section-samples">Checkout</a>
         <a href="#section-questions">Questions</a>
         <a href="#section-portal-access">Portal access</a>
@@ -330,6 +331,36 @@
             <tbody id="sampleTrafficBody"></tbody>
           </table>
         </div>
+      </div>
+
+      <div class="panel" id="section-sample-completions">
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Free sample completions</h2>
+        <p class="section-note">
+          How many times visitors <strong>finished</strong> a free sample track (CCNA, ENCOR, or Security+).
+          Counted when the sample scorecard or unlock modal appears — stored in
+          <code>home-sample-email-capture.csv</code>.
+        </p>
+        <div class="row" style="margin-bottom:12px">
+          <button type="button" id="sampleFunnelRefreshBtn" class="secondary">Refresh sample stats</button>
+        </div>
+        <div class="cards" id="sampleFunnelSummaryCards"></div>
+        <div class="portal-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Certification</th>
+                <th>Questions</th>
+                <th>Drag &amp; drop</th>
+                <th>Labs</th>
+                <th>Simulation</th>
+                <th>Total finished</th>
+                <th>Email unlocks</th>
+              </tr>
+            </thead>
+            <tbody id="sampleFunnelBody"></tbody>
+          </table>
+        </div>
+        <p id="sampleFunnelStatus" class="status" aria-live="polite"></p>
       </div>
 
       <div class="panel">
@@ -576,6 +607,11 @@
         secplus: "Security+",
         general: "General",
       };
+      var SAMPLE_FUNNEL_PRODUCTS = [
+        { key: "ccna", label: "CCNA (200-301)" },
+        { key: "encor", label: "ENCOR (350-401)" },
+        { key: "secplus", label: "Security+ (SY0-701)" },
+      ];
       var SAMPLE_PATH_RE =
         /secplus-sample|\/ccna-home|\/ccnp-home|comptia-sec\+-home|\/ccna-study\/ccna_samples|\/ccnp-encor-study\/encor_samples|\/comp_tia_sec+\/sec\+_samples|sample-question|\/secplus-sample/i;
       var portalBypassCache = [];
@@ -1128,6 +1164,87 @@
         document.getElementById("visitorQuestionsStatus").className = "status ok";
       }
 
+      function renderSampleFunnelReport(data) {
+        var summary = data.summary || {};
+        var byKind = data.byKind || {};
+        var totals = data.totals || {};
+        document.getElementById("sampleFunnelSummaryCards").innerHTML = [
+          ["Total sample finishes", fmt(totals.sampleCompletions || 0)],
+          ["CCNA finished", fmt((summary.ccna && summary.ccna.sampleCompletions) || 0)],
+          ["ENCOR finished", fmt((summary.encor && summary.encor.sampleCompletions) || 0)],
+          ["Security+ finished", fmt((summary.secplus && summary.secplus.sampleCompletions) || 0)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var body = document.getElementById("sampleFunnelBody");
+        body.innerHTML = SAMPLE_FUNNEL_PRODUCTS.map(function (p) {
+          var s = summary[p.key] || {};
+          var kinds = byKind[p.key] || {};
+          return (
+            "<tr><td>" +
+            p.label +
+            "</td><td>" +
+            fmt(kinds.questions || 0) +
+            "</td><td>" +
+            fmt(kinds.dnd || 0) +
+            "</td><td>" +
+            fmt(kinds.lab || 0) +
+            "</td><td>" +
+            fmt(kinds.simulation || 0) +
+            "</td><td>" +
+            fmt(s.sampleCompletions || 0) +
+            "</td><td>" +
+            fmt(s.captureSuccesses || 0) +
+            "</td></tr>"
+          );
+        }).join("");
+
+        var note = data.note || "";
+        if (data.storageRepo) note += " Repo: " + data.storageRepo + ".";
+        if (typeof data.rowCount === "number") note += " CSV rows: " + data.rowCount + ".";
+        if (!(totals.sampleCompletions || 0)) {
+          note += " Finishes appear after visitors complete a sample and see the scorecard or unlock modal.";
+        }
+        document.getElementById("sampleFunnelStatus").textContent = note;
+        document.getElementById("sampleFunnelStatus").className = "status ok";
+      }
+
+      function loadSampleFunnelReport() {
+        document.getElementById("sampleFunnelStatus").textContent = "Loading sample completions…";
+        document.getElementById("sampleFunnelStatus").className = "status";
+        return postJson("/api/sample-lead", { action: "report" })
+          .then(function (res) {
+            if (!res.ok) {
+              document.getElementById("sampleFunnelSummaryCards").innerHTML = "";
+              document.getElementById("sampleFunnelBody").innerHTML =
+                '<tr><td colspan="7" style="color:var(--muted)">Could not load sample stats.</td></tr>';
+              var msg = (res.body && res.body.error) || "Sample funnel report failed";
+              if (res.body && res.body.hint) msg += " — " + res.body.hint;
+              document.getElementById("sampleFunnelStatus").textContent = msg;
+              document.getElementById("sampleFunnelStatus").className = "status err";
+              return;
+            }
+            renderSampleFunnelReport(res.body);
+          })
+          .catch(function (err) {
+            document.getElementById("sampleFunnelSummaryCards").innerHTML = "";
+            document.getElementById("sampleFunnelBody").innerHTML =
+              '<tr><td colspan="7" style="color:var(--muted)">Could not load sample stats.</td></tr>';
+            document.getElementById("sampleFunnelStatus").textContent =
+              err.message || "Failed to load sample completions";
+            document.getElementById("sampleFunnelStatus").className = "status err";
+          });
+      }
+
       function loadVisitorQuestions() {
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
@@ -1168,6 +1285,7 @@
         document.getElementById("campaignMarketingStatus").className = "status";
 
         loadVisitorQuestions();
+        loadSampleFunnelReport();
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
@@ -1322,6 +1440,7 @@
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
       document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
+      document.getElementById("sampleFunnelRefreshBtn").addEventListener("click", loadSampleFunnelReport);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         setToken("");

@@ -296,16 +296,14 @@ export async function appendVisitorQuestion(body) {
   }
 }
 
-async function readVisitorQuestionsFromGithub(repoInfo) {
+async function readGithubCsvFromRepo(repoInfo, filePath) {
   const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
   const readers = [];
   if (token) {
-    readers.push(() =>
-      fetchGithubFile({ token, ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL })
-    );
+    readers.push(() => fetchGithubFile({ token, ...repoInfo, filePath }));
   }
-  readers.push(() => fetchGithubFilePublic({ ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL }));
-  readers.push(() => fetchGithubRawPublic({ ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL }));
+  readers.push(() => fetchGithubFilePublic({ ...repoInfo, filePath }));
+  readers.push(() => fetchGithubRawPublic({ ...repoInfo, filePath }));
 
   let lastErr = null;
   for (const read of readers) {
@@ -315,11 +313,26 @@ async function readVisitorQuestionsFromGithub(repoInfo) {
       if (rows.length) return rows;
     } catch (err) {
       lastErr = err;
-      console.warn("[visitor-question] read attempt failed:", err?.message || err);
+      console.warn("[github-leads-csv] read attempt failed:", filePath, err?.message || err);
     }
   }
   if (lastErr) throw lastErr;
   return [];
+}
+
+/** Read any leads CSV under data/leads/ from GitHub (public-repo fallbacks). */
+export async function readGithubLeadsCsv(filePath) {
+  const repoInfo = resolveGithubRepo();
+  if (!repoInfo) {
+    const err = new Error("github_not_configured");
+    err.code = "github_not_configured";
+    throw err;
+  }
+  return readGithubCsvFromRepo(repoInfo, filePath);
+}
+
+async function readVisitorQuestionsFromGithub(repoInfo) {
+  return readGithubCsvFromRepo(repoInfo, VISITOR_QUESTIONS_CSV_REL);
 }
 
 export async function readVisitorQuestions() {
