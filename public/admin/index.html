@@ -866,8 +866,11 @@
             .join("");
         }
 
-        document.getElementById("sampleCheckoutStatus").textContent = data.note || "";
-        document.getElementById("sampleCheckoutStatus").className = "status ok";
+        document.getElementById("sampleCheckoutStatus").textContent =
+          (data.error ? data.error + " " : "") + (data.note || "");
+        document.getElementById("sampleCheckoutStatus").className = data.error
+          ? "status err"
+          : "status ok";
       }
 
       function postJson(url, payload) {
@@ -1050,12 +1053,15 @@
         }
 
         var note = data.note || "";
-        if (!totalSessions && !totalCheckout) {
+        if (data.error) note = data.error + (note ? " " + note : "");
+        if (!totalSessions && !totalCheckout && !data.error) {
           note +=
             " No tagged campaign traffic yet — confirm ads use utm_campaign values ccna_portal, encor_portal, or secplus_portal.";
         }
         document.getElementById("campaignMarketingStatus").textContent = note;
-        document.getElementById("campaignMarketingStatus").className = "status ok";
+        document.getElementById("campaignMarketingStatus").className = data.error
+          ? "status err"
+          : "status ok";
       }
 
       function clearCampaignMarketing() {

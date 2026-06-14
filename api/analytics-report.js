@@ -143,15 +143,51 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, topPages, dailyTrend, realtimeActiveUsers, campaignMarketing, sampleCheckout] =
-      await Promise.all([
+    const [coreResults, campaignResult, checkoutResult] = await Promise.all([
+      Promise.all([
         fetchAnalyticsSummary(client, env.propertyId, range),
         fetchTopPages(client, env.propertyId, range, 20),
         fetchDailyTrend(client, env.propertyId, range),
         fetchRealtimeActiveUsers(client, env.propertyId),
-        buildCampaignMarketingReport(client, env.propertyId, range),
-        buildSampleCheckoutReport(client, env.propertyId, range),
-      ]);
+      ]),
+      buildCampaignMarketingReport(client, env.propertyId, range).catch((err) => ({
+        error: err?.message || "Campaign marketing report failed",
+      })),
+      buildSampleCheckoutReport(client, env.propertyId, range).catch((err) => ({
+        error: err?.message || "Sample checkout report failed",
+      })),
+    ]);
+
+    const [summary, topPages, dailyTrend, realtimeActiveUsers] = coreResults;
+    const campaignMarketing =
+      campaignResult && !campaignResult.error
+        ? {
+            ...campaignResult,
+            note:
+              "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout counts are event totals in range. " +
+              "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
+              "Setup docs: scripts/*-google-ads.txt in the repo.",
+          }
+        : {
+            campaigns: [],
+            otherCampaignSessions: [],
+            allBeginCheckout: [],
+            allGoogleCpc: [],
+            landingPages: [],
+            error: campaignResult?.error || "Campaign marketing unavailable",
+          };
+
+    const sampleCheckout =
+      checkoutResult && !checkoutResult.error
+        ? checkoutResult
+        : {
+            summary: { checkoutClicks: 0, uniqueUsers: 0 },
+            byProduct: [],
+            byItem: [],
+            error: checkoutResult?.error || "Checkout metrics unavailable",
+            note:
+              "GA4 begin_checkout metrics could not be loaded. Core traffic charts above may still be valid.",
+          };
 
     return res.status(200).json({
       ok: true,
@@ -162,13 +198,7 @@ export default async function handler(req, res) {
       topPages,
       dailyTrend,
       realtimeActiveUsers,
-      campaignMarketing: {
-        ...campaignMarketing,
-        note:
-          "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout counts are event totals in range. " +
-          "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
-          "Setup docs: scripts/*-google-ads.txt in the repo.",
-      },
+      campaignMarketing,
       sampleCheckout,
       fetchedAt: new Date().toISOString(),
     });
