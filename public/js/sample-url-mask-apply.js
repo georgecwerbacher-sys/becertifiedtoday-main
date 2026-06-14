@@ -23,6 +23,26 @@
   } catch (e) {}
 })();
 
+/** Sync-load category D&D validation before inline page scripts (incl. masked /sample URLs). */
+(function () {
+  try {
+    var pathLower = (location.pathname || "").toLowerCase();
+    var remembered = "";
+    try {
+      remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+    } catch (e) {}
+    var onCcnaDnd =
+      pathLower.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      pathLower.indexOf("/ccna_sim_exam/embed/dnd/") !== -1 ||
+      remembered.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      remembered.indexOf("/ccna_sim_exam/embed/dnd/") !== -1;
+    if (!onCcnaDnd) return;
+    var src = "/CCNA-Study/js/ccna-dnd-category-check.js";
+    if (document.querySelector('script[src="' + src + '"]')) return;
+    document.write('<script src="' + src + '"><\/script>');
+  } catch (e) {}
+})();
+
 (function () {
   "use strict";
   try {
@@ -541,18 +561,6 @@
   hint.src = "/js/dragdrop-touch-hint.js";
   hint.defer = true;
   head.appendChild(hint);
-})();
-
-/** Shared order-independent category validation for CCNA D&D pages */
-(function () {
-  "use strict";
-  var p = (location.pathname || "").toLowerCase();
-  if (p.indexOf("/ccna-study/ccna_d_d/") === -1) return;
-  var head = document.head || document.documentElement;
-  if (head.querySelector('script[src*="ccna-dnd-category-check.js"]')) return;
-  var s = document.createElement("script");
-  s.src = "/CCNA-Study/js/ccna-dnd-category-check.js";
-  head.appendChild(s);
 })();
 
 /** Security+ paid content: load portal storage + gate on question/sim pages. */
