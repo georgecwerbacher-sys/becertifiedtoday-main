@@ -752,6 +752,25 @@
     var inOrder = {};
     for (var u = 0; u < session.order.length; u++) inOrder[session.order[u]] = true;
 
+    var domainFilter = session.domain ? String(session.domain) : "";
+    var versionMax = session.versionMax ? parseInt(String(session.versionMax), 10) : 0;
+    var versionMin = session.versionMin ? parseInt(String(session.versionMin), 10) : 0;
+
+    if (session.filtered) {
+      var filteredPool = [];
+      for (var fj = 0; fj < allSlugs.length; fj++) {
+        var fcand = allSlugs[fj];
+        if (inOrder[fcand]) continue;
+        if (versionMax && hubIndexForSlug(fcand, allSlugs) > versionMax) continue;
+        if (versionMin && hubIndexForSlug(fcand, allSlugs) < versionMin) continue;
+        if (domainFilter && !slugMatchesMajor(assignments, fcand, domainFilter)) continue;
+        if (!slugMatchesWeakMajors(assignments, fcand, majors)) continue;
+        filteredPool.push(fcand);
+      }
+      if (!filteredPool.length) return null;
+      return filteredPool[Math.floor(Math.random() * filteredPool.length)];
+    }
+
     var bankId = session.bank || "1";
     var n = parseInt(String(bankId), 10);
     if (!n || n < 1) n = 1;
@@ -763,10 +782,6 @@
     var bankSlice = allSlugs.slice(start, Math.min(start + bankSize, allSlugs.length));
     var inBank = {};
     for (var bi = 0; bi < bankSlice.length; bi++) inBank[bankSlice[bi]] = true;
-
-    var domainFilter = session.domain ? String(session.domain) : "";
-    var versionMax = session.versionMax ? parseInt(String(session.versionMax), 10) : 0;
-    var versionMin = session.versionMin ? parseInt(String(session.versionMin), 10) : 0;
 
     var outsiders = [];
     var insiders = [];

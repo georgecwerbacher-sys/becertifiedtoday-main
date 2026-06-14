@@ -3,9 +3,18 @@
 
   var KEY = "ccnaPractice100";
   var BANK_SIZE = 100;
+  var FILTER_BANK_ID = "filter";
   var VERSION_11_2026_MAX = 300;
   var VERSION_20_MIN = 301;
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
+  var DOMAIN_NAMES = {
+    "1": "Network fundamentals",
+    "2": "LAN switching (network access)",
+    "3": "Routing (IP connectivity)",
+    "4": "IP services",
+    "5": "Security fundamentals",
+    "6": "Automation & programmability"
+  };
 
   function shuffle(arr) {
     var a = arr.slice();
@@ -101,6 +110,44 @@
     return { domain: null, versionMax: null, versionMin: null };
   }
 
+  function hasActivePracticeFilter(filter) {
+    filter = filter || getSelectedPracticeFilter();
+    return !!(filter.domain || filter.versionMax || filter.versionMin);
+  }
+
+  function filterSessionLabel(filter) {
+    if (filter.versionMax) return "Version 1.1 2026";
+    if (filter.versionMin) return "Version 2.0 2026";
+    if (filter.domain) {
+      var name = DOMAIN_NAMES[filter.domain] || "Domain " + filter.domain;
+      return filter.domain + " — " + name;
+    }
+    return "Filtered set";
+  }
+
+  function applySlugsFilters(slugs, filter, assignments) {
+    var out = slugs.slice();
+    if (filter.domain) {
+      if (!assignments || typeof assignments !== "object") return [];
+      out = filterSlugsByMajor(out, assignments, filter.domain);
+    }
+    if (filter.versionMax) out = filterSlugsByHubMax(out, filter.versionMax);
+    if (filter.versionMin) out = filterSlugsByHubMin(out, filter.versionMin);
+    return out;
+  }
+
+  /** Full hub slice for an active portal filter; null when domain filter needs topic map still loading. */
+  function collectFilteredSlugs(filter) {
+    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
+    if (!Array.isArray(all)) return [];
+    if (filter.domain) {
+      var map = window.CCNA_PRACTICE_100._topicAssignments;
+      if (map === null) return null;
+      if (map === false) return [];
+    }
+    return applySlugsFilters(all, filter, window.CCNA_PRACTICE_100._topicAssignments);
+  }
+
   /** @deprecated use getSelectedPracticeFilter */
   function getSelectedPracticeDomain() {
     return getSelectedPracticeFilter().domain || "";
@@ -167,25 +214,28 @@
   }
 
   function start(mode, bankId, domainMajor, versionMax, versionMin) {
-    bankId = bankId || "1";
-    var fixed = bankSlugs(bankId);
-    var map = window.CCNA_PRACTICE_100._topicAssignments;
-    if (domainMajor) {
-      if (!map || typeof map !== "object") {
+    var filter = {
+      domain: domainMajor || null,
+      versionMax: versionMax || null,
+      versionMin: versionMin || null
+    };
+    var useFilterPool = hasActivePracticeFilter(filter);
+    var fixed;
+    if (useFilterPool) {
+      fixed = collectFilteredSlugs(filter);
+      if (fixed === null) {
         window.alert("Topic assignments are still loading. Try again in a moment.");
         return;
       }
-      fixed = filterSlugsByMajor(fixed, map, domainMajor);
-    }
-    if (versionMax) {
-      fixed = filterSlugsByHubMax(fixed, versionMax);
-    }
-    if (versionMin) {
-      fixed = filterSlugsByHubMin(fixed, versionMin);
+    } else {
+      bankId = bankId || "1";
+      fixed = bankSlugs(bankId);
     }
     if (!fixed.length) {
       window.alert(
-        "No questions in this bank match the selected filter. Pick another subject or version, choose “All subjects”, or try a different bank."
+        useFilterPool
+          ? "No questions match the selected filter. Pick another subject or version, or choose “All subjects”."
+          : "No questions in this bank. Try another bank."
       );
       return;
     }
@@ -195,7 +245,16 @@
     } else {
       order = shuffle(fixed);
     }
-    var session = { v: 1, mode: mode, bank: bankId, order: order };
+    var session = {
+      v: 1,
+      mode: mode,
+      bank: useFilterPool ? FILTER_BANK_ID : bankId,
+      order: order
+    };
+    if (useFilterPool) {
+      session.filtered = true;
+      session.filterLabel = filterSessionLabel(filter);
+    }
     if (domainMajor) session.domain = domainMajor;
     if (versionMax) session.versionMax = versionMax;
     if (versionMin) session.versionMin = versionMin;
@@ -233,6 +292,10 @@
   window.CCNA_PRACTICE_100.filterSlugsByHubMin = filterSlugsByHubMin;
   window.CCNA_PRACTICE_100.hubIndexForSlug = hubIndexForSlug;
   window.CCNA_PRACTICE_100.getSelectedPracticeFilter = getSelectedPracticeFilter;
+  window.CCNA_PRACTICE_100.hasActivePracticeFilter = hasActivePracticeFilter;
+  window.CCNA_PRACTICE_100.collectFilteredSlugs = collectFilteredSlugs;
+  window.CCNA_PRACTICE_100.filterSessionLabel = filterSessionLabel;
+  window.CCNA_PRACTICE_100.FILTER_BANK_ID = FILTER_BANK_ID;
 
   document.addEventListener(
     "click",
@@ -256,32 +319,105 @@
     false
   );
 
-  /** CCNA_Training_Portal.html: one sim-box per 100 hub positions (ceil); last box may be partial. */
-  function injectPortalPracticeBanks() {
-    var grid = document.getElementById("ccna-practice-banks-grid");
-    if (!grid) return;
+  function formatHubRange(first, last) {
+    if (first >= last) return String(first);
+    return String(first) + "–" + String(last);
+  }
 
-    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
-    if (!Array.isArray(all)) return;
+  function bindPortalFilterSelect() {
+    var sel = document.getElementById("ccna-practice-domain-select");
+    if (!sel || sel._ccnaFilterBound) return;
+    sel._ccnaFilterBound = true;
+    sel.addEventListener("change", injectPortalPracticeBanks);
+  }
 
-    var prior = grid.querySelectorAll("[data-ccna-practice-bank-index]");
-    for (var pi = 0; pi < prior.length; pi++) prior[pi].remove();
-    var loadingEl = document.getElementById("ccna-practice-banks-loading");
-    if (loadingEl) loadingEl.remove();
+  function appendFilteredBankArticle(grid, filter, count, pending) {
+    var label = filterSessionLabel(filter);
+    var article = document.createElement("article");
+    article.className = "sim-box ccna-practice-bank--filtered";
+    article.setAttribute("data-ccna-practice-bank-index", FILTER_BANK_ID);
+    article.setAttribute("aria-labelledby", "ccna-bank-title-filter");
 
-    var nBanks = practiceBankCount();
-    var total = all.length;
+    var h4 = document.createElement("h4");
+    h4.className = "sim-box-title";
+    h4.id = "ccna-bank-title-filter";
+    h4.textContent = "Filtered set · " + label;
+    article.appendChild(h4);
 
-    function formatRange(first, last) {
-      if (first >= last) return String(first);
-      return String(first) + "–" + String(last);
+    var meta = document.createElement("p");
+    meta.className = "ccna-bank-version-tag";
+    if (pending) {
+      meta.textContent = "Loading question count…";
+    } else if (count === 1) {
+      meta.textContent = "1 question across the full hub (not a numbered bank)";
+    } else {
+      meta.textContent =
+        String(count) + " questions across the full hub (not a numbered bank)";
+    }
+    article.appendChild(meta);
+
+    var actions = document.createElement("div");
+    actions.className = "study-actions";
+    actions.setAttribute("role", "group");
+    actions.setAttribute("aria-label", "Practice modes for filtered set: " + label);
+
+    var br = document.createElement("button");
+    br.type = "button";
+    br.className = "start-btn";
+    br.setAttribute("data-ccna100", "random");
+    br.setAttribute("data-ccna100-bank", FILTER_BANK_ID);
+    br.textContent = "Random";
+
+    var rev = document.createElement("button");
+    rev.type = "button";
+    rev.className = "start-btn";
+    rev.setAttribute("data-ccna100", "review");
+    rev.setAttribute("data-ccna100-bank", FILTER_BANK_ID);
+    rev.textContent = "Review";
+
+    if (pending || !count) {
+      br.disabled = true;
+      rev.disabled = true;
+      if (!pending && !count) {
+        br.classList.add("is-placeholder");
+        rev.classList.add("is-placeholder");
+      }
     }
 
+    actions.appendChild(br);
+    actions.appendChild(rev);
+    article.appendChild(actions);
+    grid.appendChild(article);
+  }
+
+  function updatePortalBanksSummary(all, filter, filteredCount, pending) {
     var summary = document.getElementById("ccna-practice-banks-summary");
-    if (summary) {
+    if (!summary) return;
+
+    var total = all.length;
+    var nBanks = practiceBankCount();
+    var summaryText;
+
+    if (hasActivePracticeFilter(filter)) {
+      var label = filterSessionLabel(filter);
+      if (pending) {
+        summaryText =
+          "Loading questions for “" +
+          label +
+          "”. Random and Review will use every matching question in the hub—not a fixed 100-question bank.";
+      } else {
+        summaryText =
+          (filteredCount === 1 ? "1 question" : filteredCount + " questions") +
+          " match “" +
+          label +
+          "” across the full hub (" +
+          total +
+          " total). Random and Review use only this filtered set across the hub—not a numbered bank slice.";
+      }
+    } else {
       var lastBankCount = total - (nBanks - 1) * BANK_SIZE;
       var bankWord = nBanks === 1 ? "bank" : "banks";
-      var summaryText =
+      summaryText =
         total +
         " practice questions in " +
         nBanks +
@@ -291,7 +427,7 @@
       if (lastBankCount > 0 && lastBankCount < BANK_SIZE) {
         summaryText +=
           "The newest bank (positions " +
-          formatRange((nBanks - 1) * BANK_SIZE + 1, nBanks * BANK_SIZE) +
+          formatHubRange((nBanks - 1) * BANK_SIZE + 1, nBanks * BANK_SIZE) +
           ") has " +
           lastBankCount +
           " questions until the list reaches " +
@@ -299,10 +435,63 @@
           "; then the next bank appears automatically. ";
       }
       summaryText +=
-        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, Version 2.0 2026, and adaptive learning apply to the bank you start.";
-      summary.textContent = summaryText;
-      summary.hidden = false;
+        "Each bank has its own Random and Review session. Pick a subject or version above to bypass banks and practice the full filtered hub instead.";
     }
+
+    summary.textContent = summaryText;
+    summary.hidden = false;
+  }
+
+  /** CCNA_Training_Portal.html: numbered banks, or one temporary bank when a filter is active. */
+  function injectPortalPracticeBanks() {
+    var grid = document.getElementById("ccna-practice-banks-grid");
+    if (!grid) return;
+
+    bindPortalFilterSelect();
+
+    var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
+    if (!Array.isArray(all)) return;
+
+    var prior = grid.querySelectorAll("[data-ccna-practice-bank-index]");
+    for (var pi = 0; pi < prior.length; pi++) prior[pi].remove();
+    var loadingEl = document.getElementById("ccna-practice-banks-loading");
+    if (loadingEl) loadingEl.remove();
+
+    var filter = getSelectedPracticeFilter();
+    var filterActive = hasActivePracticeFilter(filter);
+    var nBanks = practiceBankCount();
+    var total = all.length;
+
+    if (filterActive && filter.domain && window.CCNA_PRACTICE_100._topicAssignments === null) {
+      updatePortalBanksSummary(all, filter, 0, true);
+      grid.setAttribute(
+        "aria-label",
+        "Filtered practice set: " + filterSessionLabel(filter) + " (loading)"
+      );
+      appendFilteredBankArticle(grid, filter, 0, true);
+      window.CCNA_PRACTICE_100._topicAssignmentsPromise.then(function () {
+        injectPortalPracticeBanks();
+      });
+      return;
+    }
+
+    if (filterActive) {
+      var filtered = collectFilteredSlugs(filter);
+      var filteredCount = filtered ? filtered.length : 0;
+      updatePortalBanksSummary(all, filter, filteredCount, false);
+      grid.setAttribute(
+        "aria-label",
+        "Filtered practice set: " +
+          filterSessionLabel(filter) +
+          " (" +
+          filteredCount +
+          " questions)"
+      );
+      appendFilteredBankArticle(grid, filter, filteredCount, false);
+      return;
+    }
+
+    updatePortalBanksSummary(all, filter, 0, false);
 
     grid.setAttribute(
       "aria-label",
@@ -337,9 +526,9 @@
       }
       var titleInner;
       if (countInBank === 0) {
-        titleInner = formatRange(firstNum, slotEnd);
+        titleInner = formatHubRange(firstNum, slotEnd);
       } else {
-        titleInner = formatRange(firstNum, endIdx);
+        titleInner = formatHubRange(firstNum, endIdx);
       }
       h4.textContent = "Bank " + String(b) + " · questions " + titleInner;
 
