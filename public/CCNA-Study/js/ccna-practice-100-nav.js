@@ -744,6 +744,7 @@
 
     var domainFilter = session.domain ? String(session.domain) : "";
     var versionMax = session.versionMax ? parseInt(String(session.versionMax), 10) : 0;
+    var versionMin = session.versionMin ? parseInt(String(session.versionMin), 10) : 0;
 
     var outsiders = [];
     var insiders = [];
@@ -751,6 +752,7 @@
       var cand = allSlugs[j];
       if (inOrder[cand]) continue;
       if (versionMax && hubIndexForSlug(cand, allSlugs) > versionMax) continue;
+      if (versionMin && hubIndexForSlug(cand, allSlugs) < versionMin) continue;
       if (!slugMatchesWeakMajors(assignments, cand, majors)) continue;
       if (domainFilter && !slugMatchesMajor(assignments, cand, domainFilter)) continue;
       if (!inBank[cand]) outsiders.push(cand);

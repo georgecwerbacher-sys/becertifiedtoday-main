@@ -4,6 +4,7 @@
   var KEY = "ccnaPractice100";
   var BANK_SIZE = 100;
   var VERSION_11_2026_MAX = 300;
+  var VERSION_20_MIN = 301;
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
 
   function shuffle(arr) {
@@ -80,13 +81,24 @@
     return out;
   }
 
+  function filterSlugsByHubMin(slugs, minHubIndex) {
+    if (!minHubIndex || minHubIndex < 1) return slugs.slice();
+    var out = [];
+    for (var i = 0; i < slugs.length; i++) {
+      var idx = hubIndexForSlug(slugs[i]);
+      if (idx && idx >= minHubIndex) out.push(slugs[i]);
+    }
+    return out;
+  }
+
   function getSelectedPracticeFilter() {
     var sel = document.getElementById("ccna-practice-domain-select");
-    if (!sel) return { domain: null, versionMax: null };
+    if (!sel) return { domain: null, versionMax: null, versionMin: null };
     var v = String(sel.value || "").trim();
-    if (v === "v11-2026") return { domain: null, versionMax: VERSION_11_2026_MAX };
-    if (/^[1-6]$/.test(v)) return { domain: v, versionMax: null };
-    return { domain: null, versionMax: null };
+    if (v === "v11-2026") return { domain: null, versionMax: VERSION_11_2026_MAX, versionMin: null };
+    if (v === "v20") return { domain: null, versionMin: VERSION_20_MIN, versionMax: null };
+    if (/^[1-6]$/.test(v)) return { domain: v, versionMax: null, versionMin: null };
+    return { domain: null, versionMax: null, versionMin: null };
   }
 
   /** @deprecated use getSelectedPracticeFilter */
@@ -106,11 +118,12 @@
   }
 
   function startWithOptionalDomain(mode, bankId, filter) {
-    filter = filter || { domain: null, versionMax: null };
+    filter = filter || { domain: null, versionMax: null, versionMin: null };
     var domainMajor = filter.domain || null;
     var versionMax = filter.versionMax || null;
+    var versionMin = filter.versionMin || null;
     if (!domainMajor) {
-      start(mode, bankId, null, versionMax);
+      start(mode, bankId, null, versionMax, versionMin);
       return;
     }
     var inst = window.CCNA_PRACTICE_100;
@@ -122,7 +135,7 @@
       return;
     }
     if (assign && typeof assign === "object") {
-      start(mode, bankId, domainMajor, versionMax);
+      start(mode, bankId, domainMajor, versionMax, versionMin);
       return;
     }
     inst._topicAssignmentsPromise.then(function () {
@@ -132,7 +145,7 @@
         );
         return;
       }
-      start(mode, bankId, domainMajor, versionMax);
+      start(mode, bankId, domainMajor, versionMax, versionMin);
     });
   }
 
@@ -153,7 +166,7 @@
     return Math.ceil(all.length / BANK_SIZE);
   }
 
-  function start(mode, bankId, domainMajor, versionMax) {
+  function start(mode, bankId, domainMajor, versionMax, versionMin) {
     bankId = bankId || "1";
     var fixed = bankSlugs(bankId);
     var map = window.CCNA_PRACTICE_100._topicAssignments;
@@ -166,6 +179,9 @@
     }
     if (versionMax) {
       fixed = filterSlugsByHubMax(fixed, versionMax);
+    }
+    if (versionMin) {
+      fixed = filterSlugsByHubMin(fixed, versionMin);
     }
     if (!fixed.length) {
       window.alert(
@@ -182,6 +198,7 @@
     var session = { v: 1, mode: mode, bank: bankId, order: order };
     if (domainMajor) session.domain = domainMajor;
     if (versionMax) session.versionMax = versionMax;
+    if (versionMin) session.versionMin = versionMin;
     if (getAdaptiveLearningEnabled()) {
       session.adaptive = true;
       session.adaptiveExtrasInjected = 0;
@@ -211,7 +228,9 @@
   window.CCNA_PRACTICE_100.practiceBankCount = practiceBankCount;
   window.CCNA_PRACTICE_100.filterSlugsByMajor = filterSlugsByMajor;
   window.CCNA_PRACTICE_100.VERSION_11_2026_MAX = VERSION_11_2026_MAX;
+  window.CCNA_PRACTICE_100.VERSION_20_MIN = VERSION_20_MIN;
   window.CCNA_PRACTICE_100.filterSlugsByHubMax = filterSlugsByHubMax;
+  window.CCNA_PRACTICE_100.filterSlugsByHubMin = filterSlugsByHubMin;
   window.CCNA_PRACTICE_100.hubIndexForSlug = hubIndexForSlug;
   window.CCNA_PRACTICE_100.getSelectedPracticeFilter = getSelectedPracticeFilter;
 
@@ -230,7 +249,7 @@
         if (m === "random" || m === "review") {
           startWithOptionalDomain(m, bank, filter);
         } else {
-          start(m, bank, filter.domain, filter.versionMax);
+          start(m, bank, filter.domain, filter.versionMax, filter.versionMin);
         }
       }
     },
@@ -280,7 +299,7 @@
           "; then the next bank appears automatically. ";
       }
       summaryText +=
-        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, and adaptive learning apply to the bank you start.";
+        "Each bank has its own Random and Review session. Domain, Version 1.1 2026, Version 2.0, and adaptive learning apply to the bank you start.";
       summary.textContent = summaryText;
       summary.hidden = false;
     }
@@ -327,7 +346,13 @@
       article.appendChild(h4);
       var verTag = document.createElement("p");
       verTag.className = "ccna-bank-version-tag";
-      verTag.textContent = b * BANK_SIZE <= VERSION_11_2026_MAX ? "Ver1.1 2026" : "pre v1.0";
+      if (firstNum >= VERSION_20_MIN) {
+        verTag.textContent = "Version 2.0";
+      } else if (endIdx <= VERSION_11_2026_MAX) {
+        verTag.textContent = "Version 1.1 2026";
+      } else {
+        verTag.textContent = "Version 1.1 2026 & Version 2.0";
+      }
       article.appendChild(verTag);
 
       var actions = document.createElement("div");
