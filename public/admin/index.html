@@ -390,8 +390,11 @@
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
         <p class="section-note">
           Messages from the site <strong>Ask a question</strong> footer form (replaces mailto). Stored in
-          <code>visitor-questions.csv</code> via <code>GITHUB_LEADS_TOKEN</code>.
+          <code>visitor-questions.csv</code> on GitHub (<code>GITHUB_LEADS_REPO</code>).
         </p>
+        <div class="row" style="margin-bottom:12px">
+          <button type="button" id="visitorQuestionsRefreshBtn" class="secondary">Refresh questions</button>
+        </div>
         <div class="cards" id="visitorQuestionsSummaryCards"></div>
         <div class="portal-table-wrap">
           <table>
@@ -1119,6 +1122,33 @@
         document.getElementById("visitorQuestionsStatus").className = "status ok";
       }
 
+      function loadVisitorQuestions() {
+        document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
+        document.getElementById("visitorQuestionsStatus").className = "status";
+        return postJson("/api/sample-lead", { action: "questions_report" })
+          .then(function (res) {
+            if (!res.ok) {
+              document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
+              document.getElementById("visitorQuestionsBody").innerHTML =
+                '<tr><td colspan="5" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
+              var vq = (res.body && res.body.error) || "Visitor questions failed";
+              if (res.body && res.body.hint) vq += " — " + res.body.hint;
+              document.getElementById("visitorQuestionsStatus").textContent = vq;
+              document.getElementById("visitorQuestionsStatus").className = "status err";
+              return;
+            }
+            renderVisitorQuestionsReport(res.body);
+          })
+          .catch(function (err) {
+            document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
+            document.getElementById("visitorQuestionsBody").innerHTML =
+              '<tr><td colspan="5" style="color:var(--muted)">Could not load visitor questions.</td></tr>';
+            document.getElementById("visitorQuestionsStatus").textContent =
+              err.message || "Failed to load visitor questions";
+            document.getElementById("visitorQuestionsStatus").className = "status err";
+          });
+      }
+
       function loadReport() {
         dashStatus.textContent = "Loading…";
         dashStatus.className = "status";
@@ -1126,20 +1156,20 @@
         portalStatus.className = "status";
         document.getElementById("sampleCheckoutStatus").textContent = "Loading Stripe checkout metrics…";
         document.getElementById("sampleCheckoutStatus").className = "status";
-        document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
+        document.getElementById("visitorQuestionsStatus").textContent = "";
         document.getElementById("visitorQuestionsStatus").className = "status";
         document.getElementById("campaignMarketingStatus").textContent = "Loading campaign marketing…";
         document.getElementById("campaignMarketingStatus").className = "status";
 
+        loadVisitorQuestions();
+
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
           postJson("/api/portal-users-report", {}),
-          postJson("/api/sample-lead", { action: "questions_report" }),
         ])
           .then(function (results) {
             var ga = results[0];
             var portal = results[1];
-            var visitorQuestions = results[2];
 
             if (!ga.ok) {
               if (ga.body && ga.body.error === "Unauthorized") {
@@ -1169,17 +1199,6 @@
               renderPortalUsers(portal.body);
             }
 
-            if (!visitorQuestions.ok) {
-              document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
-              document.getElementById("visitorQuestionsBody").innerHTML = "";
-              var vq = (visitorQuestions.body && visitorQuestions.body.error) || "Visitor questions failed";
-              if (visitorQuestions.body && visitorQuestions.body.hint) vq += " — " + visitorQuestions.body.hint;
-              document.getElementById("visitorQuestionsStatus").textContent = vq;
-              document.getElementById("visitorQuestionsStatus").className = "status err";
-            } else {
-              renderVisitorQuestionsReport(visitorQuestions.body);
-            }
-
             if (ga.body && ga.body.campaignMarketing) {
               renderCampaignMarketing(ga.body.campaignMarketing);
             } else {
@@ -1194,7 +1213,6 @@
             dashStatus.className = "status err";
             portalStatus.textContent = "";
             document.getElementById("sampleCheckoutStatus").textContent = "";
-            document.getElementById("visitorQuestionsStatus").textContent = "";
             clearCampaignMarketing();
             document.getElementById("campaignMarketingStatus").textContent = "";
           });
@@ -1297,6 +1315,7 @@
       });
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
+      document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         setToken("");

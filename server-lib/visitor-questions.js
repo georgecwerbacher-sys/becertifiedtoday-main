@@ -6,6 +6,12 @@ import path from "path";
 
 export const VISITOR_QUESTIONS_CSV_REL = "data/leads/visitor-questions.csv";
 
+/** Fallback when GITHUB_LEADS_REPO is unset on Vercel (CLI deploys). */
+export const DEFAULT_LEADS_REPO = {
+  owner: "georgecwerbacher-sys",
+  repo: "becertifiedtoday-main",
+};
+
 const CSV_HEADER = "captured_at_utc,email,product,page_path,message,status";
 
 const VALID_PRODUCTS = new Set(["ccna", "encor", "secplus", "general"]);
@@ -95,8 +101,8 @@ export function resolveGithubRepo() {
   const repo = sanitizeRepoPart(
     process.env.GITHUB_LEADS_REPO_NAME || process.env.VERCEL_GIT_REPO_SLUG || ""
   );
-  if (!owner || !repo) return null;
-  return { owner, repo };
+  if (owner && repo) return { owner, repo };
+  return DEFAULT_LEADS_REPO;
 }
 
 function decodeGithubContent(data) {
@@ -152,6 +158,22 @@ async function fetchGithubFilePublic({ owner, repo, filePath }) {
   }
   const data = await res.json();
   return { content: decodeGithubContent(data), sha: data.sha || null };
+}
+
+/** CDN read — reliable fallback for public repos when Contents API fails. */
+async function fetchGithubRawPublic({ owner, repo, filePath, ref = "main" }) {
+  const url = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${ref}/${filePath.split("/").map(encodeURIComponent).join("/")}`;
+  const res = await fetch(url, {
+    headers: { "User-Agent": "becertifiedtoday-visitor-questions" },
+  });
+  if (res.status === 404) {
+    return { content: CSV_HEADER + "\n", sha: null };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`github_raw_get_${res.status}:${text.slice(0, 200)}`);
+  }
+  return { content: await res.text(), sha: null };
 }
 
 async function putGithubFile({ token, owner, repo, filePath, content, sha, message }) {
@@ -274,28 +296,41 @@ export async function appendVisitorQuestion(body) {
   }
 }
 
-export async function readVisitorQuestions() {
+async function readVisitorQuestionsFromGithub(repoInfo) {
   const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
+  const readers = [];
+  if (token) {
+    readers.push(() =>
+      fetchGithubFile({ token, ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL })
+    );
+  }
+  readers.push(() => fetchGithubFilePublic({ ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL }));
+  readers.push(() => fetchGithubRawPublic({ ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL }));
+
+  let lastErr = null;
+  for (const read of readers) {
+    try {
+      const file = await read();
+      const rows = parseCsvContent(file.content);
+      if (rows.length) return rows;
+    } catch (err) {
+      lastErr = err;
+      console.warn("[visitor-question] read attempt failed:", err?.message || err);
+    }
+  }
+  if (lastErr) throw lastErr;
+  return [];
+}
+
+export async function readVisitorQuestions() {
   const repoInfo = resolveGithubRepo();
   if (repoInfo) {
-    if (token) {
-      try {
-        const file = await fetchGithubFile({
-          token,
-          ...repoInfo,
-          filePath: VISITOR_QUESTIONS_CSV_REL,
-        });
-        const rows = parseCsvContent(file.content);
-        if (rows.length) return rows;
-      } catch (err) {
-        console.warn("[visitor-question] token read failed, trying public:", err?.message || err);
-      }
+    try {
+      return await readVisitorQuestionsFromGithub(repoInfo);
+    } catch (err) {
+      console.error("[visitor-question] github reads failed:", err?.message || err);
+      throw err;
     }
-    const publicFile = await fetchGithubFilePublic({
-      ...repoInfo,
-      filePath: VISITOR_QUESTIONS_CSV_REL,
-    });
-    return parseCsvContent(publicFile.content);
   }
   if (canWriteLocal()) {
     const filePath = path.join(process.cwd(), VISITOR_QUESTIONS_CSV_REL);
