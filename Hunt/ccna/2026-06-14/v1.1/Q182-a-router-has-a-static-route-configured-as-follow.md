@@ -7,6 +7,7 @@ source_id: openexamprep-ccna
 source_question_id: ccna-073
 bct_match_score: 0.26
 blueprint: V1.1
+exhibit: none
 status: review
 ---
 
@@ -34,6 +35,7 @@ V1.1
 **BCT match score:** 0.26
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

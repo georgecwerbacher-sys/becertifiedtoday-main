@@ -7,6 +7,7 @@ source_id: mastery-ccna-public
 source_question_id: 16
 bct_match_score: 0.12
 blueprint: V2.0
+exhibit: none
 status: review
 ---
 
@@ -19,7 +20,13 @@ A network team uses Ansible to verify port status before a cabling change. The a
 - A. Run ios_command against site_a_access for show interfaces status .
 - B. Run ios_command against site_a_distribution for show interfaces status .
 - C. Run ios_command against all_switches for show interfaces status .
-- D. Run ios_config against site_a_access to set interface descriptions. Best answer: A Explanation: An Ansible command execution plan must match both the target scope and the allowed operation type. In this case, the approved scope is limited to Site-A access switches and read-only verification. The site_a_access inventory group contains only SW-A1 and SW-A2 , so it matches the device boundary. The ios_command module is appropriate for operational show commands such as show interfaces status ; it does not express an intent to change the running configuration. Targeting a broader or different group violates the device scope, and using a configuration module changes the type of operation. The key validation is: correct inventory group plus read-only command module.
+- D. Run ios_config against site_a_access to set interface descriptions.
+
+**Stated answer (external):** A
+
+**External explanation (unverified):**
+
+An Ansible command execution plan must match both the target scope and the allowed operation type. In this case, the approved scope is limited to Site-A access switches and read-only verification. The site_a_access inventory group contains only SW-A1 and SW-A2 , so it matches the device boundary. The ios_command module is appropriate for operational show commands such as show interfaces status ; it does not express an intent to change the running configuration. Targeting a broader or different group violates the device scope, and using a configuration module changes the type of operation. The key validation is: correct inventory group plus read-only command module.
 
 V2.0
 
@@ -28,6 +35,7 @@ V2.0
 **BCT match score:** 0.12
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

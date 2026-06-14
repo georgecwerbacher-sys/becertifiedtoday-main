@@ -7,12 +7,17 @@ source_id: howtonetwork-ccna-walkthrough
 source_question_id: 8645
 bct_match_score: 0.18
 blueprint: V1.1
+exhibit: missing-cli
 status: review
 ---
 
 # Question 40
 
 **Topic:** Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
+
+> [!warning] Exhibit CLI not captured
+> Stem references output below, but the competitor poll did not extract the transcript.
+> Open the [source page](https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/) and paste IOS output into a fenced block below before drafting.
 
 Refer to the following show output.
 
@@ -28,6 +33,7 @@ V1.1
 **BCT match score:** 0.18
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

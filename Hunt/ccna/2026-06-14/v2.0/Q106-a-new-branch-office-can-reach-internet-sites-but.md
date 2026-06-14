@@ -7,6 +7,7 @@ source_id: mastery-ccna-public
 source_question_id: 20
 bct_match_score: 0.14
 blueprint: V2.0
+exhibit: none
 status: review
 ---
 
@@ -19,7 +20,13 @@ A new branch office can reach Internet sites, but users cannot reach the HQ file
 - A. Configure an IPsec site-to-site VPN between the edge routers.
 - B. Configure PAT only on the branch edge router.
 - C. Add a CNAME record for the HQ file server.
-- D. Install remote-access VPN software on every branch device. Best answer: A Explanation: An IPsec site-to-site VPN is appropriate when two locations need secure network-to-network connectivity over an untrusted network such as the Internet. In this case, the branch LAN has working DHCP, an up WAN link, and a default route for Internet access, but many device types need private access to HQ resources. Remote-access VPN works only for endpoints that can run a client, which does not fit printers, phones, and other shared devices. A site-to-site tunnel between the branch and HQ edge devices can protect traffic between the two private subnets transparently to the hosts.
+- D. Install remote-access VPN software on every branch device.
+
+**Stated answer (external):** A
+
+**External explanation (unverified):**
+
+An IPsec site-to-site VPN is appropriate when two locations need secure network-to-network connectivity over an untrusted network such as the Internet. In this case, the branch LAN has working DHCP, an up WAN link, and a default route for Internet access, but many device types need private access to HQ resources. Remote-access VPN works only for endpoints that can run a client, which does not fit printers, phones, and other shared devices. A site-to-site tunnel between the branch and HQ edge devices can protect traffic between the two private subnets transparently to the hosts.
 
 V2.0
 
@@ -28,6 +35,7 @@ V2.0
 **BCT match score:** 0.14
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

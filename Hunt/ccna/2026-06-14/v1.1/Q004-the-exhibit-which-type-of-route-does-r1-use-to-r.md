@@ -7,6 +7,7 @@ source_id: examtopics-ccna-research
 source_question_id: 1
 bct_match_score: 0.33
 blueprint: community recall
+exhibit: missing-image
 status: review
 ---
 
@@ -14,7 +15,11 @@ status: review
 
 **Topic:** Tier C research — community recall; verify answer on Cisco Tier A only
 
-the exhibit. Which type of route does R1 use to reach host 10.10.13.10/32?
+> [!warning] Exhibit image not captured
+> Hunt poll saved the stem only. The source page likely has a **topology or diagram**.
+> Open the [source page](https://www.examtopics.com/exams/cisco/200-301/view/1/) and save a PNG under `Hunt/ccna/<run>/images/` or transcribe CLI if shown.
+
+Which type of route does R1 use to reach host 10.10.13.10/32?
 
 - A. default route
 - B. network route
@@ -30,6 +35,7 @@ community recall
 **BCT match score:** 0.33
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

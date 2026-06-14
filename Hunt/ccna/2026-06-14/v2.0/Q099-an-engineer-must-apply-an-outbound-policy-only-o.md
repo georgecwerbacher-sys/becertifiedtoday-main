@@ -7,6 +7,7 @@ source_id: mastery-ccna-public
 source_question_id: 13
 bct_match_score: 0.19
 blueprint: V2.0
+exhibit: none
 status: review
 ---
 
@@ -19,7 +20,13 @@ An engineer must apply an outbound policy only on the interface R1 will use to f
 - A. GigabitEthernet0/4
 - B. GigabitEthernet0/0
 - C. GigabitEthernet0/1
-- D. GigabitEthernet0/3 Best answer: D Explanation: Routers choose the forwarding route by longest prefix match among routes installed in the routing table. The destination 10.20.30.90 falls within 10.20.30.64/26 , which covers addresses 10.20.30.64 through 10.20.30.127 . That prefix is more specific than the /25 , /24 , /16 , and default route entries, so R1 forwards the packet toward next hop 198.51.100.6 out GigabitEthernet0/3 . Administrative distance does not override a longer matching prefix when both routes are present in the table. The safest conclusion is the one directly supported by the route entry, not by assumed topology.
+- D. GigabitEthernet0/3
+
+**Stated answer (external):** D
+
+**External explanation (unverified):**
+
+Routers choose the forwarding route by longest prefix match among routes installed in the routing table. The destination 10.20.30.90 falls within 10.20.30.64/26 , which covers addresses 10.20.30.64 through 10.20.30.127 . That prefix is more specific than the /25 , /24 , /16 , and default route entries, so R1 forwards the packet toward next hop 198.51.100.6 out GigabitEthernet0/3 . Administrative distance does not override a longer matching prefix when both routes are present in the table. The safest conclusion is the one directly supported by the route entry, not by assumed topology.
 
 V2.0
 
@@ -28,6 +35,7 @@ V2.0
 **BCT match score:** 0.19
 
 - [ ] Verified vs Cisco Tier A
+- [ ] Exhibit captured (CLI transcript or diagram image)
 - [ ] Draft original stem in `gen_ccna_chain_pages.py`
 
 [[2026-06-14|Back to run index]]

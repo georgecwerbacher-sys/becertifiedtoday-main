@@ -10,4 +10,6 @@ count: 185
 
 Net-new hunt candidates tagged **Version 1.1** (185 notes).
 
+Notes with `exhibit: missing-image` or `missing-cli` need manual exhibit capture from the source URL.
+
 [[2026-06-14|Back to run index]]
