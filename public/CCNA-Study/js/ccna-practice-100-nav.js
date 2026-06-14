@@ -77,7 +77,9 @@
     "5.0": "Security Fundamentals",
     "6.0": "Automation and Programmability",
   };
-  var CCNA_VERSION_LABEL = "Version 1.1 2026";
+  var CCNA_VERSION_11_LABEL = "Version 1.1 2026";
+  var CCNA_VERSION_20_LABEL = "Version 2.0";
+  var CCNA_VERSION_20_MIN = 301;
 
   function reviewMarkKey(slug, practiceIndex) {
     if (isStaticCcnaSamplePage()) return "static:" + slug;
@@ -302,6 +304,26 @@
     return meta;
   }
 
+  function versionLabelForSlug(slug) {
+    var hub = window.CCNA_PRACTICE_100 || {};
+    var minV20 = hub.VERSION_20_MIN || CCNA_VERSION_20_MIN;
+    var all = hub.ALL_SLUGS;
+    var idx = hubIndexForSlug(slug, all);
+    if (idx && idx >= minV20) return CCNA_VERSION_20_LABEL;
+    return CCNA_VERSION_11_LABEL;
+  }
+
+  function subjectLabelForSlug(assignments, slug) {
+    if (!assignments || !slug) return "";
+    var objs = assignments[slug + ".html"];
+    if (!objs || !objs.length) return "";
+    var majNum = String(objs[0]).split(".")[0];
+    if (!/^[1-6]$/.test(majNum)) return "";
+    var majKey = majNum + ".0";
+    var name = CCNA_DOMAIN_NAMES[majKey] || "Domain " + majKey;
+    return majNum + " \u2014 " + name;
+  }
+
   function syncQuestionTopicMeta(slug) {
     if (isStaticCcnaSamplePage()) return;
 
@@ -314,18 +336,11 @@
     }
     if (!versionEl && !subjectEl) return;
 
-    if (versionEl) versionEl.textContent = CCNA_VERSION_LABEL;
+    if (versionEl) versionEl.textContent = versionLabelForSlug(slug);
 
     getTopicAssignments().then(function (assignments) {
-      if (!subjectEl || !assignments) return;
-      var objs = assignments[slug + ".html"];
-      if (!objs || !objs.length) {
-        subjectEl.textContent = "";
-        return;
-      }
-      var maj = String(objs[0]).split(".")[0] + ".0";
-      var name = CCNA_DOMAIN_NAMES[maj] || "Domain " + maj;
-      subjectEl.textContent = maj + " " + name;
+      if (!subjectEl) return;
+      subjectEl.textContent = subjectLabelForSlug(assignments, slug);
     });
   }
 
