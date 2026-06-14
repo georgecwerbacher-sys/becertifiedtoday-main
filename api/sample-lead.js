@@ -18,6 +18,7 @@ import {
   appendVisitorQuestion,
   normalizeQuestionProduct,
   readVisitorQuestions,
+  resolveGithubRepo,
 } from "../server-lib/visitor-questions.js";
 
 function readJsonBody(req) {
@@ -143,12 +144,15 @@ async function handleQuestionsReport(req, res, body) {
   try {
     const rows = await readVisitorQuestions();
     const report = aggregateVisitorQuestionsReport(rows);
+    const repoInfo = resolveGithubRepo();
     return res.status(200).json({
       ok: true,
       ...report,
       fetchedAt: new Date().toISOString(),
       note: "Visitor questions from site footers (replaces mailto). Stored in data/leads/visitor-questions.csv.",
       csvPath: "data/leads/visitor-questions.csv",
+      storageRepo: repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : null,
+      rawRowCount: rows.length,
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Visitor questions report error";

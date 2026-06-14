@@ -1106,6 +1106,12 @@
         }
 
         var note = data.note || "";
+        if (data.storageRepo) {
+          note += " Repo: " + data.storageRepo + ".";
+        }
+        if (typeof data.rawRowCount === "number") {
+          note += " CSV rows: " + data.rawRowCount + ".";
+        }
         if (!items.length) {
           note += " Questions appear when visitors use Ask a question in the site footer.";
         }
@@ -1159,9 +1165,9 @@
               if (portal.body && portal.body.hint) pmsg += " — " + portal.body.hint;
               portalStatus.textContent = pmsg;
               portalStatus.className = "status err";
-              return;
+            } else {
+              renderPortalUsers(portal.body);
             }
-            renderPortalUsers(portal.body);
 
             if (!visitorQuestions.ok) {
               document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";

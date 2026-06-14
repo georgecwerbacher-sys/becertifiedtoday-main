@@ -77,14 +77,24 @@ function parseCsvContent(content) {
   return rows;
 }
 
-function resolveGithubRepo() {
-  const combined = (process.env.GITHUB_LEADS_REPO || "").trim();
+function sanitizeRepoPart(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^["']+|["']+$/g, "");
+}
+
+export function resolveGithubRepo() {
+  const combined = sanitizeRepoPart(process.env.GITHUB_LEADS_REPO || "");
   if (combined.includes("/")) {
-    const [owner, name] = combined.split("/", 2);
+    const [owner, name] = combined.split("/", 2).map(sanitizeRepoPart);
     if (owner && name) return { owner, repo: name };
   }
-  const owner = (process.env.GITHUB_LEADS_REPO_OWNER || process.env.VERCEL_GIT_REPO_OWNER || "").trim();
-  const repo = (process.env.GITHUB_LEADS_REPO_NAME || process.env.VERCEL_GIT_REPO_SLUG || "").trim();
+  const owner = sanitizeRepoPart(
+    process.env.GITHUB_LEADS_REPO_OWNER || process.env.VERCEL_GIT_REPO_OWNER || ""
+  );
+  const repo = sanitizeRepoPart(
+    process.env.GITHUB_LEADS_REPO_NAME || process.env.VERCEL_GIT_REPO_SLUG || ""
+  );
   if (!owner || !repo) return null;
   return { owner, repo };
 }
@@ -98,8 +108,12 @@ function encodeGithubContent(text) {
   return Buffer.from(text, "utf8").toString("base64");
 }
 
+function githubContentsUrl(owner, repo, filePath) {
+  return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${filePath.split("/").map(encodeURIComponent).join("/")}`;
+}
+
 async function fetchGithubFile({ token, owner, repo, filePath }) {
-  const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${filePath.split("/").map(encodeURIComponent).join("/")}`;
+  const url = githubContentsUrl(owner, repo, filePath);
   const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -114,6 +128,27 @@ async function fetchGithubFile({ token, owner, repo, filePath }) {
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`github_get_${res.status}:${text.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  return { content: decodeGithubContent(data), sha: data.sha || null };
+}
+
+/** Public repos: read CSV without a token (admin report fallback). */
+async function fetchGithubFilePublic({ owner, repo, filePath }) {
+  const url = githubContentsUrl(owner, repo, filePath);
+  const res = await fetch(url, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "becertifiedtoday-visitor-questions",
+    },
+  });
+  if (res.status === 404) {
+    return { content: CSV_HEADER + "\n", sha: null };
+  }
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`github_public_get_${res.status}:${text.slice(0, 200)}`);
   }
   const data = await res.json();
   return { content: decodeGithubContent(data), sha: data.sha || null };
@@ -242,9 +277,25 @@ export async function appendVisitorQuestion(body) {
 export async function readVisitorQuestions() {
   const token = (process.env.GITHUB_LEADS_TOKEN || "").trim();
   const repoInfo = resolveGithubRepo();
-  if (token && repoInfo) {
-    const file = await fetchGithubFile({ token, ...repoInfo, filePath: VISITOR_QUESTIONS_CSV_REL });
-    return parseCsvContent(file.content);
+  if (repoInfo) {
+    if (token) {
+      try {
+        const file = await fetchGithubFile({
+          token,
+          ...repoInfo,
+          filePath: VISITOR_QUESTIONS_CSV_REL,
+        });
+        const rows = parseCsvContent(file.content);
+        if (rows.length) return rows;
+      } catch (err) {
+        console.warn("[visitor-question] token read failed, trying public:", err?.message || err);
+      }
+    }
+    const publicFile = await fetchGithubFilePublic({
+      ...repoInfo,
+      filePath: VISITOR_QUESTIONS_CSV_REL,
+    });
+    return parseCsvContent(publicFile.content);
   }
   if (canWriteLocal()) {
     const filePath = path.join(process.cwd(), VISITOR_QUESTIONS_CSV_REL);
