@@ -305,8 +305,8 @@
           <div>
             <label for="range">Date range</label>
             <select id="range">
-              <option value="today">Today</option>
-              <option value="7d" selected>Last 7 days</option>
+              <option value="today" selected>Today</option>
+              <option value="7d">Last 7 days</option>
               <option value="28d">Last 28 days</option>
               <option value="90d">Last 90 days</option>
             </select>
@@ -337,8 +337,7 @@
         <h2 style="margin:0 0 6px;font-size:1.05rem">Free sample completions</h2>
         <p class="section-note">
           How many times visitors <strong>finished</strong> a free sample track (CCNA, ENCOR, or Security+).
-          Counted when the sample scorecard or unlock modal appears — stored in
-          <code>home-sample-email-capture.csv</code>.
+          Uses the <strong>date range</strong> selector above (UTC).
         </p>
         <div class="row" style="margin-bottom:12px">
           <button type="button" id="sampleFunnelRefreshBtn" class="secondary">Refresh sample stats</button>
@@ -420,8 +419,8 @@
       <div class="panel" id="visitorQuestionsPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
         <p class="section-note">
-          Messages from the site <strong>Ask a question</strong> footer form (replaces mailto). Stored in
-          <code>visitor-questions.csv</code> on GitHub (<code>GITHUB_LEADS_REPO</code>).
+          Messages from the site <strong>Ask a question</strong> footer form. Filtered by the
+          <strong>date range</strong> selector above (UTC).
         </p>
         <div class="row" style="margin-bottom:12px">
           <button type="button" id="visitorQuestionsRefreshBtn" class="secondary">Refresh questions</button>
@@ -1155,7 +1154,11 @@
           note += " Repo: " + data.storageRepo + ".";
         }
         if (typeof data.rawRowCount === "number") {
-          note += " CSV rows: " + data.rawRowCount + ".";
+          note += " Showing " + data.rawRowCount + " in range";
+          if (typeof data.totalRowCount === "number" && data.totalRowCount !== data.rawRowCount) {
+            note += " (" + data.totalRowCount + " all time)";
+          }
+          note += ".";
         }
         if (!items.length) {
           note += " Questions appear when visitors use Ask a question in the site footer.";
@@ -1210,7 +1213,13 @@
 
         var note = data.note || "";
         if (data.storageRepo) note += " Repo: " + data.storageRepo + ".";
-        if (typeof data.rowCount === "number") note += " CSV rows: " + data.rowCount + ".";
+        if (typeof data.rowCount === "number") {
+          note += " Showing " + data.rowCount + " in range";
+          if (typeof data.totalRowCount === "number" && data.totalRowCount !== data.rowCount) {
+            note += " (" + data.totalRowCount + " all time)";
+          }
+          note += ".";
+        }
         if (!(totals.sampleCompletions || 0)) {
           note += " Finishes appear after visitors complete a sample and see the scorecard or unlock modal.";
         }
@@ -1221,7 +1230,7 @@
       function loadSampleFunnelReport() {
         document.getElementById("sampleFunnelStatus").textContent = "Loading sample completions…";
         document.getElementById("sampleFunnelStatus").className = "status";
-        return postJson("/api/sample-lead", { action: "report" })
+        return postJson("/api/sample-lead", { action: "report", range: rangeEl.value })
           .then(function (res) {
             if (!res.ok) {
               document.getElementById("sampleFunnelSummaryCards").innerHTML = "";
@@ -1248,7 +1257,10 @@
       function loadVisitorQuestions() {
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
-        return postJson("/api/sample-lead", { action: "questions_report" })
+        return postJson("/api/sample-lead", {
+          action: "questions_report",
+          range: rangeEl.value,
+        })
           .then(function (res) {
             if (!res.ok) {
               document.getElementById("visitorQuestionsSummaryCards").innerHTML = "";
@@ -1279,8 +1291,10 @@
         portalStatus.className = "status";
         document.getElementById("sampleCheckoutStatus").textContent = "Loading Stripe checkout metrics…";
         document.getElementById("sampleCheckoutStatus").className = "status";
-        document.getElementById("visitorQuestionsStatus").textContent = "";
+        document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
+        document.getElementById("sampleFunnelStatus").textContent = "Loading sample completions…";
+        document.getElementById("sampleFunnelStatus").className = "status";
         document.getElementById("campaignMarketingStatus").textContent = "Loading campaign marketing…";
         document.getElementById("campaignMarketingStatus").className = "status";
 

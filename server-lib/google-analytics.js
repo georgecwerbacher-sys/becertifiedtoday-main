@@ -519,3 +519,44 @@ export function rangeFromPreset(preset) {
       return { startDate: "7daysAgo", endDate: "today" };
   }
 }
+
+const RANGE_PRESET_LABELS = {
+  today: "Today",
+  "7d": "Last 7 days",
+  "28d": "Last 28 days",
+  "90d": "Last 90 days",
+};
+
+/** UTC instant at start of the admin range preset (inclusive). */
+export function utcStartFromPreset(preset) {
+  const now = new Date();
+  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  switch (preset) {
+    case "today":
+      break;
+    case "28d":
+      start.setUTCDate(start.getUTCDate() - 27);
+      break;
+    case "90d":
+      start.setUTCDate(start.getUTCDate() - 89);
+      break;
+    case "7d":
+    default:
+      start.setUTCDate(start.getUTCDate() - 6);
+      break;
+  }
+  return start.toISOString();
+}
+
+export function rangePresetLabel(preset) {
+  return RANGE_PRESET_LABELS[preset] || RANGE_PRESET_LABELS["7d"];
+}
+
+/** Filter CSV rows with ISO timestamps (e.g. captured_at_utc) to admin range. */
+export function filterRowsFromUtcStart(rows, preset, field = "captured_at_utc") {
+  const startIso = utcStartFromPreset(preset);
+  return (rows || []).filter((row) => {
+    const t = row && row[field];
+    return typeof t === "string" && t.length >= 10 && t >= startIso;
+  });
+}

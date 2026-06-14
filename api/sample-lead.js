@@ -5,6 +5,7 @@
  * Admin reports: { action: "report" | "questions_report" } + Bearer <admin JWT>
  */
 import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { filterRowsFromUtcStart, rangePresetLabel } from "../server-lib/google-analytics.js";
 import {
   aggregateSampleLeadReport,
   appendSampleLeadEvent,
@@ -129,6 +130,12 @@ async function handleQuestionSubmit(req, res, body) {
   });
 }
 
+function normalizeRangePreset(raw) {
+  const p = typeof raw === "string" ? raw.trim().toLowerCase() : "";
+  if (p === "today" || p === "7d" || p === "28d" || p === "90d") return p;
+  return "7d";
+}
+
 async function handleQuestionsReport(req, res, body) {
   const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
   const token = bearerToken(req) || (body.token || "");
@@ -141,18 +148,24 @@ async function handleQuestionsReport(req, res, body) {
     return res.status(401).json({ ok: false, error: "Unauthorized" });
   }
 
+  const range = normalizeRangePreset(body.range);
+
   try {
-    const rows = await readVisitorQuestions();
+    const allRows = await readVisitorQuestions();
+    const rows = filterRowsFromUtcStart(allRows, range);
     const report = aggregateVisitorQuestionsReport(rows);
     const repoInfo = resolveGithubRepo();
     return res.status(200).json({
       ok: true,
       ...report,
+      range,
+      rangeLabel: rangePresetLabel(range),
       fetchedAt: new Date().toISOString(),
-      note: "Visitor questions from site footers (replaces mailto). Stored in data/leads/visitor-questions.csv.",
+      note: `Visitor questions (${rangePresetLabel(range)}). From site footer Ask a question form.`,
       csvPath: "data/leads/visitor-questions.csv",
       storageRepo: repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : null,
       rawRowCount: rows.length,
+      totalRowCount: allRows.length,
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Visitor questions report error";
@@ -179,21 +192,26 @@ async function handleReport(req, res, body) {
     return res.status(401).json({ ok: false, error: "Unauthorized" });
   }
 
+  const range = normalizeRangePreset(body.range);
+
   try {
-    const rows = await readSampleLeadEvents();
+    const allRows = await readSampleLeadEvents();
+    const rows = filterRowsFromUtcStart(allRows, range);
     const report = aggregateSampleLeadReport(rows);
     return res.status(200).json({
       ok: true,
       ...report,
+      range,
+      rangeLabel: rangePresetLabel(range),
       fetchedAt: new Date().toISOString(),
       note:
-        "Free sample completions (questions, drag-and-drop, labs, simulations) logged when visitors finish a sample track. " +
-        "Email capture counts are timed-simulation unlocks after the sample funnel.",
+        `Free sample completions (${rangePresetLabel(range)}). Logged when visitors finish a sample track.`,
       csvPath: "data/leads/home-sample-email-capture.csv",
       storageRepo: (() => {
         const repo = resolveGithubRepo();
         return repo ? `${repo.owner}/${repo.repo}` : null;
       })(),
+      totalRowCount: allRows.length,
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Sample lead report error";
