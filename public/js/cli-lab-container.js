@@ -3933,6 +3933,20 @@
 
   window.cliLabContainer = api;
 
+  function notifyCliLabComplete(detail) {
+    try {
+      document.dispatchEvent(
+        new CustomEvent("bcc-cli-lab-complete", {
+          detail: detail || {},
+        })
+      );
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  window.bccNotifyCliLabComplete = notifyCliLabComplete;
+
   if (typeof window.expandInterfaceEcho !== "function") {
     window.expandInterfaceEcho = expandInterfaceEcho;
   }

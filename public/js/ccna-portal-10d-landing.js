@@ -1,6 +1,6 @@
 /**
  * CCNA home — Google Ads `ccna_portal_10d` landing (`utm_content=portal-10d`).
- * Purchase fold shows 10-day $9.99 as the only primary CTA; scrolls to #purchase.
+ * 10-day $9.99 is already the default offer; this script hides the 30-day tier and scrolls to #purchase.
  */
 (function () {
   "use strict";
@@ -29,13 +29,8 @@
   }
 
   function applyPurchaseVariant() {
-    var defaultBlock = document.getElementById("ccnaPurchaseDefault");
-    var tenDayBlock = document.getElementById("ccnaPurchase10d");
     var purchase = document.getElementById("purchase");
-    if (!defaultBlock || !tenDayBlock || !purchase) return;
-
-    defaultBlock.hidden = true;
-    tenDayBlock.hidden = false;
+    if (!purchase) return;
     purchase.classList.add("purchase-fold--single-offer");
   }
 

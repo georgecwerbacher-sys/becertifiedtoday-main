@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="/js/ga-site-config.js"></script>
+  <script src="/js/analytics-exclude.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
+  <script src="/js/install-vercel-analytics.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="CCNA labs without GNS3 or Packet Tracer. Run realistic VLAN and routing CLI simulations in your browser—same testing engine as full access. Try a free VLAN lab sample."
+  />
+  <meta
+    name="keywords"
+    content="ccna labs without gns3, ccna lab simulation browser, ccna vlan lab online, ccna cli lab, ccna labs without packet tracer, ccna realistic lab simulation"
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/ccna/labs-without-gns3.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CCNA Labs Without GNS3 | Browser CLI Simulation | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="Realistic CCNA CLI lab simulation in your browser. No GNS3, Packet Tracer, or VM install. Try a free VLAN lab sample."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/ccna/labs-without-gns3.html" />
+  <meta
+    property="og:image"
+    content="https://becertifiedtoday.com/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
+  />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CCNA Labs Without GNS3 | Browser CLI Simulation" />
+  <meta
+    name="twitter:description"
+    content="Realistic CCNA CLI labs in your browser—no GNS3. Free VLAN lab sample."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>CCNA Labs Without GNS3 | Browser CLI Simulation | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "CCNA Labs Without GNS3 — Browser CLI Simulation",
+      "url": "https://becertifiedtoday.com/ccna/labs-without-gns3.html",
+      "description": "Realistic CCNA 200-301 CLI lab simulation in the browser without GNS3 or Packet Tracer. Free VLAN lab sample.",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "https://becertifiedtoday.com/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Be Certified Today",
+        "url": "https://becertifiedtoday.com/"
+      }
+    }
+  </script>
+  <style>
+    :root {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
+      --accent: #2f66bf;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --muted: #9fb0cc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page-bg);
+      color: var(--page-text);
+      line-height: 1.55;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px clamp(20px, 4vw, 40px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .brand img { display: block; width: 56px; height: 56px; }
+    .header-link {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.92rem;
+    }
+    .header-link:hover { text-decoration: underline; }
+    main {
+      flex: 1;
+      width: min(920px, 100%);
+      margin: 0 auto;
+      padding: clamp(28px, 5vw, 48px) clamp(20px, 4vw, 40px) clamp(48px, 8vw, 72px);
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6b8ab8;
+    }
+    .tagline {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--accent);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.7rem, 4.5vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      max-width: 22ch;
+    }
+    .lead {
+      margin: 0 0 clamp(24px, 4vw, 32px);
+      max-width: 52ch;
+      font-size: 1.05rem;
+      color: var(--page-muted);
+    }
+    .proof {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+      box-shadow: 0 12px 32px rgba(13, 21, 40, 0.12);
+      background: #0b1020;
+    }
+    .proof img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .proof figcaption {
+      margin: 0;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .pillars {
+      margin: 0 0 clamp(28px, 5vw, 40px);
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .pillars { grid-template-columns: repeat(3, 1fr); }
+    }
+    .pillars li {
+      margin: 0;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+      background: linear-gradient(165deg, rgba(47, 102, 191, 0.12) 0%, rgba(255, 255, 255, 1) 100%);
+      font-size: 0.9rem;
+      color: var(--page-muted);
+    }
+    .pillars strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--page-text);
+      font-size: 0.95rem;
+    }
+    .cta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 420px;
+      margin: 0 0 clamp(32px, 5vw, 48px);
+    }
+    .cta-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.55);
+      background: linear-gradient(165deg, #3b7ad9 0%, #2f66bf 48%, #1f4282 100%);
+      color: #fff;
+      font-size: 1.02rem;
+      font-weight: 800;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(47, 102, 191, 0.35);
+      cursor: pointer;
+    }
+    .cta-main:hover { filter: brightness(1.06); }
+    .cta-main--free {
+      border-color: rgba(61, 157, 114, 0.65);
+      background: linear-gradient(165deg, #45a872 0%, #2f8f58 42%, #247048 100%);
+      box-shadow: 0 8px 24px rgba(36, 112, 72, 0.35);
+    }
+    .cta-note {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--page-muted);
+    }
+    .cta-note a {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .offer-card {
+      margin: 0 0 clamp(40px, 6vw, 64px);
+      padding: clamp(20px, 4vw, 28px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    }
+    .offer-card h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.2rem, 3vw, 1.45rem);
+      color: #e6edf3;
+    }
+    .offer-price {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 4vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .offer-price span {
+      font-size: 0.5em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .offer-lead {
+      margin: 0 0 18px;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+    .compare {
+      margin: 0 0 clamp(40px, 6vw, 64px);
+    }
+    .compare h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    }
+    .compare-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+    }
+    table {
+      width: 100%;
+      min-width: 480px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    thead th {
+      background: rgba(18, 26, 43, 0.95);
+      color: #c8daf8;
+      font-weight: 800;
+    }
+    tbody th { color: var(--page-text); white-space: nowrap; }
+    .col-bct { background: rgba(47, 102, 191, 0.08); font-weight: 700; }
+    .faq h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    }
+    .faq details {
+      margin: 0 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+    .faq summary {
+      padding: 14px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq .answer {
+      padding: 0 16px 14px;
+      color: var(--page-muted);
+      font-size: 0.92rem;
+    }
+    footer {
+      padding: 20px clamp(20px, 4vw, 40px);
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--page-muted);
+      text-align: center;
+    }
+    footer a { color: var(--accent); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/ccna-home.html" aria-label="Be Certified Today CCNA home">
+        <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="56" height="56" alt="" />
+      </a>
+      <a class="header-link" href="/ccna-home.html">Full CCNA library →</a>
+    </header>
+
+    <main>
+      <p class="eyebrow">CCNA 200-301 · browser CLI labs</p>
+      <p class="tagline">Practice like test day. Walk in ready.</p>
+      <h1>CCNA Labs Without GNS3 — Realistic CLI Simulation in Your Browser</h1>
+      <p class="lead">
+        Configure VLANs, trunks, and switch ports in a <strong>realistic CLI lab</strong> that runs entirely in your browser.
+        No GNS3, Packet Tracer download, IOU, or VM required—the same testing engine you get with full library access.
+      </p>
+
+      <figure class="proof">
+        <img
+          src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
+          width="1024"
+          height="610"
+          alt="Dual-switch VLAN lab topology with data and voice VLAN port assignments."
+          loading="eager"
+          fetchpriority="high"
+        />
+        <figcaption>Free VLAN lab sample — type real IOS-style commands in the browser console.</figcaption>
+      </figure>
+
+      <ul class="pillars" aria-label="Why browser labs">
+        <li>
+          <strong>Exam-realistic CLI</strong>
+          Type commands, see device output, and complete objectives—not a static screenshot walkthrough.
+        </li>
+        <li>
+          <strong>No install</strong>
+          Works on phone, tablet, and desktop. Nothing to download on a locked-down work laptop.
+        </li>
+        <li>
+          <strong>Verified answers</strong>
+          Lab objectives and explanations tied to official Cisco CCNA 200-301 sources.
+        </li>
+      </ul>
+
+      <div class="cta-row">
+        <a class="cta-main cta-main--free" href="/sample?track=ccna-vlan">Try free VLAN lab sample →</a>
+        <p class="cta-note">Same browser UI as paid access. No checkout required.</p>
+      </div>
+
+      <section class="offer-card" aria-labelledby="offer-title">
+        <h2 id="offer-title">Unlock all CCNA labs + timed simulation</h2>
+        <p class="offer-price">$9.99 <span>/ 10 days · one-time</span></p>
+        <p class="offer-lead">
+          Full VLAN, routing, and performance-style CLI labs, drag-and-drop sets, question banks, and the
+          <strong>120-minute timed simulation</strong>—all in your browser. No subscription.
+        </p>
+        <button
+          type="button"
+          class="cta-main"
+          data-ccna-portal-10d-checkout
+          data-bcc-item-id="ccna_portal_10d"
+          data-bcc-item-name="CCNA 10-day access"
+          data-bcc-value="9.99"
+          data-bcc-currency="USD"
+          aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
+        >
+          Get 10-day access · $9.99
+        </button>
+      </section>
+
+      <section class="compare" aria-labelledby="compare-title">
+        <h2 id="compare-title">Browser labs vs. GNS3 / Packet Tracer</h2>
+        <div class="compare-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Need</th>
+                <th scope="col">GNS3 / Packet Tracer</th>
+                <th scope="col" class="col-bct">Be Certified Today</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Setup</th>
+                <td>Install app, images, or PT files</td>
+                <td class="col-bct">Open a URL—lab runs in browser</td>
+              </tr>
+              <tr>
+                <th scope="row">Work laptop</th>
+                <td>Often blocked by IT policy</td>
+                <td class="col-bct">No admin rights required</td>
+              </tr>
+              <tr>
+                <th scope="row">Exam alignment</th>
+                <td>Topology building practice</td>
+                <td class="col-bct">Objective-focused CLI sims + timed mixed exam</td>
+              </tr>
+              <tr>
+                <th scope="row">Mobile study</th>
+                <td>Usually desktop-only</td>
+                <td class="col-bct">Touch-friendly on phone and tablet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">FAQ</h2>
+        <details open>
+          <summary>Do I need GNS3 or Packet Tracer for these labs?</summary>
+          <div class="answer">
+            <p>No. Labs run in the browser testing engine. You do not install third-party network simulation software.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Can I try a lab before I pay?</summary>
+          <div class="answer">
+            <p>
+              Yes. The
+              <a href="/sample?track=ccna-vlan">free VLAN CLI lab sample</a>
+              uses the same UI as full access—no account or checkout required.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Does $9.99 auto-renew?</summary>
+          <div class="answer">
+            <p>No. The 10-day pass is a one-time purchase. You only pay again if you want another access window.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Can I study on a phone or tablet?</summary>
+          <div class="answer">
+            <p>Yes. CLI labs and drag-and-drop run in Safari, Chrome, or Firefox on mobile and desktop.</p>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      © Be Certified Today ·
+      <a href="/ccna-home.html">CCNA exam prep home</a>
+      ·
+      <a href="/index.html">All certifications</a>
+    </footer>
+  </div>
+
+  <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
+</body>
+</html>

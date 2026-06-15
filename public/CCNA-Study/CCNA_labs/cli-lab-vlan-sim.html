@@ -1312,6 +1312,9 @@ Sw2# copy running-config startup-config</pre>
         passBanner.classList.add("visible");
         passBanner.textContent = VLAN_LAB_ALL_DONE_MSG;
         if (append) append("line-sys", VLAN_LAB_ALL_DONE_MSG);
+        if (typeof window.bccNotifyCliLabComplete === "function") {
+          window.bccNotifyCliLabComplete({ lab: "vlan-sim" });
+        }
       }
 
       function isModeNavigationCommand(normalizedCmd) {

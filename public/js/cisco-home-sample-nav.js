@@ -642,8 +642,11 @@
     });
   }
 
+  var ccnaPortalOfferShown = false;
+
   function showCcnaPortalOfferModal(session, finishHome) {
     if (document.getElementById("ciscoCcnaPortalOffer")) return;
+    ccnaPortalOfferShown = true;
 
     ensureSampleLeadAnalytics();
     finalizeSampleResults(session);
@@ -768,6 +771,10 @@
       sampleKindHint().indexOf("ccna") === 0;
 
     if (isCcna && !hasCcnaPortalAccess()) {
+      if (ccnaPortalOfferShown) {
+        navigateAfterSample(home, session);
+        return;
+      }
       showCcnaPortalOfferModal(session, home);
       return;
     }
@@ -1098,7 +1105,7 @@
       ".cisco-sample-scorecard-actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}" +
       ".cisco-sample-scorecard-primary{border:1px solid #2f66bf;background:#2f66bf;color:#f8fafc;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%}" +
       ".cisco-sample-scorecard-primary:hover{filter:brightness(1.06)}" +
-      ".cisco-ccna-offer-root{position:fixed;inset:0;z-index:20004;display:flex;align-items:center;justify-content:center;padding:16px}" +
+      ".cisco-ccna-offer-root{position:fixed;inset:0;z-index:26005;display:flex;align-items:center;justify-content:center;padding:16px}" +
       ".cisco-ccna-offer-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.78);backdrop-filter:blur(4px)}" +
       ".cisco-ccna-offer-panel{position:relative;z-index:1;width:min(560px,100%);max-height:min(92vh,760px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px);border-radius:16px;border:1px solid #4f84d8;background:linear-gradient(165deg,rgba(22,32,52,.98) 0%,rgba(14,20,36,.99) 100%);color:#e6edf3;box-shadow:0 24px 64px rgba(0,0,0,.45)}" +
       ".cisco-ccna-offer-close{position:absolute;top:10px;right:12px;border:0;background:transparent;color:#9fb0cc;font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 8px}" +
@@ -1144,7 +1151,29 @@
     }
   }
 
+  function onCliLabComplete() {
+    var session = activeSessionConfig();
+    if (!session) return;
+    var index = currentItemIndex(session);
+    if (index < 0) return;
+    var item = session.order[index];
+    if (!item || item.type !== "lab") return;
+    try {
+      if (new URLSearchParams(location.search).get("sample") !== "1") return;
+    } catch (e) {
+      return;
+    }
+    var isCcna =
+      session.product === "ccna" ||
+      resolveLeadConfig(session).key === SESSIONS.ccna.key ||
+      sampleKindHint().indexOf("ccna") === 0;
+    if (!isCcna || hasCcnaPortalAccess()) return;
+    if (ccnaPortalOfferShown || document.getElementById("ciscoCcnaPortalOffer")) return;
+    showCcnaPortalOfferModal(session, session.finishHome);
+  }
+
   function scheduleRuns() {
+    document.addEventListener("bcc-cli-lab-complete", onCliLabComplete);
     run();
     setTimeout(run, 0);
     window.addEventListener("load", run);
