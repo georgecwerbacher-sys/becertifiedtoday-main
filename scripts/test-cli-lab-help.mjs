@@ -2,22 +2,23 @@
 /**
  * Smoke-test IOS ? help chains for CCNA CLI labs (router + switch).
  *
- * Profiles and router help docs: scripts/lib/cli-lab-router-help.mjs
+ * Profiles: scripts/lib/cli-lab-help-profiles.mjs
+ *   Router docs: scripts/lib/cli-lab-router-help.mjs
+ *   Switch docs: scripts/lib/cli-lab-switch-help.mjs
  *
  * Usage:
+ *   node scripts/test-cli-lab-help.mjs cli-lab-vlan-sim.html
  *   node scripts/test-cli-lab-help.mjs cli-lab-nat-dhcp-sim.html
- *   node scripts/test-cli-lab-help.mjs cli-lab-ip-services-sim-v2.html
- *   node scripts/test-cli-lab-help.mjs CCNA_Samples/cli-lab-ip-services-sim-v2.html
  *   node scripts/test-cli-lab-help.mjs --all
  */
 import { readFileSync } from "fs";
 import vm from "vm";
 import {
   ALL_PROFILE_KEYS,
-  ROUTER_HELP_PROFILES,
-  getHelpProfile,
-  normalizeLabBasename,
-} from "./lib/cli-lab-router-help.mjs";
+  LAB_HELP_PROFILES,
+  getLabHelpProfile,
+  resolveProfileKey,
+} from "./lib/cli-lab-help-profiles.mjs";
 
 function makeEl() {
   const el = {
@@ -65,16 +66,8 @@ function loadCliLabContainer(pathname) {
   return sandbox.window.cliLabContainer;
 }
 
-function resolveProfileKey(arg) {
-  if (!arg) return "cli-lab-ip-services-sim-v2.html";
-  if (arg === "--all") return "--all";
-  const normalized = normalizeLabBasename(arg);
-  if (ROUTER_HELP_PROFILES[normalized]) return normalized;
-  return null;
-}
-
 function runProfile(key) {
-  const profile = getHelpProfile(key);
+  const profile = getLabHelpProfile(key);
   if (!profile) {
     console.error(`No profile for ${key}`);
     return 1;
@@ -117,16 +110,8 @@ function runProfile(key) {
 }
 
 const arg = process.argv[2];
-const resolved = resolveProfileKey(arg);
 
-if (!resolved) {
-  console.error(`Unknown lab: ${arg}`);
-  console.error("Known labs:", Object.keys(ROUTER_HELP_PROFILES).join(", "));
-  console.error("Or pass --all to run every profile.");
-  process.exit(1);
-}
-
-if (resolved === "--all") {
+if (!arg || arg === "--all") {
   let totalFailed = 0;
   for (const key of ALL_PROFILE_KEYS) {
     totalFailed += runProfile(key);
@@ -137,6 +122,14 @@ if (resolved === "--all") {
   }
   console.log(`All ${ALL_PROFILE_KEYS.length} lab profiles passed.`);
   process.exit(0);
+}
+
+const resolved = resolveProfileKey(arg);
+if (!resolved) {
+  console.error(`Unknown lab: ${arg}`);
+  console.error("Known labs:", Object.keys(LAB_HELP_PROFILES).join(", "));
+  console.error("Or pass --all to run every profile.");
+  process.exit(1);
 }
 
 process.exit(runProfile(resolved) ? 1 : 0);

@@ -2,16 +2,6 @@
 <!--
   Reference switch lab — IOS `?` help and CLI login banner patterns for all switches.
 
-  Shared defaults (/js/cli-lab-container.js) when SWITCH_CLI_HELP = null:
-  - DEFAULT_SWITCH_CLI_HELP — baseline for every switch session (Sw1, Sw2, …)
-  - Login banner (BCT_CLI_HELP_NOTICE) — injected when each switch CLI modal opens
-  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))
-
-  Switch `?` chains (read-only; full key list in templates/containers/cli-container-template.html):
-    VLAN: (config)# vlan ?  |  (config-vlan)# ?
-    Show: show vlan ?  →  show vlan id ?  |  show vlan name ?
-    Interface: interface ?  →  interface gigabitethernet ?  |  interface range ?
-    Trunk/LACP: switchport trunk ? … native ? … vlan ?  |  channel-group ?  |  channel-protocol ?
 
   CLI shell: templates/containers/cli-container-template.html (overlay → dialog → .terminal → #swScrollback + .input-row).
   Wire-up: bindLocalHistory(swCmdline|sw2|pc) before keydown Enter→submit* (see template). Lab-specific: dual Sw1/Sw2 STEPS,
@@ -19,6 +9,22 @@
 
   Patterns: LAB_STEPS + normalize, trySwNavSoftLine, pushLocalHistory inside submit, reset clears history/flags, spoiler,
   draggable modals + Escape, VLAN submode (vlan <id>, name, exit).
+
+  IOS `?` help — SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP (/js/cli-lab-container.js):
+  tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)) in every switch submit handler.
+  Help is read-only — using ? does not change config, advance steps, or affect completion.
+
+  VLAN: (config)# vlan ?  |  (config-vlan)# ? (name / exit / end)
+  Show: show vlan ?  →  show vlan id ?  |  show vlan name ?
+  Interface: (config)# interface ?  →  interface gigabitethernet ?  |  interface range ?
+  Access: (config-if)# switchport mode ?  |  switchport access ?  |  switchport voice ?  →  switchport voice vlan ?
+  Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?
+    channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?
+  Identity: username / line vty / login / transport input ? (shared with router baseline)
+  NTP/SSH (L3 switch): ntp server ?; ip helper-address ?; crypto key generate rsa …; ip ssh version ?
+  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html
+  Switch template: templates/labs/cli-lab-switch-baseline.html
+  Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help
 -->
 <html lang="en">
 <head>

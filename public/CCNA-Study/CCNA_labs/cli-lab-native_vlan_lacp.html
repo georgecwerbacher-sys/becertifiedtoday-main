@@ -11,6 +11,22 @@
   - Device picker (SW1 / SW2 / PC1 / PC2), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
 
   For a fifth IOS CLI (e.g. R3), copy the SW2 modal + submit/reset/open pattern from cli-lab-ip-services-sim-v2.html.
+
+  IOS `?` help — SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP (/js/cli-lab-container.js):
+  tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)) in every switch submit handler.
+  Help is read-only — using ? does not change config, advance steps, or affect completion.
+
+  VLAN: (config)# vlan ?  |  (config-vlan)# ? (name / exit / end)
+  Show: show vlan ?  →  show vlan id ?  |  show vlan name ?
+  Interface: (config)# interface ?  →  interface gigabitethernet ?  |  interface range ?
+  Access: (config-if)# switchport mode ?  |  switchport access ?  |  switchport voice ?  →  switchport voice vlan ?
+  Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?
+    channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?
+  Identity: username / line vty / login / transport input ? (shared with router baseline)
+  NTP/SSH (L3 switch): ntp server ?; ip helper-address ?; crypto key generate rsa …; ip ssh version ?
+  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html
+  Switch template: templates/labs/cli-lab-switch-baseline.html
+  Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help
 -->
 <html lang="en">
 <head>

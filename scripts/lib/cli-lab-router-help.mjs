@@ -200,7 +200,6 @@ export const ROUTER_HELP_PROFILES = {
     label: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].label,
     pathname: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].pathname,
     cases: [...CORE_ROUTER_CASES, ...NAT_DHCP_ROUTER_CASES],
-    switchCases: NAT_DHCP_SWITCH_CASES,
   },
   "cli-lab-ospf_config_sim_v3.html": {
     label: ROUTER_LAB_META["cli-lab-ospf_config_sim_v3.html"].label,
@@ -274,9 +273,7 @@ export function getHelpProfile(labRef) {
   const basename = normalizeLabBasename(labRef);
   const profile = ROUTER_HELP_PROFILES[basename];
   if (!profile) return null;
-  const cases = [...profile.cases];
-  if (profile.switchCases?.length) cases.push(...profile.switchCases);
-  return { ...profile, cases };
+  return { ...profile, cases: [...profile.cases] };
 }
 
 function main() {
