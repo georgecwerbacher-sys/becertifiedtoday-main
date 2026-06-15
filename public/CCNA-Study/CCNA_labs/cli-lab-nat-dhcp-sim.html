@@ -27,8 +27,9 @@
     permit ? → any / host / <ip-address> / <line-number>
   NAT: (config)# ip nat ?; ip nat inside ? (source); ip nat inside source ?;
     ip nat inside source list <acl> ? (pool / interface); … pool ? (<name>); … pool <name> ? (overload);
+    … interface ? (<if>); … interface <if> ? (overload);
     ip nat pool ? / … netmask ? (A.B.C.D); (config-if)# ip nat ? (inside / outside)
-  NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source-interface ?
+  NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source ?
   SSH: crypto ? → key ? → generate ? → rsa ? → modulus ?;
     username ?; username … privilege … secret ? (<password>); line vty / login / transport input ?
   Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
@@ -667,7 +668,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
               <strong>Task 2.</strong> Configure NTP on <strong>R1</strong> and <strong>Sw1</strong> using the following information:
               <ul class="tasks-sublist">
                 <li>NTP server = R1</li>
-                <li>Source = Loopback 0</li>
+                <li>R1: <code>ntp source Loopback0</code></li>
                 <li>Client = Sw1</li>
               </ul>
             </li>
@@ -838,7 +839,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
           <h2>NAT, NTP, DHCP relay, and SSH — lab helper</h2>
           <ul class="helper-bullets helper-bullets-overview">
             <li><strong>Task 1 — R1:</strong> finish NAT/PAT (overload).</li>
-            <li><strong>Task 2 — R1 / Sw1:</strong> NTP server on R1 (Lo0); NTP client on Sw1.</li>
+            <li><strong>Task 2 — R1 / Sw1:</strong> NTP server on R1 (<code>ntp master</code>, <code>ntp source Loopback0</code>); NTP client on Sw1.</li>
             <li><strong>Task 3 — Sw1 / PC1:</strong> DHCP relay toward R1; PC1 uses DHCP.</li>
             <li><strong>Task 4 — Sw1 / PC1:</strong> RSA SSH on Sw1; from PC1, log in with password <strong>BCT1234</strong> if configured correctly.</li>
             <li>Save running-config to startup on <strong>R1</strong> and <strong>Sw1</strong> when done.</li>
@@ -858,11 +859,11 @@ R1(config)# ip nat inside source list 192 interface e0/0 overload</pre>
           </ul>
 
           <h3 class="helper-task-title">
-            Task 2. Configure NTP on R1 and Sw1 (NTP server = R1; source = Loopback 0; client = Sw1).
+            Task 2. Configure NTP on R1 and Sw1 (NTP server = R1; R1: <code>ntp source Loopback0</code>; client = Sw1).
           </h3>
           <pre class="helper-cli">R1# configure terminal
 R1(config)# ntp master
-R1(config)# ntp source-interface Loopback0</pre>
+R1(config)# ntp source Loopback0</pre>
           <pre class="helper-cli">Sw1# configure terminal
 Sw1(config)# ntp server 209.165.202.134
 ! use R1 Loopback0 address (209.165.202.134)</pre>
@@ -974,7 +975,7 @@ R1(config)# ip nat inside source list 192 interface e0/0 overload</pre>
             </div>
             <pre class="spoiler-terminal-pre">R1# configure terminal
 R1(config)# ntp master
-R1(config)# ntp source-interface Loopback0</pre>
+R1(config)# ntp source Loopback0</pre>
           </div>
         </div>
         <div class="spoiler-task" aria-labelledby="spoiler-cap-task2-sw1">
@@ -1395,8 +1396,7 @@ Sw1#</pre>
           return normalize(raw) === "ntp master";
         }},
         { mode: "config", test: function (raw) {
-          var u = normalize(raw);
-          return u === "ntp source-interface loopback0" || u === "ntp source loopback0";
+          return normalize(raw) === "ntp source loopback0";
         }},
       ];
 
@@ -1430,7 +1430,7 @@ Sw1#</pre>
         t = t.replace(/\bint e0\//g, "interface ethernet0/");
         t = t.replace(/interface e0\//g, "interface ethernet0/");
         if (t === "ip ssh ver 2") t = "ip ssh version 2";
-        if (t === "ntp source loopback0") t = "ntp source-interface loopback0";
+        if (t === "ntp source-interface loopback0") t = "ntp source loopback0";
         if (t === "sh ntp status" || t === "sh ntp stat") t = "show ntp status";
         if (t === "do sh ntp status" || t === "do sh ntp stat") t = "do show ntp status";
         if (t === "show ip int brief" || t === "sh ip int brief" || t === "sh ip int brie") t = "show ip interface brief";
@@ -1517,7 +1517,9 @@ Sw1#</pre>
 
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
       /** null = DEFAULT_ROUTER_CLI_HELP (baseline for all routers). */
-      var ROUTER_CLI_HELP = null;
+      var ROUTER_CLI_HELP = {
+        ipNatInsideSourceListInterface: [{ cmd: "overload" }],
+      };
       /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";

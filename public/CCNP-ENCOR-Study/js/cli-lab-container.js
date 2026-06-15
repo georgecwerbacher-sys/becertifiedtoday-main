@@ -681,6 +681,8 @@
    *   ipNatInsideSourceList — (config)# ip nat inside source list <acl> ?
    *   ipNatInsideSourceListPool — (config)# ip nat inside source list <acl> pool ?
    *   ipNatInsideSourceListPoolName — (config)# ip nat inside source list <acl> pool <name> ?
+   *   ipNatInsideSourceListInterface — (config)# ip nat inside source list <acl> interface ?
+   *   ipNatInsideSourceListInterfaceOverload — (config)# ip nat inside source list <acl> interface <if> ?
    *   ipNatInside — (config)# ip nat inside ?
    *   configIfIp   — (config-if)# ip ?
    *   configIfIpNat — (config-if)# ip nat ?
@@ -1295,6 +1297,16 @@
     ipNatInsideSourceListPool: [{ cmd: "<name>" }],
     /** (config)# ip nat inside source list <acl> pool <name> ? */
     ipNatInsideSourceListPoolName: [{ cmd: "overload" }],
+    /** (config)# ip nat inside source list <acl> interface ? */
+    ipNatInsideSourceListInterface: [
+      { cmd: "Ethernet0/0" },
+      { cmd: "Ethernet0/1" },
+      { cmd: "GigabitEthernet0/0" },
+      { cmd: "GigabitEthernet0/1" },
+      { cmd: "Loopback0" },
+    ],
+    /** (config)# ip nat inside source list <acl> interface <if> ? */
+    ipNatInsideSourceListInterfaceOverload: [{ cmd: "overload" }],
     /** (config-if)# ip ? */
     configIfIp: [
       { cmd: "access-group" },
@@ -1477,6 +1489,8 @@
    *   ipNatInsideSourceList — (config)# ip nat inside source list <acl> ?
    *   ipNatInsideSourceListPool — (config)# ip nat inside source list <acl> pool ?
    *   ipNatInsideSourceListPoolName — (config)# ip nat inside source list <acl> pool <name> ?
+   *   ipNatInsideSourceListInterface — (config)# ip nat inside source list <acl> interface ?
+   *   ipNatInsideSourceListInterfaceOverload — (config)# ip nat inside source list <acl> interface <if> ?
    *   ipNatInside — (config)# ip nat inside ?
    *   configIfIp        — (config-if)# ip ?
    *   configIfIpNat     — (config-if)# ip nat ?
@@ -1638,6 +1652,9 @@
     ipNatInsideSourceList: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceList,
     ipNatInsideSourceListPool: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListPool,
     ipNatInsideSourceListPoolName: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListPoolName,
+    ipNatInsideSourceListInterface: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListInterface,
+    ipNatInsideSourceListInterfaceOverload:
+      DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListInterfaceOverload,
     ipNatInside: DEFAULT_ROUTER_CLI_HELP.ipNatInside,
     configIfIp: DEFAULT_ROUTER_CLI_HELP.configIfIp,
     configIfIpNat: DEFAULT_ROUTER_CLI_HELP.configIfIpNat,
@@ -2688,6 +2705,70 @@
     opts = opts || {};
     if (parsePromptMode(opts.promptText) !== "config") return false;
     var text = ipNatInsideSourceListPoolNameCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source list <acl> interface <if> ?` — PAT overload keyword. */
+
+  function isIpNatInsideSourceListInterfaceOverloadHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    return /^ip nat inside source list \S+ interface \S+ \?$/.test(t);
+  }
+
+  function ipNatInsideSourceListInterfaceOverloadCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSourceListInterfaceOverload"),
+      opts.ipNatInsideSourceListInterfaceOverloadExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceListInterfaceOverloadHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceListInterfaceOverloadHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceListInterfaceOverloadCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source list <acl> interface ?` — outside interface for PAT. */
+
+  function isIpNatInsideSourceListInterfaceHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    return /^ip nat inside source list \S+ interface \?$/.test(t);
+  }
+
+  function ipNatInsideSourceListInterfaceCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSourceListInterface"),
+      opts.ipNatInsideSourceListInterfaceExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceListInterfaceHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceListInterfaceHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceListInterfaceCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", text);
@@ -5165,6 +5246,8 @@
     if (tryAppendNtpMasterHelp(raw, appendFn, opts)) return true;
     if (tryAppendNtpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatInsideSourceListPoolNameHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceListInterfaceOverloadHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceListInterfaceHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatInsideSourceListPoolHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatInsideSourceListHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatInsideSourceHelp(raw, appendFn, opts)) return true;
@@ -5428,6 +5511,15 @@
     isIpNatInsideSourceListPoolNameHelpQuery: isIpNatInsideSourceListPoolNameHelpQuery,
     ipNatInsideSourceListPoolNameCommandHelpText: ipNatInsideSourceListPoolNameCommandHelpText,
     tryAppendIpNatInsideSourceListPoolNameHelp: tryAppendIpNatInsideSourceListPoolNameHelp,
+    isIpNatInsideSourceListInterfaceOverloadHelpQuery:
+      isIpNatInsideSourceListInterfaceOverloadHelpQuery,
+    ipNatInsideSourceListInterfaceOverloadCommandHelpText:
+      ipNatInsideSourceListInterfaceOverloadCommandHelpText,
+    tryAppendIpNatInsideSourceListInterfaceOverloadHelp:
+      tryAppendIpNatInsideSourceListInterfaceOverloadHelp,
+    isIpNatInsideSourceListInterfaceHelpQuery: isIpNatInsideSourceListInterfaceHelpQuery,
+    ipNatInsideSourceListInterfaceCommandHelpText: ipNatInsideSourceListInterfaceCommandHelpText,
+    tryAppendIpNatInsideSourceListInterfaceHelp: tryAppendIpNatInsideSourceListInterfaceHelp,
     isIpNatInsideSourceListPoolHelpQuery: isIpNatInsideSourceListPoolHelpQuery,
     ipNatInsideSourceListPoolCommandHelpText: ipNatInsideSourceListPoolCommandHelpText,
     tryAppendIpNatInsideSourceListPoolHelp: tryAppendIpNatInsideSourceListPoolHelp,

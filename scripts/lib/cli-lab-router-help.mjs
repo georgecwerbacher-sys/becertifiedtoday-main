@@ -28,6 +28,7 @@ export const ROUTER_HELP_BASE_CHAINS = [
   "  permit ? → any / host / <ip-address> / <line-number>",
   "NAT: (config)# ip nat ?; ip nat inside ? (source); ip nat inside source ?;",
   "  ip nat inside source list <acl> ? (pool / interface); … pool ? (<name>); … pool <name> ? (overload);",
+  "  … interface ? (<if>); … interface <if> ? (overload);",
   "  ip nat pool ? / … netmask ? (A.B.C.D); (config-if)# ip nat ? (inside / outside)",
   "NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source-interface ?",
   "SSH: crypto ? → key ? → generate ? → rsa ? → modulus ?;",
@@ -68,7 +69,10 @@ export const ROUTER_LAB_META = {
     label: "CCNA: DHCP, NAT, and SSH Simulation V.3",
     pathname: "/CCNA-Study/CCNA_labs/cli-lab-nat-dhcp-sim.html",
     intro: ["CLI lab — NAT overload, DHCP helper, NTP, SSH (R1 router + Sw1 switch)."],
-    extraChains: [],
+    extraChains: [
+      "R1 PAT: ip nat inside source list 192 interface ? (overload) — lab override; then interface e0/0 overload.",
+      "R1 NTP: ntp master; ntp source Loopback0 (not ntp source-interface).",
+    ],
   },
   "cli-lab-ospf_config_sim_v3.html": {
     label: "OSPF Configuration V.3",
@@ -134,6 +138,8 @@ export const IP_SERVICES_ROUTER_CASES = /** @type {HelpCase[]} */ ([
   ["router", "R2(config)#", "ip nat inside source list XLATE ?", ["pool", "interface"]],
   ["router", "R2(config)#", "ip nat inside source list XLATE pool ?", ["<name>"]],
   ["router", "R2(config)#", "ip nat inside source list XLATE pool test_pool ?", ["overload"]],
+  ["router", "R2(config)#", "ip nat inside source list XLATE interface ?", ["Ethernet0/0"]],
+  ["router", "R2(config)#", "ip nat inside source list XLATE interface ethernet0/0 ?", ["overload"]],
   ["router", "R2(config-if)#", "ip ?", ["address", "nat"]],
   ["router", "R2(config-if)#", "ip nat ?", ["inside", "outside"]],
   ["router", "R2(config-if)#", "ip address ?", ["dhcp"]],
@@ -157,9 +163,12 @@ export const NAT_DHCP_ROUTER_CASES = /** @type {HelpCase[]} */ ([
   ["router", "R1(config)#", "ip nat inside ?", ["source"]],
   ["router", "R1(config)#", "ip nat inside source ?", ["list", "static"]],
   ["router", "R1(config-if)#", "ip nat ?", ["inside", "outside"]],
+  ["router", "R1(config)#", "ip nat inside source list 192 ?", ["pool", "interface"]],
+  ["router", "R1(config)#", "ip nat inside source list 192 interface ?", ["overload"]],
+  ["router", "R1(config)#", "ip nat inside source list 192 interface ethernet0/0 ?", ["overload"]],
   ["router", "R1(config)#", "ntp ?", ["master", "server"]],
   ["router", "R1(config)#", "ntp master ?", ["<1-15>"]],
-  ["router", "R1(config)#", "ntp source-interface ?", ["Loopback0"]],
+  ["router", "R1(config)#", "ntp source ?", ["Loopback0"]],
 ]);
 
 export const NAT_DHCP_SWITCH_CASES = /** @type {HelpCase[]} */ ([
@@ -200,6 +209,9 @@ export const ROUTER_HELP_PROFILES = {
     label: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].label,
     pathname: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].pathname,
     cases: [...CORE_ROUTER_CASES, ...NAT_DHCP_ROUTER_CASES],
+    routerHelp: {
+      ipNatInsideSourceListInterface: [{ cmd: "overload" }],
+    },
   },
   "cli-lab-ospf_config_sim_v3.html": {
     label: ROUTER_LAB_META["cli-lab-ospf_config_sim_v3.html"].label,

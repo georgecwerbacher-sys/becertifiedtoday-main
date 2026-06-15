@@ -62,8 +62,7 @@ export function getLabHelpProfile(key) {
   }
 
   return {
-    label: routerProfile.label,
-    pathname: routerProfile.pathname,
+    ...routerProfile,
     cases: [...routerProfile.cases, ...extraSwitch],
   };
 }

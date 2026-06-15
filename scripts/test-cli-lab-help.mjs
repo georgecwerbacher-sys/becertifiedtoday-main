@@ -85,7 +85,7 @@ function runProfile(key) {
       (_cls, text) => {
         out = text;
       },
-      c.iosHelpOpts(deviceType, prompt, null)
+      c.iosHelpOpts(deviceType, prompt, profile.routerHelp || null)
     );
 
     const missing = mustInclude.filter((needle) => !out || !out.includes(needle));
