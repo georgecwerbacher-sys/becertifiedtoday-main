@@ -996,6 +996,8 @@ R1(config-if)# ip ospf priority 255</pre>
         if (t === "interface e0/0" || t === "interface et0/0") t = "interface ethernet0/0";
         if (t === "interface e0/1" || t === "interface et0/1") t = "interface ethernet0/1";
         if (t === "no shut") t = "no shutdown";
+        if (t === "sh history" || t === "sh hist" || t === "show hist") t = "show history";
+        if (t === "do sh history" || t === "do sh hist" || t === "do show hist") t = "do show history";
         return t;
       }
 
@@ -1190,6 +1192,7 @@ R1(config-if)# ip ospf priority 255</pre>
         sw2Scrollback.innerHTML = "";
         sw2Cmdline.disabled = false;
         sw2Cmdline.value = "";
+        clearLocalHistory(sw2Cmdline);
         passBanner.classList.remove("visible");
         passBanner.textContent = PASS_BANNER_BASELINE_PENDING;
         setR1Prompt();
@@ -1200,6 +1203,65 @@ R1(config-if)# ip ospf priority 255</pre>
         sw2Scrollback.innerHTML = "";
         sw2Cmdline.value = "";
         setR1Prompt();
+      }
+
+      /** Local command history (ArrowUp / ArrowDown, show history) */
+      var localHistory = new WeakMap();
+      function getLocalHistoryState(input) {
+        var state = localHistory.get(input);
+        if (state) return state;
+        state = { entries: [], idx: 0 };
+        localHistory.set(input, state);
+        return state;
+      }
+      function pushLocalHistory(input, raw) {
+        var cmd = String(raw || "").trim();
+        if (!cmd) return;
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
+          state.entries.push(cmd);
+        }
+        state.idx = state.entries.length;
+      }
+      function clearLocalHistory(input) {
+        if (!input) return;
+        var state = localHistory.get(input);
+        if (state) {
+          state.entries = [];
+          state.idx = 0;
+        }
+      }
+      function bindLocalHistory(input) {
+        if (!input || input.dataset.localHistoryReady === "1") return;
+        input.dataset.localHistoryReady = "1";
+        input.addEventListener("keydown", function (e) {
+          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
+          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
+          if (!usePrev && !useNext) return;
+          var state = getLocalHistoryState(input);
+          if (!state.entries.length) return;
+          e.preventDefault();
+          if (usePrev) {
+            state.idx = Math.max(0, state.idx - 1);
+          } else {
+            state.idx = Math.min(state.entries.length, state.idx + 1);
+          }
+          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
+        });
+      }
+      function matchShowHistory(raw) {
+        var u = normalize(raw);
+        return u === "show history" || u === "do show history";
+      }
+      function formatHistoryFor(input) {
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length) return "  (history is empty)";
+        return state.entries
+          .slice(-10)
+          .map(function (cmd, i) {
+            return "  " + (i + 1) + "  " + cmd;
+          })
+          .join("\n");
       }
 
       // BEGIN sync block: templates/containers/cli-container-template.html → submitSw()
@@ -1216,6 +1278,7 @@ R1(config-if)# ip ospf priority 255</pre>
         if (!hideInputLine || normalized.indexOf("interface ") === 0) {
           appendSw2("line-user", promptText + " " + echoLine);
         }
+        pushLocalHistory(sw2Cmdline, line);
         sw2Cmdline.value = "";
         if (!trimmed) return;
 
@@ -1228,6 +1291,11 @@ R1(config-if)# ip ospf priority 255</pre>
 
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowHistory(line)) {
+          appendSw2("line-showrun", formatHistoryFor(sw2Cmdline));
           return;
         }
 
@@ -1462,46 +1530,6 @@ R1(config-if)# ip ospf priority 255</pre>
         spoilerOverlay.setAttribute("aria-hidden", "true");
       });
 
-      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
-      var localHistory = new WeakMap();
-      function getLocalHistoryState(input) {
-        var state = localHistory.get(input);
-        if (state) return state;
-        state = { entries: [], idx: 0 };
-        localHistory.set(input, state);
-        return state;
-      }
-      function pushLocalHistory(input, raw) {
-        var cmd = String(raw || "").trim();
-        if (!cmd) return;
-        var state = getLocalHistoryState(input);
-        if (!state.entries.length || state.entries[state.entries.length - 1] !== cmd) {
-          state.entries.push(cmd);
-        }
-        state.idx = state.entries.length;
-      }
-      function bindLocalHistory(input) {
-        if (!input || input.dataset.localHistoryReady === "1") return;
-        input.dataset.localHistoryReady = "1";
-        input.addEventListener("keydown", function (e) {
-          if (e.key === "Enter") {
-            pushLocalHistory(input, input.value);
-            return;
-          }
-          var usePrev = e.key === "ArrowUp" || (e.key === "Tab" && !e.shiftKey);
-          var useNext = e.key === "ArrowDown" || (e.key === "Tab" && e.shiftKey);
-          if (!usePrev && !useNext) return;
-          var state = getLocalHistoryState(input);
-          if (!state.entries.length) return;
-          e.preventDefault();
-          if (usePrev) {
-            state.idx = Math.max(0, state.idx - 1);
-          } else {
-            state.idx = Math.min(state.entries.length, state.idx + 1);
-          }
-          input.value = state.idx >= state.entries.length ? "" : state.entries[state.idx];
-        });
-      }
       bindLocalHistory(sw2Cmdline);
 
       document.addEventListener("keydown", function (e) {

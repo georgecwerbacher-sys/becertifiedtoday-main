@@ -1731,6 +1731,11 @@ Sw2# copy running-config startup-config</pre>
           return;
         }
 
+        if (matchShowHistory(line)) {
+          appendSw("line-showrun", formatHistoryFor(swCmdline));
+          return;
+        }
+
         if (matchShowInterfacesTrunk(line)) {
           if (stepIndexSw1 >= TASK1_LEN) {
             appendSw("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
@@ -1916,6 +1921,11 @@ Sw2# copy running-config startup-config</pre>
 
         if (matchShowRun(line)) {
           appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
+          return;
+        }
+
+        if (matchShowHistory(line)) {
+          appendSw2("line-showrun", formatHistoryFor(sw2Cmdline));
           return;
         }
 
@@ -2227,7 +2237,7 @@ Sw2# copy running-config startup-config</pre>
         spoilerOverlay.setAttribute("aria-hidden", "true");
       });
 
-      /** Local command history (ArrowUp / ArrowDown) — same behavior as full PVST lab */
+      /** Local command history (ArrowUp / ArrowDown, show history) */
       var localHistory = new WeakMap();
       function getLocalHistoryState(input) {
         var state = localHistory.get(input);
@@ -2235,6 +2245,20 @@ Sw2# copy running-config startup-config</pre>
         state = { entries: [], idx: 0 };
         localHistory.set(input, state);
         return state;
+      }
+      function matchShowHistory(raw) {
+        var u = normalize(raw);
+        return u === "show history" || u === "do show history";
+      }
+      function formatHistoryFor(input) {
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length) return "  (history is empty)";
+        return state.entries
+          .slice(-10)
+          .map(function (cmd, i) {
+            return "  " + (i + 1) + "  " + cmd;
+          })
+          .join("\n");
       }
       function pushLocalHistory(input, raw) {
         var cmd = String(raw || "").trim();
