@@ -405,36 +405,57 @@
     }
     tbody th { color: var(--page-text); white-space: nowrap; }
     .col-bct { background: rgba(47, 102, 191, 0.08); font-weight: 700; }
+    .faq {
+      margin: 0 calc(-1 * clamp(20px, 4vw, 40px)) 0;
+      padding: clamp(32px, 5vw, 48px) clamp(20px, 4vw, 40px);
+      background: linear-gradient(180deg, #0d1526 0%, #121a2b 100%);
+      border-top: 1px solid var(--border);
+    }
+    .faq-inner {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
     .faq h2 {
       margin: 0 0 16px;
       font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      color: #fff;
     }
     .faq details {
       margin: 0 0 10px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(79, 132, 216, 0.35);
       border-radius: 12px;
-      background: #f8fafc;
+      background: rgba(18, 26, 43, 0.92);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
     }
     .faq summary {
       padding: 14px 16px;
       font-weight: 700;
+      color: #fff;
       cursor: pointer;
       list-style: none;
+      line-height: 1.4;
     }
     .faq summary::-webkit-details-marker { display: none; }
+    .faq details[open] summary {
+      border-bottom: 1px solid rgba(79, 132, 216, 0.28);
+    }
     .faq .answer {
-      padding: 0 16px 14px;
-      color: var(--page-muted);
+      padding: 12px 16px 14px;
+      color: #d4deef;
       font-size: 0.92rem;
+    }
+    .faq .answer strong {
+      color: #fff;
     }
     .faq .answer p {
       margin: 0 0 10px;
     }
     .faq .answer a {
-      color: var(--accent);
+      color: #8ab4ff;
       font-weight: 700;
     }
     .faq .answer a:hover {
+      color: #b8d0ff;
       text-decoration: underline;
     }
     footer {
@@ -622,6 +643,7 @@
       </section>
 
       <section class="faq" aria-labelledby="faq-title">
+        <div class="faq-inner">
         <h2 id="faq-title">FAQ</h2>
         <details open>
           <summary>Do I need GNS3, Packet Tracer, or any other software?</summary>
@@ -733,6 +755,7 @@
             </p>
           </div>
         </details>
+        </div>
       </section>
     </main>
 
