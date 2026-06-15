@@ -1336,6 +1336,8 @@
    *   switchport        — (config-if)# switchport ?
    *   switchportMode    — (config-if)# switchport mode ?
    *   switchportAccess  — (config-if)# switchport access ?
+   *   switchportVoice   — (config-if)# switchport voice ?
+   *   switchportVoiceVlan — (config-if)# switchport voice vlan ?
    *   switchportTrunk   — (config-if)# switchport trunk ?
    *   switchportTrunkEncapsulation — (config-if)# switchport trunk encapsulation ?
    *   switchportTrunkNative — (config-if)# switchport trunk native ?
@@ -1512,6 +1514,10 @@
     ],
     /** (config-if)# switchport access ? */
     switchportAccess: [{ cmd: "vlan (#)" }],
+    /** (config-if)# switchport voice ? */
+    switchportVoice: [{ cmd: "vlan" }],
+    /** (config-if)# switchport voice vlan ? */
+    switchportVoiceVlan: [{ cmd: "<vlan-id>" }],
     /** (config-if)# switchport trunk ? */
     switchportTrunk: [
       { cmd: "encapsulation" },
@@ -2876,6 +2882,64 @@
     return true;
   }
 
+  /** Switch `switchport voice vlan ?` at host(config-if)#. */
+
+  function isSwitchportVoiceVlanHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport voice vlan ?" || t === "do switchport voice vlan ?";
+  }
+
+  function switchportVoiceVlanCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportVoiceVlan"),
+      opts.switchportVoiceVlanExtra
+    );
+  }
+
+  function tryAppendSwitchportVoiceVlanHelp(raw, appendFn, opts) {
+    if (!isSwitchportVoiceVlanHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportVoiceVlanCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `switchport voice ?` at host(config-if)#. */
+
+  function isSwitchportVoiceHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport voice ?" || t === "do switchport voice ?";
+  }
+
+  function switchportVoiceCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportVoice"),
+      opts.switchportVoiceExtra
+    );
+  }
+
+  function tryAppendSwitchportVoiceHelp(raw, appendFn, opts) {
+    if (!isSwitchportVoiceHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportVoiceCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
   /** Switch `switchport trunk ?` at host(config-if)#. */
 
   function isSwitchportTrunkHelpQuery(raw) {
@@ -4081,6 +4145,8 @@
     if (tryAppendLineVtyHelp(raw, appendFn, opts)) return true;
     if (tryAppendLineHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportAccessHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportVoiceVlanHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportVoiceHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportTrunkAllowedVlanHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportTrunkNativeVlanHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportTrunkNativeHelp(raw, appendFn, opts)) return true;
@@ -4348,6 +4414,12 @@
     isSwitchportAccessHelpQuery: isSwitchportAccessHelpQuery,
     switchportAccessCommandHelpText: switchportAccessCommandHelpText,
     tryAppendSwitchportAccessHelp: tryAppendSwitchportAccessHelp,
+    isSwitchportVoiceVlanHelpQuery: isSwitchportVoiceVlanHelpQuery,
+    switchportVoiceVlanCommandHelpText: switchportVoiceVlanCommandHelpText,
+    tryAppendSwitchportVoiceVlanHelp: tryAppendSwitchportVoiceVlanHelp,
+    isSwitchportVoiceHelpQuery: isSwitchportVoiceHelpQuery,
+    switchportVoiceCommandHelpText: switchportVoiceCommandHelpText,
+    tryAppendSwitchportVoiceHelp: tryAppendSwitchportVoiceHelp,
     isSwitchportTrunkHelpQuery: isSwitchportTrunkHelpQuery,
     switchportTrunkCommandHelpText: switchportTrunkCommandHelpText,
     tryAppendSwitchportTrunkHelp: tryAppendSwitchportTrunkHelp,
