@@ -76,46 +76,56 @@ body.bcc-ccna-lab-top-chrome .site-logo-corner img {
   background: transparent !important;
 }
 
-/* CCNA CLI labs — dark card + blue panels (override ccna-question-ui light shell) */
+/* CCNA CLI labs — white page, blue text panels; topology exhibit unchanged (override ccna-question-ui) */
 body.bcc-ccna-lab-top-chrome.ccna-question-ui {
   background: #ffffff !important;
-  color: #e6edf3;
+  color: #1a3d6e !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui main.card,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .card {
-  background: #121a2b !important;
-  border: 1px solid #2d3b5a !important;
-  border-radius: 14px !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35) !important;
-  color: #e6edf3 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: #1a3d6e !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui h1 {
-  color: #e6edf3 !important;
+  color: #1a3d6e !important;
 }
 
-body.bcc-ccna-lab-top-chrome.ccna-question-ui .objective,
-body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks,
-body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks li {
-  color: #e6edf3 !important;
+/* Topology diagram exhibit — keep light panel; do not tint image area */
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .diagram-wrap {
+  background: #ffffff !important;
+  border: 1px solid #2d3b5a !important;
+  color: #1a3d6e !important;
 }
 
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .diagram-stage,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .diagram-stage img {
+  background: transparent !important;
+}
+
+/* Lab text panels — dark navy with white copy */
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .device-pick {
   background: #0f1729 !important;
   border: 1px solid #2d3b5a !important;
-  color: #e6edf3 !important;
+  color: #ffffff !important;
 }
 
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .objective,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .objective,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ol.tasks,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ol.tasks li,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks-preconfig,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks-sublist,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks-sublist li,
-body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box p {
-  color: #e6edf3 !important;
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box p,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks li {
+  color: #ffffff !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks strong,
@@ -124,26 +134,56 @@ body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ol.tasks strong {
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box code {
-  color: #e6edf3;
+  color: #ffffff !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .device-pick label,
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .device-pick strong {
-  color: #e6edf3 !important;
+  color: #ffffff !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape {
-  background: #0c1222 !important;
-  border: 1px solid #2a3b5c !important;
-  color: #e6edf3 !important;
+  background: #0f1729 !important;
+  border: 1px solid #2d3b5a !important;
+  color: #ffffff !important;
 }
 
 body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape h2 {
   color: #ffffff !important;
 }
 
-body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape li {
-  color: #e6edf3 !important;
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape li,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape p,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape .tasks,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape ul.helper-bullets,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape ul.helper-bullets li {
+  color: #ffffff !important;
+}
+
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape code,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .topology-scrape strong {
+  color: #ffffff !important;
+}
+
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul li,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul.tasks-sub,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul.tasks-sub li,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul.tasks-sublist,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box ul.tasks-sublist li {
+  color: #ffffff !important;
+}
+
+/* Embedded CLI exhibit inside task panel — keep dark console (not panel fill) */
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box .tasks-preconfig {
+  background: #06080c !important;
+  border: 1px solid #263043 !important;
+  color: #dbe5f0 !important;
+}
+
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .wrap > .ccna-format-topic-meta,
+body.bcc-ccna-lab-top-chrome.ccna-question-ui .wrap > .question-topic-meta {
+  color: #1a3d6e !important;
 }
 
 body {
@@ -545,6 +585,21 @@ body.dragdrop-exercise .panel h2 {
     padding: 16px !important;
     border-radius: 12px !important;
     box-sizing: border-box !important;
+  }
+
+  body.bcc-ccna-lab-top-chrome.ccna-question-ui main.card,
+  body.bcc-ccna-lab-top-chrome.ccna-question-ui .card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+
+  body.bcc-ccna-lab-top-chrome.ccna-question-ui .tasks-blue-box,
+  body.bcc-ccna-lab-top-chrome.ccna-question-ui .device-pick {
+    background: #0f1729 !important;
+    border: 1px solid #2d3b5a !important;
+    color: #ffffff !important;
   }
 
   .question-nav,

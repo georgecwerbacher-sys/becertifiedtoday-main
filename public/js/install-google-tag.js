@@ -24,9 +24,16 @@
     head.appendChild(s);
   }
 
-  appendSync("/js/ga-site-config.js");
-  appendSync("/js/analytics-exclude.js");
+  if (!document.querySelector('script[src*="ga-site-config.js"]')) {
+    appendSync("/js/ga-site-config.js");
+  }
+  if (!document.querySelector('script[src*="analytics-exclude.js"]')) {
+    appendSync("/js/analytics-exclude.js");
+  }
   if (window.__bccAnalyticsExclude) return;
+  if (typeof window.bccShouldLoadMarketingTag === "function" && !window.bccShouldLoadMarketingTag()) {
+    return;
+  }
 
   var loader = document.createElement("script");
   loader.async = true;

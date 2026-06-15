@@ -540,16 +540,22 @@
   scheduleBootExamSimEmbed();
 })();
 
-/** Google tag (gtag.js) on CCNA pages without static head snippet */
+/** Google tag + Vercel insights — marketing URLs and free-sample sessions only */
 (function () {
   "use strict";
   var head = document.head || document.documentElement;
-  var ga = document.createElement("script");
-  ga.src = "/js/install-google-tag.js";
-  head.appendChild(ga);
-  var va = document.createElement("script");
-  va.src = "/js/install-vercel-analytics.js";
-  head.appendChild(va);
+  function appendSync(src) {
+    if (document.querySelector('script[src="' + src + '"]')) return;
+    var s = document.createElement("script");
+    s.src = src;
+    s.async = false;
+    head.appendChild(s);
+  }
+  appendSync("/js/ga-site-config.js");
+  appendSync("/js/analytics-exclude.js");
+  if (window.__bccAnalyticsExclude) return;
+  appendSync("/js/install-google-tag.js");
+  appendSync("/js/install-vercel-analytics.js");
 })();
 
 /** Drag-and-drop touch hint above .layout on phones and tablets */

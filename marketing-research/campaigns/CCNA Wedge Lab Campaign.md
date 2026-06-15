@@ -22,24 +22,24 @@ tags:
 
 ## Campaign shell
 
-| Setting | Value |
-|---------|--------|
-| Campaign name | **`CCNA_Wedge_Lab`** |
-| Daily budget | **$15/day** launch → $20–25 after CPA baseline |
-| Bidding | Maximize clicks, max CPC **$4.50** |
-| utm_campaign | `ccna_wedge_lab` |
-| Conversion | GA4 `begin_checkout` |
+| Setting       | Value                                          |
+| ------------- | ---------------------------------------------- |
+| Campaign name | **`CCNA_Wedge_Lab`**                           |
+| Daily budget  | **$15/day** launch → $20–25 after CPA baseline |
+| Bidding       | Maximize clicks, max CPC **$4.50**             |
+| utm_campaign  | `ccna_wedge_lab`                               |
+| Conversion    | GA4 `begin_checkout`                           |
 
 ## Ad group: `CCNA_Wedge_Lab`
 
-| Setting | Value |
-|---------|--------|
-| Display path | CCNA / Practice-Labs |
-| Intent | Browser CLI labs · no GNS3 / Packet Tracer |
-| Final URL | `/ccna/labs-without-gns3.html?utm_content=browser-labs` |
-| Keywords | 5 exact + 14 phrase (Planner US Jun 2026) |
-| RSA pin H1 | CCNA 200-301 Practice Labs |
-| RSA pin H2 | $9.99 · 10-Day CCNA Labs |
+| Setting      | Value                                                   |
+| ------------ | ------------------------------------------------------- |
+| Display path | CCNA / Practice-Labs                                    |
+| Intent       | Browser CLI labs · no GNS3 / Packet Tracer              |
+| Final URL    | `/ccna/labs-without-gns3.html?utm_content=browser-labs` |
+| Keywords     | 5 exact + 14 phrase (Planner US Jun 2026)               |
+| RSA pin H1   | CCNA 200-301 Practice Labs                              |
+| RSA pin H2   | $9.99 · 10-Day CCNA Labs                                |
 
 ## Build phases
 
@@ -55,6 +55,7 @@ tags:
 
 - Pause **`ccna_browser_labs`** in the old combined CCNA campaign to avoid bidding against yourself.
 - Keep head-term **`ccna_portal_10v1`** separate (low bid or paused).
+- **Analytics:** marketing-only tags — `scripts/marketing-tag-minimal-list.md`
 
 ## Keywords reference
 

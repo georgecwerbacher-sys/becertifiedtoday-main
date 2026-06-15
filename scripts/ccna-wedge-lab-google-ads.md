@@ -23,10 +23,9 @@ Dedicated **Search** campaign for browser CLI lab wedge keywords. One ad group: 
 
 ### Conversion
 
-Import GA4 **`begin_checkout`** as primary conversion. Track:
+Import GA4 **`begin_checkout`** as primary conversion (`ccna_portal_10d` $9.99 · `ccna_portal_30d` $19.99).
 
-- `ccna_portal_10d` ($9.99)
-- `ccna_portal_30d` ($19.99)
+**Tag policy:** only marketing URLs are tagged — `scripts/marketing-tag-minimal-list.md` · enforced by `public/js/analytics-exclude.js`.
 
 ---
 
