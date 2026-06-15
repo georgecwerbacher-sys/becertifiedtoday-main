@@ -42,6 +42,23 @@ Build **problem pages** — not another generic homepage. Each page = one promis
 
 ---
 
+## Security+ — build priority
+
+Persona **Sam** — PBQ anxiety, adaptive review, browser-no-install. Tracker: [[SEC+ funnel build tracker]].
+
+| Priority | Page slug | Target query | CTA | Status |
+|----------|-----------|--------------|-----|--------|
+| 1 | `/secplus/pbq-practice-browser.html` | security+ pbq practice · sy0-701 performance based | Free dark web PBQ → 10-day pass | **Live** |
+| 2 | `/secplus/timed-practice-test.html` | security+ timed practice test online | Free samples → 10-day pass | Build |
+| 3 | `/secplus/federal-8140-prep.html` | security+ dod 8140 · federal contractor | Free samples → 10-day pass | Build |
+| 4 | `/secplus/exam-readiness.html` | security+ exam readiness / final review | Free samples → 10-day pass | Build |
+
+**Live wedge URL for ads:** `https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_content=pbq-wedge`
+
+**Existing assets to link:** `/secplus-sample?track=questions`, `/secplus-sample?track=sim-dark-web`, `comptia-sec+-home.html#purchase?utm_content=portal-10d`
+
+---
+
 ## Video ideas (2–3 min each)
 
 Screen recording beats talking head for this product.
@@ -53,6 +70,8 @@ Screen recording beats talking head for this product.
 | 3 | Drag-and-drop CCNA practice (exam-style) | D&D sample |
 | 4 | Free CCNA assessment — scorecard in 15 minutes | Free assessment flow |
 | 5 | ENCOR ACL lab without GNS3 | ENCOR lab sample |
+| 6 | Security+ dark web PBQ in browser — no download | Dark web IR sample end-to-end |
+| 7 | 90-minute Security+ timed sim walkthrough | Start sim, MCQ + PBQ mix |
 
 Host: YouTube → embed on wedge landing pages → link to site CTA.
 

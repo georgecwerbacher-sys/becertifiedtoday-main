@@ -73,10 +73,12 @@ They are **not** shopping for the cheapest question dump. They are asking: *Am I
 - Comparing Boson ($$$) vs browser option
 - Values 8 lab simulations + timed 120-min run
 
-### Sam — Security+ (future wedge)
+### Sam — Security+ (wedge)
 
 - PBQ / chain labs anxiety; adaptive review appeal
 - Same browser-no-install story
+- Wedge landing: `/secplus/pbq-practice-browser.html`
+- Funnel tracker: [[SEC+ funnel build tracker]]
 
 ---
 

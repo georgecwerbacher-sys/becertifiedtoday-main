@@ -73,15 +73,36 @@ Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan
 
 ## Security+ SY0-701
 
-| utm_campaign | Daily budget | Setup doc |
-|--------------|--------------|-----------|
-| `secplus_portal` | $10 | [[campaigns/secplus-portal-10d|Security+ portal 10d]] |
+**Primary doc:** [[campaigns/Security+ Campaign|Security+ Campaign]] — one campaign, two ad groups, **$10/day**
+
+| Item | Link |
+|------|------|
+| Setup checklist (CSV) | `scripts/secplus-google-ads-campaign-checklist.csv` |
+| Checklist guide | `scripts/secplus-google-ads-campaign-checklist-README.txt` |
+| Extended reference | [[campaigns/secplus-portal-10d|secplus-portal-10d-google-ads.md]] |
+| Funnel tracker | [[Wedge Marketing plan/SEC+ funnel build tracker|SEC+ funnel build tracker]] |
+
+| Ad group | Budget | Focus |
+|----------|--------|-------|
+| `secplus_portal_10d` | ~$7/day | Practice tests, question bank, SY0-701 prep |
+| `secplus_pbq_wedge` | ~$3/day | Browser PBQ practice (enable after wedge landing verified) |
+
+## SEC+_Wedge_PBQ (ready to build)
+
+**Primary doc:** [[campaigns/SEC+ Wedge PBQ Campaign|SEC+ Wedge PBQ Campaign]]
+
+| Item | Link |
+|------|------|
+| Setup guide | `scripts/secplus-wedge-pbq-google-ads.md` |
+| Landing | https://becertifiedtoday.com/secplus/pbq-practice-browser.html |
+
+**Before enable:** verify free dark-web PBQ sample + checkout on wedge landing.
 
 ## Landing pages
 
-- CCNA → `/ccna-home.html#purchase`
+- CCNA → `/ccna-home.html#purchase` · wedge → `/ccna/labs-without-gns3.html`
 - ENCOR → `/ccnp-home.html#purchase`
-- Security+ → `/comptia-sec+-home.html#purchase`
+- Security+ → `/comptia-sec+-home.html#purchase` · wedge → `/secplus/pbq-practice-browser.html`
 
 ## Related
 

@@ -6,6 +6,7 @@
   <script src="/js/analytics-exclude.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
   <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/google-ads-purchase-conversion.js"></script>
   <script src="/js/campaign-attribution.js"></script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
@@ -671,6 +672,39 @@
     }
     html.bcc-secplus-lead-sticky-visible {
       padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+    }
+    @media (max-width: 767px) {
+      .secplus-mobile-sticky-cta {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 850;
+        display: flex;
+        padding: 10px max(12px, env(safe-area-inset-left, 0px))
+          calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(45, 59, 90, 0.35);
+        box-shadow: 0 -6px 28px rgba(13, 21, 40, 0.14);
+        transform: translateY(110%);
+        transition: transform 0.22s ease;
+        pointer-events: none;
+      }
+      .secplus-mobile-sticky-cta.is-visible {
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .secplus-mobile-sticky-cta .cta-main {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 48px;
+        padding: 12px 14px;
+        font-size: clamp(0.88rem, 3.4vw, 0.98rem);
+      }
+      body.secplus-sticky-cta-visible {
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+      }
     }
     .bcc-lead-sticky-cta__note {
       margin: 0 auto 8px;
@@ -3068,12 +3102,12 @@
               </div>
             </div>
           </section>
-          <div class="funnel-intro">
+          <div class="funnel-intro hero-conversion" data-secplus-hl-pending="1">
             <div class="secplus-hero-header">
-              <p class="eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests · timed simulation</p>
+              <p class="eyebrow" id="hero-conversion-eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests · timed simulation</p>
               <p class="landing-tagline">Practice like test day. Walk in ready.</p>
-              <h1>SY0-701 Security+ Exam Prep: 1000+ Questions, Simulations &amp; Adaptive Testing</h1>
-              <p class="lead lead--full">
+              <h1 id="hero-conversion-title">SY0-701 Security+ Exam Prep: 1000+ Questions, Simulations &amp; Adaptive Testing</h1>
+              <p class="lead lead--full" id="hero-conversion-lead">
                 You prepare for Security+ SY0-701 in your browser.
                 You get <strong>1000+ interactive questions</strong> aligned to objectives v5.0,
                 <strong>28 performance-based scenarios</strong> (21 chained PBQ labs, 4 standalone simulations, 1 hot spot, and 2 IR report exhibits),
@@ -3108,7 +3142,7 @@
             </div>
             <div class="secplus-hero-actions">
               <p class="secplus-hero-atf-cta">
-                <a href="#home-secplus-samples-title">Preview free sample questions ↓</a>
+                <a class="cta-main cta-main--free cta-main--hero-primary" id="hero-conversion-cta-primary" href="#home-secplus-samples-title">Preview free Security+ samples ↓</a>
               </p>
               <ul class="benefits" aria-label="What you get">
                 <li>1000+ interactive questions plus 28 PBQ scenarios (21 chain labs, 4 standalone, 1 hot spot, 2 report exhibits).</li>
@@ -3887,6 +3921,7 @@
   <script src="/js/secplus-portal-10d-landing.js" defer></script>
   <script src="/js/bcc-10d-one-time-offer.js" defer></script>
   <script src="/js/bcc-lead-sticky-cta.js" defer></script>
+  <script src="/js/secplus-home-conversion.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       var gateRoot = document.getElementById("secplusPortalGateRoot");
