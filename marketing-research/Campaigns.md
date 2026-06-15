@@ -7,7 +7,7 @@ tags:
 
 # Campaigns
 
-Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
+Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] · `server-lib/campaign-marketing-registry.js`
 
 ## Active: initial 7-day AdWords test
 
@@ -21,6 +21,8 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 **During the test:** collect data only — no budget increases, no new countries, no bidding changes. **`ccna_browser_labs` stays paused** until portal_10v1 baseline is reviewed. Add campaign negatives only for obvious junk search terms.
 
 **Day 7 review:** compare ad groups, note top search terms, decide scale / pause / optimize before week 2.
+
+**Wedge pivot:** If head-term CPC is untenable, follow [[Wedge Marketing plan/02-keywords-and-google-ads|Keywords & Google Ads]] and [[Wedge Marketing plan/06-30-day-action-plan|30-day action plan]].
 
 ## CCNA 200-301
 

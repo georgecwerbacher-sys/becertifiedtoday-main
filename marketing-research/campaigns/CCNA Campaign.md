@@ -80,8 +80,8 @@ Filter checklist **Section** = `Ops` · **Phase** = `Initial test (7 days)`.
 
 All RSA copy lives in the checklist CSV — filter **Section** = `Headline` or `Description`:
 
-- **ccna_portal_10v1** — pin H1 `CCNA 200-301 Practice Test`, H2 `$9.99 for 10-Day Access`
-- **ccna_browser_labs** — pin H1 `Browser CLI Labs — No GNS3`, H2 `$9.99 for 10-Day Access`
+- **ccna_portal_10v1** — pin H1 `CCNA 200-301 · Walk In Ready`, H2 `$9.99 · 10-Day CCNA Bank`
+- **ccna_browser_labs** — pin H1 `Browser CCNA CLI Labs`, H2 `$9.99 · 10-Day CCNA Labs`
 
 ## Keywords (summary)
 

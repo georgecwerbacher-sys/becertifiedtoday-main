@@ -127,6 +127,7 @@ Paid and organic traffic lands on exam home pages with **purchase first** — mi
 
 ## Related notes *(internal)*
 
+- [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — paid/organic wedge strategy vs course-vendor CPC
 - [[Campaigns]] — how paid traffic maps to this mission
 - [[Competitors]] — sites that compete on dumps, courses, or subscriptions
 - [[campaigns/CCNA portal 10v1 — keyword research|CCNA keyword research]]

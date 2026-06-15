@@ -117,23 +117,23 @@ Nepal
 
 ### Tier A cities — add for bid boost or narrow testing
 
-| Country | Cities (search in Google Ads) |
-|---------|--------------------------------|
-| India | Bengaluru · Hyderabad · Mumbai · Chennai · Pune · New Delhi · Noida · Gurugram · Kolkata · Ahmedabad |
-| United States | (see US metros below) |
-| United Kingdom | London · Manchester · Birmingham · Edinburgh · Leeds · Bristol |
-| Canada | Toronto · Vancouver · Ottawa · Montreal · Calgary · Edmonton |
-| Australia | Sydney · Melbourne · Brisbane · Perth · Canberra |
-| Philippines | Manila · Quezon City · Cebu City · Davao City |
-| UAE | Dubai · Abu Dhabi · Sharjah |
-| Singapore | Singapore |
-| Nigeria | Lagos · Abuja · Port Harcourt |
-| Pakistan | Karachi · Lahore · Islamabad · Rawalpindi |
-| South Africa | Johannesburg · Cape Town · Pretoria · Durban |
-| Saudi Arabia | Riyadh · Jeddah · Dammam |
-| Ireland | Dublin · Cork |
-| Germany | Berlin · Munich · Frankfurt · Hamburg |
-| Netherlands | Amsterdam · Rotterdam · The Hague |
+| Country        | Cities (search in Google Ads)                                                                        |
+| -------------- | ---------------------------------------------------------------------------------------------------- |
+| India          | Bengaluru · Hyderabad · Mumbai · Chennai · Pune · New Delhi · Noida · Gurugram · Kolkata · Ahmedabad |
+| United States  | (see US metros below)                                                                                |
+| United Kingdom | London · Manchester · Birmingham · Edinburgh · Leeds · Bristol                                       |
+| Canada         | Toronto · Vancouver · Ottawa · Montreal · Calgary · Edmonton                                         |
+| Australia      | Sydney · Melbourne · Brisbane · Perth · Canberra                                                     |
+| Philippines    | Manila · Quezon City · Cebu City · Davao City                                                        |
+| UAE            | Dubai · Abu Dhabi · Sharjah                                                                          |
+| Singapore      | Singapore                                                                                            |
+| Nigeria        | Lagos · Abuja · Port Harcourt                                                                        |
+| Pakistan       | Karachi · Lahore · Islamabad · Rawalpindi                                                            |
+| South Africa   | Johannesburg · Cape Town · Pretoria · Durban                                                         |
+| Saudi Arabia   | Riyadh · Jeddah · Dammam                                                                             |
+| Ireland        | Dublin · Cork                                                                                        |
+| Germany        | Berlin · Munich · Frankfurt · Hamburg                                                                |
+| Netherlands    | Amsterdam · Rotterdam · The Hague                                                                    |
 
 ### United States — Federal, defense & contractor metros
 
@@ -153,35 +153,35 @@ Nepal
 
 ### United States — Commercial network engineering & data-center hubs
 
-| Metro / area | Add in Google Ads (search these) |
-|--------------|----------------------------------|
-| Dallas–Fort Worth | Dallas TX · Fort Worth TX · Plano TX · Irving TX |
-| Atlanta | Atlanta GA · Sandy Springs GA |
-| Research Triangle | Raleigh NC · Durham NC · Cary NC |
-| Austin | Austin TX · Round Rock TX |
-| Phoenix | Phoenix AZ · Mesa AZ · Scottsdale AZ |
-| Seattle | Seattle WA · Bellevue WA · Tacoma WA |
-| Bay Area | San Jose CA · Santa Clara CA · San Francisco CA · Oakland CA |
-| Chicago | Chicago IL · Naperville IL |
-| Houston | Houston TX · The Woodlands TX |
-| New York / NJ | New York NY · Jersey City NJ · Newark NJ |
-| Boston | Boston MA · Cambridge MA |
-| Charlotte | Charlotte NC |
-| Columbus | Columbus OH |
-| Philadelphia | Philadelphia PA |
-| Los Angeles | Los Angeles CA · Long Beach CA |
-| Nashville | Nashville TN |
-| Minneapolis | Minneapolis MN · St. Paul MN |
-| Kansas City | Kansas City MO · Kansas City KS |
-| Portland | Portland OR |
-| Las Vegas | Las Vegas NV |
-| Miami / South Florida | Miami FL · Fort Lauderdale FL |
-| Pittsburgh | Pittsburgh PA |
-| Baltimore | Baltimore MD |
-| Richmond | Richmond VA |
-| St. Louis | St. Louis MO |
-| Denver | Denver CO · Aurora CO |
-| Salt Lake City | Salt Lake City UT |
+| Metro / area          | Add in Google Ads (search these)                             |
+| --------------------- | ------------------------------------------------------------ |
+| Dallas–Fort Worth     | Dallas TX · Fort Worth TX · Plano TX · Irving TX             |
+| Atlanta               | Atlanta GA · Sandy Springs GA                                |
+| Research Triangle     | Raleigh NC · Durham NC · Cary NC                             |
+| Austin                | Austin TX · Round Rock TX                                    |
+| Phoenix               | Phoenix AZ · Mesa AZ · Scottsdale AZ                         |
+| Seattle               | Seattle WA · Bellevue WA · Tacoma WA                         |
+| Bay Area              | San Jose CA · Santa Clara CA · San Francisco CA · Oakland CA |
+| Chicago               | Chicago IL · Naperville IL                                   |
+| Houston               | Houston TX · The Woodlands TX                                |
+| New York / NJ         | New York NY · Jersey City NJ · Newark NJ                     |
+| Boston                | Boston MA · Cambridge MA                                     |
+| Charlotte             | Charlotte NC                                                 |
+| Columbus              | Columbus OH                                                  |
+| Philadelphia          | Philadelphia PA                                              |
+| Los Angeles           | Los Angeles CA · Long Beach CA                               |
+| Nashville             | Nashville TN                                                 |
+| Minneapolis           | Minneapolis MN · St. Paul MN                                 |
+| Kansas City           | Kansas City MO · Kansas City KS                              |
+| Portland              | Portland OR                                                  |
+| Las Vegas             | Las Vegas NV                                                 |
+| Miami / South Florida | Miami FL · Fort Lauderdale FL                                |
+| Pittsburgh            | Pittsburgh PA                                                |
+| Baltimore             | Baltimore MD                                                 |
+| Richmond              | Richmond VA                                                  |
+| St. Louis             | St. Louis MO                                                 |
+| Denver                | Denver CO · Aurora CO                                        |
+| Salt Lake City        | Salt Lake City UT                                            |
 
 ### United States — Tier 3 metros (if budget rises)
 
@@ -253,7 +253,7 @@ https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_mediu
 
 | # | Product / service name | Description (paste under name in Google Ads) |
 |---|------------------------|-----------------------------------------------|
-| 1 | CCNA 200-301 10-Day Exam Prep Access | 10 days of CCNA 200-301 v1.1 exam prep in your browser: 700+ practice questions with new items added continuously, CLI labs, drag-and-drop, portal modes, and 120-min timed sim. Current-objective alignment—not stale PDF dumps. $9.99 one-time. |
+| 1 | CCNA 200-301 10-Day Exam Prep Access | 10 days of CCNA 200-301 exam prep in your browser: 700+ practice questions (Version 1.1 and 2.0), VLAN CLI labs, drag-and-drop, portal modes, and 120-min timed sim. Verified explanations—not stale PDF dumps. $9.99 one-time. |
 | 2 | CCNA 200-301 30-Day Exam Prep Access | 30 days of the same v1.1 library: latest CCNA practice questions, verified explanations, CLI labs, drag-and-drop sets, progress tracking, and timed simulation. New questions added continuously. $19.99 one-time. |
 | 3 | Free CCNA 200-301 Practice Questions | Preview current CCNA 200-301 v1.1 practice questions—shuffled each run, instant feedback, same style as the full bank. Free on ccna-home.html; no checkout. |
 | 4 | Free CCNA 200-301 Drag-and-Drop Practice | Current exam-style drag-and-drop items for CCNA 200-301 v1.1—four shuffled PBQ-style prompts per run. Free preview; no checkout. |
@@ -270,38 +270,38 @@ https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_mediu
 **Use all 15** — each headline must be **structurally different** (Google rejects duplicate patterns like multiple “X Included” or repeated “Exam Prep”). Every line below maps to **page copy** on `ccna-home.html` (H1, meta keywords, purchase fold).
 
 ```
-CCNA 200-301 Practice Test
-CCNA 200-301 Exam Prep
-$9.99 for 10-Day Access
-CCNA Practice Questions
-Cisco CCNA Practice Test
-CCNA Question Bank Online
-Practice Tests & Simulation
-700+ Questions · v1.1 2026
-Drag-Drop + CLI Lab Prep
-Browser CCNA Exam Prep
-Timed CCNA Simulation
-Latest 200-301 Questions
-No PDFs — Interactive Prep
-10-Day Full Library Access
-Be Certified Today
+CCNA 200-301 · Walk In Ready
+$9.99 · 10-Day CCNA Bank
+Cisco CCNA Mock Exam
+700+ CCNA Questions
+v1.1 & v2.0 · Verified
+120-Min Timed CCNA Sim
+VLAN CLI Lab In Browser
+Drag-Drop CCNA Items
+No GNS3 · Prep In Browser
+Routing + Switching Prep
+Try Free CCNA Samples
+One Payment · No Auto-Renew
+CCNA On Phone & Tablet
+Not PDF Dumps · Live Prep
+Associate-Level CCNA Prep
 ```
 
-**Pin:** H1 `CCNA 200-301 Practice Test` · H2 `$9.99 for 10-Day Access` · H3 `CCNA 200-301 Exam Prep`
+**Pin:** H1 `CCNA 200-301 · Walk In Ready` · H2 `$9.99 · 10-Day CCNA Bank` · H3 `Associate-Level CCNA Prep`
 
-**Page keyword coverage:** practice test · 200-301 · exam prep · practice questions · cisco ccna · question bank · practice tests · simulation · mock exam (via practice test) · cli lab · drag-and-drop · v1.1 · 700+ questions · browser · no PDFs · 10-day · $9.99
+**Page keyword coverage:** practice test · 200-301 · mock exam · cisco ccna · question bank · routing switching · cli lab · drag-and-drop · v1.1 · v2.0 · 700+ questions · browser · no GNS3 · no PDFs · 10-day · $9.99 · walk in ready
 
-**Avoid swapping in:** extra “Included” headlines, duplicate “Exam Prep” without a new modifier, or headlines that don’t appear on the landing page.
+**Differentiation vs Security+/ENCOR:** lead with Cisco associate prep, VLAN CLI labs, v1.1 & v2.0 bank, and GNS3-free browser angle — not generic “10-Day Access” or “Practice Tests & Simulation” headlines shared across tracks.
 
 ---
 
 ## RSA descriptions (≤90 chars)
 
 ```
-CCNA 200-301 practice test bank: 700+ questions, v1.1 aligned. Labs & D&D included.
-$9.99 for 10-day access. Cisco CCNA exam prep—not a course. No PDFs or GNS3.
-CCNA practice questions with verified explanations. Timed simulation + portal modes.
-Try free CCNA samples first. Unlock 10-day question bank access at checkout.
+700+ CCNA questions v1.1 & v2.0. 120-min timed sim drag-drop & VLAN CLI labs.
+$9.99 · 10-day CCNA bank. No GNS3 no PDF dumps. Phone tablet or desktop.
+Try free CCNA samples first. One payment unlocks routing switching & lab prep.
+Cisco CCNA 200-301 prep with verified explanations. Walk in ready on test day.
 ```
 
 ---
@@ -310,21 +310,21 @@ Try free CCNA samples first. Unlock 10-day question bank access at checkout.
 
 Attach at **ad group** or **campaign** level. Sitelink text ≤25 chars · each description line ≤35 chars.
 
-| # | Link text | Description 1 | Description 2 | Full URL |
-|---|-----------|---------------|---------------|----------|
-| 1 | 10-Day Access · $9.99 | Full v1.1 question bank | $9.99 one-time, no sub | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d` |
-| 2 | Free Practice Questions | Current v1.1 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample` |
-| 3 | Sample Drag-and-Drop | Four PBQ-style items | Shuffled each run, free | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd` |
-| 4 | Free VLAN CLI Lab | Hands-on lab in browser | No GNS3 required | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab` |
-| 5 | Latest v1.1 Questions | 700+ items, updated often | Not stale PDF dumps | `https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples` |
-| 6 | Timed Sim Included | 120-min exam-style run | With 10-day portal access | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d` |
+| #   | Link text               | Description 1             | Description 2             | Full URL                                                                                                                                                     |
+| --- | ----------------------- | ------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | 10-Day CCNA · $9.99     | 700+ Qs v1.1 & v2.0       | One-time · no sub         | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d`                      |
+| 2   | Free Practice Questions | Current v1.1 MCQ preview  | Instant feedback, free    | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample`             |
+| 3   | Sample Drag-and-Drop    | Four PBQ-style items      | Shuffled each run, free   | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd`                      |
+| 4   | Free VLAN CLI Lab       | Hands-on lab in browser   | No GNS3 required          | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab`                     |
+| 5   | v1.1 & v2.0 Questions   | 700+ items updated often  | Not stale PDF dumps       | `https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples` |
+| 6   | 120-Min Timed CCNA Sim  | Exam-style mixed items    | With 10-day portal access | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d`                      |
 
 **Do not use:** Free timed simulation (`#ccna-lead-capture`) or standalone 120-min sim purchase — not on `ccna-home.html`.
 
 **Paste block (copy row by row into Google Ads):**
 
 ```
-10-Day Access · $9.99 | Full v1.1 question bank | $9.99 one-time, no sub | https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
+10-Day CCNA · $9.99 | 700+ Qs v1.1 & v2.0 | One-time · no sub | https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
 
 Free Practice Questions | Current v1.1 MCQ preview | Instant feedback, free | https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample
 
@@ -332,9 +332,9 @@ Sample Drag-and-Drop | Four PBQ-style items | Shuffled each run, free | https://
 
 Free VLAN CLI Lab | Hands-on lab in browser | No GNS3 required | https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab
 
-Latest v1.1 Questions | 700+ items, updated often | Not stale PDF dumps | https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples
+v1.1 & v2.0 Questions | 700+ items updated often | Not stale PDF dumps | https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples
 
-Timed Sim Included | 120-min exam-style run | With 10-day portal access | https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
+120-Min Timed CCNA Sim | Exam-style mixed items | With 10-day portal access | https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
 ```
 
 ---

@@ -218,36 +218,161 @@
       color: var(--accent);
       font-weight: 700;
     }
-    .offer-card {
-      margin: 0 0 clamp(40px, 6vw, 64px);
-      padding: clamp(20px, 4vw, 28px);
+    .pricing-section {
+      margin: 0 calc(-1 * clamp(20px, 4vw, 40px)) clamp(40px, 6vw, 64px);
+      padding: clamp(32px, 5vw, 48px) clamp(20px, 4vw, 40px);
+      background: linear-gradient(180deg, #0a0f1a 0%, #0d1526 100%);
+      border-radius: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-inner {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+    .pricing-no-brainer {
+      margin: 0 0 clamp(28px, 4vw, 36px);
+      padding: clamp(18px, 3vw, 24px) clamp(20px, 4vw, 28px);
       border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(56, 189, 180, 0.45);
+      background: rgba(18, 26, 43, 0.85);
+      box-shadow: 0 0 24px rgba(56, 189, 180, 0.08);
+      text-align: center;
     }
-    .offer-card h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.2rem, 3vw, 1.45rem);
-      color: #e6edf3;
+    .pricing-no-brainer h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+      font-weight: 800;
+      color: #4ade80;
     }
-    .offer-price {
-      margin: 0 0 12px;
-      font-size: clamp(1.8rem, 4vw, 2.2rem);
+    .pricing-no-brainer p {
+      margin: 0;
+      font-size: clamp(0.92rem, 2vw, 1rem);
+      line-height: 1.6;
+      color: #c8d4e8;
+    }
+    .pricing-grid {
+      display: grid;
+      gap: clamp(20px, 3vw, 28px);
+      align-items: stretch;
+    }
+    @media (min-width: 640px) {
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(24px, 4vw, 32px);
+      }
+    }
+    @media (max-width: 639px) {
+      .pricing-card--featured { order: -1; }
+      .pricing-grid { padding-top: 8px; }
+    }
+    .pricing-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(22px, 3.5vw, 28px) clamp(20px, 3vw, 24px);
+      border-radius: 16px;
+      border: 1px solid rgba(79, 132, 216, 0.28);
+      background: #121a2b;
+      color: #c8d4e8;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .pricing-card--featured {
+      border-color: rgba(59, 122, 217, 0.75);
+      padding-top: clamp(28px, 4vw, 34px);
+      box-shadow:
+        0 0 0 1px rgba(59, 122, 217, 0.35),
+        0 12px 40px rgba(47, 102, 191, 0.28);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: linear-gradient(165deg, #3b7ad9 0%, #2f66bf 100%);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(47, 102, 191, 0.45);
+    }
+    .pricing-tier {
+      margin: 0 0 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #8a94a6;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .pricing-price {
+      margin: 0 0 4px;
+      font-size: clamp(2.2rem, 5vw, 2.75rem);
       font-weight: 800;
       color: #fff;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
     }
-    .offer-price span {
-      font-size: 0.5em;
+    .pricing-period {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      font-size: 0.88rem;
+      color: #8a94a6;
+    }
+    .pricing-features {
+      margin: 0 0 clamp(20px, 3vw, 24px);
+      padding: 0;
+      list-style: none;
+      flex: 1;
+    }
+    .pricing-features li {
+      position: relative;
+      margin: 0 0 10px;
+      padding-left: 1.55rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: #d4deef;
+    }
+    .pricing-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #4ade80;
+      font-weight: 800;
+    }
+    .pricing-features li strong {
+      color: #fff;
       font-weight: 700;
-      color: var(--muted);
     }
-    .offer-lead {
-      margin: 0 0 18px;
-      font-size: 0.95rem;
-      line-height: 1.55;
+    .pricing-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 50px;
+      margin: 0;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(165deg, #3b7ad9 0%, #2f66bf 48%, #1f4282 100%);
+      color: #fff;
+      font-size: 0.98rem;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(47, 102, 191, 0.35);
+    }
+    .pricing-cta:hover { filter: brightness(1.06); }
+    .pricing-cta:disabled { opacity: 0.7; cursor: wait; }
+    .pricing-footnote {
+      margin: clamp(20px, 3vw, 28px) 0 0;
+      font-size: 0.85rem;
+      color: #8a94a6;
+      text-align: center;
+      line-height: 1.5;
     }
     .compare {
       margin: 0 0 clamp(40px, 6vw, 64px);
@@ -302,6 +427,16 @@
       color: var(--page-muted);
       font-size: 0.92rem;
     }
+    .faq .answer p {
+      margin: 0 0 10px;
+    }
+    .faq .answer a {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .faq .answer a:hover {
+      text-decoration: underline;
+    }
     footer {
       padding: 20px clamp(20px, 4vw, 40px);
       border-top: 1px solid var(--border);
@@ -310,6 +445,17 @@
       text-align: center;
     }
     footer a { color: var(--accent); font-weight: 700; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body>
@@ -362,25 +508,80 @@
         <p class="cta-note">Same browser UI as paid access. No checkout required.</p>
       </div>
 
-      <section class="offer-card" aria-labelledby="offer-title">
-        <h2 id="offer-title">Unlock all CCNA labs + timed simulation</h2>
-        <p class="offer-price">$9.99 <span>/ 10 days · one-time</span></p>
-        <p class="offer-lead">
-          Full VLAN, routing, and performance-style CLI labs, drag-and-drop sets, question banks, and the
-          <strong>120-minute timed simulation</strong>—all in your browser. No subscription.
-        </p>
-        <button
-          type="button"
-          class="cta-main"
-          data-ccna-portal-10d-checkout
-          data-bcc-item-id="ccna_portal_10d"
-          data-bcc-item-name="CCNA 10-day access"
-          data-bcc-value="9.99"
-          data-bcc-currency="USD"
-          aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
-        >
-          Get 10-day access · $9.99
-        </button>
+      <section class="pricing-section" id="purchase" aria-labelledby="pricing-title">
+        <div class="pricing-inner">
+          <div class="pricing-no-brainer">
+            <h2>Why this is a no-brainer</h2>
+            <p>
+              The CCNA exam costs <strong>$330</strong>. If you fail, you pay again.
+              Be Certified Today starts at <strong>$9.99</strong> for 10 days—less than 3% of one exam attempt.
+              Browser CLI labs, timed simulation, and verified answers in one library. <strong>No subscription.</strong>
+            </p>
+          </div>
+
+          <h2 id="pricing-title" class="visually-hidden">Choose CCNA access</h2>
+
+          <div class="pricing-grid">
+            <article class="pricing-card" aria-label="10-day CCNA access">
+              <p class="pricing-tier">10-Day Sprint</p>
+              <p class="pricing-price">$9.99</p>
+              <p class="pricing-period">one-time · 10 days of access</p>
+              <ul class="pricing-features">
+                <li><strong>10 days</strong> of full library access</li>
+                <li>700+ questions · v1.1 &amp; v2.0</li>
+                <li>Browser CLI labs (VLAN, routing &amp; more)</li>
+                <li>Drag-and-drop practice sets</li>
+                <li>120-minute timed simulation</li>
+                <li>Progress tracking on phone &amp; desktop</li>
+                <li>Verified Cisco explanations</li>
+              </ul>
+              <button
+                type="button"
+                class="pricing-cta"
+                data-ccna-portal-10d-checkout
+                data-bcc-item-id="ccna_portal_10d"
+                data-bcc-item-name="CCNA 10-day access"
+                data-bcc-value="9.99"
+                data-bcc-currency="USD"
+                aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
+              >
+                Get 10-day access
+              </button>
+            </article>
+
+            <article class="pricing-card pricing-card--featured" aria-label="30-day CCNA access">
+              <span class="pricing-badge">Best value</span>
+              <p class="pricing-tier">30-Day Access</p>
+              <p class="pricing-price">$19.99</p>
+              <p class="pricing-period">one-time · 30 days of access</p>
+              <ul class="pricing-features">
+                <li><strong>30 days</strong> of full library access</li>
+                <li>700+ questions · v1.1 &amp; v2.0</li>
+                <li>Browser CLI labs (VLAN, routing &amp; more)</li>
+                <li>Drag-and-drop practice sets</li>
+                <li>120-minute timed simulation</li>
+                <li>Progress tracking on phone &amp; desktop</li>
+                <li><strong>33% less</strong> than three 10-day passes</li>
+              </ul>
+              <button
+                type="button"
+                class="pricing-cta"
+                data-ccna-portal-30d-checkout
+                data-bcc-item-id="ccna_portal_30d"
+                data-bcc-item-name="CCNA 30-day access"
+                data-bcc-value="19.99"
+                data-bcc-currency="USD"
+                aria-label="Purchase 30-day CCNA library access for nineteen ninety-nine"
+              >
+                Get 30-day access
+              </button>
+            </article>
+          </div>
+
+          <p class="pricing-footnote">
+            Same full library on both plans. One-time payment—no auto-renew. Access is tied to this browser.
+          </p>
+        </div>
       </section>
 
       <section class="compare" aria-labelledby="compare-title">
@@ -423,9 +624,55 @@
       <section class="faq" aria-labelledby="faq-title">
         <h2 id="faq-title">FAQ</h2>
         <details open>
-          <summary>Do I need GNS3 or Packet Tracer for these labs?</summary>
+          <summary>Do I need GNS3, Packet Tracer, or any other software?</summary>
           <div class="answer">
-            <p>No. Labs run in the browser testing engine. You do not install third-party network simulation software.</p>
+            <p>
+              <strong>No.</strong> Everything runs in your browser—Chrome, Safari, or Firefox on phone, tablet, or desktop.
+              You do not install GNS3, Packet Tracer, IOU, VMs, or lab images. Open a URL and start typing commands in the simulated CLI.
+              That makes it practical on work laptops where IT blocks installs and admin rights.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>How are the labs like the real CCNA exam?</summary>
+          <div class="answer">
+            <p>
+              Labs use the same <strong>browser testing engine</strong> as full library access—not a static PDF walkthrough or screenshot tour.
+              You work through <strong>objective-focused tasks</strong> in a simulated IOS-style console: type commands, read device output, and complete each step the way performance-based items expect on test day.
+            </p>
+            <p>
+              Full access also includes a <strong>120-minute timed test simulation</strong> that mixes multiple-choice, drag-and-drop, and CLI-style items in one session—so you rehearse pacing and item types together, not just isolated labs.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Are Helper and solution files included?</summary>
+          <div class="answer">
+            <p>
+              Yes. Each CLI lab includes a <strong>Helper</strong> file with task breakdowns, hints, and verification steps so you are not guessing what to configure next.
+              A <strong>Solution (spoiler)</strong> file shows the full worked configuration when you are stuck or want to compare your approach after you try on your own.
+            </p>
+            <p>
+              Use Helper while you work; open the solution when you are ready to check your work—same pattern as exam-style lab prep, not a video course you watch passively.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Can I practice a lab more than once?</summary>
+          <div class="answer">
+            <p>
+              <strong>Yes—as many times as you like</strong> during your access window. Use <strong>Reset lab</strong> to clear the devices and run the scenario again from a clean state.
+              Repeat until the commands and verification steps feel automatic, especially for VLANs, routing, ACLs, and trunking objectives.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Are new labs added? Do I need to refresh?</summary>
+          <div class="answer">
+            <p>
+              <strong>Yes.</strong> New and updated CLI labs, questions, and simulation content are added regularly as the CCNA 200-301 blueprint evolves.
+              If you have had a tab open for a while, <strong>hard-refresh your browser</strong> (Cmd+Shift+R on Mac, Ctrl+Shift+R on Windows) before a study session so you load the latest lab list and fixes—not a cached older version.
+            </p>
           </div>
         </details>
         <details>
@@ -434,20 +681,56 @@
             <p>
               Yes. The
               <a href="/sample?track=ccna-vlan">free VLAN CLI lab sample</a>
-              uses the same UI as full access—no account or checkout required.
+              uses the same UI, Helper, and testing engine as paid access—no account or checkout required.
             </p>
           </div>
         </details>
         <details>
-          <summary>Does $9.99 auto-renew?</summary>
+          <summary>What’s the difference between $9.99 and $19.99?</summary>
           <div class="answer">
-            <p>No. The 10-day pass is a one-time purchase. You only pay again if you want another access window.</p>
+            <p>
+              Both unlock the <strong>same full CCNA library</strong>—CLI labs, drag-and-drop, question banks, Helper and solution files, and the 120-minute timed simulation.
+              The <strong>10-day pass ($9.99)</strong> fits a final sprint before exam day.
+              The <strong>30-day pass ($19.99)</strong> gives you three times the study window for about twice the price.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Does access auto-renew?</summary>
+          <div class="answer">
+            <p>No. Both passes are one-time purchases. You only pay again if you want another access window.</p>
           </div>
         </details>
         <details>
           <summary>Can I study on a phone or tablet?</summary>
           <div class="answer">
-            <p>Yes. CLI labs and drag-and-drop run in Safari, Chrome, or Firefox on mobile and desktop.</p>
+            <p>
+              Yes. CLI labs, drag-and-drop, and the timed simulation run in mobile browsers.
+              Touch-friendly controls work on phone and tablet; use the same device throughout your access window so your pass stays recognized.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>How do I ask a question about CCNA labs or access?</summary>
+          <div class="answer">
+            <p>
+              <strong>Visitors and members</strong> can reach us the same way: click
+              <a href="#ask">Ask a question</a>
+              in the footer below (or use that link here).
+            </p>
+            <p>
+              Enter your email and message in the form. We send a <strong>verification link</strong> to that address—your question is only submitted after you click it.
+              That confirms a real inbox and cuts down on spam. We reply by email about CCNA 200-301 labs, samples, timed simulation, or portal access.
+            </p>
+          </div>
+        </details>
+        <details>
+          <summary>Will anyone call or email me for payment information?</summary>
+          <div class="answer">
+            <p>
+              No. Be Certified Today does not collect customer details for resale or marketing, and nobody from the site will contact you to ask for payment card numbers or personal information.
+              Complete purchases only through the official checkout flow.
+            </p>
           </div>
         </details>
       </section>
@@ -458,9 +741,12 @@
       <a href="/ccna-home.html">CCNA exam prep home</a>
       ·
       <a href="/index.html">All certifications</a>
+      ·
+      <a class="footer-mailto" href="#ask" aria-label="Ask a question">Ask a question</a>
     </footer>
   </div>
 
+  <script src="/js/visitor-question-widget.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
 </body>
 </html>

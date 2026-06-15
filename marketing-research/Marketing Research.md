@@ -9,11 +9,14 @@ tags:
 
 **Start here:** [[Site Mission]] — canonical positioning for becertifiedtoday.com
 
+**Strategy:** [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — avoid head-term CPC wars; own browser labs, timed sim, exam-readiness keywords
+
 Hub for competitor intel, ad campaigns, and weekly analytics.
 
 ## Sections
 
 - [[Site Mission]] — why the site exists; reference for all marketing work
+- [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — positioning, wedge keywords, content, 30-day checklist
 
 - [[Competitors]] — SEC+, CCNA, ENCOR prep sites
 - [[Campaigns]] — Google Ads setup and UTM registry (**initial 7-day test** through 2026-06-21)
