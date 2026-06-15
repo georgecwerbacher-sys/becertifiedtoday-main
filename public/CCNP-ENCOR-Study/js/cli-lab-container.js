@@ -643,7 +643,9 @@
    *   configIfIpv6 — (config-if)# ipv6 ?
    *   configIfIpv6Address — (config-if)# ipv6 address ?
    *   configIfIpAddress — (config-if)# ip address ?
-   *   configAcl    — (config-*-nacl)# ?
+   *   configAcl    — (config-ext-nacl)# ?
+   *   configStdNacl — (config-std-nacl)# ?
+   *   configStdNaclPermit — (config-std-nacl)# permit ?
    *   configAclPermit — (config-ext-nacl)# permit ?
    *   configAclPermitTcp — permit tcp ?
    *   configAclPermitTcpSrcWildcard — permit tcp <src> ?
@@ -659,10 +661,13 @@
    *   router       — (config)# router ?
    *   routerOspf   — (config)# router ospf ?
    *   ipAccessList — (config)# ip access-list ?
+   *   ipAccessListStandard — (config)# ip access-list standard ?
    *   ipAccessListExtended — (config)# ip access-list extended ?
    *   ipAccessGroup — (config-if)# ip access-group ?
    *   ipAccessGroupDir — (config-if)# ip access-group <name> ?
    *   ipDhcp       — (config)# ip dhcp ?
+   *   ipNat        — (config)# ip nat ?
+   *   ipNatPool    — (config)# ip nat pool ?
    *   ipDhcpSnooping — (config)# ip dhcp snooping ?
    *   noIpDhcpSnoopingInformation — no ip dhcp snooping information ?
    *   ipDhcpSnoopingVerify — ip dhcp snooping verify ?
@@ -921,6 +926,15 @@
       { cmd: "no" },
       { cmd: "permit" },
       { cmd: "remark" },
+    ],
+    /** (config-std-nacl)# ? — standard ACL ACE keywords */
+    configStdNacl: [{ cmd: "permit" }, { cmd: "deny" }, { cmd: "remark" }],
+    /** (config-std-nacl)# permit ? */
+    configStdNaclPermit: [
+      { cmd: "any" },
+      { cmd: "host" },
+      { cmd: "<ip-address>" },
+      { cmd: "<line-number>" },
     ],
     /** (config-ext-nacl)# permit ? */
     configAclPermit: [
@@ -1198,6 +1212,8 @@
       { cmd: "resequence" },
       { cmd: "standard" },
     ],
+    /** (config)# ip access-list standard ? — ACL number or name */
+    ipAccessListStandard: [{ cmd: "<1-99>" }, { cmd: "WORD" }],
     /** (config)# ip access-list extended ? */
     ipAccessListExtended: [{ cmd: "<100-199>" }, { cmd: "<2000-2699>" }, { cmd: "WORD" }],
     /** (config-if)# ip access-group ? */
@@ -1219,6 +1235,24 @@
       { cmd: "snooping" },
       { cmd: "subscriber-id" },
     ],
+    /** (config)# ip nat ? */
+    ipNat: [
+      { cmd: "inside" },
+      { cmd: "outside" },
+      { cmd: "translation timeout" },
+      { cmd: "translation max-entries" },
+      { cmd: "pool" },
+      { cmd: "inside source" },
+      { cmd: "outside source" },
+    ],
+    /** (config)# ip nat pool ? */
+    ipNatPool: [
+      { cmd: "<name>" },
+      { cmd: "<first-ip>" },
+      { cmd: "<last-ip>" },
+      { cmd: "netmask <subnet-mask>" },
+      { cmd: "prefix-length <prefix>" },
+    ],
     /** (config)# ip dhcp snooping ? */
     ipDhcpSnooping: [
       { cmd: "database" },
@@ -1232,9 +1266,11 @@
     noIpDhcpSnoopingInformation: [{ cmd: "option" }],
     /** (config)# ip dhcp snooping verify ? */
     ipDhcpSnoopingVerify: [{ cmd: "mac-address" }],
-    /** Switch (config)# interface ? — empty on router; use lab override on router if needed */
-    interface: [],
+    /** (config)# interface ? — router; gigabitethernet / fastethernet / loopback */
+    interface: [{ cmd: "gigabitethernet" }, { cmd: "fastethernet" }, { cmd: "loopback" }],
     interfaceEthernet: [],
+    /** (config)# interface gigabitethernet ? */
+    interfaceGigabitEthernet: [{ cmd: "<0-9>/<0-9>" }],
     switchport: [],
     switchportMode: [],
     switchportAccess: [],
@@ -1314,15 +1350,20 @@
    *   ip                — (config)# ip ?
    *   ipv6              — (config)# ipv6 ?
    *   ipAccessList      — (config)# ip access-list ?
+   *   ipAccessListStandard — (config)# ip access-list standard ?
    *   ipAccessListExtended — (config)# ip access-list extended ?
    *   ipAccessGroup     — (config-if)# ip access-group ?
    *   ipAccessGroupDir  — (config-if)# ip access-group <name> ?
    *   ipDhcp            — (config)# ip dhcp ?
+   *   ipNat             — (config)# ip nat ?
+   *   ipNatPool         — (config)# ip nat pool ?
    *   router            — (config)# router ?
    *   routerOspf        — (config)# router ospf ?
    *   ipDhcpSnooping    — (config)# ip dhcp snooping ?
    *   noIpDhcpSnoopingInformation — no ip dhcp snooping information ?
    *   ipDhcpSnoopingVerify — ip dhcp snooping verify ?
+   *   configStdNacl — (config-std-nacl)# ?
+   *   configStdNaclPermit — (config-std-nacl)# permit ?
    *   configAcl / configAclPermit / configAclPermitTcp* — extended ACL ACE chain (routers)
    *   interface         — (config)# interface ?
    *   interfaceEthernet — (config)# interface ethernet ?
@@ -1435,6 +1476,8 @@
     configIfIpv6Address: DEFAULT_ROUTER_CLI_HELP.configIfIpv6Address,
     configIfIpAddress: DEFAULT_ROUTER_CLI_HELP.configIfIpAddress,
     configAcl: DEFAULT_ROUTER_CLI_HELP.configAcl,
+    configStdNacl: DEFAULT_ROUTER_CLI_HELP.configStdNacl,
+    configStdNaclPermit: DEFAULT_ROUTER_CLI_HELP.configStdNaclPermit,
     configAclPermit: DEFAULT_ROUTER_CLI_HELP.configAclPermit,
     configAclPermitTcp: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcp,
     configAclPermitTcpSrcWildcard: DEFAULT_ROUTER_CLI_HELP.configAclPermitTcpSrcWildcard,
@@ -1450,10 +1493,13 @@
     router: DEFAULT_ROUTER_CLI_HELP.router,
     routerOspf: DEFAULT_ROUTER_CLI_HELP.routerOspf,
     ipAccessList: DEFAULT_ROUTER_CLI_HELP.ipAccessList,
+    ipAccessListStandard: DEFAULT_ROUTER_CLI_HELP.ipAccessListStandard,
     ipAccessListExtended: DEFAULT_ROUTER_CLI_HELP.ipAccessListExtended,
     ipAccessGroup: DEFAULT_ROUTER_CLI_HELP.ipAccessGroup,
     ipAccessGroupDir: DEFAULT_ROUTER_CLI_HELP.ipAccessGroupDir,
     ipDhcp: DEFAULT_ROUTER_CLI_HELP.ipDhcp,
+    ipNat: DEFAULT_ROUTER_CLI_HELP.ipNat,
+    ipNatPool: DEFAULT_ROUTER_CLI_HELP.ipNatPool,
     ipDhcpSnooping: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnooping,
     noIpDhcpSnoopingInformation: DEFAULT_ROUTER_CLI_HELP.noIpDhcpSnoopingInformation,
     ipDhcpSnoopingVerify: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnoopingVerify,
@@ -2292,6 +2338,76 @@
     return true;
   }
 
+  /** `(config)# ip nat pool ?` — pool name / range / mask. */
+
+  function isIpNatPoolHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip nat pool ?" || t === "do ip nat pool ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipNatPoolExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipNatPoolCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ipNatPool"), opts.ipNatPoolExtra);
+  }
+
+  /**
+   * `ip nat pool ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpNatPoolHelp(raw, appendFn, opts) {
+    if (!isIpNatPoolHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatPoolCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat ?` — NAT global subcommands. */
+
+  function isIpNatHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip nat ?" || t === "do ip nat ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipNatExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipNatCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ipNat"), opts.ipNatExtra);
+  }
+
+  /**
+   * `ip nat ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpNatHelp(raw, appendFn, opts) {
+    if (!isIpNatHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** `(config)# ip dhcp ?` — DHCP global subcommands. */
 
   function isIpDhcpHelpQuery(raw) {
@@ -2390,6 +2506,44 @@
     opts = opts || {};
     if (parsePromptMode(opts.promptText) !== "config") return false;
     var text = ipv6CommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** Global `ip access-list standard ?` at host(config)#. */
+
+  function isIpAccessListStandardHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip access-list standard ?" || t === "do ip access-list standard ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', ipAccessListStandardExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function ipAccessListStandardCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipAccessListStandard"),
+      opts.ipAccessListStandardExtra
+    );
+  }
+
+  /**
+   * `ip access-list standard ?` at (config)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendIpAccessListStandardHelp(raw, appendFn, opts) {
+    if (!isIpAccessListStandardHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipAccessListStandardCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", text);
@@ -2710,7 +2864,6 @@
   function tryAppendInterfaceHelp(raw, appendFn, opts) {
     if (!isInterfaceHelpQuery(raw)) return false;
     opts = opts || {};
-    if ((opts.deviceType || "router") !== "switch") return false;
     if (parsePromptMode(opts.promptText) !== "config") return false;
     var text = interfaceCommandHelpText(opts);
     if (!text) return false;
@@ -3199,7 +3352,6 @@
   function tryAppendInterfaceGigabitEthernetHelp(raw, appendFn, opts) {
     if (!isInterfaceGigabitEthernetHelpQuery(raw)) return false;
     opts = opts || {};
-    if ((opts.deviceType || "router") !== "switch") return false;
     if (parsePromptMode(opts.promptText) !== "config") return false;
     var text = interfaceGigabitEthernetCommandHelpText(opts);
     if (!text) return false;
@@ -4028,6 +4180,44 @@
     return true;
   }
 
+  /** `(config-std-nacl)# permit ?` — standard ACL source / sequence. */
+
+  function isConfigStdNaclPermitHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "permit ?" || t === "do permit ?";
+  }
+
+  /**
+   * @param {{deviceType?:'router'|'switch', configStdNaclPermitExtra?:Array<{cmd:string}>}} [opts]
+   */
+  function configStdNaclPermitCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configStdNaclPermit"),
+      opts.configStdNaclPermitExtra
+    );
+  }
+
+  /**
+   * `permit ?` at (config-std-nacl)# on router or switch.
+   * @param {Function} appendFn - (className, text) => void
+   */
+  function tryAppendConfigStdNaclPermitHelp(raw, appendFn, opts) {
+    if (!isConfigStdNaclPermitHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-std-nacl") return false;
+    var text = configStdNaclPermitCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** `(config-ext-nacl)# permit ?` at named/numbered extended ACL submode. */
 
   function isConfigAclPermitHelpQuery(raw) {
@@ -4051,7 +4241,7 @@
   }
 
   /**
-   * `permit ?` at (config-ext-nacl)# / (config-std-nacl)# on router or switch.
+   * `permit ?` at (config-ext-nacl)# on router or switch.
    * @param {Function} appendFn - (className, text) => void
    */
   function tryAppendConfigAclPermitHelp(raw, appendFn, opts) {
@@ -4120,6 +4310,7 @@
     if (tryAppendIpRouteDestMaskHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpRouteDestHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpRouteHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpAccessListStandardHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessListExtendedHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpAccessListHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigIfIpOspfProcessAreaHelp(raw, appendFn, opts)) return true;
@@ -4134,6 +4325,8 @@
     if (tryAppendNoIpDhcpSnoopingInformationHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingVerifyHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatPoolHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpv6Help(raw, appendFn, opts)) return true;
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
@@ -4175,6 +4368,7 @@
     if (tryAppendConfigAclPermitTcpDestHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigAclPermitTcpSrcWildcardHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigAclPermitTcpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigStdNaclPermitHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigAclPermitHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigRouterRouterIdHelp(raw, appendFn, opts)) return true;
     return tryAppendModeHelp(raw, appendFn, opts);
@@ -4196,10 +4390,15 @@
     if (tag === "config") return "config";
     if (tag === "config-if" || tag.indexOf("config-if-range") === 0) return "config-if";
     if (tag === "config-router") return "config-router";
-    if (tag.indexOf("config-std-nacl") === 0 || tag.indexOf("config-ext-nacl") === 0) return "config-acl";
+    if (tag.indexOf("config-std-nacl") === 0) return "config-std-nacl";
+    if (tag.indexOf("config-ext-nacl") === 0) return "config-acl";
     if (tag === "config-vlan") return "config-vlan";
     if (tag.indexOf("config-line") === 0) return "config-line";
     return "config";
+  }
+
+  function isAclConfigMode(mode) {
+    return mode === "config-acl" || mode === "config-std-nacl";
   }
 
   function formatHelpEntries(base, extra) {
@@ -4229,6 +4428,7 @@
     if (mode === "config-if") key = "configIf";
     else if (mode === "config-line") key = "configLine";
     else if (mode === "config-router") key = "configRouter";
+    else if (mode === "config-std-nacl") key = "configStdNacl";
     else if (mode === "config-acl") key = "configAcl";
     else if (mode === "config-vlan") key = "configVlan";
     else if (mode === "config") key = "configGlobal";
@@ -4339,6 +4539,9 @@
     isIpRouteDestMaskNextHopHelpQuery: isIpRouteDestMaskNextHopHelpQuery,
     ipRouteDestMaskNextHopCommandHelpText: ipRouteDestMaskNextHopCommandHelpText,
     tryAppendIpRouteDestMaskNextHopHelp: tryAppendIpRouteDestMaskNextHopHelp,
+    isIpAccessListStandardHelpQuery: isIpAccessListStandardHelpQuery,
+    ipAccessListStandardCommandHelpText: ipAccessListStandardCommandHelpText,
+    tryAppendIpAccessListStandardHelp: tryAppendIpAccessListStandardHelp,
     isIpAccessListHelpQuery: isIpAccessListHelpQuery,
     ipAccessListCommandHelpText: ipAccessListCommandHelpText,
     tryAppendIpAccessListHelp: tryAppendIpAccessListHelp,
@@ -4372,6 +4575,12 @@
     isConfigIfIpAddressHelpQuery: isConfigIfIpAddressHelpQuery,
     configIfIpAddressCommandHelpText: configIfIpAddressCommandHelpText,
     tryAppendConfigIfIpAddressHelp: tryAppendConfigIfIpAddressHelp,
+    isIpNatPoolHelpQuery: isIpNatPoolHelpQuery,
+    ipNatPoolCommandHelpText: ipNatPoolCommandHelpText,
+    tryAppendIpNatPoolHelp: tryAppendIpNatPoolHelp,
+    isIpNatHelpQuery: isIpNatHelpQuery,
+    ipNatCommandHelpText: ipNatCommandHelpText,
+    tryAppendIpNatHelp: tryAppendIpNatHelp,
     isIpDhcpHelpQuery: isIpDhcpHelpQuery,
     ipDhcpCommandHelpText: ipDhcpCommandHelpText,
     tryAppendIpDhcpHelp: tryAppendIpDhcpHelp,
@@ -4485,6 +4694,9 @@
     isUsernameNameHelpQuery: isUsernameNameHelpQuery,
     usernameNameCommandHelpText: usernameNameCommandHelpText,
     tryAppendUsernameNameHelp: tryAppendUsernameNameHelp,
+    isConfigStdNaclPermitHelpQuery: isConfigStdNaclPermitHelpQuery,
+    configStdNaclPermitCommandHelpText: configStdNaclPermitCommandHelpText,
+    tryAppendConfigStdNaclPermitHelp: tryAppendConfigStdNaclPermitHelp,
     isConfigAclPermitHelpQuery: isConfigAclPermitHelpQuery,
     configAclPermitCommandHelpText: configAclPermitCommandHelpText,
     tryAppendConfigAclPermitHelp: tryAppendConfigAclPermitHelp,

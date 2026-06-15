@@ -21,6 +21,9 @@
   IPv6 routing: (config)# ipv6 ? (unicast-routing)
   Static route chain: ip route ?, ip route <dest> ?, ip route <dest> <mask> ?,
     ip route <dest> <mask> <next-hop> ?
+  ACL: ip access-list ?, ip access-list standard ? (<1-99> / WORD); (config-std-nacl)# ? → permit/deny/remark;
+    permit ? → any / host / &lt;ip-address&gt; / &lt;line-number&gt;
+  NAT: (config)# ip nat ? (inside / outside / pool / inside source / …); ip nat pool ?
   Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
 -->
 <html lang="en">
@@ -570,6 +573,9 @@
           </p>
           <p class="tasks">
             Services must be configured in the order presented to complete the implementation.
+            On <strong>R2</strong>, you may enter <strong>GigabitEthernet0/1</strong> and
+            <strong>GigabitEthernet0/0</strong> in any order to apply <code>ip nat inside</code> and
+            <code>ip nat outside</code> as long as both are done before the NAT pool.
           </p>
           <ol class="tasks">
             <li>
@@ -1208,8 +1214,11 @@ R3(config-line)# end</pre>
       ].join("\r\n");
 
       /**
-       * R2 Task 1 — full IOS sequence: ACL XLATE with three permits, NAT inside/outside on Gi0/1 and Gi0/0, pool, inside source list.
+       * R2 Task 1 — graded sequence: conf t, ACL XLATE, pool, inside source.
+       * NAT inside/outside on Gi0/1 and Gi0/0 are tracked separately (any order after conf t, before pool).
        */
+      var NAT_POOL_STEP_INDEX = 6;
+      var NAT_SOURCE_STEP_INDEX = 7;
       var STEPS = [
         { mode: "exec", test: function (raw) {
           return normalize(raw) === "configure terminal";
@@ -1230,34 +1239,10 @@ R3(config-line)# end</pre>
           return normalize(raw) === "exit";
         }},
         { mode: "config", test: function (raw) {
-          return normalize(raw) === "interface gigabitethernet0/1";
-        }},
-        { mode: "config-if", test: function (raw) {
-          return normalize(raw) === "ip nat inside";
-        }},
-        { mode: "config-if", test: function (raw) {
-          return normalize(raw) === "exit";
+          return isR2NatPoolCmd(normalize(raw));
         }},
         { mode: "config", test: function (raw) {
-          return normalize(raw) === "interface gigabitethernet0/0";
-        }},
-        { mode: "config-if", test: function (raw) {
-          return normalize(raw) === "ip nat outside";
-        }},
-        { mode: "config-if", test: function (raw) {
-          return normalize(raw) === "exit";
-        }},
-        { mode: "config", test: function (raw) {
-          var u = normalize(raw);
-          return (
-            u.indexOf("ip nat pool test_pool") !== -1 &&
-            u.indexOf("10.10.10.1") !== -1 &&
-            u.indexOf("255.255.255.0") !== -1
-          );
-        }},
-        { mode: "config", test: function (raw) {
-          var u = normalize(raw);
-          return u.indexOf("ip nat inside source list xlate pool test_pool") !== -1;
+          return isR2NatInsideSourceCmd(normalize(raw));
         }},
       ];
 
@@ -1287,6 +1272,9 @@ R3(config-line)# end</pre>
         if (/^interface (fa|f)\d+\/\d+$/.test(t)) {
           t = t.replace(/^interface (fa|f)/, "interface fastethernet");
         }
+        t = t.replace(/^interface gigabitethernet\s+(\d+\/\d+)$/, "interface gigabitethernet$1");
+        t = t.replace(/^interface fastethernet\s+(\d+\/\d+)$/, "interface fastethernet$1");
+        t = t.replace(/^interface ethernet\s+(\d+\/\d+)$/, "interface ethernet$1");
         /* R3 lab topology: only Gi0/2 exists; map mis-typed Ethernet0/2 to GigabitEthernet0/2. */
         if (t === "interface ethernet0/2") t = "interface gigabitethernet0/2";
         if (t === "no shut") t = "no shutdown";
@@ -1428,17 +1416,160 @@ R3(config-line)# end</pre>
         });
       }
 
-      function r2FailedStepMsg(u) {
-        if (stepIndex < STEPS.length && u.indexOf("ip nat pool") === 0) {
-          if (stepIndex < 12) {
-            return (
-              "% Complete earlier Task 1 STEPS first — configure ip nat outside on GigabitEthernet0/0 " +
-              "(re-enter with interface GigabitEthernet0/0 if you typed exit)."
+      /** R2 NAT lab interfaces — enter Gi0/1 or Gi0/0 anytime after conf t; pool requires both inside/outside. */
+      function r2NatInterfacesReady() {
+        return r2NatInsideDone && r2NatOutsideDone;
+      }
+
+      function isR2NatPoolCmd(u) {
+        return (
+          u.indexOf("ip nat pool test_pool") !== -1 &&
+          u.indexOf("10.10.10.1") !== -1 &&
+          u.indexOf("10.10.10.254") !== -1 &&
+          u.indexOf("255.255.255.0") !== -1
+        );
+      }
+
+      function isR2NatInsideSourceCmd(u) {
+        return u.indexOf("ip nat inside source list xlate pool test_pool") !== -1;
+      }
+
+      function noteR2AclProgress(u) {
+        if (u === "ip access-list standard xlate") r2AclXlateDone = true;
+        if (u === "permit 10.2.3.3") r2Permit10233 = true;
+        if (u === "permit 192.168.3.1") r2Permit19216831 = true;
+        if (u === "permit 10.1.3.11") r2Permit101311 = true;
+      }
+
+      function r2AclReady() {
+        return (
+          stepIndex >= NAT_POOL_STEP_INDEX ||
+          (r2AclXlateDone && r2Permit10233 && r2Permit19216831 && r2Permit101311)
+        );
+      }
+
+      function tryR2NatGlobalCmd(u) {
+        if (!isR2NatPoolCmd(u) && !isR2NatInsideSourceCmd(u)) return false;
+
+        var atConfigIf =
+          swPrompt.textContent === SWITCH_HOST + "(config-if)#" || swPromptOverride === "config-if";
+        if (atConfigIf) {
+          appendSw(
+            "line-bad",
+            "% NAT pool and inside source are global configuration commands — type exit to leave interface configuration first."
+          );
+          return true;
+        }
+
+        var atConfig =
+          swPrompt.textContent === SWITCH_HOST + "(config)#" || swPromptOverride === "config";
+        if (!atConfig) return false;
+
+        if (isR2NatPoolCmd(u)) {
+          if (!r2NatInterfacesReady()) {
+            appendSw(
+              "line-bad",
+              "% Configure ip nat inside and ip nat outside on the correct interfaces before defining the NAT pool."
             );
+            return true;
           }
-          if (STEPS[stepIndex].mode === "config-if") {
-            return "% NAT pool is a global configuration command — type exit to leave interface configuration first.";
+          if (!r2AclReady()) {
+            appendSw(
+              "line-bad",
+              "% Complete the XLATE access-list configuration before defining the NAT pool."
+            );
+            return true;
           }
+          if (!r2NatPoolDone) {
+            r2NatPoolDone = true;
+            stepIndex = Math.max(stepIndex, NAT_SOURCE_STEP_INDEX);
+            swPromptOverride = null;
+            setSwPrompt();
+          }
+          return true;
+        }
+
+        if (isR2NatInsideSourceCmd(u)) {
+          if (!r2NatPoolDone) {
+            appendSw("line-bad", "% Define the NAT pool before configuring ip nat inside source.");
+            return true;
+          }
+          if (!r2AclReady()) {
+            appendSw(
+              "line-bad",
+              "% Complete the XLATE access-list configuration before configuring ip nat inside source."
+            );
+            return true;
+          }
+          if (!task1R2NatComplete) {
+            task1R2NatComplete = true;
+            r2NatInsideSourceDone = true;
+            stepIndex = STEPS.length;
+            swPromptOverride = null;
+            swPrompt.textContent = SWITCH_HOST + "#";
+            tryCompleteIpServicesLab(function (cls, text) {
+              appendSw(cls, text);
+            });
+          }
+          return true;
+        }
+
+        return false;
+      }
+
+      function tryR2NatInterfaceNav(line, u) {
+        var gi01 = "interface gigabitethernet0/1";
+        var gi00 = "interface gigabitethernet0/0";
+        if (u !== gi01 && u !== gi00) return false;
+
+        var atConfig =
+          swPrompt.textContent === SWITCH_HOST + "(config)#" || swPromptOverride === "config";
+        var atConfigIf =
+          swPrompt.textContent === SWITCH_HOST + "(config-if)#" || swPromptOverride === "config-if";
+        if (!atConfig && !atConfigIf) return false;
+        if (stepIndex < 1) return false;
+
+        r2ActiveIf = u === gi01 ? "gigabitethernet0/1" : "gigabitethernet0/0";
+        swPromptOverride = "config-if";
+        setSwPrompt();
+        return true;
+      }
+
+      function tryR2NatIfaceCmd(u) {
+        var atConfigIf =
+          swPrompt.textContent === SWITCH_HOST + "(config-if)#" || swPromptOverride === "config-if";
+        if (!atConfigIf) return false;
+
+        if (u === "ip nat inside") {
+          if (r2ActiveIf !== "gigabitethernet0/1") {
+            appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
+            return true;
+          }
+          r2NatInsideDone = true;
+          return true;
+        }
+        if (u === "ip nat outside") {
+          if (r2ActiveIf !== "gigabitethernet0/0") {
+            appendSw("line-bad", invalidInputMsgForNormalizedCmd(u));
+            return true;
+          }
+          r2NatOutsideDone = true;
+          return true;
+        }
+        return false;
+      }
+
+      function r2FailedStepMsg(u) {
+        if (isR2NatPoolCmd(u)) {
+          if (!r2NatInterfacesReady()) {
+            return "% Configure ip nat inside and ip nat outside on the correct interfaces before defining the NAT pool.";
+          }
+          if (!r2AclReady()) {
+            return "% Complete the XLATE access-list configuration before defining the NAT pool.";
+          }
+        }
+        if (isR2NatInsideSourceCmd(u) && !r2NatPoolDone) {
+          return "% Define the NAT pool before configuring ip nat inside source.";
         }
         return invalidInputMsgForNormalizedCmd(u);
       }
@@ -1454,6 +1585,15 @@ R3(config-line)# end</pre>
       }
 
       var stepIndex = 0;
+      var r2NatInsideDone = false;
+      var r2NatOutsideDone = false;
+      var r2NatPoolDone = false;
+      var r2NatInsideSourceDone = false;
+      var r2AclXlateDone = false;
+      var r2Permit10233 = false;
+      var r2Permit19216831 = false;
+      var r2Permit101311 = false;
+      var r2ActiveIf = null;
       /** Set true when R2 Task 1 (NAT STEPS) completes; cleared on Reset lab. Drives R3 ping to 192.168.100.1. */
       var task1R2NatComplete = false;
       var swPromptOverride = null;
@@ -1563,6 +1703,15 @@ R3(config-line)# end</pre>
         stepIndex = 0;
         task1R2NatComplete = false;
         swPromptOverride = null;
+        r2NatInsideDone = false;
+        r2NatOutsideDone = false;
+        r2NatPoolDone = false;
+        r2NatInsideSourceDone = false;
+        r2AclXlateDone = false;
+        r2Permit10233 = false;
+        r2Permit19216831 = false;
+        r2Permit101311 = false;
+        r2ActiveIf = null;
         nvramSavedSw = false;
         nvramSavedR1 = false;
         nvramSavedR3 = false;
@@ -1576,7 +1725,7 @@ R3(config-line)# end</pre>
 
       function submitSw() {
         var promptText = swPrompt.textContent;
-        var line = swCmdline.value;
+        var line = cliLabContainer.stripPastedIosPrompts(swCmdline.value);
         var trimmed = String(line || "").trim();
         var normalized = normalize(line);
         var hideInputLine = isModeNavigationCommand(normalized);
@@ -1634,6 +1783,7 @@ R3(config-line)# end</pre>
         if (u === "exit" && !nextStepConsumesLine) {
           if (currentMode === SWITCH_HOST + "(config-if)#") {
             swPromptOverride = "config";
+            r2ActiveIf = null;
             setSwPrompt();
             return;
           }
@@ -1649,7 +1799,33 @@ R3(config-line)# end</pre>
           }
         }
 
+        if (u === "configure terminal" && currentMode === SWITCH_HOST + "#") {
+          if (stepIndex < STEPS.length && STEPS[stepIndex].test(line)) {
+            stepIndex += 1;
+            swPromptOverride = null;
+            setSwPrompt();
+          } else {
+            swPromptOverride = "config";
+            setSwPrompt();
+          }
+          return;
+        }
+
         if (r2StepInterfaceNav(line, u)) {
+          return;
+        }
+
+        if (tryR2NatInterfaceNav(line, u)) {
+          return;
+        }
+
+        if (tryR2NatIfaceCmd(u)) {
+          return;
+        }
+
+        noteR2AclProgress(u);
+
+        if (tryR2NatGlobalCmd(u)) {
           return;
         }
 
@@ -1677,11 +1853,6 @@ R3(config-line)# end</pre>
         }
 
         if (stepIndex >= STEPS.length) {
-          if (u === "configure terminal") {
-            swPromptOverride = "config";
-            setSwPrompt();
-            return;
-          }
           if (swInConfigMode() && u === "ntp server 10.1.2.1") {
             return;
           }
@@ -1695,6 +1866,21 @@ R3(config-line)# end</pre>
         }
 
         if (STEPS[stepIndex].test(line)) {
+          noteR2AclProgress(u);
+          if (stepIndex === NAT_POOL_STEP_INDEX) {
+            if (!r2NatInterfacesReady() || !r2AclReady()) {
+              appendSw("line-bad", r2FailedStepMsg(u));
+              return;
+            }
+            r2NatPoolDone = true;
+          }
+          if (stepIndex === NAT_SOURCE_STEP_INDEX) {
+            if (!r2NatPoolDone || !r2AclReady()) {
+              appendSw("line-bad", r2FailedStepMsg(u));
+              return;
+            }
+            r2NatInsideSourceDone = true;
+          }
           stepIndex += 1;
           swPromptOverride = null;
           if (stepIndex >= STEPS.length) {
