@@ -11,7 +11,8 @@
   public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/, or start from templates/labs/cli-lab-baseline.html.
 
   Reference: public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (router sample)
-  Reference: public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (switch sample)
+  Reference: public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (switch sample — access VLANs, LLDP)
+  Reference: public/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html (switch sample — trunk, LACP, VLAN order flexible)
 
   Engine API (cli-lab-engine.js):
   - createIosDevice({ host, deviceType, elements, steps, showRunningConfig, … })
@@ -49,10 +50,25 @@
   - Reference labs: cli-lab-static-routing.html (static route), cli-lab-ospf_config_sim_v3.html (OSPF),
     ipv4_ipv6_assign.html (IPv4/IPv6 addressing)
   - Switch keys: same router ACL/DHCP/ip keys where inherited, plus interface, interfaceEthernet,
-    switchport, switchportMode, switchportAccess, lldp, line, lineVty, transport, transportInput,
+    interfaceGigabitEthernet, interfaceRange, configVlan, vlanCreate, showVlan, showVlanId, showVlanName,
+    switchport, switchportMode, switchportAccess,
+    switchportTrunk, switchportTrunkEncapsulation, switchportTrunkNative, switchportTrunkNativeVlan, switchportTrunkAllowedVlan,
+    channelGroupNum, channelGroupMode, channelProtocol, lldp, line, lineVty, transport, transportInput,
     login, username, usernameName, usernamePrivilege, usernamePrivilegeLevel, usernameAlgorithmType,
     usernameAlgorithmTypeHash, usernameAlgorithmTypeHashPrivilege, usernameAlgorithmTypeHashPrivilegeLevel,
     usernameAlgorithmTypeHashPrivilegeLevelPassword
+
+  - Switch `?` chains (DEFAULT_SWITCH_CLI_HELP — all switches when SWITCH_CLI_HELP = null):
+      VLAN create: (config)# vlan ?  |  (config-vlan)# ?
+      Show VLAN: show ? (vlan, vlan brief)  →  show vlan ?  →  show vlan id ?  |  show vlan name ?
+      Interface: (config)# interface ?  →  interface gigabitethernet ?  |  interface range ?
+      Trunk: (config-if)# switchport trunk ?  →  switchport trunk encapsulation ?
+        →  switchport trunk native ?  →  switchport trunk native vlan ?
+        →  switchport trunk allowed vlan ?
+      LACP: (config-if)# channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?
+      Access / mode: (config-if)# switchport ?  →  switchport mode ?  |  switchport access ?
+      LLDP, username, line, transport, login — nested chains (see DEFAULT_SWITCH_CLI_HELP keys in cli-lab-container.js)
+  - Reference labs: cli-lab-vlan-sim.html (access VLANs), cli-lab-trunk_lacp.html (trunk + LACP)
 
   CLI login banner (auto on CCNA lab pages when a modal opens):
   - BCT_CLI_HELP_NOTICE / EXAM_SIM_CLI_BANNER_TEXT — context-sensitive help limited to scenario
@@ -97,6 +113,7 @@
         router (R1, submitSw2, submitR10, …)
         <code>iosHelpOpts("router", promptText, ROUTER_CLI_HELP)</code> — OSPF, IPv4/IPv6, static route,
         ACL, and DHCP snooping chains when <code>ROUTER_CLI_HELP = null</code>.
+        Switch <code>SWITCH_CLI_HELP = null</code> includes VLAN, trunk, LACP, interface range, and show vlan chains.
       </p>
     </footer>
   </div>

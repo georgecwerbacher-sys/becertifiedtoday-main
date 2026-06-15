@@ -1326,9 +1326,24 @@
    *   configAcl / configAclPermit / configAclPermitTcp* — extended ACL ACE chain (routers)
    *   interface         — (config)# interface ?
    *   interfaceEthernet — (config)# interface ethernet ?
+   *   interfaceGigabitEthernet — (config)# interface gigabitethernet ?
+   *   interfaceRange    — (config)# interface range ?
+   *   configVlan        — (config-vlan)# ?
+   *   vlanCreate        — (config)# vlan ?
+   *   showVlan          — show vlan ?
+   *   showVlanId        — show vlan id ?
+   *   showVlanName      — show vlan name ?
    *   switchport        — (config-if)# switchport ?
    *   switchportMode    — (config-if)# switchport mode ?
    *   switchportAccess  — (config-if)# switchport access ?
+   *   switchportTrunk   — (config-if)# switchport trunk ?
+   *   switchportTrunkEncapsulation — (config-if)# switchport trunk encapsulation ?
+   *   switchportTrunkNative — (config-if)# switchport trunk native ?
+   *   switchportTrunkNativeVlan — (config-if)# switchport trunk native vlan ?
+   *   switchportTrunkAllowedVlan — (config-if)# switchport trunk allowed vlan ?
+   *   channelGroupNum   — (config-if)# channel-group ?
+   *   channelGroupMode  — (config-if)# channel-group <n> mode ?
+   *   channelProtocol   — (config-if)# channel-protocol ?
    *   lldp              — (config-if)# lldp ?
    *   username          — (config)# username ?
    *   usernameName      — (config)# username <name> ?
@@ -1356,6 +1371,7 @@
       { cmd: "running-config" },
       { cmd: "startup-config" },
       { cmd: "version" },
+      { cmd: "vlan" },
       { cmd: "vlan brief" },
     ],
     configExec: DEFAULT_ROUTER_CLI_HELP.configExec,
@@ -1390,6 +1406,7 @@
       { cmd: "arp" },
       { cmd: "cdp" },
       { cmd: "channel-group" },
+      { cmd: "channel-protocol" },
       { cmd: "description" },
       { cmd: "duplex" },
       { cmd: "exit" },
@@ -1446,6 +1463,8 @@
       { cmd: "loopback" },
       { cmd: "tunnel" },
       { cmd: "ethernet" },
+      { cmd: "gigabitethernet" },
+      { cmd: "fastethernet" },
     ],
     /** (config)# interface ethernet ? — slot / port-channel / range */
     interfaceEthernet: [
@@ -1453,6 +1472,25 @@
       { cmd: "port-channel" },
       { cmd: "range" },
     ],
+    /** (config)# interface gigabitethernet ? */
+    interfaceGigabitEthernet: [{ cmd: "<0-9>/<0-9>" }, { cmd: "range" }],
+    /** (config)# interface range ? */
+    interfaceRange: [
+      { cmd: "gigabitethernet" },
+      { cmd: "ethernet" },
+      { cmd: "fastethernet" },
+      { cmd: "port-channel" },
+    ],
+    /** (config-vlan)# ? */
+    configVlan: [{ cmd: "name" }, { cmd: "exit" }, { cmd: "end" }],
+    /** (config)# vlan ? */
+    vlanCreate: [{ cmd: "<1-4094>" }],
+    /** show vlan ? */
+    showVlan: [{ cmd: "brief" }, { cmd: "id" }, { cmd: "name" }, { cmd: "summary" }],
+    /** show vlan id ? */
+    showVlanId: [{ cmd: "<1-4094>" }],
+    /** show vlan name ? */
+    showVlanName: [{ cmd: "<vlan-name>" }],
     /** (config-if)# switchport ? */
     switchport: [
       { cmd: "access" },
@@ -1474,6 +1512,34 @@
     ],
     /** (config-if)# switchport access ? */
     switchportAccess: [{ cmd: "vlan (#)" }],
+    /** (config-if)# switchport trunk ? */
+    switchportTrunk: [
+      { cmd: "encapsulation" },
+      { cmd: "native" },
+      { cmd: "allowed" },
+      { cmd: "pruning" },
+    ],
+    /** (config-if)# switchport trunk encapsulation ? */
+    switchportTrunkEncapsulation: [{ cmd: "dot1q" }],
+    /** (config-if)# switchport trunk native ? */
+    switchportTrunkNative: [{ cmd: "vlan" }],
+    /** (config-if)# switchport trunk native vlan ? */
+    switchportTrunkNativeVlan: [{ cmd: "<vlan-id>" }],
+    /** (config-if)# switchport trunk allowed vlan ? */
+    switchportTrunkAllowedVlan: [
+      { cmd: "add" },
+      { cmd: "all" },
+      { cmd: "except" },
+      { cmd: "none" },
+      { cmd: "remove" },
+      { cmd: "<vlan-list>" },
+    ],
+    /** (config-if)# channel-group ? */
+    channelGroupNum: [{ cmd: "<1-255>" }],
+    /** (config-if)# channel-group <n> mode ? */
+    channelGroupMode: [{ cmd: "active" }, { cmd: "on" }, { cmd: "passive" }],
+    /** (config-if)# channel-protocol ? */
+    channelProtocol: [{ cmd: "lacp" }, { cmd: "pagp" }],
     /** (config-if)# lldp ? */
     lldp: [
       { cmd: "run" },
@@ -1616,6 +1682,111 @@
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", showCommandHelpText(opts));
     }
+    return true;
+  }
+
+  /** Switch `show vlan name ?` at privileged EXEC. */
+
+  function isShowVlanNameHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "show vlan name ?" ||
+      t === "sh vlan name ?" ||
+      t === "do show vlan name ?" ||
+      t === "do sh vlan name ?"
+    );
+  }
+
+  function showVlanNameCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, opts.deviceType || "router", "showVlanName"), opts.showVlanNameExtra);
+  }
+
+  function tryAppendShowVlanNameHelp(raw, appendFn, opts) {
+    if (!isShowVlanNameHelpQuery(raw)) return false;
+    var text = showVlanNameCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `show vlan id ?` at privileged EXEC. */
+
+  function isShowVlanIdHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "show vlan id ?" ||
+      t === "sh vlan id ?" ||
+      t === "do show vlan id ?" ||
+      t === "do sh vlan id ?"
+    );
+  }
+
+  function showVlanIdCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, opts.deviceType || "router", "showVlanId"), opts.showVlanIdExtra);
+  }
+
+  function tryAppendShowVlanIdHelp(raw, appendFn, opts) {
+    if (!isShowVlanIdHelpQuery(raw)) return false;
+    var text = showVlanIdCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `show vlan ?` at privileged EXEC. */
+
+  function isShowVlanHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "show vlan ?" || t === "sh vlan ?" || t === "do show vlan ?" || t === "do sh vlan ?";
+  }
+
+  function showVlanCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, opts.deviceType || "router", "showVlan"), opts.showVlanExtra);
+  }
+
+  function tryAppendShowVlanHelp(raw, appendFn, opts) {
+    if (!isShowVlanHelpQuery(raw)) return false;
+    var text = showVlanCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `(config)# vlan ?` — VLAN id before entering config-vlan submode. */
+
+  function isVlanCreateHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "vlan ?" || t === "do vlan ?";
+  }
+
+  function vlanCreateCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, opts.deviceType || "switch", "vlanCreate"), opts.vlanCreateExtra);
+  }
+
+  function tryAppendVlanCreateHelp(raw, appendFn, opts) {
+    if (!isVlanCreateHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = vlanCreateCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
     return true;
   }
 
@@ -2705,6 +2876,307 @@
     return true;
   }
 
+  /** Switch `switchport trunk ?` at host(config-if)#. */
+
+  function isSwitchportTrunkHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport trunk ?" || t === "do switchport trunk ?";
+  }
+
+  function switchportTrunkCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(resolveHelpList(opts, opts.deviceType || "switch", "switchportTrunk"), opts.switchportTrunkExtra);
+  }
+
+  function tryAppendSwitchportTrunkHelp(raw, appendFn, opts) {
+    if (!isSwitchportTrunkHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportTrunkCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `switchport trunk encapsulation ?` at host(config-if)#. */
+
+  function isSwitchportTrunkEncapsulationHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport trunk encapsulation ?" || t === "do switchport trunk encapsulation ?";
+  }
+
+  function switchportTrunkEncapsulationCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportTrunkEncapsulation"),
+      opts.switchportTrunkEncapsulationExtra
+    );
+  }
+
+  function tryAppendSwitchportTrunkEncapsulationHelp(raw, appendFn, opts) {
+    if (!isSwitchportTrunkEncapsulationHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportTrunkEncapsulationCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `switchport trunk native vlan ?` at host(config-if)#. */
+
+  function isSwitchportTrunkNativeVlanHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport trunk native vlan ?" || t === "do switchport trunk native vlan ?";
+  }
+
+  function switchportTrunkNativeVlanCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportTrunkNativeVlan"),
+      opts.switchportTrunkNativeVlanExtra
+    );
+  }
+
+  function tryAppendSwitchportTrunkNativeVlanHelp(raw, appendFn, opts) {
+    if (!isSwitchportTrunkNativeVlanHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportTrunkNativeVlanCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `switchport trunk native ?` at host(config-if)#. */
+
+  function isSwitchportTrunkNativeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport trunk native ?" || t === "do switchport trunk native ?";
+  }
+
+  function switchportTrunkNativeCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportTrunkNative"),
+      opts.switchportTrunkNativeExtra
+    );
+  }
+
+  function tryAppendSwitchportTrunkNativeHelp(raw, appendFn, opts) {
+    if (!isSwitchportTrunkNativeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportTrunkNativeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `switchport trunk allowed vlan ?` at host(config-if)#. */
+
+  function isSwitchportTrunkAllowedVlanHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "switchport trunk allowed vlan ?" || t === "do switchport trunk allowed vlan ?";
+  }
+
+  function switchportTrunkAllowedVlanCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "switchportTrunkAllowedVlan"),
+      opts.switchportTrunkAllowedVlanExtra
+    );
+  }
+
+  function tryAppendSwitchportTrunkAllowedVlanHelp(raw, appendFn, opts) {
+    if (!isSwitchportTrunkAllowedVlanHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = switchportTrunkAllowedVlanCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `channel-group <n> mode ?` at host(config-if)#. */
+
+  function isChannelGroupModeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return /^channel-group \d+ mode \?$/.test(t) || /^do channel-group \d+ mode \?$/.test(t);
+  }
+
+  function channelGroupModeCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "channelGroupMode"),
+      opts.channelGroupModeExtra
+    );
+  }
+
+  function tryAppendChannelGroupModeHelp(raw, appendFn, opts) {
+    if (!isChannelGroupModeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = channelGroupModeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `channel-group ?` at host(config-if)#. */
+
+  function isChannelGroupNumHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "channel-group ?" || t === "do channel-group ?";
+  }
+
+  function channelGroupNumCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "channelGroupNum"),
+      opts.channelGroupNumExtra
+    );
+  }
+
+  function tryAppendChannelGroupNumHelp(raw, appendFn, opts) {
+    if (!isChannelGroupNumHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = channelGroupNumCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `channel-protocol ?` at host(config-if)#. */
+
+  function isChannelProtocolHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "channel-protocol ?" || t === "do channel-protocol ?";
+  }
+
+  function channelProtocolCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "channelProtocol"),
+      opts.channelProtocolExtra
+    );
+  }
+
+  function tryAppendChannelProtocolHelp(raw, appendFn, opts) {
+    if (!isChannelProtocolHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = channelProtocolCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `interface gigabitethernet ?` at host(config)#. */
+
+  function isInterfaceGigabitEthernetHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "interface gigabitethernet ?" ||
+      t === "int gigabitethernet ?" ||
+      t === "interface gi ?" ||
+      t === "int gi ?" ||
+      t === "do interface gigabitethernet ?" ||
+      t === "do int gigabitethernet ?" ||
+      t === "do interface gi ?" ||
+      t === "do int gi ?"
+    );
+  }
+
+  function interfaceGigabitEthernetCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "interfaceGigabitEthernet"),
+      opts.interfaceGigabitEthernetExtra
+    );
+  }
+
+  function tryAppendInterfaceGigabitEthernetHelp(raw, appendFn, opts) {
+    if (!isInterfaceGigabitEthernetHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = interfaceGigabitEthernetCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
+  /** Switch `interface range ?` at host(config)#. */
+
+  function isInterfaceRangeHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "interface range ?" ||
+      t === "int range ?" ||
+      t === "do interface range ?" ||
+      t === "do int range ?"
+    );
+  }
+
+  function interfaceRangeCommandHelpText(opts) {
+    opts = opts || {};
+    return formatHelpEntries(
+      resolveHelpList(opts, opts.deviceType || "switch", "interfaceRange"),
+      opts.interfaceRangeExtra
+    );
+  }
+
+  function tryAppendInterfaceRangeHelp(raw, appendFn, opts) {
+    if (!isInterfaceRangeHelpQuery(raw)) return false;
+    opts = opts || {};
+    if ((opts.deviceType || "router") !== "switch") return false;
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = interfaceRangeCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") appendFn("line-sys line-show-help", text);
+    return true;
+  }
+
   /** Match privilege keyword with common misspellings in username ? help. */
   var USERNAME_PRIVILEGE_WORD = "priv(?:ilege|ledge|iledge)";
 
@@ -3574,6 +4046,9 @@
   function tryAppendIosHelp(raw, appendFn, opts) {
     raw = stripPastedIosPrompts(raw);
     if (tryAppendShowHelp(raw, appendFn, opts)) return true;
+    if (tryAppendShowVlanNameHelp(raw, appendFn, opts)) return true;
+    if (tryAppendShowVlanIdHelp(raw, appendFn, opts)) return true;
+    if (tryAppendShowVlanHelp(raw, appendFn, opts)) return true;
     if (tryAppendConfigHelp(raw, appendFn, opts)) return true;
     if (tryAppendRouterOspfHelp(raw, appendFn, opts)) return true;
     if (tryAppendRouterHelp(raw, appendFn, opts)) return true;
@@ -3598,11 +4073,22 @@
     if (tryAppendIpDhcpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpv6Help(raw, appendFn, opts)) return true;
     if (tryAppendIpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendVlanCreateHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceEthernetHelp(raw, appendFn, opts)) return true;
+    if (tryAppendInterfaceGigabitEthernetHelp(raw, appendFn, opts)) return true;
+    if (tryAppendInterfaceRangeHelp(raw, appendFn, opts)) return true;
     if (tryAppendInterfaceHelp(raw, appendFn, opts)) return true;
     if (tryAppendLineVtyHelp(raw, appendFn, opts)) return true;
     if (tryAppendLineHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportAccessHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportTrunkAllowedVlanHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportTrunkNativeVlanHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportTrunkNativeHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportTrunkEncapsulationHelp(raw, appendFn, opts)) return true;
+    if (tryAppendSwitchportTrunkHelp(raw, appendFn, opts)) return true;
+    if (tryAppendChannelGroupModeHelp(raw, appendFn, opts)) return true;
+    if (tryAppendChannelGroupNumHelp(raw, appendFn, opts)) return true;
+    if (tryAppendChannelProtocolHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportModeHelp(raw, appendFn, opts)) return true;
     if (tryAppendSwitchportHelp(raw, appendFn, opts)) return true;
     if (tryAppendLoginHelp(raw, appendFn, opts)) return true;
@@ -3678,6 +4164,7 @@
     else if (mode === "config-line") key = "configLine";
     else if (mode === "config-router") key = "configRouter";
     else if (mode === "config-acl") key = "configAcl";
+    else if (mode === "config-vlan") key = "configVlan";
     else if (mode === "config") key = "configGlobal";
     else if (mode === "exec") key = "exec";
     else key = "configGlobal";
@@ -3744,6 +4231,18 @@
     isShowHelpQuery: isShowHelpQuery,
     showCommandHelpText: showCommandHelpText,
     tryAppendShowHelp: tryAppendShowHelp,
+    isShowVlanNameHelpQuery: isShowVlanNameHelpQuery,
+    showVlanNameCommandHelpText: showVlanNameCommandHelpText,
+    tryAppendShowVlanNameHelp: tryAppendShowVlanNameHelp,
+    isShowVlanIdHelpQuery: isShowVlanIdHelpQuery,
+    showVlanIdCommandHelpText: showVlanIdCommandHelpText,
+    tryAppendShowVlanIdHelp: tryAppendShowVlanIdHelp,
+    isShowVlanHelpQuery: isShowVlanHelpQuery,
+    showVlanCommandHelpText: showVlanCommandHelpText,
+    tryAppendShowVlanHelp: tryAppendShowVlanHelp,
+    isVlanCreateHelpQuery: isVlanCreateHelpQuery,
+    vlanCreateCommandHelpText: vlanCreateCommandHelpText,
+    tryAppendVlanCreateHelp: tryAppendVlanCreateHelp,
     isConfigHelpQuery: isConfigHelpQuery,
     configCommandHelpText: configCommandHelpText,
     tryAppendConfigHelp: tryAppendConfigHelp,
@@ -3849,6 +4348,36 @@
     isSwitchportAccessHelpQuery: isSwitchportAccessHelpQuery,
     switchportAccessCommandHelpText: switchportAccessCommandHelpText,
     tryAppendSwitchportAccessHelp: tryAppendSwitchportAccessHelp,
+    isSwitchportTrunkHelpQuery: isSwitchportTrunkHelpQuery,
+    switchportTrunkCommandHelpText: switchportTrunkCommandHelpText,
+    tryAppendSwitchportTrunkHelp: tryAppendSwitchportTrunkHelp,
+    isSwitchportTrunkEncapsulationHelpQuery: isSwitchportTrunkEncapsulationHelpQuery,
+    switchportTrunkEncapsulationCommandHelpText: switchportTrunkEncapsulationCommandHelpText,
+    tryAppendSwitchportTrunkEncapsulationHelp: tryAppendSwitchportTrunkEncapsulationHelp,
+    isSwitchportTrunkNativeHelpQuery: isSwitchportTrunkNativeHelpQuery,
+    switchportTrunkNativeCommandHelpText: switchportTrunkNativeCommandHelpText,
+    tryAppendSwitchportTrunkNativeHelp: tryAppendSwitchportTrunkNativeHelp,
+    isSwitchportTrunkNativeVlanHelpQuery: isSwitchportTrunkNativeVlanHelpQuery,
+    switchportTrunkNativeVlanCommandHelpText: switchportTrunkNativeVlanCommandHelpText,
+    tryAppendSwitchportTrunkNativeVlanHelp: tryAppendSwitchportTrunkNativeVlanHelp,
+    isSwitchportTrunkAllowedVlanHelpQuery: isSwitchportTrunkAllowedVlanHelpQuery,
+    switchportTrunkAllowedVlanCommandHelpText: switchportTrunkAllowedVlanCommandHelpText,
+    tryAppendSwitchportTrunkAllowedVlanHelp: tryAppendSwitchportTrunkAllowedVlanHelp,
+    isChannelGroupModeHelpQuery: isChannelGroupModeHelpQuery,
+    channelGroupModeCommandHelpText: channelGroupModeCommandHelpText,
+    tryAppendChannelGroupModeHelp: tryAppendChannelGroupModeHelp,
+    isChannelGroupNumHelpQuery: isChannelGroupNumHelpQuery,
+    channelGroupNumCommandHelpText: channelGroupNumCommandHelpText,
+    tryAppendChannelGroupNumHelp: tryAppendChannelGroupNumHelp,
+    isChannelProtocolHelpQuery: isChannelProtocolHelpQuery,
+    channelProtocolCommandHelpText: channelProtocolCommandHelpText,
+    tryAppendChannelProtocolHelp: tryAppendChannelProtocolHelp,
+    isInterfaceGigabitEthernetHelpQuery: isInterfaceGigabitEthernetHelpQuery,
+    interfaceGigabitEthernetCommandHelpText: interfaceGigabitEthernetCommandHelpText,
+    tryAppendInterfaceGigabitEthernetHelp: tryAppendInterfaceGigabitEthernetHelp,
+    isInterfaceRangeHelpQuery: isInterfaceRangeHelpQuery,
+    interfaceRangeCommandHelpText: interfaceRangeCommandHelpText,
+    tryAppendInterfaceRangeHelp: tryAppendInterfaceRangeHelp,
     isLldpHelpQuery: isLldpHelpQuery,
     lldpCommandHelpText: lldpCommandHelpText,
     tryAppendLldpHelp: tryAppendLldpHelp,

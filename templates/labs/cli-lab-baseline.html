@@ -22,10 +22,19 @@
       Static route: ip route ?, ip route <dest> ?, ip route <dest> <mask> ?,
         ip route <dest> <mask> <next-hop> ?
   - Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
+  - Switch `?` chains (SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP):
+      VLAN create: (config)# vlan ?  |  (config-vlan)# ?
+      Show VLAN: show ? (vlan, vlan brief)  →  show vlan ?  →  show vlan id ?  |  show vlan name ?
+      Interface: (config)# interface ?  →  interface gigabitethernet ?  |  interface range ?
+      Trunk: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  native vlan ?  →  allowed vlan ?
+      LACP: (config-if)# channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?
+      Access: (config-if)# switchport mode ?  |  switchport access ?  |  lldp ?
+      Identity: username ?, line ?, transport ?, login ? (nested chains in cli-lab-container.js)
 
   Reference labs (router / switch samples):
   - public/CCNA-Study/CCNA_labs/cli-lab-static-routing.html (multi-router + ROUTER_CLI_HELP override stub)
-  - public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (dual-switch + SWITCH_CLI_HELP override stub)
+  - public/CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html (dual-switch access VLANs + SWITCH_CLI_HELP = null)
+  - public/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html (dual-switch trunk + LACP + SWITCH_CLI_HELP = null)
   - public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/cli-lab-trunk-udld-lacp.html (phased ENCOR)
 -->
 <html lang="en">
@@ -1059,7 +1068,8 @@ Sw1(config)# hostname REPLACE_HOSTNAME</pre>
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
       /**
        * Per-lab IOS `?` help overrides. null = shared defaults in cli-lab-container.js.
-       * ROUTER_CLI_HELP → DEFAULT_ROUTER_CLI_HELP (all routers); SWITCH_CLI_HELP → DEFAULT_SWITCH_CLI_HELP (all switches).
+       * ROUTER_CLI_HELP → DEFAULT_ROUTER_CLI_HELP (all routers).
+       * SWITCH_CLI_HELP → DEFAULT_SWITCH_CLI_HELP (all switches): VLAN, trunk, LACP, show vlan, interface range, …
        */
       var ROUTER_CLI_HELP = null;
       /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */

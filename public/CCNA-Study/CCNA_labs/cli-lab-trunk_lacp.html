@@ -1,5 +1,18 @@
 <!doctype html>
 <!--
+  Reference switch lab — IOS `?` help and CLI login banner patterns for all switches.
+
+  Shared defaults (/js/cli-lab-container.js) when SWITCH_CLI_HELP = null:
+  - DEFAULT_SWITCH_CLI_HELP — baseline for every switch session (Sw1, Sw2, …)
+  - Login banner (BCT_CLI_HELP_NOTICE) — injected when each switch CLI modal opens
+  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))
+
+  Switch `?` chains (read-only; full key list in templates/containers/cli-container-template.html):
+    VLAN: (config)# vlan ?  |  (config-vlan)# ?
+    Show: show vlan ?  →  show vlan id ?  |  show vlan name ?
+    Interface: interface ?  →  interface gigabitethernet ?  |  interface range ?
+    Trunk/LACP: switchport trunk ? … native ? … vlan ?  |  channel-group ?  |  channel-protocol ?
+
   CLI shell: templates/containers/cli-container-template.html (overlay → dialog → .terminal → #swScrollback + .input-row).
   Wire-up: bindLocalHistory(swCmdline|sw2|pc) before keydown Enter→submit* (see template). Lab-specific: dual Sw1/Sw2 STEPS,
   PC prompt, wireFloatingModal must not bump z-index on button/input pointerdown (tap/Enter reliability), optional Run command.
@@ -793,9 +806,11 @@
 
           <p class="helper-cli-cap">Sw1 — Task 1 (physical trunks)</p>
           <p class="helper-cli-desc">
-            On <strong>Sw1</strong>, enter configuration mode, create VLANs <strong>15</strong> and <strong>45</strong>, then set
-            <code>GigabitEthernet0/1</code> and <code>GigabitEthernet0/2</code> to 802.1Q trunks: native VLAN <strong>45</strong>, allowed VLANs
-            <strong>15</strong> and <strong>45</strong>. Use <code>exit</code> after each interface to return to global configuration.
+            On <strong>Sw1</strong>, enter configuration mode, then configure <code>GigabitEthernet0/1</code> and
+            <code>GigabitEthernet0/2</code> as 802.1Q trunks (native VLAN <strong>45</strong>, allowed VLANs
+            <strong>15</strong> and <strong>45</strong>). Create VLANs <strong>15</strong> and <strong>45</strong> whenever you like in
+            global config — before, between, or after the trunk interfaces — as long as both exist on each switch before you finish.
+            Use <code>exit</code> after each interface to return to global configuration.
           </p>
           <pre class="helper-cli">Sw1# configure terminal
 Sw1(config)# vlan 15
@@ -1354,22 +1369,37 @@ Sw2(config-if)# end</pre>
       /** Per-switch required VLAN pair: lab pass needs both vlan 15 and vlan 45 on each switch. */
       var globalVlanPairSw1 = { v15: false, v45: false };
       var globalVlanPairSw2 = { v15: false, v45: false };
-      /** Any other vlan id first-create echo per switch (steps 1–2 only). */
+      /** Any other vlan id first-create echo per switch. */
       var optionalVlanCreatedSw1 = Object.create(null);
       var optionalVlanCreatedSw2 = Object.create(null);
 
-      function testGlobalVlanPair(raw, sw) {
-        var pair = sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1;
-        var u = normalize(raw);
-        if (u === "vlan 15") {
-          if (pair.v15) return false;
-          pair.v15 = true;
+      /**
+       * After the STEPS sequence, allow conf t + vlan 15/45 if still missing (interfaces-first order).
+       */
+      function tryPostStepsVlanRepair(line, sw, appendFn, setPromptFn, getOvr, setOvr) {
+        var stepIdx = sw === 1 ? stepIndexSw1 : stepIndexSw2;
+        if (stepIdx < LAB_STEPS.length || requiredVlansComplete(sw)) return false;
+        var u = normalize(line);
+        var ovr = getOvr();
+        if (u === "configure terminal" && (ovr === null || ovr === undefined || ovr === "exec")) {
+          invalidateNvramSave(sw);
+          setOvr("config");
+          setPromptFn();
           return true;
         }
-        if (u === "vlan 45") {
-          if (pair.v45) return false;
-          pair.v45 = true;
-          return true;
+        var mode = ovr || "exec";
+        if (mode === "config" || mode === "config-vlan") {
+          if (handleVlanCreateLine(line, sw, stepIdx, mode, appendFn, setPromptFn)) return true;
+          if (u === "end") {
+            setOvr("exec");
+            setPromptFn();
+            return true;
+          }
+          if (u === "exit") {
+            setOvr(mode === "config-vlan" ? "config" : "exec");
+            setPromptFn();
+            return true;
+          }
         }
         return false;
       }
@@ -1399,33 +1429,29 @@ Sw2(config-if)# end</pre>
       }
 
       /**
-       * Steps 1–2: any vlan N echoes "vlan N has been created"; only vlan 15/45 advance STEPS.
-       * Step 3+: vlan create is unsupported (lab expects interface/trunk commands).
+       * VLAN 15/45 are tracked separately from LAB_STEPS — create them in any order and at any point
+       * before lab completion (interfaces may be configured first). Both are required for scoring.
        */
       function handleVlanCreateLine(line, sw, stepIdx, mode, appendFn, setPromptFn) {
         if (!isVlanCreateCommand(line)) return false;
         if (mode !== "config" && mode !== "config-vlan") return false;
-        if (stepIdx >= 3) {
-          appendFn("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-          setPromptFn();
-          return true;
-        }
-        var optional = sw === 2 ? optionalVlanCreatedSw2 : optionalVlanCreatedSw1;
+        var u = normalize(line);
         var vlanId = vlanIdFromCreate(line);
         if (!vlanId) return false;
+        var optional = sw === 2 ? optionalVlanCreatedSw2 : optionalVlanCreatedSw1;
         if (!optional[vlanId]) {
           optional[vlanId] = true;
           var createdMsg = formatVlanCreatedMsg(line);
           if (createdMsg) appendFn("line-sys", createdMsg);
         }
-        invalidateNvramSave(sw);
-        if ((stepIdx === 1 || stepIdx === 2) && testGlobalVlanPair(line, sw)) {
-          if (sw === 1) stepIndexSw1 += 1;
-          else stepIndexSw2 += 1;
+        if (u === "vlan 15") {
+          (sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1).v15 = true;
+        } else if (u === "vlan 45") {
+          (sw === 2 ? globalVlanPairSw2 : globalVlanPairSw1).v45 = true;
         }
-        var newStep = sw === 1 ? stepIndexSw1 : stepIndexSw2;
-        if (sw === 1) sw1PromptOverride = newStep >= 3 ? null : "config-vlan";
-        else sw2PromptOverride = newStep >= 3 ? null : "config-vlan";
+        invalidateNvramSave(sw);
+        if (sw === 1) sw1PromptOverride = "config-vlan";
+        else sw2PromptOverride = "config-vlan";
         setPromptFn();
         return true;
       }
@@ -1481,13 +1507,11 @@ Sw2(config-if)# end</pre>
         globalVlanPairSw2.v15 = globalVlanPairSw2.v45 = false;
       }
 
-      /** Indices 0..14 = Task 1 (Gi0/1–0/2 trunks + exit after each); 15..24 = Task 2 (range LACP, Po15 trunk, end). */
-      var TASK1_LEN = 15;
+      /** Indices 0..12 = Task 1 (Gi0/1–0/2 trunks + exits); 13..22 = Task 2 (range LACP, Po15 trunk, end). */
+      var TASK1_LEN = 13;
 
       var LAB_STEPS = [
         { mode: "exec", test: function (raw, sw) { return normalize(raw) === "configure terminal"; }},
-        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
-        { mode: "config", test: function (raw, sw) { return testGlobalVlanPair(raw, sw); }},
         { mode: "config", test: function (raw, sw) { return normalize(raw) === "interface gigabitethernet0/1"; }},
         { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport trunk encapsulation dot1q"; }},
         { mode: "config-if", test: function (raw, sw) { return normalize(raw) === "switchport mode trunk"; }},
@@ -1513,6 +1537,10 @@ Sw2(config-if)# end</pre>
       ];
 
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
+      /**
+       * Per-lab IOS `?` help overrides. null = shared defaults in cli-lab-container.js
+       * (DEFAULT_SWITCH_CLI_HELP — trunk, LACP, VLAN, interface, channel-group chains).
+       */
       /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
@@ -1651,8 +1679,8 @@ Sw2(config-if)# end</pre>
         if (stepIdx >= LAB_STEPS.length) return false;
         var u = normalize(line);
         if (stepIdx === 0 && u === "configure terminal") return false;
-        if ((stepIdx === 8 || stepIdx === 14 || stepIdx === 18) && u === "exit") return false;
-        if (stepIdx === 24 && u === "end") return false;
+        if ((stepIdx === 6 || stepIdx === 12 || stepIdx === 16) && u === "exit") return false;
+        if (stepIdx === 22 && u === "end") return false;
         var currentMode = getOvr() || LAB_STEPS[stepIdx].mode;
         if (u.indexOf("interface range ") === 0 && currentMode === "config") {
           // Let LAB_STEPS consume the exact expected command for progression.
@@ -2029,23 +2057,39 @@ Sw2(config-if)# end</pre>
           return;
         }
 
+        if (
+          tryPostStepsVlanRepair(
+            line,
+            1,
+            appendSw,
+            setSw1Prompt,
+            function () {
+              return sw1PromptOverride;
+            },
+            function (v) {
+              sw1PromptOverride = v;
+            }
+          )
+        ) {
+          return;
+        }
+
         if (stepIndexSw1 >= LAB_STEPS.length) {
           appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
 
         if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
-          var isVlanCreateSw1 = isVlanCreateCommand(line);
           invalidateNvramSave(1);
           stepIndexSw1 += 1;
-          if (stepIndexSw1 === 4) {
+          if (stepIndexSw1 === 2) {
             trunkVlanPairSw1.gi1.n = trunkVlanPairSw1.gi1.a = false;
-          } else if (stepIndexSw1 === 10) {
+          } else if (stepIndexSw1 === 8) {
             trunkVlanPairSw1.gi2.n = trunkVlanPairSw1.gi2.a = false;
-          } else if (stepIndexSw1 === 20) {
+          } else if (stepIndexSw1 === 18) {
             trunkVlanPairSw1.po.n = trunkVlanPairSw1.po.a = false;
           }
-          sw1PromptOverride = isVlanCreateSw1 ? "config-vlan" : null;
+          sw1PromptOverride = null;
           if (stepIndexSw1 >= LAB_STEPS.length) {
             swPrompt.textContent = promptForMode(SWITCH_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
@@ -2165,23 +2209,39 @@ Sw2(config-if)# end</pre>
           return;
         }
 
+        if (
+          tryPostStepsVlanRepair(
+            line,
+            2,
+            appendSw2,
+            setSw2Prompt,
+            function () {
+              return sw2PromptOverride;
+            },
+            function (v) {
+              sw2PromptOverride = v;
+            }
+          )
+        ) {
+          return;
+        }
+
         if (stepIndexSw2 >= LAB_STEPS.length) {
           appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
           return;
         }
 
         if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
-          var isVlanCreateSw2 = isVlanCreateCommand(line);
           invalidateNvramSave(2);
           stepIndexSw2 += 1;
-          if (stepIndexSw2 === 4) {
+          if (stepIndexSw2 === 2) {
             trunkVlanPairSw2.gi1.n = trunkVlanPairSw2.gi1.a = false;
-          } else if (stepIndexSw2 === 10) {
+          } else if (stepIndexSw2 === 8) {
             trunkVlanPairSw2.gi2.n = trunkVlanPairSw2.gi2.a = false;
-          } else if (stepIndexSw2 === 20) {
+          } else if (stepIndexSw2 === 18) {
             trunkVlanPairSw2.po.n = trunkVlanPairSw2.po.a = false;
           }
-          sw2PromptOverride = isVlanCreateSw2 ? "config-vlan" : null;
+          sw2PromptOverride = null;
           if (stepIndexSw2 >= LAB_STEPS.length) {
             sw2Prompt.textContent = promptForMode(SWITCH2_HOST, "exec");
             tryCompleteTrunkLab(function (cls, text) {
