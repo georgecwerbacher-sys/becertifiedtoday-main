@@ -71,7 +71,13 @@
       LACP: (config-if)# channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?
       Access / mode: (config-if)# switchport ?  →  switchport mode ?  |  switchport access ?  |  switchport voice ?  →  switchport voice vlan ?
       LLDP, username, line, transport, login — nested chains (see DEFAULT_SWITCH_CLI_HELP keys in cli-lab-container.js)
-  - Reference labs: cli-lab-vlan-sim.html (access VLANs), cli-lab-trunk_lacp.html (trunk + LACP)
+  - L3 services (DEFAULT_SWITCH_CLI_HELP — L3 switch / SVI labs when SWITCH_CLI_HELP = null):
+      (config-if)# ip ?  →  helper-address ?  (A.B.C.D)
+      (config)# ntp server ?  |  crypto ?  →  key ?  →  generate ?  →  rsa ?  →  modulus ?
+      ip ssh ?  →  ip ssh version ?
+      Global commands also work from (config-if)# (bare or do prefix) for lab convenience.
+  - Reference labs: cli-lab-vlan-sim.html (access VLANs), cli-lab-trunk_lacp.html (trunk + LACP),
+    cli-lab-nat-dhcp-sim.html (DHCP relay helper-address, NTP, SSH)
 
   CLI login banner (auto on CCNA lab pages when a modal opens):
   - BCT_CLI_HELP_NOTICE / EXAM_SIM_CLI_BANNER_TEXT — context-sensitive help limited to scenario

@@ -2949,7 +2949,7 @@
   function tryAppendNtpHelp(raw, appendFn, opts) {
     if (!isNtpHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ntpCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -2977,7 +2977,7 @@
   function tryAppendNtpMasterHelp(raw, appendFn, opts) {
     if (!isNtpMasterHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ntpMasterCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3005,7 +3005,7 @@
   function tryAppendNtpServerHelp(raw, appendFn, opts) {
     if (!isNtpServerHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ntpServerCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3039,7 +3039,7 @@
   function tryAppendNtpSourceInterfaceHelp(raw, appendFn, opts) {
     if (!isNtpSourceInterfaceHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ntpSourceInterfaceCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3094,7 +3094,7 @@
   function tryAppendIpSshHelp(raw, appendFn, opts) {
     if (!isIpSshHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ipSshCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3123,7 +3123,7 @@
   function tryAppendIpSshVersionHelp(raw, appendFn, opts) {
     if (!isIpSshVersionHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = ipSshVersionCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3151,7 +3151,7 @@
   function tryAppendCryptoHelp(raw, appendFn, opts) {
     if (!isCryptoHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = cryptoCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3179,7 +3179,7 @@
   function tryAppendCryptoKeyHelp(raw, appendFn, opts) {
     if (!isCryptoKeyHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = cryptoKeyCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3210,7 +3210,7 @@
   function tryAppendCryptoKeyGenerateHelp(raw, appendFn, opts) {
     if (!isCryptoKeyGenerateHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = cryptoKeyGenerateCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3241,7 +3241,7 @@
   function tryAppendCryptoKeyGenerateRsaHelp(raw, appendFn, opts) {
     if (!isCryptoKeyGenerateRsaHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = cryptoKeyGenerateRsaCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -3274,7 +3274,7 @@
   function tryAppendCryptoKeyGenerateRsaModulusHelp(raw, appendFn, opts) {
     if (!isCryptoKeyGenerateRsaModulusHelpQuery(raw)) return false;
     opts = opts || {};
-    if (parsePromptMode(opts.promptText) !== "config") return false;
+    if (!isConfigGlobalHelpMode(opts.promptText)) return false;
     var text = cryptoKeyGenerateRsaModulusCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
@@ -5328,6 +5328,12 @@
     if (tag === "config-vlan") return "config-vlan";
     if (tag.indexOf("config-line") === 0) return "config-line";
     return "config";
+  }
+
+  /** Global (config)# commands also available from (config-if)# via do or lab-friendly bare form. */
+  function isConfigGlobalHelpMode(promptText) {
+    var mode = parsePromptMode(promptText);
+    return mode === "config" || mode === "config-if";
   }
 
   function isAclConfigMode(mode) {

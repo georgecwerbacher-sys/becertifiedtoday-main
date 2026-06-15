@@ -18,7 +18,7 @@ export const ROUTER_HELP_WIRING = [
 
 export const ROUTER_HELP_BASE_CHAINS = [
   "Interface/address: interface ?, interface ethernet ?, (config-if)# ip address ?,",
-  "  (config-if)# ipv6 ?, ipv6 address ?",
+  "  (config-if)# ip ? → helper-address ? (A.B.C.D); (config-if)# ipv6 ?, ipv6 address ?",
   "OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,",
   "  (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?",
   "IPv6 routing: (config)# ipv6 ? (unicast-routing)",
@@ -41,7 +41,7 @@ export const ROUTER_HELP_BASE_CHAINS = [
 /** Per-lab intro lines (before IOS help block) and optional chain overrides appended after base. */
 export const ROUTER_LAB_META = {
   "cli-lab-static-routing.html": {
-    label: "Static Routing",
+    label: "CCNA: Routing Simulation V.2",
     pathname: "/CCNA-Study/CCNA_labs/cli-lab-static-routing.html",
     intro: [
       "Reference router sample lab — IOS `?` help and CLI login banner patterns for all routers.",
@@ -75,25 +75,25 @@ export const ROUTER_LAB_META = {
     ],
   },
   "cli-lab-ospf_config_sim_v3.html": {
-    label: "OSPF Configuration V.3",
+    label: "CCNA: OSPF Configuration V.3",
     pathname: "/CCNA-Study/CCNA_labs/cli-lab-ospf_config_sim_v3.html",
     intro: [
-      "CCNA CLI lab — OSPF Configuration Simulation V3: graded OSPF on R1.",
+      "CCNA CLI lab — OSPF configuration on R1 (graded).",
       "Baseline: templates/labs/cli-lab-router-baseline.html",
     ],
     extraChains: [],
   },
   "ipv4_ipv6_assign.html": {
-    label: "IPv4/IPv6 Addressing",
+    label: "IPv4 and IPv6 Assignment Simulation V.2",
     pathname: "/CCNA-Study/CCNA_labs/ipv4_ipv6_assign.html",
-    intro: ["CLI lab — dual-stack IPv4/IPv6 addressing on R1/R2."],
+    intro: ["CLI lab — dual-stack IPv4/IPv6 host assignment on R1/R2."],
     extraChains: [],
   },
   "cli-lab-named-acl-snoopimg.html": {
-    label: "Named ACL DHCP Snooping",
+    label: "CCNA: DHCP Snooping and ACL Simulation V.2",
     pathname: "/CCNA-Study/CCNA_labs/cli-lab-named-acl-snoopimg.html",
     intro: [
-      "CCNA CLI lab — Named ACL and DHCP Snooping (R1 router + switches).",
+      "CCNA CLI lab — DHCP snooping and named ACL (R1 router + switches).",
       "Kin labs: cli-lab-nat-dhcp-sim.html, cli-lab-ospf_config_sim_v3.html",
     ],
     extraChains: [],
@@ -171,19 +171,7 @@ export const NAT_DHCP_ROUTER_CASES = /** @type {HelpCase[]} */ ([
   ["router", "R1(config)#", "ntp source ?", ["Loopback0"]],
 ]);
 
-export const NAT_DHCP_SWITCH_CASES = /** @type {HelpCase[]} */ ([
-  ["switch", "Sw1(config)#", "ntp server ?", ["A.B.C.D"]],
-  ["switch", "Sw1(config)#", "interface ethernet ?", ["<0-9>"]],
-  ["switch", "Sw1(config-if)#", "ip ?", ["helper-address"]],
-  ["switch", "Sw1(config-if)#", "ip helper-address ?", ["A.B.C.D"]],
-  ["switch", "Sw1(config)#", "crypto ?", ["key"]],
-  ["switch", "Sw1(config)#", "crypto key ?", ["generate"]],
-  ["switch", "Sw1(config)#", "crypto key generate ?", ["rsa"]],
-  ["switch", "Sw1(config)#", "crypto key generate rsa ?", ["modulus"]],
-  ["switch", "Sw1(config)#", "crypto key generate rsa modulus ?", ["<360-4096>"]],
-  ["switch", "Sw1(config)#", "ip ssh ?", ["version"]],
-  ["switch", "Sw1(config)#", "ip ssh version ?", ["2"]],
-]);
+export { NAT_DHCP_SWITCH_CASES } from "./cli-lab-switch-help.mjs";
 
 /** @type {Record<string, HelpProfile>} */
 export const ROUTER_HELP_PROFILES = {

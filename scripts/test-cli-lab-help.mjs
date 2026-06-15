@@ -80,12 +80,14 @@ function runProfile(key) {
 
   for (const [deviceType, prompt, cmd, mustInclude] of profile.cases) {
     let out = null;
+    const labHelp =
+      deviceType === "switch" ? profile.switchHelp || null : profile.routerHelp || null;
     const ok = c.tryAppendIosHelp(
       cmd,
       (_cls, text) => {
         out = text;
       },
-      c.iosHelpOpts(deviceType, prompt, profile.routerHelp || null)
+      c.iosHelpOpts(deviceType, prompt, labHelp)
     );
 
     const missing = mustInclude.filter((needle) => !out || !out.includes(needle));

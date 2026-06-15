@@ -23,8 +23,9 @@
   Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?
     channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?
   Identity: username / line vty / login / transport input ? (shared with router baseline)
-  NTP/SSH (L3 switch): ntp server ?; ip helper-address ?; crypto key generate rsa …; ip ssh version ?
-  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html
+  L3 services (switch): (config-if)# ip ? → helper-address ? (A.B.C.D); (config)# ntp server ?;
+    crypto ? → key ? → generate ? → rsa ? → modulus ?; ip ssh ? → version ?
+  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html, cli-lab-nat-dhcp-sim.html
   Switch template: templates/labs/cli-lab-switch-baseline.html
   Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help
 -->
@@ -34,7 +35,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
-<title>Native VLAN and LACP Simulation | Be Certified Today</title>
+<title>CCNA: Native VLAN and LACP Simulation V.3 | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -565,7 +566,7 @@
     </a>
     </header>
     <main class="card">
-      <h1>Native VLAN and LACP Simulation</h1>
+      <h1>CCNA: Native VLAN and LACP Simulation V.3</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="diagram-stage">

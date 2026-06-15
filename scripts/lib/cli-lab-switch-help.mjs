@@ -25,8 +25,9 @@ export const SWITCH_HELP_BASE_CHAINS = [
   "Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?",
   "  channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?",
   "Identity: username / line vty / login / transport input ? (shared with router baseline)",
-  "NTP/SSH (L3 switch): ntp server ?; ip helper-address ?; crypto key generate rsa …; ip ssh version ?",
-  "Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html",
+  "L3 services (switch): (config-if)# ip ? → helper-address ? (A.B.C.D); (config)# ntp server ?;",
+  "  crypto ? → key ? → generate ? → rsa ? → modulus ?; ip ssh ? → version ?",
+  "Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html, cli-lab-nat-dhcp-sim.html",
   "Switch template: templates/labs/cli-lab-switch-baseline.html",
   "Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help",
 ];
@@ -50,9 +51,17 @@ export const SWITCH_LAB_META = {
     extraChains: [],
   },
   "cli-lab-native_vlan_lacp.html": {
-    label: "Native VLAN and LACP Simulation",
+    label: "CCNA: Native VLAN and LACP Simulation V.3",
     pathname: "/CCNA-Study/CCNA_labs/cli-lab-native_vlan_lacp.html",
     intro: ["CLI lab — native VLAN and LACP across multiple switches."],
+    extraChains: [],
+  },
+  "cli-lab-nat-dhcp-sim.html": {
+    label: "CCNA: DHCP, NAT, and SSH Simulation V.3",
+    pathname: "/CCNA-Study/CCNA_labs/cli-lab-nat-dhcp-sim.html",
+    intro: [
+      "Mixed router/switch lab — R1 NAT/DHCP/NTP; Sw1 DHCP relay (helper-address), NTP, crypto RSA, SSH v2.",
+    ],
     extraChains: [],
   },
 };
@@ -84,6 +93,7 @@ export const NAT_DHCP_SWITCH_CASES = /** @type {HelpCase[]} */ ([
   ["switch", "Sw1(config)#", "interface ethernet ?", ["<0-9>"]],
   ["switch", "Sw1(config-if)#", "ip ?", ["helper-address"]],
   ["switch", "Sw1(config-if)#", "ip helper-address ?", ["A.B.C.D"]],
+  ["switch", "Sw1(config-if)#", "crypto ?", ["key"]],
   ["switch", "Sw1(config)#", "crypto ?", ["key"]],
   ["switch", "Sw1(config)#", "crypto key ?", ["generate"]],
   ["switch", "Sw1(config)#", "crypto key generate ?", ["rsa"]],
@@ -113,12 +123,18 @@ export const SWITCH_HELP_PROFILES = {
     pathname: SWITCH_LAB_META["cli-lab-native_vlan_lacp.html"].pathname,
     cases: [...CORE_SWITCH_CASES, ...TRUNK_LACP_SWITCH_CASES],
   },
+  "cli-lab-nat-dhcp-sim.html": {
+    label: SWITCH_LAB_META["cli-lab-nat-dhcp-sim.html"].label,
+    pathname: SWITCH_LAB_META["cli-lab-nat-dhcp-sim.html"].pathname,
+    cases: NAT_DHCP_SWITCH_CASES,
+  },
 };
 
 export const ALL_SWITCH_PROFILE_KEYS = [
   "cli-lab-vlan-sim.html",
   "cli-lab-trunk_lacp.html",
   "cli-lab-native_vlan_lacp.html",
+  "cli-lab-nat-dhcp-sim.html",
 ];
 
 /**

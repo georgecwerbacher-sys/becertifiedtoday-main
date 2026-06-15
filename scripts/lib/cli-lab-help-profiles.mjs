@@ -6,13 +6,13 @@ import {
   ALL_PROFILE_KEYS as ROUTER_PROFILE_KEYS,
   normalizeLabBasename,
   getHelpProfile as getRouterHelpProfile,
-  NAT_DHCP_SWITCH_CASES,
 } from "./cli-lab-router-help.mjs";
 import {
   SWITCH_HELP_PROFILES,
   ALL_SWITCH_PROFILE_KEYS,
   normalizeSwitchLabBasename,
   getSwitchHelpProfile,
+  NAT_DHCP_SWITCH_CASES,
 } from "./cli-lab-switch-help.mjs";
 
 /** @typedef {import("./cli-lab-router-help.mjs").HelpCase} HelpCase */

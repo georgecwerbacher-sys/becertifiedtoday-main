@@ -17,8 +17,9 @@
   Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?
     channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?
   Identity: username / line vty / login / transport input ? (shared with router baseline)
-  NTP/SSH (L3 switch): ntp server ?; ip helper-address ?; crypto key generate rsa …; ip ssh version ?
-  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html
+  L3 services (switch): (config-if)# ip ? → helper-address ? (A.B.C.D); (config)# ntp server ?;
+    crypto ? → key ? → generate ? → rsa ? → modulus ?; ip ssh ? → version ?
+  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html, cli-lab-nat-dhcp-sim.html
   Switch template: templates/labs/cli-lab-switch-baseline.html
   Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help
 -->

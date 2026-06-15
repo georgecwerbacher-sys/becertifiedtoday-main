@@ -17,7 +17,7 @@
   Help is read-only — using ? does not change config, advance steps, or affect completion.
 
   Interface/address: interface ?, interface ethernet ?, (config-if)# ip address ?,
-    (config-if)# ipv6 ?, ipv6 address ?
+    (config-if)# ip ? → helper-address ? (A.B.C.D); (config-if)# ipv6 ?, ipv6 address ?
   OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,
     (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
   IPv6 routing: (config)# ipv6 ? (unicast-routing)
@@ -29,12 +29,29 @@
     ip nat inside source list <acl> ? (pool / interface); … pool ? (<name>); … pool <name> ? (overload);
     … interface ? (<if>); … interface <if> ? (overload);
     ip nat pool ? / … netmask ? (A.B.C.D); (config-if)# ip nat ? (inside / outside)
-  NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source ?
+  NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source-interface ?
   SSH: crypto ? → key ? → generate ? → rsa ? → modulus ?;
     username ?; username … privilege … secret ? (<password>); line vty / login / transport input ?
   Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
   Router template: templates/labs/cli-lab-router-baseline.html
   Test: node scripts/test-cli-lab-help.mjs <lab>  |  node scripts/test-cli-lab-help.mjs --all
+
+  IOS `?` help — SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP (/js/cli-lab-container.js):
+  tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)) in every switch submit handler.
+  Help is read-only — using ? does not change config, advance steps, or affect completion.
+
+  VLAN: (config)# vlan ?  |  (config-vlan)# ? (name / exit / end)
+  Show: show vlan ?  →  show vlan id ?  |  show vlan name ?
+  Interface: (config)# interface ?  →  interface gigabitethernet ?  |  interface range ?
+  Access: (config-if)# switchport mode ?  |  switchport access ?  |  switchport voice ?  →  switchport voice vlan ?
+  Trunk/LACP: (config-if)# switchport trunk ?  →  encapsulation ?  →  native ?  →  allowed vlan ?
+    channel-group ?  →  channel-group <n> mode ?  |  channel-protocol ?  |  lldp ?
+  Identity: username / line vty / login / transport input ? (shared with router baseline)
+  L3 services (switch): (config-if)# ip ? → helper-address ? (A.B.C.D); (config)# ntp server ?;
+    crypto ? → key ? → generate ? → rsa ? → modulus ?; ip ssh ? → version ?
+  Reference labs: cli-lab-vlan-sim.html, cli-lab-trunk_lacp.html, cli-lab-native_vlan_lacp.html, cli-lab-nat-dhcp-sim.html
+  Switch template: templates/labs/cli-lab-switch-baseline.html
+  Test: node scripts/test-cli-lab-help.mjs <lab>  |  npm run test:cli-lab-help
 -->
 <html lang="en">
 <head>
@@ -842,6 +859,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
             <li><strong>Task 2 — R1 / Sw1:</strong> NTP server on R1 (<code>ntp master</code>, <code>ntp source Loopback0</code>); NTP client on Sw1.</li>
             <li><strong>Task 3 — Sw1 / PC1:</strong> DHCP relay toward R1; PC1 uses DHCP.</li>
             <li><strong>Task 4 — Sw1 / PC1:</strong> RSA SSH on Sw1; from PC1, log in with password <strong>BCT1234</strong> if configured correctly.</li>
+            <li>Configure <strong>R1</strong> and <strong>Sw1</strong> in either order — Task 1 (R1 NAT/PAT) does not need to finish before you open the Sw1 CLI.</li>
             <li>Save running-config to startup on <strong>R1</strong> and <strong>Sw1</strong> when done.</li>
           </ul>
 
@@ -1377,13 +1395,7 @@ Sw1#</pre>
       }
 
       function matchSw1InterfaceE01(raw) {
-        var t = normalize(raw);
-        if (t.indexOf("int ") === 0) t = "interface " + t.slice(4);
-        if (/^interface e\d+\/\d+$/.test(t)) {
-          t = t.replace(/^interface e/, "interface ethernet");
-        }
-        t = t.replace(/interface e0\//g, "interface ethernet0/");
-        return t === "interface ethernet0/1";
+        return normalize(raw) === "interface ethernet0/1";
       }
 
       /** R1: conf t → PAT overload → NTP master → NTP source (Loopback0). Stay in (config)# until end/exit. */
@@ -1449,7 +1461,32 @@ Sw1#</pre>
         if (m) {
           return "interface Ethernet" + m[2] + "/" + m[3];
         }
+        m = /^interface\s+ethernet(\d+)\/(\d+)$/i.exec(s);
+        if (m) {
+          return "interface Ethernet" + m[1] + "/" + m[2];
+        }
         return s;
+      }
+
+      function isSw1InterfaceCommand(u) {
+        return u.indexOf("interface ") === 0;
+      }
+
+      /** IOS-like: enter or switch interface context anytime from (config)# or (config-if)# */
+      function handleSw2InterfaceLine(line, u) {
+        if (!isSw1InterfaceCommand(u)) return false;
+        if (sw2Mode === "config") {
+          if (!tryAdvanceSw1LabStepOutOfOrder(line)) {
+            sw2Mode = "config-if";
+            sw2Prompt.textContent = sw2PromptForMode();
+          }
+          return true;
+        }
+        if (sw2Mode === "config-if") {
+          sw2Prompt.textContent = sw2PromptForMode();
+          return true;
+        }
+        return false;
       }
 
       function matchPcShowIpIntBrief(raw) {
@@ -1530,7 +1567,7 @@ Sw1#</pre>
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the R1 configuration sequence (NAT/PAT, NTP), then type end or exit to reach privileged EXEC (#) before saving.";
       var COPY_RUN_START_AFTER_SW1_STEPS_MSG =
-        "% Error: Finish all R1 task commands and return to R1# first, then complete Sw1 and save from Sw1#.";
+        "% Error: Finish the R1 configuration sequence (NAT/PAT, NTP), then type end or exit to reach R1# before saving.";
       var COPY_RUN_START_AFTER_SW2_STEPS_MSG =
         "% Error: Finish the Sw1 configuration sequence (NTP, helper-address on E0/1, exit, crypto key, SSH v2), then type end or exit to reach Sw1# before saving.";
       var BASELINE_SW_STEPS_OK_MSG =
@@ -1986,25 +2023,98 @@ Sw1#</pre>
         else if (prev === 4) sw2Mode = "config";
       }
 
-      function trySw2StepInterfaceNav(line, u) {
-        return cliLabContainer.applyLabStepInterfaceNav({
-          steps: SW1_LAB_STEPS,
-          stepIndex: sw2StepIndex,
-          line: line,
-          normalizedCmd: u,
-          promptText: sw2Prompt.textContent,
-          overrideMode: null,
-          setStepIndex: function (n) {
-            sw2StepIndex = n;
-          },
-          clearOverride: function () {},
-          refreshPrompt: function () {
+      /** Advance Sw1 graded steps when line matches a specific step index. */
+      function advanceSw1AtIndex(i, line) {
+        sw2StepIndex = i + 1;
+        if (i === 1) sw1ConfiguredNtpServer = parseSw1NtpServerIpv4(line);
+        if (i === 3) sw1ConfiguredHelperAddress = parseSw1HelperIpv4(line);
+        syncSw2ModeAfterStep(i);
+        sw2Prompt.textContent = sw2PromptForMode();
+        return true;
+      }
+
+      /** Advance only when the current graded step matches (conf t, exit, etc.). */
+      function tryAdvanceSw1LabStep(line) {
+        if (sw2StepIndex >= SW1_LAB_STEPS.length) return false;
+        var st = SW1_LAB_STEPS[sw2StepIndex];
+        if (sw2Mode !== st.mode || !st.test(line)) return false;
+        return advanceSw1AtIndex(sw2StepIndex, line);
+      }
+
+      /** Match a later task step so NTP, interface, helper, crypto, and SSH can be done in any order. */
+      function tryAdvanceSw1LabStepOutOfOrder(line) {
+        if (sw2StepIndex >= SW1_LAB_STEPS.length) return false;
+        for (var i = sw2StepIndex; i < SW1_LAB_STEPS.length; i++) {
+          var st = SW1_LAB_STEPS[i];
+          if (st.mode === "exec" || (st.mode === "config-if" && st.test("exit"))) continue;
+          if (sw2Mode !== st.mode || !st.test(line)) continue;
+          return advanceSw1AtIndex(i, line);
+        }
+        return false;
+      }
+
+      function handleSw2ModeNavigation(line, u) {
+        if (tryAdvanceSw1LabStep(line)) return true;
+
+        if (sw2Mode === "exec" && u === "configure terminal") {
+          if (tryAdvanceSw1LabStep(line)) return true;
+          sw2Mode = "config";
+          sw2Prompt.textContent = sw2PromptForMode();
+          return true;
+        }
+        if (u === "end" && sw2Mode !== "exec") {
+          sw2Mode = "exec";
+          sw2Prompt.textContent = sw2PromptForMode();
+          if (sw2StepIndex >= SW1_LAB_STEPS.length) {
+            appendSw2("line-sys", "[OK] Sw1 at privileged EXEC (#). Save with copy run start when your lab checklist is complete.");
+            tryCompleteBaselineLab(function (cls, text) {
+              appendSw2(cls, text);
+            });
+          }
+          return true;
+        }
+        if (u === "exit") {
+          if (sw2Mode === "config-if") {
+            sw2Mode = "config";
             sw2Prompt.textContent = sw2PromptForMode();
-          },
-          onStepAdvanced: function (prev) {
-            syncSw2ModeAfterStep(prev);
-          },
-        });
+            return true;
+          }
+          if (sw2Mode === "config") {
+            sw2Mode = "exec";
+            sw2Prompt.textContent = sw2PromptForMode();
+            if (sw2StepIndex >= SW1_LAB_STEPS.length) {
+              appendSw2("line-sys", "[OK] Sw1 at privileged EXEC (#). Save with copy run start when your lab checklist is complete.");
+              tryCompleteBaselineLab(function (cls, text) {
+                appendSw2(cls, text);
+              });
+            }
+            return true;
+          }
+        }
+        return false;
+      }
+
+      /** Accept common Sw1 lab commands outside strict step order (R1 Task 1 not required). */
+      function handleSw2PermissiveLabCommand(line, u) {
+        if (sw2Mode === "config" && matchSw1NtpServer(line)) {
+          sw1ConfiguredNtpServer = parseSw1NtpServerIpv4(line);
+          tryAdvanceSw1LabStepOutOfOrder(line);
+          return true;
+        }
+        if (sw2Mode === "config-if" && matchSw1Helper(line)) {
+          sw1ConfiguredHelperAddress = parseSw1HelperIpv4(line);
+          tryAdvanceSw1LabStepOutOfOrder(line);
+          return true;
+        }
+        if (sw2Mode === "config" && matchSw1CryptoRsa(line)) {
+          tryAdvanceSw1LabStepOutOfOrder(line);
+          return true;
+        }
+        if (sw2Mode === "config" && matchSw1SshV2(line)) {
+          tryAdvanceSw1LabStepOutOfOrder(line);
+          return true;
+        }
+        return false;
       }
 
       function submitSw2() {
@@ -2075,10 +2185,6 @@ Sw1#</pre>
             appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
             return;
           }
-          if (stepIndex < LAB_STEPS.length || swPromptOverride === "config") {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_SW1_STEPS_MSG);
-            return;
-          }
           if (sw2StepIndex < SW1_LAB_STEPS.length) {
             appendSw2("line-sys", COPY_RUN_START_AFTER_SW2_STEPS_MSG);
             return;
@@ -2091,99 +2197,9 @@ Sw1#</pre>
           return;
         }
 
-        if (sw2StepIndex < SW1_LAB_STEPS.length) {
-          var ch = u;
-          var nextSw2StepConsumesLine =
-            sw2Mode === SW1_LAB_STEPS[sw2StepIndex].mode && SW1_LAB_STEPS[sw2StepIndex].test(line);
-
-          if (trySw2StepInterfaceNav(line, ch)) {
-            return;
-          }
-
-          // Re-enter config after soft exit to exec (e.g. show ntp status, or Task 4 after Task 3).
-          if (ch === "configure terminal" && sw2Mode === "exec" && sw2StepIndex > 0) {
-            var pendingSw2 = SW1_LAB_STEPS[sw2StepIndex];
-            if (
-              pendingSw2.mode === "config-if" &&
-              pendingSw2.test("exit") &&
-              sw1ConfiguredHelperAddress !== null
-            ) {
-              sw2StepIndex += 1;
-            }
-            sw2Mode = "config";
-            sw2Prompt.textContent = sw2PromptForMode();
-            return;
-          }
-          if (
-            sw2Mode === "config" &&
-            ch.indexOf("interface ") === 0 &&
-            SW1_LAB_STEPS[sw2StepIndex].mode === "config-if"
-          ) {
-            sw2Mode = "config-if";
-            sw2Prompt.textContent = sw2PromptForMode();
-            return;
-          }
-
-          if (ch === "end" && sw2Mode !== "exec" && !nextSw2StepConsumesLine) {
-            sw2Mode = "exec";
-            sw2Prompt.textContent = sw2PromptForMode();
-            return;
-          }
-          if (ch === "exit" && !nextSw2StepConsumesLine) {
-            if (sw2Mode === "config-if") {
-              sw2Mode = "config";
-              sw2Prompt.textContent = sw2PromptForMode();
-              return;
-            }
-            if (sw2Mode === "config") {
-              sw2Mode = "exec";
-              sw2Prompt.textContent = sw2PromptForMode();
-              return;
-            }
-          }
-
-          var st = SW1_LAB_STEPS[sw2StepIndex];
-          if (sw2Mode !== st.mode || !st.test(line)) {
-            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-            return;
-          }
-          var prev = sw2StepIndex;
-          sw2StepIndex += 1;
-          if (prev === 1) {
-            sw1ConfiguredNtpServer = parseSw1NtpServerIpv4(line);
-          }
-          if (prev === 3) {
-            sw1ConfiguredHelperAddress = parseSw1HelperIpv4(line);
-          }
-          syncSw2ModeAfterStep(prev);
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-
-        if (sw2Mode === "config" && (u === "end" || u === "exit")) {
-          sw2Mode = "exec";
-          sw2Prompt.textContent = sw2PromptForMode();
-          appendSw2("line-sys", "[OK] Sw1 at privileged EXEC (#). Save with copy run start when your lab checklist is complete.");
-          tryCompleteBaselineLab(function (cls, text) {
-            appendSw2(cls, text);
-          });
-          return;
-        }
-        if (sw2Mode === "config-if" && (u === "end" || u === "exit")) {
-          sw2Mode = u === "end" ? "exec" : "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "exec" && u === "configure terminal") {
-          sw2Mode = "config";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
-        if (sw2Mode === "config" && u.startsWith("interface ")) {
-          sw2Mode = "config-if";
-          sw2Prompt.textContent = sw2PromptForMode();
-          return;
-        }
+        if (handleSw2InterfaceLine(line, u)) return;
+        if (handleSw2ModeNavigation(line, u)) return;
+        if (handleSw2PermissiveLabCommand(line, u)) return;
 
         appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
