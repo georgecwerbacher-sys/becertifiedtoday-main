@@ -491,21 +491,28 @@
       "body.bcc-ccna-lab-top-chrome h1,body.bcc-ccna-lab-top-chrome .wrap h2,body.bcc-ccna-lab-top-chrome .wrap h3,body.bcc-ccna-lab-top-chrome .wrap h4{" +
       "color:#1a3d6e!important;" +
       "}" +
-      "body.bcc-ccna-lab-top-chrome .wrap .objective,body.bcc-ccna-lab-top-chrome .wrap .tasks,body.bcc-ccna-lab-top-chrome .wrap .tasks li," +
-      "body.bcc-ccna-lab-top-chrome .wrap .study-meta,body.bcc-ccna-lab-top-chrome .wrap .lab-spoiler-note,body.bcc-ccna-lab-top-chrome .wrap p," +
-      "body.bcc-ccna-lab-top-chrome .wrap li,body.bcc-ccna-lab-top-chrome .wrap label,body.bcc-ccna-lab-top-chrome .wrap .device-pick," +
-      "body.bcc-ccna-lab-top-chrome .wrap .device-pick strong{" +
+      "body.bcc-ccna-lab-top-chrome .wrap .study-meta,body.bcc-ccna-lab-top-chrome .wrap .lab-spoiler-note," +
+      "body.bcc-ccna-lab-top-chrome .wrap > .ccna-format-topic-meta,body.bcc-ccna-lab-top-chrome .wrap > .question-topic-meta{" +
       "color:#1a3d6e!important;" +
       "}" +
       "body.bcc-ccna-lab-top-chrome h1{color:#1a3d6e!important;}" +
       "body.bcc-ccna-lab-top-chrome .wrap .tasks-blue-box,body.bcc-ccna-lab-top-chrome .wrap .device-pick,body.bcc-ccna-lab-top-chrome .wrap .topology-scrape," +
       "body.bcc-ccna-lab-top-chrome .wrap .address-table-wrap,body.bcc-ccna-lab-top-chrome .wrap .lab-info-panel{" +
-      "background:transparent!important;border:1px solid #3d6dbb!important;color:#1a3d6e!important;" +
+      "background:#0f1729!important;border:1px solid #2d3b5a!important;color:#ffffff!important;" +
       "}" +
-      "body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks,body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks," +
-      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks li,body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks strong," +
-      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks strong,body.bcc-ccna-lab-top-chrome .topology-scrape p.helper-cli-desc{" +
-      "color:#1a3d6e!important;" +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box .objective,body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks,body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks li," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks strong,body.bcc-ccna-lab-top-chrome .tasks-blue-box ol.tasks strong," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box p,body.bcc-ccna-lab-top-chrome .tasks-blue-box ul," +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box ul li,body.bcc-ccna-lab-top-chrome .tasks-blue-box code," +
+      "body.bcc-ccna-lab-top-chrome .device-pick label,body.bcc-ccna-lab-top-chrome .device-pick strong," +
+      "body.bcc-ccna-lab-top-chrome .topology-scrape h2,body.bcc-ccna-lab-top-chrome .topology-scrape p," +
+      "body.bcc-ccna-lab-top-chrome .topology-scrape li,body.bcc-ccna-lab-top-chrome .topology-scrape p.helper-cli-desc," +
+      "body.bcc-ccna-lab-top-chrome .topology-scrape code,body.bcc-ccna-lab-top-chrome .topology-scrape strong{" +
+      "color:#ffffff!important;" +
+      "}" +
+      "body.bcc-ccna-lab-top-chrome .tasks-blue-box .tasks-preconfig{" +
+      "background:#06080c!important;border:1px solid #263043!important;color:#dbe5f0!important;" +
       "}" +
       "body.bcc-ccna-lab-top-chrome .wrap .diagram-wrap{" +
       "background:#ffffff!important;border:1px solid #3d6dbb!important;" +
