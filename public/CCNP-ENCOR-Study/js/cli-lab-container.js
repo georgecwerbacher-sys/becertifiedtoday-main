@@ -1407,6 +1407,8 @@
       { cmd: "password" },
       { cmd: "secret" },
     ],
+    /** (config)# username <name> privilege <level> secret ? */
+    usernamePrivilegeLevelSecret: [{ cmd: "<password>" }],
     /** (config)# username <name> algorithm-type ? */
     usernameAlgorithmType: [{ cmd: "md5" }, { cmd: "scrypt" }, { cmd: "sha256" }],
     /** (config)# username <name> algorithm-type <hash> ? */
@@ -1521,6 +1523,7 @@
    *   usernameName      — (config)# username <name> ?
    *   usernamePrivilege — (config)# username <name> privilege ?
    *   usernamePrivilegeLevel — (config)# username <name> privilege <level> ?
+   *   usernamePrivilegeLevelSecret — (config)# username <name> privilege <level> secret ?
    *   usernameAlgorithmType — (config)# username <name> algorithm-type ?
    *   usernameAlgorithmTypeHash — (config)# username <name> algorithm-type <hash> ?
    *   usernameAlgorithmTypeHashPrivilege — (config)# username <name> algorithm-type <hash> privilege ?
@@ -1763,6 +1766,7 @@
     usernamePrivilege: DEFAULT_ROUTER_CLI_HELP.usernamePrivilege,
     /** (config)# username <name> privilege <level> ? */
     usernamePrivilegeLevel: DEFAULT_ROUTER_CLI_HELP.usernamePrivilegeLevel,
+    usernamePrivilegeLevelSecret: DEFAULT_ROUTER_CLI_HELP.usernamePrivilegeLevelSecret,
     /** (config)# username <name> algorithm-type ? */
     usernameAlgorithmType: DEFAULT_ROUTER_CLI_HELP.usernameAlgorithmType,
     /** (config)# username <name> algorithm-type <hash> ? */
@@ -4403,6 +4407,40 @@
     return true;
   }
 
+  /** `(config)# username <name> privilege <level> secret ?` — encrypted password value. */
+
+  function isUsernamePrivilegeLevelSecretHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      new RegExp("^username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ secret \\?$").test(t) ||
+      new RegExp("^do username \\S+ " + USERNAME_PRIVILEGE_WORD + " \\d+ secret \\?$").test(t)
+    );
+  }
+
+  function usernamePrivilegeLevelSecretCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "usernamePrivilegeLevelSecret"),
+      opts.usernamePrivilegeLevelSecretExtra
+    );
+  }
+
+  function tryAppendUsernamePrivilegeLevelSecretHelp(raw, appendFn, opts) {
+    if (!isUsernamePrivilegeLevelSecretHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = usernamePrivilegeLevelSecretCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** Switch `username <name> privilege <level> ?` at host(config)#. */
 
   function isUsernamePrivilegeLevelHelpQuery(raw) {
@@ -5165,6 +5203,7 @@
     if (tryAppendTransportInputHelp(raw, appendFn, opts)) return true;
     if (tryAppendTransportHelp(raw, appendFn, opts)) return true;
     if (tryAppendLldpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendUsernamePrivilegeLevelSecretHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernamePrivilegeLevelHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernameAlgorithmTypeHashPrivilegeLevelPasswordHelp(raw, appendFn, opts)) return true;
     if (tryAppendUsernameAlgorithmTypeHashPrivilegeLevelHelp(raw, appendFn, opts)) return true;
@@ -5542,6 +5581,9 @@
     isUsernamePrivilegeHelpQuery: isUsernamePrivilegeHelpQuery,
     usernamePrivilegeCommandHelpText: usernamePrivilegeCommandHelpText,
     tryAppendUsernamePrivilegeHelp: tryAppendUsernamePrivilegeHelp,
+    isUsernamePrivilegeLevelSecretHelpQuery: isUsernamePrivilegeLevelSecretHelpQuery,
+    usernamePrivilegeLevelSecretCommandHelpText: usernamePrivilegeLevelSecretCommandHelpText,
+    tryAppendUsernamePrivilegeLevelSecretHelp: tryAppendUsernamePrivilegeLevelSecretHelp,
     isUsernamePrivilegeLevelHelpQuery: isUsernamePrivilegeLevelHelpQuery,
     usernamePrivilegeLevelCommandHelpText: usernamePrivilegeLevelCommandHelpText,
     tryAppendUsernamePrivilegeLevelHelp: tryAppendUsernamePrivilegeLevelHelp,

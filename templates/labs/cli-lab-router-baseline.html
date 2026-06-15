@@ -1,0 +1,111 @@
+<!doctype html>
+<!--
+  ROUTER_HELP_COMMENT
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/js/cli-lab-container.js"></script>
+  <title>REPLACE: Lab title | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/cli-lab-container.css" />
+  <link rel="stylesheet" href="/css/ccna-sample-touch.css" />
+</head>
+<body class="ccnp-practice-ui">
+  <div class="wrap">
+    <div class="card">
+      <h1>REPLACE: Lab title</h1>
+      <p class="objective">REPLACE: Objective — configure R1 using IOS-style CLI. Save with <code>copy running-config startup-config</code>.</p>
+      <button type="button" class="device-link" id="openR1CliBtn">Open R1 CLI</button>
+    </div>
+  </div>
+
+  <div id="r1CliOverlay" class="cli-modal-overlay" aria-hidden="true">
+    <div id="r1CliDialog" class="cli-modal-dialog" role="dialog" aria-labelledby="r1CliTitle">
+      <header class="cli-modal-header">
+        <h2 id="r1CliTitle">R1 — CLI</h2>
+        <button type="button" class="cli-modal-close" id="r1CliClose" aria-label="Close R1 CLI">×</button>
+      </header>
+      <div class="terminal" id="r1Terminal" aria-label="Simulated R1 CLI">
+        <div id="r1Scrollback"></div>
+        <div class="cli-input-row">
+          <span id="r1Prompt" class="prompt-el">R1#</span>
+          <input id="r1Cmdline" type="text" spellcheck="false" autocomplete="off" aria-label="R1 command line" />
+        </div>
+      </div>
+      <div class="cli-modal-actions">
+        <button type="button" id="r1ResetBtn">Reset lab</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var HOST = "R1";
+      var ROUTER_CLI_HELP = null;
+      var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
+
+      var r1Prompt = document.getElementById("r1Prompt");
+      var r1Cmdline = document.getElementById("r1Cmdline");
+      var r1Scrollback = document.getElementById("r1Scrollback");
+      var r1CliOverlay = document.getElementById("r1CliOverlay");
+      var r1CliDialog = document.getElementById("r1CliDialog");
+
+      function appendR1(cls, text) {
+        var line = document.createElement("div");
+        line.className = cls;
+        line.textContent = text;
+        r1Scrollback.appendChild(line);
+        r1Scrollback.scrollTop = r1Scrollback.scrollHeight;
+      }
+
+      function submitR1() {
+        var promptText = r1Prompt.textContent;
+        var line = cliLabContainer.stripPastedIosPrompts(r1Cmdline.value);
+        var trimmed = String(line || "").trim();
+        if (trimmed) appendR1("line-user", promptText + " " + trimmed);
+        r1Cmdline.value = "";
+        if (!trimmed) return;
+
+        if (
+          cliLabContainer.tryAppendIosHelp(
+            line,
+            appendR1,
+            cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP)
+          )
+        ) {
+          return;
+        }
+
+        appendR1("line-bad", "% Command not graded in this scaffold — extend STEPS[] in REPLACE: cli-lab-router-baseline.html");
+      }
+
+      document.getElementById("openR1CliBtn").addEventListener("click", function () {
+        r1CliOverlay.classList.add("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "false");
+        r1Cmdline.focus();
+      });
+      document.getElementById("r1CliClose").addEventListener("click", function () {
+        r1CliOverlay.classList.remove("is-open");
+        r1CliOverlay.setAttribute("aria-hidden", "true");
+      });
+      document.getElementById("r1ResetBtn").addEventListener("click", function () {
+        r1Scrollback.textContent = "";
+        r1Prompt.textContent = HOST + "#";
+        r1Cmdline.value = "";
+      });
+      r1Cmdline.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitR1();
+        }
+      });
+
+      if (typeof cliLabContainer.initCcnaLabTopChrome === "function") {
+        cliLabContainer.initCcnaLabTopChrome();
+      }
+    })();
+  </script>
+</body>
+</html>

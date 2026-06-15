@@ -13,19 +13,14 @@ PUBLIC = ROOT / "public"
 SKIP_PARTS = {"Unused_Labs", "CCNA_Samples", "ENCOR_Samples"}
 
 ROUTER_HELP_DOC = """
-  IOS `?` help — ROUTER_CLI_HELP = null → DEFAULT_ROUTER_CLI_HELP (/js/cli-lab-container.js):
+  IOS `?` help — see scripts/lib/cli-lab-router-help.mjs (source of truth).
+  ROUTER_CLI_HELP = null → DEFAULT_ROUTER_CLI_HELP (/js/cli-lab-container.js).
   tryAppendIosHelp(..., iosHelpOpts("router", promptText, ROUTER_CLI_HELP)) in every router submit handler.
   Help is read-only — using ? does not change config, advance steps, or affect completion.
-  Interface/address: interface ?, interface ethernet ?, (config-if)# ip address ?,
-    (config-if)# ipv6 ?, ipv6 address ?
-  OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,
-    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
-  IPv6 routing: (config)# ipv6 ? (unicast-routing)
-  Static route chain: ip route ?, ip route <dest> ?, ip route <dest> <mask> ?,
-    ip route <dest> <mask> <next-hop> ?
-  Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html"""
+  Sync comments: python3 scripts/patch-router-cli-help.py  |  Test: npm run test:cli-lab-help
+  Router template: templates/labs/cli-lab-router-baseline.html"""
 
-ROUTER_HELP_MARKER = "Static route chain:"
+ROUTER_HELP_MARKER = "scripts/lib/cli-lab-router-help.mjs"
 
 ROUTER_HELP_OLD_BLOCK = re.compile(
     r"\n  IOS `\?` help — ROUTER_CLI_HELP[^\n]*\n"

@@ -2,16 +2,6 @@
 <!--
   Reference router sample lab — IOS `?` help and CLI login banner patterns for all routers.
 
-  Shared defaults (/js/cli-lab-container.js):
-  - DEFAULT_ROUTER_CLI_HELP — baseline for every router session; override with ROUTER_CLI_HELP
-  - Login banner (BCT_CLI_HELP_NOTICE) — injected when each router CLI modal opens
-  - tryAppendIosHelp(line, appendFn, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))
-  - Help is read-only — using ? does not change config, advance steps, or affect completion.
-  - Router `?` chains (ROUTER_CLI_HELP = null): interface/ethernet, ip address, ipv6/ipv6 address,
-    OSPF (router → ip ospf → area → priority), (config)# ipv6 ?, static route (4-step ip route chain)
-  - This lab (static route): ip route ? → <dest> ? → <dest> <mask> ? → <dest> <mask> <next-hop> ?
-  - Also see: cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
-
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
   tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
@@ -20,6 +10,29 @@
   - R1: LAB_STEPS[] static-route lab; promptForMode(); normalize() abbreviations
   - R2: read-only CLI (only show ip interface brief); R3: full IOS CLI modal (show run, conf t, copy run start, …)
   - Device picker (R1 / R2 / R3), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
+
+  IOS `?` help — ROUTER_CLI_HELP = null → DEFAULT_ROUTER_CLI_HELP (/js/cli-lab-container.js):
+  tryAppendIosHelp(..., iosHelpOpts("router", promptText, ROUTER_CLI_HELP)) in every router submit handler.
+  Help is read-only — using ? does not change config, advance steps, or affect completion.
+
+  Interface/address: interface ?, interface ethernet ?, (config-if)# ip address ?,
+    (config-if)# ipv6 ?, ipv6 address ?
+  OSPF chain: router ?, router ospf ?, (config-router)# ?, router-id ?,
+    (config-if)# ip ospf ?, ip ospf <pid> ?, ip ospf <pid> area ?, ip ospf priority ?
+  IPv6 routing: (config)# ipv6 ? (unicast-routing)
+  Static route chain: ip route ?, ip route <dest> ?, ip route <dest> <mask> ?,
+    ip route <dest> <mask> <next-hop> ?
+  ACL: ip access-list ?, ip access-list standard ? (<1-99> / WORD); (config-std-nacl)# ? → permit/deny/remark;
+    permit ? → any / host / <ip-address> / <line-number>
+  NAT: (config)# ip nat ?; ip nat inside ? (source); ip nat inside source ?;
+    ip nat inside source list <acl> ? (pool / interface); … pool ? (<name>); … pool <name> ? (overload);
+    ip nat pool ? / … netmask ? (A.B.C.D); (config-if)# ip nat ? (inside / outside)
+  NTP: (config)# ntp ?; ntp master ?; ntp server ?; ntp source-interface ?
+  SSH: crypto ? → key ? → generate ? → rsa ? → modulus ?;
+    username ?; username … privilege … secret ? (<password>); line vty / login / transport input ?
+  Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
+  Router template: templates/labs/cli-lab-router-baseline.html
+  Test: node scripts/test-cli-lab-help.mjs <lab>  |  node scripts/test-cli-lab-help.mjs --all
 -->
 <html lang="en">
 <head>

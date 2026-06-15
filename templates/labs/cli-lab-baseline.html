@@ -2,8 +2,12 @@
 <!--
   CLI lab baseline — LEGACY hand-rolled submit handlers (~1800 lines).
 
-  Copy this file or an existing lab under public/CCNA-Study/CCNA_labs/ or
+  Copy templates/labs/cli-lab-router-baseline.html (router-only) or this file (mixed router/switch), or an existing lab under public/CCNA-Study/CCNA_labs/ or
   public/CCNP-ENCOR-Study/CCNP-ENCOR-Labs/ and edit per scenario.
+
+  Router help source of truth: scripts/lib/cli-lab-router-help.mjs
+  Sync router help comments: python3 scripts/patch-router-cli-help.py
+  Test: npm run test:cli-lab-help
 
   IOS `?` help + login banner (shared defaults in /js/cli-lab-container.js):
   - DEFAULT_ROUTER_CLI_HELP — baseline for all routers; override with ROUTER_CLI_HELP
