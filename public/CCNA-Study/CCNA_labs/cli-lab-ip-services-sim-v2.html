@@ -23,7 +23,9 @@
     ip route <dest> <mask> <next-hop> ?
   ACL: ip access-list ?, ip access-list standard ? (<1-99> / WORD); (config-std-nacl)# ? → permit/deny/remark;
     permit ? → any / host / &lt;ip-address&gt; / &lt;line-number&gt;
-  NAT: (config)# ip nat ? (inside / outside / pool / inside source / …); ip nat pool ?
+  NAT: (config)# ip nat ?; ip nat inside ? (source); ip nat inside source ?; ip nat inside source list &lt;acl&gt; ? (pool / interface); … pool ? (&lt;name&gt;); … pool &lt;name&gt; ? (overload); ip nat pool ?; … (config-if)# ip nat ? (inside / outside)
+  NTP: (config)# ntp ?; ntp master ?; ntp server ?
+  SSH: crypto ? → key ? → generate ? → rsa ? → modulus ?; username / line vty / login / transport input ?
   Reference labs: cli-lab-static-routing.html, cli-lab-ospf_config_sim_v3.html, ipv4_ipv6_assign.html
 -->
 <html lang="en">
@@ -575,7 +577,9 @@
             Services must be configured in the order presented to complete the implementation.
             On <strong>R2</strong>, you may enter <strong>GigabitEthernet0/1</strong> and
             <strong>GigabitEthernet0/0</strong> in any order to apply <code>ip nat inside</code> and
-            <code>ip nat outside</code> as long as both are done before the NAT pool.
+            <code>ip nat outside</code> as long as both are done before the NAT pool. The three
+            <strong>XLATE</strong> permit entries may also be entered in any order before you
+            <code>exit</code> ACL mode.
           </p>
           <ol class="tasks">
             <li>
@@ -743,7 +747,7 @@
         <section class="topology-scrape" aria-label="Helper notes">
           <h2>CCNA: IP Services Simulation V.3 — implementation hints</h2>
           <p class="tasks" style="margin: 0 0 14px; font-size: 0.92rem; line-height: 1.5">
-            Task 1 sequence must match the lab STEPS on <strong>R2</strong>. After NAT works, from <strong>R3</strong> exec run
+            Task 1 on <strong>R2</strong>: create ACL <strong>XLATE</strong> (three permits in any order), then NAT inside/outside, pool, and inside source. After NAT works, from <strong>R3</strong> exec run
             <code>ping 192.168.100.1</code>.
           </p>
           <div class="spoiler-cli-body">
@@ -1214,26 +1218,18 @@ R3(config-line)# end</pre>
       ].join("\r\n");
 
       /**
-       * R2 Task 1 — graded sequence: conf t, ACL XLATE, pool, inside source.
-       * NAT inside/outside on Gi0/1 and Gi0/0 are tracked separately (any order after conf t, before pool).
+       * R2 Task 1 — graded sequence: conf t, ACL XLATE + exit, pool, inside source.
+       * NAT inside/outside and ACL permits are tracked separately (flexible order before pool).
        */
-      var NAT_POOL_STEP_INDEX = 6;
-      var NAT_SOURCE_STEP_INDEX = 7;
+      var NAT_ACL_EXIT_STEP_INDEX = 2;
+      var NAT_POOL_STEP_INDEX = 3;
+      var NAT_SOURCE_STEP_INDEX = 4;
       var STEPS = [
         { mode: "exec", test: function (raw) {
           return normalize(raw) === "configure terminal";
         }},
         { mode: "config", test: function (raw) {
           return normalize(raw) === "ip access-list standard xlate";
-        }},
-        { mode: "config-std-nacl", test: function (raw) {
-          return normalize(raw) === "permit 10.2.3.3";
-        }},
-        { mode: "config-std-nacl", test: function (raw) {
-          return normalize(raw) === "permit 192.168.3.1";
-        }},
-        { mode: "config-std-nacl", test: function (raw) {
-          return normalize(raw) === "permit 10.1.3.11";
         }},
         { mode: "config-std-nacl", test: function (raw) {
           return normalize(raw) === "exit";
@@ -1441,10 +1437,50 @@ R3(config-line)# end</pre>
         if (u === "permit 10.1.3.11") r2Permit101311 = true;
       }
 
+      function r2AclPermitsReady() {
+        return r2Permit10233 && r2Permit19216831 && r2Permit101311;
+      }
+
+      function isR2AclPermitCmd(u) {
+        return u === "permit 10.2.3.3" || u === "permit 192.168.3.1" || u === "permit 10.1.3.11";
+      }
+
+      function r2InStdNaclMode() {
+        return (
+          swPrompt.textContent === SWITCH_HOST + "(config-std-nacl)#" ||
+          swPromptOverride === "config-std-nacl"
+        );
+      }
+
+      /** Re-enter XLATE ACL submode from (config)# after permits or a soft exit. */
+      function tryR2AclNav(_line, u) {
+        if (u !== "ip access-list standard xlate") return false;
+        var atConfig =
+          swPrompt.textContent === SWITCH_HOST + "(config)#" || swPromptOverride === "config";
+        if (!atConfig || stepIndex < 1 || stepIndex < NAT_ACL_EXIT_STEP_INDEX) return false;
+        if (stepIndex >= NAT_POOL_STEP_INDEX) return false;
+        noteR2AclProgress(u);
+        swPromptOverride = "config-std-nacl";
+        setSwPrompt();
+        return true;
+      }
+
+      /** XLATE permits — any order while in (config-std-nacl)# after the ACL is created. */
+      function tryR2AclPermitCmd(u) {
+        if (!isR2AclPermitCmd(u)) return false;
+        if (!r2InStdNaclMode()) return false;
+        if (!r2AclXlateDone && stepIndex < NAT_ACL_EXIT_STEP_INDEX) {
+          appendSw("line-bad", "% Create the XLATE access-list before adding permit entries.");
+          return true;
+        }
+        noteR2AclProgress(u);
+        return true;
+      }
+
       function r2AclReady() {
         return (
           stepIndex >= NAT_POOL_STEP_INDEX ||
-          (r2AclXlateDone && r2Permit10233 && r2Permit19216831 && r2Permit101311)
+          (r2AclXlateDone && r2AclPermitsReady())
         );
       }
 
@@ -1819,11 +1855,17 @@ R3(config-line)# end</pre>
           return;
         }
 
-        if (tryR2NatIfaceCmd(u)) {
+        if (tryR2AclNav(line, u)) {
           return;
         }
 
-        noteR2AclProgress(u);
+        if (tryR2AclPermitCmd(u)) {
+          return;
+        }
+
+        if (tryR2NatIfaceCmd(u)) {
+          return;
+        }
 
         if (tryR2NatGlobalCmd(u)) {
           return;
@@ -1867,6 +1909,13 @@ R3(config-line)# end</pre>
 
         if (STEPS[stepIndex].test(line)) {
           noteR2AclProgress(u);
+          if (stepIndex === NAT_ACL_EXIT_STEP_INDEX && u === "exit" && !r2AclPermitsReady()) {
+            appendSw(
+              "line-bad",
+              "% Add all required XLATE permit entries before exiting ACL configuration."
+            );
+            return;
+          }
           if (stepIndex === NAT_POOL_STEP_INDEX) {
             if (!r2NatInterfacesReady() || !r2AclReady()) {
               appendSw("line-bad", r2FailedStepMsg(u));

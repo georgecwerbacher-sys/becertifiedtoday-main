@@ -675,6 +675,27 @@
    *   ipDhcp       — (config)# ip dhcp ?
    *   ipNat        — (config)# ip nat ?
    *   ipNatPool    — (config)# ip nat pool ?
+   *   ipNatPoolMask — (config)# ip nat pool <name> ? / … <last-ip> ?
+   *   ipNatPoolNetmask — (config)# ip nat pool … netmask ?
+   *   ipNatInsideSource — (config)# ip nat inside source ?
+   *   ipNatInsideSourceList — (config)# ip nat inside source list <acl> ?
+   *   ipNatInsideSourceListPool — (config)# ip nat inside source list <acl> pool ?
+   *   ipNatInsideSourceListPoolName — (config)# ip nat inside source list <acl> pool <name> ?
+   *   ipNatInside — (config)# ip nat inside ?
+   *   configIfIp   — (config-if)# ip ?
+   *   configIfIpNat — (config-if)# ip nat ?
+   *   ntp          — (config)# ntp ?
+   *   ntpMaster    — (config)# ntp master ?
+   *   ntpServer    — (config)# ntp server ?
+   *   ntpSourceInterface — (config)# ntp source-interface ? / ntp source ?
+   *   configIfIpHelperAddress — (config-if)# ip helper-address ?
+   *   ipSsh             — (config)# ip ssh ?
+   *   ipSshVersion      — (config)# ip ssh version ?
+   *   crypto       — (config)# crypto ?
+   *   cryptoKey    — (config)# crypto key ?
+   *   cryptoKeyGenerate — (config)# crypto key generate ?
+   *   cryptoKeyGenerateRsa — (config)# crypto key generate rsa ?
+   *   cryptoKeyGenerateRsaModulus — (config)# crypto key generate rsa modulus ?
    *   ipDhcpSnooping — (config)# ip dhcp snooping ?
    *   noIpDhcpSnoopingInformation — no ip dhcp snooping information ?
    *   ipDhcpSnoopingVerify — ip dhcp snooping verify ?
@@ -1260,6 +1281,90 @@
       { cmd: "netmask <subnet-mask>" },
       { cmd: "prefix-length <prefix>" },
     ],
+    /** (config)# ip nat pool <name> ? — mask type after pool / range */
+    ipNatPoolMask: [{ cmd: "netmask" }, { cmd: "prefix-length" }],
+    /** (config)# ip nat pool … netmask ? */
+    ipNatPoolNetmask: [{ cmd: "A.B.C.D" }],
+    /** (config)# ip nat inside ? */
+    ipNatInside: [{ cmd: "source" }],
+    /** (config)# ip nat inside source ? */
+    ipNatInsideSource: [{ cmd: "list" }, { cmd: "static" }],
+    /** (config)# ip nat inside source list <acl> ? */
+    ipNatInsideSourceList: [{ cmd: "pool" }, { cmd: "interface" }],
+    /** (config)# ip nat inside source list <acl> pool ? */
+    ipNatInsideSourceListPool: [{ cmd: "<name>" }],
+    /** (config)# ip nat inside source list <acl> pool <name> ? */
+    ipNatInsideSourceListPoolName: [{ cmd: "overload" }],
+    /** (config-if)# ip ? */
+    configIfIp: [
+      { cmd: "access-group" },
+      { cmd: "address" },
+      { cmd: "helper-address" },
+      { cmd: "nat" },
+      { cmd: "ospf" },
+      { cmd: "proxy-arp" },
+      { cmd: "redirects" },
+      { cmd: "unreachables" },
+    ],
+    /** (config-if)# ip helper-address ? */
+    configIfIpHelperAddress: [{ cmd: "A.B.C.D" }, { cmd: "<ip-address>" }],
+    /** (config-if)# ip nat ? */
+    configIfIpNat: [{ cmd: "inside" }, { cmd: "outside" }],
+    /** (config)# ntp ? */
+    ntp: [
+      { cmd: "access-group" },
+      { cmd: "authenticate" },
+      { cmd: "authentication-key" },
+      { cmd: "broadcast" },
+      { cmd: "clock-period" },
+      { cmd: "master" },
+      { cmd: "server" },
+      { cmd: "source" },
+      { cmd: "trusted-key" },
+    ],
+    /** (config)# ntp master ? */
+    ntpMaster: [{ cmd: "<1-15>" }],
+    /** (config)# ntp server ? */
+    ntpServer: [{ cmd: "A.B.C.D" }, { cmd: "WORD" }],
+    /** (config)# ntp source-interface ? / ntp source ? */
+    ntpSourceInterface: [
+      { cmd: "Loopback0" },
+      { cmd: "Vlan1" },
+      { cmd: "GigabitEthernet0/0" },
+      { cmd: "GigabitEthernet0/1" },
+      { cmd: "Ethernet0/0" },
+      { cmd: "Ethernet0/1" },
+    ],
+    /** (config)# crypto ? */
+    crypto: [{ cmd: "key" }, { cmd: "map" }, { cmd: "pki" }],
+    /** (config)# crypto key ? */
+    cryptoKey: [{ cmd: "generate" }, { cmd: "zeroize" }],
+    /** (config)# crypto key generate ? */
+    cryptoKeyGenerate: [{ cmd: "rsa" }],
+    /** (config)# crypto key generate rsa ? */
+    cryptoKeyGenerateRsa: [
+      { cmd: "general-keys" },
+      { cmd: "label" },
+      { cmd: "modulus" },
+      { cmd: "storage" },
+    ],
+    /** (config)# crypto key generate rsa modulus ? */
+    cryptoKeyGenerateRsaModulus: [{ cmd: "<360-4096>" }],
+    /** (config)# ip ssh ? */
+    ipSsh: [
+      { cmd: "authentication-retries" },
+      { cmd: "break-out" },
+      { cmd: "dh min size" },
+      { cmd: "logging" },
+      { cmd: "maxstartups" },
+      { cmd: "port" },
+      { cmd: "rekey" },
+      { cmd: "source-interface" },
+      { cmd: "time-out" },
+      { cmd: "version" },
+    ],
+    /** (config)# ip ssh version ? */
+    ipSshVersion: [{ cmd: "2" }],
     /** (config)# ip dhcp snooping ? */
     ipDhcpSnooping: [
       { cmd: "database" },
@@ -1364,6 +1469,23 @@
    *   ipDhcp            — (config)# ip dhcp ?
    *   ipNat             — (config)# ip nat ?
    *   ipNatPool         — (config)# ip nat pool ?
+   *   ipNatPoolMask     — (config)# ip nat pool <name> ? / … <last-ip> ?
+   *   ipNatPoolNetmask  — (config)# ip nat pool … netmask ?
+   *   ipNatInsideSource — (config)# ip nat inside source ?
+   *   ipNatInsideSourceList — (config)# ip nat inside source list <acl> ?
+   *   ipNatInsideSourceListPool — (config)# ip nat inside source list <acl> pool ?
+   *   ipNatInsideSourceListPoolName — (config)# ip nat inside source list <acl> pool <name> ?
+   *   ipNatInside — (config)# ip nat inside ?
+   *   configIfIp        — (config-if)# ip ?
+   *   configIfIpNat     — (config-if)# ip nat ?
+   *   ntp               — (config)# ntp ?
+   *   ntpMaster         — (config)# ntp master ?
+   *   ntpServer         — (config)# ntp server ?
+   *   crypto            — (config)# crypto ?
+   *   cryptoKey         — (config)# crypto key ?
+   *   cryptoKeyGenerate — (config)# crypto key generate ?
+   *   cryptoKeyGenerateRsa — (config)# crypto key generate rsa ?
+   *   cryptoKeyGenerateRsaModulus — (config)# crypto key generate rsa modulus ?
    *   router            — (config)# router ?
    *   routerOspf        — (config)# router ospf ?
    *   ipDhcpSnooping    — (config)# ip dhcp snooping ?
@@ -1507,6 +1629,27 @@
     ipDhcp: DEFAULT_ROUTER_CLI_HELP.ipDhcp,
     ipNat: DEFAULT_ROUTER_CLI_HELP.ipNat,
     ipNatPool: DEFAULT_ROUTER_CLI_HELP.ipNatPool,
+    ipNatPoolMask: DEFAULT_ROUTER_CLI_HELP.ipNatPoolMask,
+    ipNatPoolNetmask: DEFAULT_ROUTER_CLI_HELP.ipNatPoolNetmask,
+    ipNatInsideSource: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSource,
+    ipNatInsideSourceList: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceList,
+    ipNatInsideSourceListPool: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListPool,
+    ipNatInsideSourceListPoolName: DEFAULT_ROUTER_CLI_HELP.ipNatInsideSourceListPoolName,
+    ipNatInside: DEFAULT_ROUTER_CLI_HELP.ipNatInside,
+    configIfIp: DEFAULT_ROUTER_CLI_HELP.configIfIp,
+    configIfIpNat: DEFAULT_ROUTER_CLI_HELP.configIfIpNat,
+    ntp: DEFAULT_ROUTER_CLI_HELP.ntp,
+    ntpMaster: DEFAULT_ROUTER_CLI_HELP.ntpMaster,
+    ntpServer: DEFAULT_ROUTER_CLI_HELP.ntpServer,
+    ntpSourceInterface: DEFAULT_ROUTER_CLI_HELP.ntpSourceInterface,
+    configIfIpHelperAddress: DEFAULT_ROUTER_CLI_HELP.configIfIpHelperAddress,
+    ipSsh: DEFAULT_ROUTER_CLI_HELP.ipSsh,
+    ipSshVersion: DEFAULT_ROUTER_CLI_HELP.ipSshVersion,
+    crypto: DEFAULT_ROUTER_CLI_HELP.crypto,
+    cryptoKey: DEFAULT_ROUTER_CLI_HELP.cryptoKey,
+    cryptoKeyGenerate: DEFAULT_ROUTER_CLI_HELP.cryptoKeyGenerate,
+    cryptoKeyGenerateRsa: DEFAULT_ROUTER_CLI_HELP.cryptoKeyGenerateRsa,
+    cryptoKeyGenerateRsaModulus: DEFAULT_ROUTER_CLI_HELP.cryptoKeyGenerateRsaModulus,
     ipDhcpSnooping: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnooping,
     noIpDhcpSnoopingInformation: DEFAULT_ROUTER_CLI_HELP.noIpDhcpSnoopingInformation,
     ipDhcpSnoopingVerify: DEFAULT_ROUTER_CLI_HELP.ipDhcpSnoopingVerify,
@@ -2345,6 +2488,76 @@
     return true;
   }
 
+  /** `(config)# ip nat pool … netmask ?` — subnet mask value. */
+
+  function isIpNatPoolNetmaskHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    var ip = "\\d{1,3}(?:\\.\\d{1,3}){3}";
+    return new RegExp("^ip nat pool \\S+ " + ip + " " + ip + " netmask \\?$").test(t);
+  }
+
+  function ipNatPoolNetmaskCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatPoolNetmask"),
+      opts.ipNatPoolNetmaskExtra
+    );
+  }
+
+  function tryAppendIpNatPoolNetmaskHelp(raw, appendFn, opts) {
+    if (!isIpNatPoolNetmaskHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatPoolNetmaskCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat pool <name> ?` — netmask / prefix-length after pool name or range. */
+
+  function isIpNatPoolMaskHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    var ip = "\\d{1,3}(?:\\.\\d{1,3}){3}";
+    return (
+      /^ip nat pool \S+ \?$/.test(t) ||
+      new RegExp("^ip nat pool \\S+ " + ip + " \\?$").test(t) ||
+      new RegExp("^ip nat pool \\S+ " + ip + " " + ip + " \\?$").test(t)
+    );
+  }
+
+  function ipNatPoolMaskCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatPoolMask"),
+      opts.ipNatPoolMaskExtra
+    );
+  }
+
+  function tryAppendIpNatPoolMaskHelp(raw, appendFn, opts) {
+    if (!isIpNatPoolMaskHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatPoolMaskCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
   /** `(config)# ip nat pool ?` — pool name / range / mask. */
 
   function isIpNatPoolHelpQuery(raw) {
@@ -2408,6 +2621,576 @@
     opts = opts || {};
     if (parsePromptMode(opts.promptText) !== "config") return false;
     var text = ipNatCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside ?` — inside NAT subcommands. */
+
+  function isIpNatInsideHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip nat inside ?" || t === "do ip nat inside ?";
+  }
+
+  function ipNatInsideCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInside"),
+      opts.ipNatInsideExtra
+    );
+  }
+
+  function tryAppendIpNatInsideHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source list <acl> pool <name> ?` — PAT overload keyword. */
+
+  function isIpNatInsideSourceListPoolNameHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    return /^ip nat inside source list \S+ pool \S+ \?$/.test(t);
+  }
+
+  function ipNatInsideSourceListPoolNameCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSourceListPoolName"),
+      opts.ipNatInsideSourceListPoolNameExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceListPoolNameHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceListPoolNameHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceListPoolNameCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source list <acl> pool ?` — NAT pool name. */
+
+  function isIpNatInsideSourceListPoolHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    return /^ip nat inside source list \S+ pool \?$/.test(t);
+  }
+
+  function ipNatInsideSourceListPoolCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSourceListPool"),
+      opts.ipNatInsideSourceListPoolExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceListPoolHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceListPoolHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceListPoolCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source list <acl> ?` — pool / interface mapping. */
+
+  function isIpNatInsideSourceListHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    if (t.indexOf("do ") === 0) t = t.slice(3);
+    return /^ip nat inside source list \S+ \?$/.test(t);
+  }
+
+  function ipNatInsideSourceListCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSourceList"),
+      opts.ipNatInsideSourceListExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceListHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceListHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceListCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ip nat inside source ?` — dynamic NAT source mapping. */
+
+  function isIpNatInsideSourceHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip nat inside source ?" || t === "do ip nat inside source ?";
+  }
+
+  function ipNatInsideSourceCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipNatInsideSource"),
+      opts.ipNatInsideSourceExtra
+    );
+  }
+
+  function tryAppendIpNatInsideSourceHelp(raw, appendFn, opts) {
+    if (!isIpNatInsideSourceHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipNatInsideSourceCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip ?` — interface IP subcommands. */
+
+  function isConfigIfIpHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip ?" || t === "do ip ?";
+  }
+
+  function configIfIpCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "configIfIp"), opts.configIfIpExtra);
+  }
+
+  function tryAppendConfigIfIpHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config-if)# ip nat ?` — inside / outside on an interface. */
+
+  function isConfigIfIpNatHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip nat ?" || t === "do ip nat ?";
+  }
+
+  function configIfIpNatCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpNat"),
+      opts.configIfIpNatExtra
+    );
+  }
+
+  function tryAppendConfigIfIpNatHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpNatHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpNatCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ntp ?` — NTP global subcommands. */
+
+  function isNtpHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ntp ?" || t === "do ntp ?";
+  }
+
+  function ntpCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ntp"), opts.ntpExtra);
+  }
+
+  function tryAppendNtpHelp(raw, appendFn, opts) {
+    if (!isNtpHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ntpCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ntp master ?` — stratum when acting as NTP server. */
+
+  function isNtpMasterHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ntp master ?" || t === "do ntp master ?";
+  }
+
+  function ntpMasterCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ntpMaster"), opts.ntpMasterExtra);
+  }
+
+  function tryAppendNtpMasterHelp(raw, appendFn, opts) {
+    if (!isNtpMasterHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ntpMasterCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# ntp server ?` — NTP peer address. */
+
+  function isNtpServerHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ntp server ?" || t === "do ntp server ?";
+  }
+
+  function ntpServerCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ntpServer"), opts.ntpServerExtra);
+  }
+
+  function tryAppendNtpServerHelp(raw, appendFn, opts) {
+    if (!isNtpServerHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ntpServerCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  function isNtpSourceInterfaceHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "ntp source-interface ?" ||
+      t === "do ntp source-interface ?" ||
+      t === "ntp source ?" ||
+      t === "do ntp source ?"
+    );
+  }
+
+  function ntpSourceInterfaceCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ntpSourceInterface"),
+      opts.ntpSourceInterfaceExtra
+    );
+  }
+
+  function tryAppendNtpSourceInterfaceHelp(raw, appendFn, opts) {
+    if (!isNtpSourceInterfaceHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ntpSourceInterfaceCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  function isConfigIfIpHelperAddressHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip helper-address ?" || t === "do ip helper-address ?";
+  }
+
+  function configIfIpHelperAddressCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "configIfIpHelperAddress"),
+      opts.configIfIpHelperAddressExtra
+    );
+  }
+
+  function tryAppendConfigIfIpHelperAddressHelp(raw, appendFn, opts) {
+    if (!isConfigIfIpHelperAddressHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config-if") return false;
+    var text = configIfIpHelperAddressCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  function isIpSshHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip ssh ?" || t === "do ip ssh ?";
+  }
+
+  function ipSshCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "ipSsh"), opts.ipSshExtra);
+  }
+
+  function tryAppendIpSshHelp(raw, appendFn, opts) {
+    if (!isIpSshHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipSshCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  function isIpSshVersionHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "ip ssh version ?" || t === "do ip ssh version ?";
+  }
+
+  function ipSshVersionCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "ipSshVersion"),
+      opts.ipSshVersionExtra
+    );
+  }
+
+  function tryAppendIpSshVersionHelp(raw, appendFn, opts) {
+    if (!isIpSshVersionHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = ipSshVersionCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# crypto ?` — crypto global subcommands. */
+
+  function isCryptoHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "crypto ?" || t === "do crypto ?";
+  }
+
+  function cryptoCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "crypto"), opts.cryptoExtra);
+  }
+
+  function tryAppendCryptoHelp(raw, appendFn, opts) {
+    if (!isCryptoHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = cryptoCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# crypto key ?` */
+
+  function isCryptoKeyHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "crypto key ?" || t === "do crypto key ?";
+  }
+
+  function cryptoKeyCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(resolveHelpList(opts, deviceType, "cryptoKey"), opts.cryptoKeyExtra);
+  }
+
+  function tryAppendCryptoKeyHelp(raw, appendFn, opts) {
+    if (!isCryptoKeyHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = cryptoKeyCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# crypto key generate ?` */
+
+  function isCryptoKeyGenerateHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "crypto key generate ?" || t === "do crypto key generate ?";
+  }
+
+  function cryptoKeyGenerateCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "cryptoKeyGenerate"),
+      opts.cryptoKeyGenerateExtra
+    );
+  }
+
+  function tryAppendCryptoKeyGenerateHelp(raw, appendFn, opts) {
+    if (!isCryptoKeyGenerateHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = cryptoKeyGenerateCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# crypto key generate rsa ?` */
+
+  function isCryptoKeyGenerateRsaHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return t === "crypto key generate rsa ?" || t === "do crypto key generate rsa ?";
+  }
+
+  function cryptoKeyGenerateRsaCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "cryptoKeyGenerateRsa"),
+      opts.cryptoKeyGenerateRsaExtra
+    );
+  }
+
+  function tryAppendCryptoKeyGenerateRsaHelp(raw, appendFn, opts) {
+    if (!isCryptoKeyGenerateRsaHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = cryptoKeyGenerateRsaCommandHelpText(opts);
+    if (!text) return false;
+    if (typeof appendFn === "function") {
+      appendFn("line-sys line-show-help", text);
+    }
+    return true;
+  }
+
+  /** `(config)# crypto key generate rsa modulus ?` */
+
+  function isCryptoKeyGenerateRsaModulusHelpQuery(raw) {
+    var t = String(raw || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ");
+    return (
+      t === "crypto key generate rsa modulus ?" || t === "do crypto key generate rsa modulus ?"
+    );
+  }
+
+  function cryptoKeyGenerateRsaModulusCommandHelpText(opts) {
+    opts = opts || {};
+    var deviceType = opts.deviceType || "router";
+    return formatHelpEntries(
+      resolveHelpList(opts, deviceType, "cryptoKeyGenerateRsaModulus"),
+      opts.cryptoKeyGenerateRsaModulusExtra
+    );
+  }
+
+  function tryAppendCryptoKeyGenerateRsaModulusHelp(raw, appendFn, opts) {
+    if (!isCryptoKeyGenerateRsaModulusHelpQuery(raw)) return false;
+    opts = opts || {};
+    if (parsePromptMode(opts.promptText) !== "config") return false;
+    var text = cryptoKeyGenerateRsaModulusCommandHelpText(opts);
     if (!text) return false;
     if (typeof appendFn === "function") {
       appendFn("line-sys line-show-help", text);
@@ -4332,7 +5115,28 @@
     if (tryAppendNoIpDhcpSnoopingInformationHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingVerifyHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpSnoopingHelp(raw, appendFn, opts)) return true;
+    if (tryAppendCryptoKeyGenerateRsaModulusHelp(raw, appendFn, opts)) return true;
+    if (tryAppendCryptoKeyGenerateRsaHelp(raw, appendFn, opts)) return true;
+    if (tryAppendCryptoKeyGenerateHelp(raw, appendFn, opts)) return true;
+    if (tryAppendCryptoKeyHelp(raw, appendFn, opts)) return true;
+    if (tryAppendCryptoHelp(raw, appendFn, opts)) return true;
+    if (tryAppendNtpServerHelp(raw, appendFn, opts)) return true;
+    if (tryAppendNtpSourceInterfaceHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpSshVersionHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpSshHelp(raw, appendFn, opts)) return true;
+    if (tryAppendNtpMasterHelp(raw, appendFn, opts)) return true;
+    if (tryAppendNtpHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceListPoolNameHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceListPoolHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceListHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideSourceHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatInsideHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatPoolNetmaskHelp(raw, appendFn, opts)) return true;
+    if (tryAppendIpNatPoolMaskHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatPoolHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpNatHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpHelperAddressHelp(raw, appendFn, opts)) return true;
+    if (tryAppendConfigIfIpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpNatHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpDhcpHelp(raw, appendFn, opts)) return true;
     if (tryAppendIpv6Help(raw, appendFn, opts)) return true;
@@ -4582,6 +5386,69 @@
     isConfigIfIpAddressHelpQuery: isConfigIfIpAddressHelpQuery,
     configIfIpAddressCommandHelpText: configIfIpAddressCommandHelpText,
     tryAppendConfigIfIpAddressHelp: tryAppendConfigIfIpAddressHelp,
+    isIpNatInsideSourceListPoolNameHelpQuery: isIpNatInsideSourceListPoolNameHelpQuery,
+    ipNatInsideSourceListPoolNameCommandHelpText: ipNatInsideSourceListPoolNameCommandHelpText,
+    tryAppendIpNatInsideSourceListPoolNameHelp: tryAppendIpNatInsideSourceListPoolNameHelp,
+    isIpNatInsideSourceListPoolHelpQuery: isIpNatInsideSourceListPoolHelpQuery,
+    ipNatInsideSourceListPoolCommandHelpText: ipNatInsideSourceListPoolCommandHelpText,
+    tryAppendIpNatInsideSourceListPoolHelp: tryAppendIpNatInsideSourceListPoolHelp,
+    isIpNatInsideSourceListHelpQuery: isIpNatInsideSourceListHelpQuery,
+    ipNatInsideSourceListCommandHelpText: ipNatInsideSourceListCommandHelpText,
+    tryAppendIpNatInsideSourceListHelp: tryAppendIpNatInsideSourceListHelp,
+    isIpNatInsideSourceHelpQuery: isIpNatInsideSourceHelpQuery,
+    ipNatInsideSourceCommandHelpText: ipNatInsideSourceCommandHelpText,
+    tryAppendIpNatInsideSourceHelp: tryAppendIpNatInsideSourceHelp,
+    isIpNatInsideHelpQuery: isIpNatInsideHelpQuery,
+    ipNatInsideCommandHelpText: ipNatInsideCommandHelpText,
+    tryAppendIpNatInsideHelp: tryAppendIpNatInsideHelp,
+    isConfigIfIpHelpQuery: isConfigIfIpHelpQuery,
+    configIfIpCommandHelpText: configIfIpCommandHelpText,
+    tryAppendConfigIfIpHelp: tryAppendConfigIfIpHelp,
+    isConfigIfIpNatHelpQuery: isConfigIfIpNatHelpQuery,
+    configIfIpNatCommandHelpText: configIfIpNatCommandHelpText,
+    tryAppendConfigIfIpNatHelp: tryAppendConfigIfIpNatHelp,
+    isNtpHelpQuery: isNtpHelpQuery,
+    ntpCommandHelpText: ntpCommandHelpText,
+    tryAppendNtpHelp: tryAppendNtpHelp,
+    isNtpMasterHelpQuery: isNtpMasterHelpQuery,
+    ntpMasterCommandHelpText: ntpMasterCommandHelpText,
+    tryAppendNtpMasterHelp: tryAppendNtpMasterHelp,
+    isNtpServerHelpQuery: isNtpServerHelpQuery,
+    ntpServerCommandHelpText: ntpServerCommandHelpText,
+    tryAppendNtpServerHelp: tryAppendNtpServerHelp,
+    isNtpSourceInterfaceHelpQuery: isNtpSourceInterfaceHelpQuery,
+    ntpSourceInterfaceCommandHelpText: ntpSourceInterfaceCommandHelpText,
+    tryAppendNtpSourceInterfaceHelp: tryAppendNtpSourceInterfaceHelp,
+    isConfigIfIpHelperAddressHelpQuery: isConfigIfIpHelperAddressHelpQuery,
+    configIfIpHelperAddressCommandHelpText: configIfIpHelperAddressCommandHelpText,
+    tryAppendConfigIfIpHelperAddressHelp: tryAppendConfigIfIpHelperAddressHelp,
+    isIpSshHelpQuery: isIpSshHelpQuery,
+    ipSshCommandHelpText: ipSshCommandHelpText,
+    tryAppendIpSshHelp: tryAppendIpSshHelp,
+    isIpSshVersionHelpQuery: isIpSshVersionHelpQuery,
+    ipSshVersionCommandHelpText: ipSshVersionCommandHelpText,
+    tryAppendIpSshVersionHelp: tryAppendIpSshVersionHelp,
+    isCryptoHelpQuery: isCryptoHelpQuery,
+    cryptoCommandHelpText: cryptoCommandHelpText,
+    tryAppendCryptoHelp: tryAppendCryptoHelp,
+    isCryptoKeyHelpQuery: isCryptoKeyHelpQuery,
+    cryptoKeyCommandHelpText: cryptoKeyCommandHelpText,
+    tryAppendCryptoKeyHelp: tryAppendCryptoKeyHelp,
+    isCryptoKeyGenerateHelpQuery: isCryptoKeyGenerateHelpQuery,
+    cryptoKeyGenerateCommandHelpText: cryptoKeyGenerateCommandHelpText,
+    tryAppendCryptoKeyGenerateHelp: tryAppendCryptoKeyGenerateHelp,
+    isCryptoKeyGenerateRsaHelpQuery: isCryptoKeyGenerateRsaHelpQuery,
+    cryptoKeyGenerateRsaCommandHelpText: cryptoKeyGenerateRsaCommandHelpText,
+    tryAppendCryptoKeyGenerateRsaHelp: tryAppendCryptoKeyGenerateRsaHelp,
+    isCryptoKeyGenerateRsaModulusHelpQuery: isCryptoKeyGenerateRsaModulusHelpQuery,
+    cryptoKeyGenerateRsaModulusCommandHelpText: cryptoKeyGenerateRsaModulusCommandHelpText,
+    tryAppendCryptoKeyGenerateRsaModulusHelp: tryAppendCryptoKeyGenerateRsaModulusHelp,
+    isIpNatPoolNetmaskHelpQuery: isIpNatPoolNetmaskHelpQuery,
+    ipNatPoolNetmaskCommandHelpText: ipNatPoolNetmaskCommandHelpText,
+    tryAppendIpNatPoolNetmaskHelp: tryAppendIpNatPoolNetmaskHelp,
+    isIpNatPoolMaskHelpQuery: isIpNatPoolMaskHelpQuery,
+    ipNatPoolMaskCommandHelpText: ipNatPoolMaskCommandHelpText,
+    tryAppendIpNatPoolMaskHelp: tryAppendIpNatPoolMaskHelp,
     isIpNatPoolHelpQuery: isIpNatPoolHelpQuery,
     ipNatPoolCommandHelpText: ipNatPoolCommandHelpText,
     tryAppendIpNatPoolHelp: tryAppendIpNatPoolHelp,
