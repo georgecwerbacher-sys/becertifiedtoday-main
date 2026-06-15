@@ -32,11 +32,11 @@ Course vendors bid these as loss leaders. Expect **$4–$8+ CPC** in US.
 
 | Theme                  | Example keywords                                                                  | Ad group                        |
 | ---------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
-| No GNS3 / browser labs | `ccna practice labs free`, `cisco practical labs`, `ccna 200 301 practice labs`, `ccna labs without gns3`, `ccna vlan lab`, `ccna lab simulation` | `ccna_browser_labs`             |
+| No GNS3 / browser labs | `ccna practice labs free`, `cisco practical labs`, `ccna 200 301 practice labs`, `ccna labs without gns3`, `ccna vlan lab`, `ccna lab simulation` | **`CCNA_Wedge_Lab`** |
 | Timed / exam sim       | `ccna timed practice test`, `ccna exam simulation online`, `ccna mock exam timed` | `ccna_timed_sim` *(new)*        |
 | ENCOR labs             | `encor lab simulation`, `ccnp encor labs without gns3`                            | `encor_browser_labs` *(future)* |
 
-#### `ccna_browser_labs` — Keyword Planner (US, Jun 2025–May 2026)
+#### `CCNA_Wedge_Lab` — Keyword Planner (US, Jun 2025–May 2026)
 
 Source: Saved Keywords export 2026-06-15. Use **phrase (`"..."`)** for discovery; **exact (`[...]`)** on top converters.
 
@@ -66,7 +66,7 @@ Source: Saved Keywords export 2026-06-15. Use **phrase (`"..."`)** for discovery
 
 **Promote rule:** search term with ≥3 clicks and a `begin_checkout` → add as `[exact]` if not already listed.
 
-Repo checklist: `scripts/ccna-google-ads-campaign-checklist.csv`
+Repo checklist: `scripts/ccna-wedge-lab-google-ads-checklist.csv` · setup guide: `scripts/ccna-wedge-lab-google-ads.md`
 
 ### Tier W2 — Last-mile readiness
 
@@ -86,7 +86,7 @@ Repo checklist: `scripts/ccna-google-ads-campaign-checklist.csv`
 
 | Ad group | Budget share | Pin H1 | Pin H2 | Final URL |
 |----------|--------------|--------|--------|-----------|
-| `ccna_browser_labs` | **50–60%** | CCNA 200-301 Practice Labs | $9.99 · 10-Day CCNA Labs | `/ccna/labs-without-gns3.html` |
+| **`CCNA_Wedge_Lab`** | **100%** ($15/day launch) | CCNA 200-301 Practice Labs | $9.99 · 10-Day CCNA Labs | `/ccna/labs-without-gns3.html` |
 | `ccna_timed_sim` | **25–30%** | 120-Min Timed CCNA Sim | $9.99 · 10-Day CCNA Bank | *(build)* |
 | `ccna_portal_10v1` | **15–20%** | CCNA 200-301 · Walk In Ready | Test only; low bid | `ccna-home.html#purchase` |
 
@@ -128,10 +128,10 @@ Zero impressions ≠ wrong bid strategy. Check: ad status, keyword low volume, C
 | Drag-and-drop sample | `https://becertifiedtoday.com/sample?track=ccna-dnd` | `sitelink-dnd` |
 | Question sample | `https://becertifiedtoday.com/sample?track=ccna-questions` | `sitelink-sample` |
 
-**`ccna_browser_labs` final URL (copy-paste):**
+**`CCNA_Wedge_Lab` final URL (copy-paste):**
 
 ```
-https://becertifiedtoday.com/ccna/labs-without-gns3.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=browser-labs
+https://becertifiedtoday.com/ccna/labs-without-gns3.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=browser-labs
 ```
 
 **Do not** enable AI Max / final URL expansion — breaks message match and UTM variants.
@@ -140,7 +140,7 @@ https://becertifiedtoday.com/ccna/labs-without-gns3.html?utm_source=google&utm_m
 
 ## RSA angles (wedge, not generic)
 
-Use headlines from `scripts/ccna-google-ads-campaign-checklist.csv` — differentiated set:
+Use headlines from `scripts/ccna-wedge-lab-google-ads-checklist.csv` — differentiated set:
 
 - VLAN CLI Lab In Browser
 - No GNS3 · Prep In Browser

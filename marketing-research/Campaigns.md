@@ -22,9 +22,26 @@ Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan
 
 **Day 7 review:** compare ad groups, note top search terms, decide scale / pause / optimize before week 2.
 
-**Wedge pivot:** If head-term CPC is untenable, follow [[Wedge Marketing plan/02-keywords-and-google-ads|Keywords & Google Ads]] and [[Wedge Marketing plan/06-30-day-action-plan|30-day action plan]].
+**Wedge pivot:** If head-term CPC is untenable, launch [[campaigns/CCNA Wedge Lab Campaign|CCNA_Wedge_Lab]] — follow [[Wedge Marketing plan/02-keywords-and-google-ads|Keywords & Google Ads]] and [[Wedge Marketing plan/06-30-day-action-plan|30-day action plan]].
 
-## CCNA 200-301
+## CCNA_Wedge_Lab (ready to build)
+
+**Primary doc:** [[campaigns/CCNA Wedge Lab Campaign|CCNA Wedge Lab Campaign]] — dedicated wedge Search campaign, **$15/day** launch
+
+| Item | Link |
+|------|------|
+| Setup checklist (CSV) | `scripts/ccna-wedge-lab-google-ads-checklist.csv` |
+| Checklist guide | `scripts/ccna-wedge-lab-google-ads-README.txt` |
+| Setup guide | `scripts/ccna-wedge-lab-google-ads.md` |
+| Landing | https://becertifiedtoday.com/ccna/labs-without-gns3.html |
+
+| Ad group | Budget | Focus |
+|----------|--------|-------|
+| **`CCNA_Wedge_Lab`** | $15/day | Browser CLI labs · no GNS3 · wedge landing |
+
+**Before enable:** pause `ccna_browser_labs` in the combined CCNA campaign.
+
+## CCNA 200-301 (combined)
 
 **Primary doc:** [[campaigns/CCNA Campaign|CCNA Campaign]] — one campaign, two ad groups, **$25/day**
 
