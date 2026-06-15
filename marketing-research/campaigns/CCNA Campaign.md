@@ -17,7 +17,7 @@ tags:
 
 **Live ad group:** `ccna_portal_10v1` only during 7-day test. `ccna_browser_labs` deferred.
 
-**Working checklist:** [[campaigns/ccna-campaign-checklist.csv|ccna-google-ads-campaign-checklist.csv]] · [[campaigns/ccna-campaign-checklist-README|README]]
+**Working checklist:** [[campaigns/CCNA campaign build steps|Obsidian build steps]] · `scripts/ccna-google-ads-campaign-checklist.csv` · `scripts/ccna-google-ads-campaign-checklist-README.txt`
 
 **Extended reference** (locations, products table, US metros): [[campaigns/ccna-portal-10d|ccna-portal-10d-google-ads.md]]
 

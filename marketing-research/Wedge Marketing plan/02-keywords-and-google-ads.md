@@ -24,6 +24,17 @@ Pause or **low bid** until wedge groups convert:
 
 Course vendors bid these as loss leaders. Expect **$4–$8+ CPC** in US.
 
+### Security+ — same pattern (Tier A)
+
+Pause or **low bid** until **`secplus_pbq_wedge`** converts:
+
+- `[security+ practice test]`
+- `[security+ question bank]`
+- `[comptia security+ practice test]`
+- `[sy0-701 question bank]`
+
+Messer/Dion/Udemy/Boson funnels bid these as loss leaders. Expect **$3–$6+ CPC** in US. Narrative: [[secplus-wedge-campaign/00-why-marketing-changed]].
+
 ---
 
 ## Wedge keyword tiers
@@ -68,6 +79,23 @@ Source: Saved Keywords export 2026-06-15. Use **phrase (`"..."`)** for discovery
 
 Repo checklist: `scripts/ccna-wedge-lab-google-ads-checklist.csv` · setup guide: `scripts/ccna-wedge-lab-google-ads.md`
 
+### Security+ — Tier W1 (primary)
+
+| Theme | Example keywords | Ad group |
+|-------|------------------|----------|
+| PBQ / performance-based | `[security+ pbq practice]`, `[sy0-701 pbq]`, `"security+ performance based questions"`, `"security+ pbq practice online"` | **`secplus_pbq_wedge`** |
+| Browser sim | `"security+ simulation online"`, `"security+ pbq browser"` | **`secplus_pbq_wedge`** |
+| Timed sim *(build page first)* | `"security+ timed practice test"`, `"sy0-701 mock exam timed"` | `secplus_timed_sim` *(new)* |
+| Federal / 8140 *(optional)* | `"security+ 8140"`, `"dod security+ prep"` | `secplus_federal` *(future)* |
+
+**Live wedge URL:**
+
+```
+https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
+```
+
+Repo checklist: `scripts/secplus-google-ads-campaign-checklist.csv` (Ad group 2) · wedge folder: [[secplus-wedge-campaign/README|secplus-wedge-campaign]]
+
 ### Tier W2 — Last-mile readiness
 
 | Theme        | Example keywords                                                        |
@@ -90,7 +118,17 @@ Repo checklist: `scripts/ccna-wedge-lab-google-ads-checklist.csv` · setup guide
 | `ccna_timed_sim` | **25–30%** | 120-Min Timed CCNA Sim | $9.99 · 10-Day CCNA Bank | *(build)* |
 | `ccna_portal_10v1` | **15–20%** | CCNA 200-301 · Walk In Ready | Test only; low bid | `ccna-home.html#purchase` |
 
-See [[../campaigns/CCNA Campaign|CCNA Campaign]] for current live setup.
+### Security+ (recommended)
+
+| Ad group | Budget share | Pin H1 | Pin H2 | Final URL |
+|----------|--------------|--------|--------|-----------|
+| **`secplus_pbq_wedge`** | **60–70%** (after day-7) | Security+ PBQ Practice | $9.99 · 10-Day Access | `/secplus/pbq-practice-browser.html` |
+| `secplus_timed_sim` | **20–25%** *(build)* | 90-Min Timed Security+ Sim | $9.99 · 10-Day Access | `/secplus/timed-practice-test.html` |
+| `secplus_portal_10d` | **15–20%** | Security+ Practice Test | $9.99 for 10-Day Access | `comptia-sec+-home.html#purchase` (low bid) |
+
+See [[Security+ Campaign|Security+ Campaign]] for current live setup.
+
+See [[../campaigns/CCNA Campaign|CCNA Campaign]] for CCNA live setup.
 
 ---
 

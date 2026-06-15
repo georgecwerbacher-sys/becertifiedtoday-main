@@ -29,9 +29,9 @@ Open in Numbers
 Campaign summary
 ----------------
 Budget:     $10.00/day
-Ad groups:  secplus_portal_10d (~$7/day) + secplus_pbq_wedge (~$3/day, enable after wedge verified)
+Ad groups:  secplus_portal_10d (~$7/day) portal baseline only
 Landing:    https://becertifiedtoday.com/comptia-sec+-home.html#purchase
-Wedge:      https://becertifiedtoday.com/secplus/pbq-practice-browser.html
+Wedge:      Dedicated SEC+_Wedge_PBQ — see secplus-wedge-pbq-google-ads-checklist.csv
 UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d
 
 Full reference: scripts/secplus-portal-10d-google-ads.md

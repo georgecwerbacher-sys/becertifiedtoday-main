@@ -111,6 +111,27 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     setupDocTxt: "scripts/secplus-portal-10d-google-ads.txt",
     sampleTracks: ["questions", "sim-dark-web"],
   },
+  {
+    id: "secplus_wedge_pbq",
+    product: "secplus",
+    label: "SEC+_Wedge_PBQ · browser PBQ practice",
+    googleAdsCampaignName: "SEC+_Wedge_PBQ",
+    utmCampaign: "secplus_wedge_pbq",
+    adGroup: "SEC+_Wedge_PBQ",
+    dailyBudgetUsd: 8,
+    maxCpcUsd: 3.5,
+    landingPath: "/secplus/pbq-practice-browser.html",
+    landingHash: "",
+    utmContentPrimary: "pbq-wedge",
+    finalUrl:
+      "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=pbq-wedge",
+    primaryConversion: "begin_checkout",
+    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    primaryOffer: "10-day $9.99 · 30-day $19.99 — wedge PBQ landing",
+    setupDoc: "scripts/secplus-wedge-pbq-google-ads-checklist.csv",
+    setupDocTxt: "scripts/secplus-wedge-pbq-google-ads-README.txt",
+    sampleTracks: ["sim-dark-web", "questions"],
+  },
 ];
 
 export function getCampaignMarketingRegistry() {

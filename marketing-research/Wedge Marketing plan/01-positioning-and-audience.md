@@ -75,10 +75,13 @@ They are **not** shopping for the cheapest question dump. They are asking: *Am I
 
 ### Sam — Security+ (wedge)
 
-- PBQ / chain labs anxiety; adaptive review appeal
-- Same browser-no-install story
+- PBQ / chain labs anxiety; **interactive scenarios like test day**
+- **Adaptive review** — weak areas pushed; missed questions shuffle to end
+- **Timed online simulation** — not a $99 PDF or desktop install
+- **Cert required for work** — DoD, contractor, job mandate
+- Browser-no-install · mobile-friendly · **$9.99/10d vs PDF dumps**
 - Wedge landing: `/secplus/pbq-practice-browser.html`
-- Funnel tracker: [[SEC+ funnel build tracker]]
+- **Campaign docs:** [[../Sec+ Campaign/Sec+ Positioning|Sec+ Positioning]] · [[SEC+ funnel build tracker]]
 
 ---
 

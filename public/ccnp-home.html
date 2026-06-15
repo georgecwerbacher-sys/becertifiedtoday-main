@@ -197,8 +197,16 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 10px 18px;
     }
+    a.header-nav-link {
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    a.header-nav-link:hover { text-decoration: underline; }
     a.ccna-portal-header-btn {
       display: inline-flex;
       align-items: center;
@@ -2523,6 +2531,7 @@
         />
       </a>
       <div class="header-actions">
+        <a class="header-nav-link" href="/about.html">About</a>
         <!-- Header: ENCOR training portal — paid access passes through; others see purchase dialog. -->
         <a
           id="ccnpPortalHeaderBtn"

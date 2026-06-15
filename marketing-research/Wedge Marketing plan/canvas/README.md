@@ -2,6 +2,8 @@
 
 Obsidian canvas for the CCNA build funnel. Open **CCNA wedge funnel.canvas** in Obsidian (Canvas core plugin).
 
+**Security+ funnel:** [[secplus/README|SEC+ canvas folder]] · [[SEC+ wedge funnel.canvas]] · **Ads build:** [[../secplus-wedge-campaign/README|secplus-wedge-campaign]]
+
 ## Files
 
 | File | Purpose |

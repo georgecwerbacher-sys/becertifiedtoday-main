@@ -17,6 +17,8 @@ created: 2026-06-14
 
 **Canonical voice:** [[../Site Mission|Site Mission]] — *Practice like test day. Walk in ready.*
 
+**Why we pivoted (narrative):** [[00-why-ccna-marketing-changed|CCNA]] · [[secplus-wedge-campaign/00-why-marketing-changed|Security+]]
+
 ---
 
 ## Plan sections
@@ -30,6 +32,16 @@ created: 2026-06-14
 | 5 | [[05-competitor-tracking|Competitor tracking]] | Matrix, repo tools, monthly workflow |
 | 6 | [[06-30-day-action-plan|30-day action plan]] | Week-by-week checklist |
 | — | [[CCNA funnel build tracker|CCNA funnel canvas]] | Obsidian canvas + phase checklists in `canvas/` |
+| — | [[SEC+ funnel build tracker|SEC+ funnel canvas]] | Security+ wedge funnel + `secplus-wedge-campaign/` build folder |
+
+---
+
+## Campaign build steps (Obsidian checklists)
+
+| Product | Steps note | Canvas |
+|---------|------------|--------|
+| CCNA | [[campaigns/CCNA campaign build steps|CCNA campaign build steps]] | [[canvas/CCNA wedge funnel.canvas]] |
+| Security+ | [[../Sec+ Campaign/README\|Sec+ Campaign]] · [[../Sec+ Campaign/Sec+ Keywords\|keywords]] | [[canvas/SEC+ wedge funnel.canvas]] |
 
 ---
 
@@ -59,6 +71,8 @@ created: 2026-06-14
 
 | Date | Decision |
 |------|----------|
-| 2026-06-14 | Adopt wedge strategy; deprioritize head-term CPC battle vs course vendors |
+| 2026-06-14 | Adopt wedge strategy; deprioritize head-term CPC battle vs course vendors (CCNA + SEC+) |
 | | US/CA/UK/AU paid geo first; pause broad India spend until US CPA baseline |
-| | Shift budget toward `ccna_browser_labs` + timed-sim wedge (see action plan) |
+| | CCNA: shift budget toward `ccna_browser_labs` + timed-sim wedge (see action plan) |
+| | SEC+: primary wedge `secplus_pbq_wedge` + `/secplus/pbq-practice-browser.html`; portal head terms baseline only |
+| 2026-06-15 | SEC+ wedge build consolidated in [[secplus-wedge-campaign/README\|secplus-wedge-campaign/]] |

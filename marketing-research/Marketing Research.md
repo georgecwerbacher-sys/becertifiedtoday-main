@@ -9,7 +9,7 @@ tags:
 
 **Start here:** [[Site Mission]] — canonical positioning for becertifiedtoday.com
 
-**Strategy:** [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — avoid head-term CPC wars; own browser labs, timed sim, exam-readiness keywords
+**Strategy:** [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — avoid head-term CPC wars; own browser labs, timed sim, exam-readiness keywords. **Pivot narrative:** [[Wedge Marketing plan/00-why-ccna-marketing-changed|CCNA]] · [[Wedge Marketing plan/secplus-wedge-campaign/00-why-marketing-changed|Security+]]
 
 Hub for competitor intel, ad campaigns, and weekly analytics.
 
@@ -18,6 +18,7 @@ Hub for competitor intel, ad campaigns, and weekly analytics.
 - [[Site Mission]] — why the site exists; reference for all marketing work
 - [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — positioning, wedge keywords, content, 30-day checklist
 
+- [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Ads setup, keywords, portal ref
 - [[Competitors]] — SEC+, CCNA, ENCOR prep sites
 - [[Campaigns]] — Google Ads setup and UTM registry (**initial 7-day test** through 2026-06-21)
   - [[campaigns/CCNA Campaign|CCNA Campaign]] — checklist: 1 campaign, 2 ad groups (`ccna_portal_10v1` + `ccna_browser_labs`)
