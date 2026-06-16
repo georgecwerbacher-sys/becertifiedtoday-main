@@ -4,7 +4,9 @@
 
 
   CCNA VLAN lab: dual switches Sw1/Sw2, VLANs 77/88 (data) and 177/188 (voice), access-mode interface
-  assignments per topology. Optional LLDP/CDP tasks are permissive. Lab complete = copy run start on both switches.
+  assignments per topology. Task 2 accepts interface range or per-interface lines (e.g. e0/1 and e0/2
+  separately) and interfaces may be configured in any order when each port is complete by save. Optional
+  LLDP/CDP tasks are permissive. Lab complete = copy run start on both switches.
 
   IOS `?` help — SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP (/js/cli-lab-container.js):
   tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)) in every switch submit handler.
@@ -785,6 +787,11 @@ Sw1,Sw2(config-vlan)# exit</pre>
               <strong>Task 2.</strong> Assign the VLANs to the appropriate interfaces and set a non-trunking, non-tagged,
               single-VLAN for each interface according to the topology.
               <div>Use access mode for these interfaces.</div>
+              <div>
+                <strong>Flexible syntax:</strong> <code>interface range e0/1 - 2</code> may be split into separate
+                <code>interface e0/1</code> and <code>interface e0/2</code> blocks (same access VLAN on each). Configure
+                e0/1, e0/2, and e0/3 in any order as long as every port is finished before you save.
+              </div>
               <pre class="spoiler-cli-pre">Sw1(config)# interface range e0/1 - 2
 Sw1(config-if-range)# switchport mode access
 Sw1(config-if-range)# switchport access vlan 77
@@ -1395,6 +1402,16 @@ Sw2# copy running-config startup-config</pre>
       /** Canonical range line after normalize() — matches `int range e0/1 - 2, e0/3` and Gi spellings. */
       var LAB_INTERFACE_RANGE_GI012 = "interface range gigabitethernet0/1 - 2";
 
+      /** IOS-like config hierarchy modes that accept interface / interface range navigation. */
+      function isVlanLabInterfaceNavMode(mode) {
+        return (
+          mode === "config" ||
+          mode === "config-vlan" ||
+          mode === "config-if" ||
+          mode === "config-if-range"
+        );
+      }
+
       function isNonRangeInterfaceNavLine(line) {
         var u = normalize(line);
         return u.indexOf("interface ") === 0 && u.indexOf("interface range ") !== 0;
@@ -1407,11 +1424,7 @@ Sw2# copy running-config startup-config</pre>
           var ovr = getOvr();
           var stepMode = stepIdx < LAB_STEPS.length ? LAB_STEPS[stepIdx].mode : "exec";
           var rangeCtxMode = ovr !== null && ovr !== undefined ? ovr : stepMode;
-          if (
-            rangeCtxMode === "config" ||
-            rangeCtxMode === "config-if" ||
-            rangeCtxMode === "config-if-range"
-          ) {
+          if (isVlanLabInterfaceNavMode(rangeCtxMode)) {
             if (stepIdx < LAB_STEPS.length && LAB_STEPS[stepIdx].test(line, swNum)) return false;
             setOvrAndRefresh("config-if-range");
             return true;
@@ -1424,17 +1437,11 @@ Sw2# copy running-config startup-config</pre>
             setOvrAndRefresh("config");
             return true;
           }
-          if (
-            u.indexOf("interface range ") === 0 &&
-            (modeDone === "config" || modeDone === "config-if" || modeDone === "config-if-range")
-          ) {
+          if (u.indexOf("interface range ") === 0 && isVlanLabInterfaceNavMode(modeDone)) {
             setOvrAndRefresh("config-if-range");
             return true;
           }
-          if (
-            u.indexOf("interface ") === 0 &&
-            (modeDone === "config" || modeDone === "config-if" || modeDone === "config-if-range")
-          ) {
+          if (u.indexOf("interface ") === 0 && isVlanLabInterfaceNavMode(modeDone)) {
             setOvrAndRefresh("config-if");
             return true;
           }
@@ -1861,9 +1868,14 @@ Sw2# copy running-config startup-config</pre>
           setSw1Prompt();
           return;
         }
-        if (sw1Mode === "config" && isNonRangeInterfaceNavLine(line)) {
-          // Allow generic interface navigation from config mode outside strict step commands.
+        if (isVlanLabInterfaceNavMode(sw1Mode) && isNonRangeInterfaceNavLine(line)) {
+          // Allow interface navigation from config / vlan / interface contexts (any port order).
           sw1PromptOverride = "config-if";
+          setSw1Prompt();
+          return;
+        }
+        if (isVlanLabInterfaceNavMode(sw1Mode) && normalize(line).indexOf("interface range ") === 0) {
+          sw1PromptOverride = "config-if-range";
           setSw1Prompt();
           return;
         }
@@ -2054,9 +2066,14 @@ Sw2# copy running-config startup-config</pre>
           setSw2Prompt();
           return;
         }
-        if (sw2ModeNow === "config" && isNonRangeInterfaceNavLine(line)) {
-          // Allow generic interface navigation from config mode outside strict step commands.
+        if (isVlanLabInterfaceNavMode(sw2ModeNow) && isNonRangeInterfaceNavLine(line)) {
+          // Allow interface navigation from config / vlan / interface contexts (any port order).
           sw2PromptOverride = "config-if";
+          setSw2Prompt();
+          return;
+        }
+        if (isVlanLabInterfaceNavMode(sw2ModeNow) && normalize(line).indexOf("interface range ") === 0) {
+          sw2PromptOverride = "config-if-range";
           setSw2Prompt();
           return;
         }
