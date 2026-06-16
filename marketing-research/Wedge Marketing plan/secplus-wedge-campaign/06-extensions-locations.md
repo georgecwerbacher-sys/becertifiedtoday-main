@@ -39,11 +39,45 @@ Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq`
 | # | Link text | Description 1 | Description 2 | Full URL |
 |---|-----------|---------------|---------------|----------|
 | 1 | Free Dark Web PBQ | Hands-on IR scenario | No checkout required | `https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-pbq` |
-| 2 | 10-Day Access · $9.99 | 28 PBQ scenarios + 1000+ Qs | One-time no subscription | `https://becertifiedtoday.com/secplus/pbq-practice-browser.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=portal-10d` |
-| 3 | 30-Day Access · $19.99 | Best value study window | Same full library | `https://becertifiedtoday.com/secplus/pbq-practice-browser.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=portal-30d` |
-| 4 | Free Practice Questions | SY0-701 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-sample` |
-| 5 | 28 PBQ Scenarios | Chain labs & hot spots | Browser-only prep | `https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-pbq-list` |
+| 2 | Free Practice Questions | SY0-701 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-sample` |
+| 3 | 28 PBQ Scenarios | Chain labs & hot spots | Browser-only prep | `https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-pbq-list` |
+| 4 | 10-Day Access · $9.99 | 1000+ Qs + PBQ library | One-time no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=portal-10d` |
+| 5 | 90-Min Timed Exam Sim | MCQ + PBQ mixed run | Adaptive review included | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-sim` |
 | 6 | Security+ Exam Prep Home | Full SY0-701 portal | Samples + pricing | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-home` |
+
+**Google Ads paste format** (name ≤25 · descriptions ≤35):
+
+```
+Name: Free Dark Web PBQ
+Description 1: Hands-on IR scenario
+Description 2: No checkout required
+URL: https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-pbq
+
+Name: Free Practice Questions
+Description 1: SY0-701 MCQ preview
+Description 2: Instant feedback, free
+URL: https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-sample
+
+Name: 28 PBQ Scenarios
+Description 1: Chain labs & hot spots
+Description 2: Browser-only prep
+URL: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-pbq-list
+
+Name: 10-Day Access · $9.99
+Description 1: 1000+ Qs + PBQ library
+Description 2: One-time no subscription
+URL: https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=portal-10d
+
+Name: 90-Min Timed Exam Sim
+Description 1: MCQ + PBQ mixed run
+Description 2: Adaptive review included
+URL: https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-sim
+
+Name: Security+ Exam Prep Home
+Description 1: Full SY0-701 portal
+Description 2: Samples + pricing
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=sitelink-home
+```
 
 ---
 

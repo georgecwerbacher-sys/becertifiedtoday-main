@@ -162,10 +162,10 @@ cissp
 | Label | URL utm_content |
 |-------|-----------------|
 | Free Dark Web PBQ | `sitelink-pbq` |
-| 10-Day Access · $9.99 | `portal-10d` |
-| 30-Day Access · $19.99 | `portal-30d` |
 | Free Practice Questions | `sitelink-sample` |
 | 28 PBQ Scenarios | `sitelink-pbq-list` |
+| 10-Day Access · $9.99 | `portal-10d` |
+| 90-Min Timed Exam Sim | `sitelink-sim` |
 | Security+ Exam Prep Home | `sitelink-home` |
 
 Base: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq`
