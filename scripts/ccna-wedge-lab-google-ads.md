@@ -123,7 +123,7 @@ All 15 headlines and 4 descriptions are in the checklist CSV — filter **Sectio
 
 ## Campaign negatives (phrase)
 
-Block course vendors, dumps, install intent, head terms, and **free-question** intent:
+Block course vendors, unauthorized-content intent, install intent, head terms, and **free-question** intent:
 
 ```
 "free course"
@@ -134,9 +134,9 @@ Block course vendors, dumps, install intent, head terms, and **free-question** i
 "training course"
 bootcamp
 "instructor led"
-"brain dump"
-"exam dump"
-"guaranteed pass"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 "pdf download"
 udemy
 coursera
@@ -154,7 +154,7 @@ examtopics
 "ccna question bank"
 ```
 
-**Ad group negatives:** `course`, `dump`, `pdf`, `jobs`, `netacad`, `free`
+**Ad group negatives:** `course`, `unauthorized`, `pdf`, `jobs`, `netacad`, `free`
 
 ---
 

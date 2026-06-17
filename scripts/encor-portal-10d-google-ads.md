@@ -153,7 +153,7 @@ Try free ENCOR samples first. Unlock 30-day full library access at checkout.
 | 2 | Free Practice Questions | Current v1.2 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/sample?track=encor-questions&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-sample` |
 | 3 | Sample Drag-and-Drop | PBQ-style items | Shuffled each run, free | `https://becertifiedtoday.com/sample?track=encor-dnd&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-dnd` |
 | 4 | Free ACL/CoPP CLI Lab | Hands-on lab in browser | No GNS3 required | `https://becertifiedtoday.com/sample?track=encor-lab&utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-lab` |
-| 5 | Latest v1.2 Questions | 400+ items, 8 lab sims | Not stale PDF dumps | `https://becertifiedtoday.com/ccnp-home.html#home-encor-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-samples` |
+| 5 | Latest v1.2 Questions | 400+ items, 8 lab sims | Original study material | `https://becertifiedtoday.com/ccnp-home.html#home-encor-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=sitelink-samples` |
 | 6 | Timed Sim Included | 120-min exam-style run | With 30-day portal access | `https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=portal-30d` |
 
 ---
@@ -185,7 +185,7 @@ Try free ENCOR samples first. Unlock 30-day full library access at checkout.
 "free"
 "bootcamp"
 "course"
-"dump"
+"unauthorized content"
 "pdf"
 "jobs"
 "netacad"
@@ -200,9 +200,9 @@ Try free ENCOR samples first. Unlock 30-day full library access at checkout.
 "training course"
 "bootcamp"
 "instructor led"
-"brain dump"
-"exam dump"
-"guaranteed pass"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 "pdf download"
 "udemy"
 "coursera"
@@ -277,7 +277,7 @@ Sources: `data/encor-question-sourcing/competitor-sites/` + live SERP review (Ju
 | **TrustEd Institute** | Limited free | 2,880 Q claimed | 5×102-Q mocks | Full mocks | Paid unlock | BCT: ENCOR CLI/CoPP labs, interactive portal |
 | **Pearson VUE** | None | 246 Q official | Cert + practice modes | Official | ~$150+ / 6 mo | BCT: cheaper, more Qs + labs; they win “official” trust |
 | **Boson ExSim** | Demo | ExSim ENCOR | NetSim (separate) | Exam simulation | $99+ | BCT: no install; they win head-term brand |
-| **ExamTopics / PrepAway / Exam-Labs** | Partial | Dump/recall style | No real labs | No | Low $ | BCT: no dumps; use negatives |
+| **ExamTopics / PrepAway / Exam-Labs** | Partial | Recall-style files | No real labs | No | Low $ | BCT: original study content; use negatives |
 | **INE / CBT / Pluralsight** | Trials | Video paths | External labs | Quizzes | $49–99+/mo | Course intent—already negated |
 | **A Guide to Cloud** | 20 free Q | 200 Q | Timed mode | Domain drills | Freemium | BCT: larger bank + CLI labs |
 

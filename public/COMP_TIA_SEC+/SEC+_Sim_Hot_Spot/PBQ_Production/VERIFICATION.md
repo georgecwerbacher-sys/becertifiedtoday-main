@@ -2,7 +2,7 @@
 
 **Audited:** 2026-06-04  
 **Scope:** All graded keys in `PBQ_Production/` (four production scenarios).  
-**Method:** Cross-check answer keys against CompTIA Security+ SY0-701 learning objectives (1.x general security, 2.x threats, 3.x architecture, 4.x operations) and primary references: NIST, IETF RFCs, OWASP, vendor-neutral hardening guidance (OpenSSH, fail2ban, Ubuntu UFW). Third-party exam dumps were not used.
+**Method:** Cross-check answer keys against CompTIA Security+ SY0-701 learning objectives (1.x general security, 2.x threats, 3.x architecture, 4.x operations) and primary references: NIST, IETF RFCs, OWASP, vendor-neutral hardening guidance (OpenSSH, fail2ban, Ubuntu UFW). Unauthorized exam-content sources were not used.
 
 **Summary:** All four simulations are **aligned** with credible sources. No answer key changes are required. Two items carry **pedagogical caveats** (real-world nuance); see notes below.
 

@@ -46,7 +46,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&u
 
 | # | Product / service name | Description (paste under name in Google Ads) |
 |---|------------------------|-----------------------------------------------|
-| 1 | Security+ 10-Day Exam Prep Access | 10 days of SY0-701 v5.0 exam prep in your browser: 1000+ practice questions, 28 PBQ scenarios, adaptive review, portal modes, and 90-min timed exam. Interactive prep—not stale PDF dumps. $9.99 one-time. |
+| 1 | Security+ 10-Day Exam Prep Access | 10 days of SY0-701 v5.0 exam prep in your browser: 1000+ practice questions, 28 PBQ scenarios, adaptive review, portal modes, and 90-min timed exam. Interactive prep with original study material. $9.99 one-time. |
 | 2 | Security+ 30-Day Exam Prep Access | 30 days of the same SY0-701 library: 1000+ questions, 28 PBQ scenarios (21 chain labs, 4 standalone, 1 hot spot, 2 exhibits), adaptive review, progress tracking, and timed exam. $19.99 one-time. |
 | 3 | Free Security+ Practice Questions | Preview current SY0-701 practice questions—shuffled each run, instant feedback, same style as the full bank. Free on comptia-sec+-home.html; no checkout. |
 | 4 | Free Security+ PBQ Simulation | Dark-web IR simulation sample aligned to current SY0-701 PBQ style. Hands-on in browser. Free preview; no checkout. |
@@ -99,7 +99,7 @@ Try free Security+ samples first. Unlock 10-day full library access at checkout.
 | 2 | Free Practice Questions | Current SY0-701 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample` |
 | 3 | Free PBQ Simulation | Dark web IR scenario | Hands-on in browser | `https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq` |
 | 4 | 28 PBQ Scenarios | Chain labs & hot spots | With 10-day access | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list` |
-| 5 | 1000+ Questions | v5.0 objectives aligned | Not stale PDF dumps | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples` |
+| 5 | 1000+ Questions | v5.0 objectives aligned | Original study material | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples` |
 | 6 | Timed Exam Included | 90-min exam-style run | With 10-day portal access | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d` |
 
 ---
@@ -145,9 +145,9 @@ Try free Security+ samples first. Unlock 10-day full library access at checkout.
 "training course"
 "bootcamp"
 "instructor led"
-"brain dump"
-"exam dump"
-"guaranteed pass"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 "pdf download"
 "udemy"
 "coursera"

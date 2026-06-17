@@ -14,7 +14,7 @@
   var SAMPLE_QUESTIONS = "/sample?track=ccna-questions";
 
   var WEDGE_LEAD =
-    "Exam in 2–3 weeks? Run CLI labs, drag-and-drop, and a <strong>120-minute timed simulation</strong> in your browser—no GNS3, Packet Tracer, or PDFs. " +
+    "Build CCNA readiness with CLI labs, drag-and-drop, and a <strong>120-minute timed simulation</strong> in your browser. " +
     "<strong>Try the free samples below</strong> to judge quality first, then unlock a <strong>10-day sprint for $9.99</strong> when you want the full library.";
 
   var BASE_LEAD =
@@ -38,9 +38,9 @@
       id: "browser-labs",
       adHeadline: "CCNA Labs Without GNS3",
       eyebrow: "CCNA CLI labs · browser · no install",
-      headline: "CCNA Labs in Your Browser — No GNS3 or Packet Tracer",
+      headline: "CCNA Browser CLI Labs and Practice",
       lead:
-        "Run VLAN and routing CLI labs in our browser testing engine—no GNS3, Packet Tracer, or VM install. " +
+        "Run VLAN and routing CLI labs in our browser testing engine with no VM install. " +
         "See the GNS3 comparison below, then unlock the full library with timed simulation for <strong>$9.99 / 10 days</strong>.",
       ctaPrimary: "Get 10-day CCNA access",
       ctaHref: "#purchase",

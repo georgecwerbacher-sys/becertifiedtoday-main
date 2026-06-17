@@ -16,7 +16,7 @@
   var WEDGE_LANDING = "/secplus/pbq-practice-browser.html";
 
   var WEDGE_LEAD =
-    "Exam in 2–3 weeks? Run <strong>28 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation</strong> in your browser—no downloads or PDF dumps. " +
+    "Build Security+ readiness with <strong>28 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation</strong> in your browser. " +
     "<strong>Try the free samples below</strong>, then unlock a <strong>10-day sprint for $9.99</strong> when you want the full library.";
 
   var BASE_LEAD =

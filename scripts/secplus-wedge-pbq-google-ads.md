@@ -126,16 +126,16 @@ Add exact only when Planner shows usable volume or a search term converts.
 
 ## Campaign negatives (phrase)
 
-Block course vendors, dumps, cross-cert junk, and head terms this campaign should not own:
+Block course vendors, unauthorized-content intent, cross-cert junk, and head terms this campaign should not own:
 
 ```
 "free course"
 "training course"
 bootcamp
 "instructor led"
-"brain dump"
-"exam dump"
-"guaranteed pass"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 "pdf download"
 udemy
 coursera
@@ -153,7 +153,7 @@ ccna
 cissp
 ```
 
-**Ad group negatives:** `course`, `dump`, `pdf`, `jobs`, `training`
+**Ad group negatives:** `course`, `unauthorized`, `pdf`, `jobs`, `training`
 
 ---
 

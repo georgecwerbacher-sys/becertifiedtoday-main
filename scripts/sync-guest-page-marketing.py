@@ -119,7 +119,7 @@ DEFAULT_META: list[tuple[str, str]] = [
     ),
     (
         "CCNP-ENCOR-Study/ENCOR_Samples/",
-        "Free CCNP ENCOR 350-401 exam prep sample — interactive practice questions and labs in your browser. Verified explanations, no PDF dumps.",
+        "Free CCNP ENCOR 350-401 exam prep sample — interactive practice questions and labs in your browser. Verified explanations.",
     ),
     (
         "COMP_TIA_SEC+/SEC+_Samples/",

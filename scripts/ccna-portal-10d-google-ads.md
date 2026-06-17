@@ -253,7 +253,7 @@ https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_mediu
 
 | # | Product / service name | Description (paste under name in Google Ads) |
 |---|------------------------|-----------------------------------------------|
-| 1 | CCNA 200-301 10-Day Exam Prep Access | 10 days of CCNA 200-301 exam prep in your browser: 700+ practice questions (Version 1.1 and 2.0), VLAN CLI labs, drag-and-drop, portal modes, and 120-min timed sim. Verified explanations—not stale PDF dumps. $9.99 one-time. |
+| 1 | CCNA 200-301 10-Day Exam Prep Access | 10 days of CCNA 200-301 exam prep in your browser: 700+ practice questions (Version 1.1 and 2.0), VLAN CLI labs, drag-and-drop, portal modes, and 120-min timed sim. Verified explanations and original study material. $9.99 one-time. |
 | 2 | CCNA 200-301 30-Day Exam Prep Access | 30 days of the same v1.1 library: latest CCNA practice questions, verified explanations, CLI labs, drag-and-drop sets, progress tracking, and timed simulation. New questions added continuously. $19.99 one-time. |
 | 3 | Free CCNA 200-301 Practice Questions | Preview current CCNA 200-301 v1.1 practice questions—shuffled each run, instant feedback, same style as the full bank. Free on ccna-home.html; no checkout. |
 | 4 | Free CCNA 200-301 Drag-and-Drop Practice | Current exam-style drag-and-drop items for CCNA 200-301 v1.1—four shuffled PBQ-style prompts per run. Free preview; no checkout. |
@@ -283,7 +283,7 @@ Routing + Switching Prep
 Try Free CCNA Samples
 One Payment · No Auto-Renew
 CCNA On Phone & Tablet
-Not PDF Dumps · Live Prep
+Interactive CCNA Prep
 Associate-Level CCNA Prep
 ```
 
@@ -299,7 +299,7 @@ Associate-Level CCNA Prep
 
 ```
 700+ CCNA questions v1.1 & v2.0. 120-min timed sim drag-drop & VLAN CLI labs.
-$9.99 · 10-day CCNA bank. No GNS3 no PDF dumps. Phone tablet or desktop.
+$9.99 · 10-day CCNA bank. No VM install. Phone tablet or desktop.
 Try free CCNA samples first. One payment unlocks routing switching & lab prep.
 Cisco CCNA 200-301 prep with verified explanations. Walk in ready on test day.
 ```
@@ -316,7 +316,7 @@ Attach at **ad group** or **campaign** level. Sitelink text ≤25 chars · each 
 | 2   | Free Practice Questions | Current v1.1 MCQ preview  | Instant feedback, free    | `https://becertifiedtoday.com/sample?track=ccna-questions&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-sample`             |
 | 3   | Sample Drag-and-Drop    | Four PBQ-style items      | Shuffled each run, free   | `https://becertifiedtoday.com/sample?track=ccna-dnd&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-dnd`                      |
 | 4   | Free VLAN CLI Lab       | Hands-on lab in browser   | No GNS3 required          | `https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab`                     |
-| 5   | v1.1 & v2.0 Questions   | 700+ items updated often  | Not stale PDF dumps       | `https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples` |
+| 5   | v1.1 & v2.0 Questions   | 700+ items updated often  | Original study material       | `https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples` |
 | 6   | 120-Min Timed CCNA Sim  | Exam-style mixed items    | With 10-day portal access | `https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d`                      |
 
 **Do not use:** Free timed simulation (`#ccna-lead-capture`) or standalone 120-min sim purchase — not on `ccna-home.html`.
@@ -332,7 +332,7 @@ Sample Drag-and-Drop | Four PBQ-style items | Shuffled each run, free | https://
 
 Free VLAN CLI Lab | Hands-on lab in browser | No GNS3 required | https://becertifiedtoday.com/sample?track=ccna-vlan&utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-lab
 
-v1.1 & v2.0 Questions | 700+ items updated often | Not stale PDF dumps | https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples
+v1.1 & v2.0 Questions | 700+ items updated often | Original study material | https://becertifiedtoday.com/ccna-home.html#home-ccna-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=sitelink-samples
 
 120-Min Timed CCNA Sim | Exam-style mixed items | With 10-day portal access | https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d
 ```
@@ -366,7 +366,7 @@ v1.1 & v2.0 Questions | 700+ items updated often | Not stale PDF dumps | https:/
 "free"
 "bootcamp"
 "course"
-"dump"
+"unauthorized content"
 "pdf"
 "jobs"
 "netacad"
@@ -381,9 +381,9 @@ v1.1 & v2.0 Questions | 700+ items updated often | Not stale PDF dumps | https:/
 "training course"
 "bootcamp"
 "instructor led"
-"brain dump"
-"exam dump"
-"guaranteed pass"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 "pdf download"
 "udemy"
 "coursera"
