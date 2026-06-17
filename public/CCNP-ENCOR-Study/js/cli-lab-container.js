@@ -681,6 +681,44 @@
 
   scheduleCcnaLabTopChromeInit();
 
+  function ensureLabModalDragAssets() {
+    if (!document.querySelector(".cli-modal-dialog")) return;
+    if (!document.querySelector('link[data-bcc-cli-lab-container-css]')) {
+      var cssLink = document.createElement("link");
+      cssLink.rel = "stylesheet";
+      cssLink.href = "/css/cli-lab-container.css";
+      cssLink.dataset.bccCliLabContainerCss = "1";
+      document.head.appendChild(cssLink);
+    }
+    if (typeof window.bccInitLabModalDrag === "function") {
+      window.bccInitLabModalDrag();
+      return;
+    }
+    if (document.querySelector('script[data-bcc-lab-modal-drag]')) return;
+    var dragScript = document.createElement("script");
+    dragScript.src = "/js/lab-modal-drag.js";
+    dragScript.dataset.bccLabModalDrag = "1";
+    dragScript.onload = function () {
+      if (typeof window.bccInitLabModalDrag === "function") {
+        window.bccInitLabModalDrag();
+      }
+    };
+    document.head.appendChild(dragScript);
+  }
+
+  function scheduleLabModalChromeInit() {
+    function run() {
+      ensureLabModalDragAssets();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", run, { once: true });
+      return;
+    }
+    run();
+  }
+
+  scheduleLabModalChromeInit();
+
   /**
    * Baseline IOS `?` help for all router labs — shared on every router session (R1, R2, …).
    * Override per lab: `var ROUTER_CLI_HELP = { ipRoute: [...] }` (null = all defaults) and
@@ -5600,6 +5638,35 @@
       }
     }
 
+    if (gl.indexOf("router-id ") === 0) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("router ospf ") === 0) {
+          var afterOspf = i + 1;
+          while (afterOspf < lines.length) {
+            var sub = lines[afterOspf].trim().toLowerCase();
+            if (sub.indexOf("router-id ") === 0 || (lines[afterOspf].charAt(0) === " " && sub)) {
+              afterOspf++;
+              continue;
+            }
+            break;
+          }
+          return afterOspf;
+        }
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase() === "line con 0") return i;
+      }
+    }
+
+    if (gl.indexOf("router ospf ") === 0) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("router ospf ") === 0) return i;
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase() === "line con 0") return i;
+      }
+    }
+
     for (i = 0; i < lines.length; i++) {
       if (lines[i].trim() === "end") return i;
     }
@@ -5628,9 +5695,17 @@
     var ifLines = {};
 
     function applyGlobal(line) {
-      var t = String(line || "").trim();
+      var raw = String(line || "");
+      var t = raw.trim();
       if (!t) return;
-      if (globalLines.indexOf(t) === -1) globalLines.push(t);
+      var stored = raw.charAt(0) === " " ? " " + t : t;
+      for (var gi = 0; gi < globalLines.length; gi++) {
+        if (globalLines[gi].trim().toLowerCase() === t.toLowerCase()) {
+          globalLines[gi] = stored;
+          return;
+        }
+      }
+      globalLines.push(stored);
     }
 
     function applyInterface(ifName, line) {
@@ -5735,6 +5810,11 @@
     CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
     CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
     initCcnaLabTopChrome: initCcnaLabTopChrome,
+    wireCliLabModal: function (dialogEl, overlayEl) {
+      if (typeof window.bccWireFloatingModal === "function") {
+        window.bccWireFloatingModal(dialogEl, overlayEl);
+      }
+    },
     INVALID_INPUT_MSG: INVALID_INPUT_MSG,
     INVALID_INPUT_NUMERIC_HINT_MSG: INVALID_INPUT_NUMERIC_HINT_MSG,
     invalidInputMsgForNormalizedCmd: invalidInputMsgForNormalizedCmd,
