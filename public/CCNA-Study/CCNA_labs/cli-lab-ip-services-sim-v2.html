@@ -40,6 +40,9 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-shared.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-engines.js"></script>
+
 <title>CCNA: IP Services Simulation V.3 | CCNA lab | Be Certified Today</title>
   <style>
     :root {
@@ -408,6 +411,7 @@
       border: 1px solid #1f7a58;
       font-weight: 700;
       line-height: 1.45;
+      color: #ffffff;
     }
     .pass-banner.visible {
       display: block;
@@ -541,6 +545,48 @@
       max-height: min(52vh, 420px);
       overflow-y: auto;
     }
+
+    .lab-check-result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    .lab-check-result.visible {
+      display: block;
+    }
+    .lab-check-result.is-pass {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #d1fae5;
+    }
+    .lab-check-result.is-fail {
+      background: #3a1f24;
+      border: 1px solid #7a2f3d;
+      color: #fecdd3;
+    }
+    .lab-check-result ul {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .lab-check-result li {
+      margin: 4px 0;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+    }
+    .freeorder-test-banner {
+      margin: 0 0 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #2a2414;
+      border: 1px solid #8a6d2f;
+      color: #fde68a;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-format-topic-meta.css" />
@@ -616,8 +662,12 @@
         <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          
+          <button type="button" class="device-link" id="checkLabBtn">Submit Lab</button>
+
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
         </div>
+        <div id="inlineLabCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
       </div>
 </main>
     <p class="question-topic-meta ccna-format-topic-meta" aria-label="Format and topic">
@@ -661,6 +711,9 @@
         <div class="controls">
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
+        
+        <div id="labCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
+
         <div id="passBanner" class="pass-banner" role="status">
           Task 1: complete the NAT sequence on R2. Then from privileged exec on R2, R1, and R3 run copy running-configuration startup-configuration (copy run start) on each device to complete the lab.
         </div>
@@ -2217,49 +2270,7 @@ R3(config-line)# end</pre>
         appendR3("line-bad", invalidInputMsgForNormalizedCmd(u));
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function () {
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(r1CliDialog, r1CliOverlay);
-      wireFloatingModal(r3CliDialog, r3CliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
@@ -2313,6 +2324,161 @@ R3(config-line)# end</pre>
           openSelectedCliBtn.focus();
         });
       });
+
+      // Free-order IP services — engine handles graded commands (R1 / R2 / R3).
+      var __fo = createIpServicesTestEngine({
+        container: cliLabContainer,
+        r2Baseline: SWITCH_SHOW_RUNNING_SNAPSHOT,
+        r1Baseline: ROUTER_SHOW_RUN_SNAPSHOT,
+        r3Baseline: ROUTER3_SHOW_RUN_SNAPSHOT,
+        checkBtn: document.getElementById("checkLabBtn"),
+        labCheckEl: document.getElementById("inlineLabCheckResult"),
+        passBanner: passBanner,
+        passMsg: "[OK] Lab complete: NAT, NTP, DHCP, and SSH tasks.",
+        pendingMsg: "Complete all tasks in any order, then click Submit Lab.",
+      });
+
+      function __foCtx(line, append, setPrompt, getPromptText) {
+        return {
+          line: line,
+          normalize: normalize,
+          append: append,
+          setPrompt: setPrompt,
+          matchShowRun: matchShowRun,
+          getPromptText: getPromptText,
+        };
+      }
+
+      function __r2InEnableMode() {
+        return cliLabContainer.parsePromptMode(swPrompt.textContent) === "exec";
+      }
+
+      function __r1InEnableMode() {
+        return cliLabContainer.parsePromptMode(r1Prompt.textContent) === "exec";
+      }
+
+      function __r3InEnableMode() {
+        return cliLabContainer.parsePromptMode(r3Prompt.textContent) === "exec";
+      }
+
+      function submitSw() {
+        var promptText = swPrompt.textContent;
+        var line = cliLabContainer.stripPastedIosPrompts(swCmdline.value);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendSw("line-user", promptText + " " + echoLine);
+        }
+        pushLocalHistory(swCmdline, line);
+        swCmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
+        if (matchShowHistory(line)) {
+          appendSw("line-showrun", formatHistoryFor(swCmdline));
+          return;
+        }
+        if (__r2InEnableMode() && matchShowVersion(line)) {
+          cliLabContainer.appendLabShowVersion(appendSw);
+          return;
+        }
+        __fo.submitR2(__foCtx(
+          line,
+          appendSw,
+          function (t) {
+            swPrompt.textContent = t;
+            swPromptOverride = null;
+          },
+          function () { return swPrompt.textContent; }
+        ));
+      }
+
+      function submitR1() {
+        var promptText = r1Prompt.textContent;
+        var line = cliLabContainer.stripPastedIosPrompts(r1Cmdline.value);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendR1("line-user", promptText + " " + echoLine);
+        }
+        pushLocalHistory(r1Cmdline, line);
+        r1Cmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendR1, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
+        if (matchShowHistory(line)) {
+          appendR1("line-showrun", formatHistoryFor(r1Cmdline));
+          return;
+        }
+        if (__r1InEnableMode() && matchShowVersion(line)) {
+          cliLabContainer.appendLabShowVersion(appendR1);
+          return;
+        }
+        if (__r1InEnableMode() && !matchShowRun(line) && (normalized.indexOf("show ") === 0 || normalized.indexOf("sh ") === 0)) {
+          appendR1("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+        __fo.submitR1(__foCtx(
+          line,
+          appendR1,
+          function (t) {
+            r1Prompt.textContent = t;
+            r1Mode = cliLabContainer.parsePromptMode(t);
+          },
+          function () { return r1Prompt.textContent; }
+        ));
+      }
+
+      function submitR3() {
+        var promptText = r3Prompt.textContent;
+        var line = cliLabContainer.stripPastedIosPrompts(r3Cmdline.value);
+        var trimmed = String(line || "").trim();
+        var normalized = normalize(line);
+        var hideInputLine = isModeNavigationCommand(normalized);
+        var echoLine = expandInterfaceEcho(trimmed);
+        if (!hideInputLine || normalized.indexOf("interface ") === 0) {
+          appendR3("line-user", promptText + " " + echoLine);
+        }
+        pushLocalHistory(r3Cmdline, line);
+        r3Cmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendR3, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
+        if (matchShowHistory(line)) {
+          appendR3("line-showrun", formatHistoryFor(r3Cmdline));
+          return;
+        }
+        if (__r3InEnableMode() && matchShowVersion(line)) {
+          cliLabContainer.appendLabShowVersion(appendR3);
+          return;
+        }
+        if (__r3InEnableMode() && !matchShowRun(line) && (normalized.indexOf("show ") === 0 || normalized.indexOf("sh ") === 0)) {
+          appendR3("line-sys", SHOW_DISABLED_MSG);
+          return;
+        }
+        __fo.submitR3(__foCtx(
+          line,
+          appendR3,
+          function (t) {
+            r3Prompt.textContent = t;
+            r3Mode = cliLabContainer.parsePromptMode(t);
+          },
+          function () { return r3Prompt.textContent; }
+        ));
+      }
+
+      var __resetSwLabOrig = resetSwLab;
+      resetSwLab = function () {
+        __resetSwLabOrig();
+        __fo.reset();
+        swPromptOverride = null;
+        swPrompt.textContent = SWITCH_HOST + "#";
+        r1Mode = "exec";
+        r1Prompt.textContent = r1PromptForMode();
+        r3Mode = "exec";
+        r3Prompt.textContent = r3PromptForMode();
+      };
 
       // Bind history BEFORE the Enter→submit listener so it captures input.value before submitSw clears it.
       bindLocalHistory(swCmdline);
@@ -2439,6 +2605,7 @@ R3(config-line)# end</pre>
       });
 
       syncOpenCliLabel();
+
       resetSwLab();
     })();
   </script>

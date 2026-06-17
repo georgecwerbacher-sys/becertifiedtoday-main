@@ -60,6 +60,9 @@ const baseline = [
   "!",
   "line con 0",
   "!",
+  "line vty 0 4",
+  " login",
+  "!",
   "end",
 ].join("\r\n");
 
@@ -93,6 +96,17 @@ assert(
 assert(
   withHelper.indexOf(" ip helper-address 172.16.0.9") < withHelper.indexOf(" duplex auto"),
   "helper before duplex"
+);
+
+view.applyInterface("line vty 0 4", "transport input ssh");
+view.applyInterface("line vty 0 4", "login local");
+const withVty = view.render();
+assert(withVty.includes(" transport input ssh"), "VTY transport input under line block");
+assert(withVty.includes(" login local"), "VTY login local under line block");
+assert(
+  withVty.indexOf(" transport input ssh") > withVty.indexOf("line vty 0 4") &&
+    withVty.indexOf(" transport input ssh") < withVty.indexOf("\r\n!\r\nend"),
+  "VTY subcommands before line block delimiter"
 );
 
 view.reset();

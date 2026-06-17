@@ -218,55 +218,6 @@ SNIPPETS: dict[str, str] = {
       var __resetSwLabOrig = resetSwLab;
       resetSwLab = function () { __resetSwLabOrig(); __fo.reset(); };
 """,
-    "cli-lab-ip-services-sim-v2-test.html": """
-      // __CCNA_FREEORDER_TEST_WIRE__
-      var __fo = createIpServicesTestEngine({
-        container: cliLabContainer,
-        r2Baseline: SWITCH_SHOW_RUNNING_SNAPSHOT,
-        r1Baseline: ROUTER_SHOW_RUN_SNAPSHOT,
-        r3Baseline: ROUTER3_SHOW_RUN_SNAPSHOT,
-        checkBtn: document.getElementById("checkLabBtn"),
-        labCheckEl: document.getElementById("labCheckResult"),
-        passBanner: passBanner,
-        passMsg: "[OK] Lab complete: NAT, NTP, DHCP, and SSH tasks.",
-        pendingMsg: "Complete all tasks in any order, then click Submit Lab.",
-      });
-      function __foCtx(line, append, setPrompt) {
-        return { line: line, normalize: normalize, append: append, setPrompt: setPrompt, matchShowRun: matchShowRun };
-      }
-      var __submitSwOrig = submitSw;
-      submitSw = function () {
-        var line = swCmdline.value;
-        var trimmed = String(line || "").trim();
-        if (trimmed) appendSw("line-user", swPrompt.textContent + " " + trimmed);
-        pushLocalHistory(swCmdline, line);
-        swCmdline.value = "";
-        if (!trimmed) return;
-        __fo.submitR2(__foCtx(line, appendSw, function (t) { swPrompt.textContent = t; }));
-      };
-      var __submitR1Orig = submitR1;
-      submitR1 = function () {
-        var line = r1Cmdline.value;
-        var trimmed = String(line || "").trim();
-        if (trimmed) appendR1("line-user", r1Prompt.textContent + " " + trimmed);
-        pushLocalHistory(r1Cmdline, line);
-        r1Cmdline.value = "";
-        if (!trimmed) return;
-        __fo.submitR1(__foCtx(line, appendR1, function (t) { r1Prompt.textContent = t; }));
-      };
-      var __submitR3Orig = submitR3;
-      submitR3 = function () {
-        var line = r3Cmdline.value;
-        var trimmed = String(line || "").trim();
-        if (trimmed) appendR3("line-user", r3Prompt.textContent + " " + trimmed);
-        pushLocalHistory(r3Cmdline, line);
-        r3Cmdline.value = "";
-        if (!trimmed) return;
-        __fo.submitR3(__foCtx(line, appendR3, function (t) { r3Prompt.textContent = t; }));
-      };
-      var __resetSwLabOrig = resetSwLab;
-      resetSwLab = function () { __resetSwLabOrig(); __fo.reset(); };
-""",
     "cli-lab-trunk_lacp-test.html": """
       // __CCNA_FREEORDER_TEST_WIRE__
       var __fo = createTrunkLacpTestEngine({

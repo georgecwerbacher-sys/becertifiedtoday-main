@@ -5580,6 +5580,13 @@
     return t;
   }
 
+  function normalizeRunningConfigBlockName(kind, name) {
+    var k = String(kind || "").trim().toLowerCase();
+    var n = String(name || "").trim();
+    if (k === "line") return "line " + n.replace(/\s+/g, " ");
+    return normalizeRunningConfigInterfaceName(n);
+  }
+
   function runningConfigSubcmdLine(line) {
     var t = String(line || "").trim();
     return t.indexOf(" ") === 0 ? t : " " + t;
@@ -5709,7 +5716,9 @@
     }
 
     function applyInterface(ifName, line) {
-      var key = normalizeRunningConfigInterfaceName(ifName);
+      var rawKey = String(ifName || "").trim();
+      var lineBlock = /^line\s+(.+)$/i.exec(rawKey);
+      var key = lineBlock ? normalizeRunningConfigBlockName("line", lineBlock[1]) : normalizeRunningConfigInterfaceName(rawKey);
       var t = String(line || "").trim();
       if (!key || !t) return;
       if (!ifLines[key]) ifLines[key] = [];
@@ -5727,9 +5736,9 @@
       var needle = subTrimmed.toLowerCase();
       for (var k = 0; k < out.length; k++) {
         var trimmed = out[k].trim();
-        var ifMatch = /^interface\s+(.+)$/i.exec(trimmed);
+        var ifMatch = /^(interface|line)\s+(.+)$/i.exec(trimmed);
         if (ifMatch) {
-          inBlock = normalizeRunningConfigInterfaceName(ifMatch[1]) === ifKey;
+          inBlock = normalizeRunningConfigBlockName(ifMatch[1], ifMatch[2]) === ifKey;
           continue;
         }
         if (inBlock) {
@@ -5746,9 +5755,10 @@
       var i = 0;
       while (i < lines.length) {
         var line = lines[i];
-        var ifMatch = /^interface\s+(.+)$/i.exec(line.trim());
+        var ifMatch = /^(interface|line)\s+(.+)$/i.exec(line.trim());
         if (ifMatch) {
-          var ifKey = normalizeRunningConfigInterfaceName(ifMatch[1]);
+          var ifKind = ifMatch[1].toLowerCase();
+          var ifKey = normalizeRunningConfigBlockName(ifKind, ifMatch[2]);
           var pendingApplied = ifLines[ifKey] ? ifLines[ifKey].slice() : [];
           var insertedApplied = {};
           out.push(line);
@@ -5770,7 +5780,7 @@
               var sub = pendingApplied[j];
               var subTrim = sub.trim();
               if (insertedApplied[subTrim]) continue;
-              if (interfaceSubcmdFollowsAnchor(inner.trim(), subTrim)) {
+              if (ifKind === "interface" && interfaceSubcmdFollowsAnchor(inner.trim(), subTrim)) {
                 if (!interfaceBlockHasLine(out, ifKey, subTrim)) out.push(sub);
                 insertedApplied[subTrim] = true;
               }

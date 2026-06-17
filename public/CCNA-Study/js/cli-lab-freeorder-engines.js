@@ -1,6 +1,5 @@
 /**
- * Free-order + Submit Lab engines for CCNA CLI lab TEST copies (*-test.html).
- * Production labs unchanged until promoted.
+ * Free-order + Submit Lab engines for CCNA CLI labs.
  */
 (function (global) {
   "use strict";
@@ -301,7 +300,13 @@
           ctx.setPrompt(S.routerPromptForMode(host, m));
         }
         var st = stateKey;
-        if (S.handleRouterModeNavigation(st, u, setMode)) return;
+        if (S.handleRouterModeNavigation(st, u, setMode)) {
+          if (key === "sw3" && /^line vty /.test(u)) {
+            S.tryRecordLineVty(view, u);
+            sw3Flags.vty = true;
+          }
+          return;
+        }
         if (S.handleCopyRunStart(mode, u, ctx.append, opts.container)) return;
         if ((mode === "config-if" || mode === "config") && st.activeIf) {
           if (recordIf(view, flags, u, st.activeIf)) return;
@@ -514,7 +519,7 @@
             sw3Flags.vty = true;
             return;
           }
-          if (mode === "config" && S.tryRecordLineVtySubcmd(view, u)) {
+          if ((mode === "config" || mode === "config-line") && S.tryRecordLineVtySubcmd(view, u)) {
             if (u.indexOf("transport input telnet") !== -1) sw3Flags.telnet = true;
             if (u === "login local") sw3Flags.login = true;
             return;
@@ -553,8 +558,57 @@
     var r1State = { mode: "exec", activeIf: null, activeIfs: [] };
     var r3State = { mode: "exec", activeIf: null, activeIfs: [] };
     var r3Crypto = false;
-    var r2Nat = { acl: false, inside: false, outside: false, pool: false, source: false };
-    var r2Permits = { a: false, b: false, c: false };
+
+    function r2NatCompleteForPing() {
+      var r2 = r2View.render();
+      return (
+        S.ifBlockHasLine(r2, "GigabitEthernet0/1", "ip nat inside") &&
+        S.ifBlockHasLine(r2, "GigabitEthernet0/0", "ip nat outside") &&
+        S.runningConfigHasLine(r2View, "ip nat pool test_pool 10.10.10.1 10.10.10.254 netmask 255.255.255.0") &&
+        S.runningConfigHasLine(r2View, "ip nat inside source list xlate pool test_pool")
+      );
+    }
+
+    /** IOS-valid lab commands — accepted on any router; Submit Lab checks the right device. */
+    function recordIpServicesLabLines(view, mode, state, u) {
+      if (mode === "config" && S.tryRecordIpAccessListStandard(view, u)) return true;
+      if (mode === "config-std-nacl" && S.tryRecordStdNaclPermit(view, u)) return true;
+      if (mode === "config-if" && state.activeIf) {
+        if (S.tryRecordIpNatIf(view, state.activeIf, u)) return true;
+        if (u === "ip address dhcp") {
+          view.applyInterface(state.activeIf, u);
+          return true;
+        }
+      }
+      if (mode === "config" && S.tryRecordIpNatPool(view, u)) return true;
+      if (mode === "config" && S.tryRecordIpNatInsideSource(view, u)) return true;
+      if (mode === "config" && /^ntp server \S+$/.test(u)) {
+        view.applyGlobal(u);
+        return true;
+      }
+      if (mode === "config" && /^ntp master( \d+)?$/.test(u)) {
+        view.applyGlobal(u.indexOf(" ") === -1 ? "ntp master 1" : u);
+        return true;
+      }
+      if (mode === "config" && S.tryRecordUsername(view, u)) return true;
+      if (mode === "config" && S.tryRecordLineVty(view, u)) return true;
+      if ((mode === "config" || mode === "config-line") && S.tryRecordLineVtySubcmd(view, u)) return true;
+      return false;
+    }
+
+    function tryRecordCrypto(ctx, mode, onAccepted) {
+      if (
+        opts.container.tryAppendCryptoKeyGenerateRsaOutput(ctx.line, ctx.append, {
+          normalize: ctx.normalize,
+          requireConfigMode: true,
+          mode: mode,
+        })
+      ) {
+        if (onAccepted) onAccepted();
+        return true;
+      }
+      return false;
+    }
 
     function reset() {
       r2View.reset();
@@ -562,8 +616,6 @@
       r3View.reset();
       r2Mode = r1Mode = r3Mode = "exec";
       r3Crypto = false;
-      r2Nat = { acl: false, inside: false, outside: false, pool: false, source: false };
-      r2Permits = { a: false, b: false, c: false };
       S.resetLabCheckUi(opts.labCheckEl, opts.passBanner, opts.pendingMsg);
     }
 
@@ -602,7 +654,33 @@
       return { ok: missing.length === 0, missing: missing, passHtml: "All four IP services tasks are complete." };
     }
 
+    function syncModeFromPrompt(state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
+    function afterModeNavigation(state, view, u) {
+      if (state.activeIfs && state.activeIfs.length) state.activeIf = state.activeIfs[0];
+      if (u.indexOf("interface ") === 0) {
+        var parsedIf = S.parseSingleInterface(u);
+        if (parsedIf) state.activeIf = parsedIf;
+      }
+      if (/^ip access-list standard \S+$/.test(u)) {
+        S.tryRecordIpAccessListStandard(view, u);
+      }
+      if (/^line vty /.test(u)) {
+        S.tryRecordLineVty(view, u);
+      }
+    }
+
     function submitR2(ctx) {
+      r2Mode = syncModeFromPrompt(r2State, ctx.getPromptText);
       var u = ctx.normalize(ctx.line);
       if (ctx.matchShowRun(ctx.line)) {
         ctx.append("line-showrun", r2View.render());
@@ -613,37 +691,18 @@
         r2State.mode = m;
         ctx.setPrompt(S.routerPromptForMode("R2", m));
       }
-      if (S.handleRouterModeNavigation(r2State, u, setMode)) return;
+      if (S.handleRouterModeNavigation(r2State, u, setMode)) {
+        afterModeNavigation(r2State, r2View, u);
+        return;
+      }
       if (S.handleCopyRunStart(r2Mode, u, ctx.append, opts.container)) return;
-      if (r2Mode === "config" && S.tryRecordIpAccessListStandard(r2View, u)) {
-        r2Nat.acl = true;
-        return;
-      }
-      if (r2Mode === "config-std-nacl" && S.tryRecordStdNaclPermit(r2View, u)) {
-        r2Permits.a = r2Permits.b = r2Permits.c = true;
-        return;
-      }
-      if (r2Mode === "config-if" && r2State.activeIf && S.tryRecordIpNatIf(r2View, r2State.activeIf, u)) {
-        if (u === "ip nat inside") r2Nat.inside = true;
-        if (u === "ip nat outside") r2Nat.outside = true;
-        return;
-      }
-      if (r2Mode === "config" && S.tryRecordIpNatPool(r2View, u)) {
-        r2Nat.pool = true;
-        return;
-      }
-      if (r2Mode === "config" && S.tryRecordIpNatInsideSource(r2View, u)) {
-        r2Nat.source = true;
-        return;
-      }
-      if (r2Mode === "config" && /^ntp server \S+$/.test(u)) {
-        r2View.applyGlobal(u);
-        return;
-      }
+      if (tryRecordCrypto(ctx, r2Mode)) return;
+      if (recordIpServicesLabLines(r2View, r2Mode, r2State, u)) return;
       ctx.append("line-bad", opts.container.INVALID_INPUT_MSG);
     }
 
     function submitR1(ctx) {
+      r1Mode = syncModeFromPrompt(r1State, ctx.getPromptText);
       var u = ctx.normalize(ctx.line);
       if (ctx.matchShowRun(ctx.line)) {
         ctx.append("line-showrun", r1View.render());
@@ -654,24 +713,25 @@
         r1State.mode = m;
         ctx.setPrompt(S.routerPromptForMode("R1", m));
       }
-      if (S.handleRouterModeNavigation(r1State, u, setMode)) return;
-      if (S.handleCopyRunStart(r1Mode, u, ctx.append, opts.container)) return;
-      if (r1Mode === "config" && /^ntp master( \d+)?$/.test(u)) {
-        r1View.applyGlobal(u.indexOf(" ") === -1 ? "ntp master 1" : u);
+      if (S.handleRouterModeNavigation(r1State, u, setMode)) {
+        afterModeNavigation(r1State, r1View, u);
         return;
       }
+      if (S.handleCopyRunStart(r1Mode, u, ctx.append, opts.container)) return;
+      if (tryRecordCrypto(ctx, r1Mode)) return;
+      if (recordIpServicesLabLines(r1View, r1Mode, r1State, u)) return;
       ctx.append("line-bad", opts.container.INVALID_INPUT_MSG);
     }
 
     function submitR3(ctx) {
+      r3Mode = syncModeFromPrompt(r3State, ctx.getPromptText);
       var u = ctx.normalize(ctx.line);
       if (ctx.matchShowRun(ctx.line)) {
         ctx.append("line-showrun", r3View.render());
         return;
       }
       if (u === "ping 192.168.100.1") {
-        var natOk = r2Nat.source && r2Nat.pool && r2Nat.inside && r2Nat.outside;
-        ctx.append("line-sys", natOk ? "!!!!!" : ".....");
+        ctx.append("line-sys", r2NatCompleteForPing() ? "!!!!!" : ".....");
         return;
       }
       function setMode(m) {
@@ -679,23 +739,13 @@
         r3State.mode = m;
         ctx.setPrompt(S.routerPromptForMode("R3", m));
       }
-      if (S.handleRouterModeNavigation(r3State, u, setMode)) return;
+      if (S.handleRouterModeNavigation(r3State, u, setMode)) {
+        afterModeNavigation(r3State, r3View, u);
+        return;
+      }
       if (S.handleCopyRunStart(r3Mode, u, ctx.append, opts.container)) return;
-      if (opts.container.tryAppendCryptoKeyGenerateRsaOutput(ctx.line, ctx.append, {
-        normalize: ctx.normalize,
-        requireConfigMode: true,
-        mode: r3Mode,
-      })) {
-        r3Crypto = true;
-        return;
-      }
-      if (r3Mode === "config-if" && u === "ip address dhcp" && r3State.activeIf) {
-        r3View.applyInterface(r3State.activeIf, "ip address dhcp");
-        return;
-      }
-      if (r3Mode === "config" && S.tryRecordUsername(r3View, u)) return;
-      if (r3Mode === "config" && S.tryRecordLineVty(r3View, u)) return;
-      if (r3Mode === "config" && S.tryRecordLineVtySubcmd(r3View, u)) return;
+      if (tryRecordCrypto(ctx, r3Mode, function () { r3Crypto = true; })) return;
+      if (recordIpServicesLabLines(r3View, r3Mode, r3State, u)) return;
       ctx.append("line-bad", opts.container.INVALID_INPUT_MSG);
     }
 
@@ -713,9 +763,6 @@
       submitR1: submitR1,
       submitR3: submitR3,
       getLabCheckResult: getLabCheckResult,
-      r2NatFlags: function () {
-        return r2Nat;
-      },
     };
   }
 

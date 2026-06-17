@@ -10,10 +10,10 @@
 
   function ifBlockHasLine(rendered, ifName, line) {
     var text = String(rendered || "");
-    var ifRe = new RegExp(
-      "interface\\s+" + String(ifName || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "[\\s\\S]*?(?=\\ninterface |\\nend\\r?\\n|$)",
-      "i"
-    );
+    var label = String(ifName || "").trim();
+    var escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    var header = label.toLowerCase().indexOf("line ") === 0 ? escaped : "interface\\s+" + escaped;
+    var ifRe = new RegExp(header + "[\\s\\S]*?(?=\\ninterface |\\nline |\\nend\\r?\\n|$)", "i");
     var m = ifRe.exec(text);
     if (!m) return false;
     return m[0].toLowerCase().indexOf(String(line || "").trim().toLowerCase()) !== -1;
@@ -55,6 +55,8 @@
         return host + "(config-std-nacl)#";
       case "config-ext-nacl":
         return host + "(config-ext-nacl)#";
+      case "config-line":
+        return host + "(config-line)#";
       case "config-vlan":
         return host + "(config-vlan)#";
       default:
@@ -112,6 +114,10 @@
         setMode("config-ext-nacl");
         return true;
       }
+      if (state.mode === "config" && /^line vty /.test(u)) {
+        setMode("config-line");
+        return true;
+      }
       var vlanM = /^vlan (\d+)$/.exec(u);
       if ((state.mode === "config" || state.mode === "config-vlan") && vlanM) {
         state.currentVlanId = vlanM[1];
@@ -121,7 +127,12 @@
       return false;
     }
     if (state.mode === "exec") return false;
-    if (state.mode === "config-router" || state.mode === "config-std-nacl" || state.mode === "config-ext-nacl") {
+    if (
+      state.mode === "config-router" ||
+      state.mode === "config-std-nacl" ||
+      state.mode === "config-ext-nacl" ||
+      state.mode === "config-line"
+    ) {
       setMode("config");
       return true;
     }
@@ -335,7 +346,7 @@
     if (u !== "login local" && u !== "transport input telnet" && u !== "transport input ssh" && u.indexOf("transport input ") !== 0) {
       return false;
     }
-    view.applyGlobal(u.charAt(0) === " " ? u : " " + u);
+    view.applyInterface("line vty 0 4", u);
     return true;
   }
 
