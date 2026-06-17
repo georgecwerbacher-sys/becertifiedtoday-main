@@ -3,8 +3,8 @@ CCNA_Wedge_Lab — Google Ads checklist for Apple Numbers
 
 File: scripts/ccna-wedge-lab-google-ads-checklist.csv
 
-Dedicated wedge campaign for browser CLI lab keywords.
-One ad group: CCNA_Wedge_Lab → labs-without-gns3 landing page.
+Dedicated wedge campaign for exam-ready CCNA prep keywords.
+One ad group: CCNA_Wedge_Lab → ccna-home.html full funnel (no /sample bypass).
 
 Columns
 -------
@@ -30,8 +30,8 @@ Campaign:   CCNA_Wedge_Lab
 Ad group:   CCNA_Wedge_Lab
 Budget:     $15.00/day (launch)
 Bidding:    Maximize clicks, max CPC $4.50
-Landing:    https://becertifiedtoday.com/ccna/labs-without-gns3.html
-UTM:        utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=browser-labs
+Landing:    https://becertifiedtoday.com/ccna-home.html
+UTM:        utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=exam-readiness
 Conversion: GA4 begin_checkout (ccna_portal_10d, ccna_portal_30d)
 
 Full reference: scripts/ccna-wedge-lab-google-ads.md

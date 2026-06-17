@@ -1,12 +1,8 @@
 /**
  * CCNA home landing — conversion-first headline matching + sticky mobile CTA.
  *
- * Conversion rules:
- * - Default hero: free-practice (no random rotation).
- * - Headline changes ONLY when ?hl=, utm_content, or utm_term maps to a pinned ad.
- * - Primary conversion: free samples. Purchase is secondary ATF.
- *
- * Ad setup: scripts/ccna-google-ads-headline-suffixes.txt
+ * Wedge ads (CCNA_Wedge_Lab): final URL ccna-home.html with utm_content exam-readiness,
+ * browser-labs, or timed-sim. Sitelinks stay on ccna-home (anchors)—not /sample bypasses.
  */
 (function () {
   "use strict";
@@ -44,11 +40,11 @@
       eyebrow: "CCNA CLI labs · browser · no install",
       headline: "CCNA Labs in Your Browser — No GNS3 or Packet Tracer",
       lead:
-        "Run VLAN and routing CLI labs in your browser testing engine—no GNS3, Packet Tracer, or VM install. " +
-        "Try a <strong>free VLAN lab sample</strong>, then unlock the full library with timed simulation for <strong>$9.99 / 10 days</strong>.",
-      ctaPrimary: "Try free VLAN lab sample",
-      ctaHref: "/sample?track=ccna-vlan",
-      stickyPrimary: "Free VLAN lab",
+        "Run VLAN and routing CLI labs in our browser testing engine—no GNS3, Packet Tracer, or VM install. " +
+        "See the GNS3 comparison below, then unlock the full library with timed simulation for <strong>$9.99 / 10 days</strong>.",
+      ctaPrimary: "Get 10-day CCNA access",
+      ctaHref: "#purchase",
+      stickyPrimary: "10-day access",
     },
     "timed-sim": {
       id: "timed-sim",
@@ -57,20 +53,23 @@
       headline: "120-Minute CCNA Timed Simulation — Mixed Item Types",
       lead:
         "Rehearse test-day pressure with a <strong>120-minute timed CCNA simulation</strong>: multiple-choice, drag-and-drop, and CLI-style items in your browser. " +
-        "Preview free samples first, then unlock full access for <strong>$9.99 / 10 days</strong>.",
-      ctaPrimary: "Preview free CCNA samples",
-      stickyPrimary: "Free samples",
+        "Unlock full access for <strong>$9.99 / 10 days</strong> when your exam date is set.",
+      ctaPrimary: "Get 10-day CCNA access",
+      ctaHref: "#purchase",
+      stickyPrimary: "10-day access",
     },
     "exam-readiness": {
       id: "exam-readiness",
-      adHeadline: "CCNA Exam Readiness",
-      eyebrow: "CCNA exam readiness · browser practice",
-      headline: "CCNA Exam Readiness — Labs, Timed Sim & Verified Answers",
+      adHeadline: "CCNA Exam Test Prep",
+      eyebrow: "CCNA 200-301 · exam scheduled · NGTE",
+      headline: "Exam Scheduled? CCNA Test Prep",
       lead:
-        "Exam in 2–3 weeks? Try <strong>free CCNA samples</strong>—questions, drag-and-drop, and a VLAN lab—in the same browser UI as full access. " +
-        "Unlock labs, timed simulation, and review modes with <strong>10-day access for $9.99</strong>.",
-      ctaPrimary: "Preview free CCNA samples",
-      stickyPrimary: "Free samples",
+        "Courses, videos, books done—the <strong>$330</strong> CCNA exam is next. " +
+        "<strong>Practice for test day</strong> with CLI labs, drag-and-drop, and a 120-minute timed simulation for <strong>less than $1/day</strong> " +
+        "(<strong>$9.99 / 10 days</strong> · <strong>$19.99 / 30 days</strong>). Preview NGTE on this page, then unlock the library with one payment.",
+      ctaPrimary: "Get 10-day CCNA access",
+      ctaHref: "#purchase",
+      stickyPrimary: "10-day access",
     },
     "practice-test": {
       id: "practice-test",
@@ -228,11 +227,20 @@
   var ALIASES = {
     "portal-10d": "wedge-default",
     portal_10d: "wedge-default",
+    "portal-30d": "wedge-default",
+    portal_30d: "wedge-default",
     "browser-labs": "browser-labs",
     "sitelink-lab": "browser-labs",
     "timed-sim": "timed-sim",
     "sitelink-sim": "timed-sim",
+    "sitelink-timed": "timed-sim",
     "exam-readiness": "exam-readiness",
+    "sitelink-ngte": "exam-readiness",
+    "sitelink-samples": "exam-readiness",
+    "sitelink-sample": "exam-readiness",
+    "sitelink-dnd": "exam-readiness",
+    "sitelink-compare": "exam-readiness",
+    "sitelink-home": "wedge-default",
     a: "practice-test",
     b: "free-practice",
     c: "prep-200-301",

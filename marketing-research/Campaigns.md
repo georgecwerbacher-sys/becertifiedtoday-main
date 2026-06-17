@@ -113,7 +113,7 @@ Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan
 
 ## Landing pages
 
-- CCNA → `/ccna-home.html#purchase` · wedge → `/ccna/labs-without-gns3.html`
+- CCNA → `/ccna-home.html` · wedge → `/ccna-home.html` (exam-ready UTMs; sitelinks stay on home)
 - ENCOR → `/ccnp-home.html#purchase`
 - Security+ → `/comptia-sec+-home.html#purchase` · wedge → `/secplus/pbq-practice-browser.html`
 

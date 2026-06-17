@@ -158,34 +158,38 @@ Zero impressions ≠ wrong bid strategy. Check: ad status, keyword low volume, C
 
 | Intent | Landing | utm_content |
 |--------|---------|-------------|
+| **Exam-ready prep (primary)** | `https://becertifiedtoday.com/ccna-home.html` | `exam-readiness` |
 | 10-day purchase | `https://becertifiedtoday.com/ccna-home.html#purchase` | `portal-10d` |
-| **Browser labs (primary)** | `https://becertifiedtoday.com/ccna/labs-without-gns3.html` | `browser-labs` |
-| CCNA hub (samples) | `https://becertifiedtoday.com/ccna-home.html` | `sitelink-samples` |
-| Timed sim | `/ccna/timed-practice-test.html` *(build)* | `timed-sim` |
-| VLAN sample | `https://becertifiedtoday.com/sample?track=ccna-vlan` | `sitelink-lab` |
-| Drag-and-drop sample | `https://becertifiedtoday.com/sample?track=ccna-dnd` | `sitelink-dnd` |
-| Question sample | `https://becertifiedtoday.com/sample?track=ccna-questions` | `sitelink-sample` |
+| 30-day purchase | `https://becertifiedtoday.com/ccna-home.html#purchase` | `portal-30d` |
+| Browser labs compare | `https://becertifiedtoday.com/ccna-home.html#ccna-gns3-compare` | `browser-labs` |
+| Timed sim | `https://becertifiedtoday.com/ccna-home.html#purchase` | `timed-sim` |
+| NGTE previews (sitelink) | `https://becertifiedtoday.com/ccna-home.html#ccna-samples` | `sitelink-ngte` |
+| PDF compare (sitelink) | `https://becertifiedtoday.com/ccna-home.html#ccna-compare` | `sitelink-compare` |
+
+**Do not** use sitelinks or final URLs to `/sample?track=…` — sends free-question traffic past your value funnel.
 
 **`CCNA_Wedge_Lab` final URL (copy-paste):**
 
 ```
-https://becertifiedtoday.com/ccna/labs-without-gns3.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=browser-labs
+https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=exam-readiness
 ```
 
 **Do not** enable AI Max / final URL expansion — breaks message match and UTM variants.
 
 ---
 
-## RSA angles (wedge, not generic)
+## RSA angles (exam-ready, not free-sample)
 
-Use headlines from `scripts/ccna-wedge-lab-google-ads-checklist.csv` — differentiated set:
+Use headlines from `scripts/ccna-wedge-lab-google-ads-checklist.csv`:
 
-- VLAN CLI Lab In Browser
-- No GNS3 · Prep In Browser
-- 120-Min Timed CCNA Sim
-- v1.1 & v2.0 · Verified
-- Not PDF Dumps · Live Prep
-- Try Free CCNA Samples
+- Scheduled CCNA? Prep Here
+- $9.99 · 10-Day Full Access
+- NGTE · Train Like Test Day
+- 120-Min Timed Simulation
+- Adaptive Weak-Area Testing
+- Interactive · Not PDFs
+
+**Avoid in RSA:** “Free”, “Try free sample”, “Free questions” — course vendors own that CPC.
 
 ---
 

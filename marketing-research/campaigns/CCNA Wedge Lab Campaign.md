@@ -18,7 +18,15 @@ tags:
 
 **Setup guide:** `scripts/ccna-wedge-lab-google-ads.md`
 
-**Live landing:** https://becertifiedtoday.com/ccna/labs-without-gns3.html
+**Headline suffixes:** `scripts/ccna-wedge-lab-google-ads-headline-suffixes.txt`
+
+**Live landing:** https://becertifiedtoday.com/ccna-home.html
+
+## Positioning (2026-06)
+
+| Target | Exam **scheduled** or about to schedule — final prep, not course shopping |
+| Avoid | “Free questions” seekers — campaign negatives + no `/sample` sitelinks |
+| Funnel | Full `ccna-home.html` — hero, NGTE previews, pricing, comparisons |
 
 ## Campaign shell
 
@@ -32,23 +40,34 @@ tags:
 
 ## Ad group: `CCNA_Wedge_Lab`
 
-| Setting      | Value                                                   |
-| ------------ | ------------------------------------------------------- |
-| Display path | CCNA / Practice-Labs                                    |
-| Intent       | Browser CLI labs · no GNS3 / Packet Tracer              |
-| Final URL    | `/ccna/labs-without-gns3.html?utm_content=browser-labs` |
-| Keywords     | 5 exact + 14 phrase (Planner US Jun 2026)               |
-| RSA pin H1   | CCNA 200-301 Practice Labs                              |
-| RSA pin H2   | $9.99 · 10-Day CCNA Labs                                |
+| Setting      | Value                                                                 |
+| ------------ | --------------------------------------------------------------------- |
+| Display path | CCNA / Exam-Prep                                                      |
+| Intent       | Exam-ready CCNA test prep — NGTE, timed sim, browser labs             |
+| Final URL    | `/ccna-home.html?utm_content=exam-readiness`                          |
+| Keywords     | 5 exact + 13 phrase (no “free labs” keywords)                         |
+| RSA pin H1   | Scheduled CCNA? Prep Here                                             |
+| RSA pin H2   | $9.99 · 10-Day Full Access                                            |
+
+## Sitelinks (all `ccna-home.html` — no sample bypass)
+
+| Label                    | Anchor / utm_content   |
+| ------------------------ | ---------------------- |
+| 10-Day Access · $9.99    | `#purchase` · portal-10d |
+| 30-Day Access · $19.99   | `#purchase` · portal-30d |
+| 120-Min Timed Simulation | `#purchase` · timed-sim |
+| Browser CLI Labs         | `#ccna-gns3-compare` · browser-labs |
+| NGTE Previews            | `#ccna-samples` · sitelink-ngte |
+| Compare vs PDFs          | `#ccna-compare` · sitelink-compare |
 
 ## Build phases
 
-1. **Pre-launch** — Stripe, checkout test, GA4 conversion, pause old `ccna_browser_labs`
+1. **Pre-launch** — Stripe, checkout on `ccna-home.html`, GA4 conversion, pause old `ccna_browser_labs`
 2. **Campaign** — create `CCNA_Wedge_Lab`, $15/day, bidding, geo (US/CA/UK/AU)
-3. **Ad group** — keywords, RSA, final URL
-4. **Extensions** — 6 sitelinks (VLAN sample, 10d, 30d, questions, D&D, home)
-5. **Negatives** — campaign + ad group phrase negatives
-6. **Launch** — verify landing, free sample, checkout, GA4
+3. **Ad group** — keywords, RSA (exam-ready copy), final URL
+4. **Extensions** — 6 sitelinks on `ccna-home.html` only
+5. **Negatives** — course/dump/free-question phrases
+6. **Launch** — verify full funnel, sitelinks, checkout, GA4
 7. **Week 1 ops** — baseline; day-3 search terms; day-7 CPA review
 
 ## Before you enable
@@ -56,13 +75,10 @@ tags:
 - Pause **`ccna_browser_labs`** in the old combined CCNA campaign to avoid bidding against yourself.
 - Keep head-term **`ccna_portal_10v1`** separate (low bid or paused).
 - **Analytics:** marketing-only tags — `scripts/marketing-tag-minimal-list.md`
-
-## Keywords reference
-
-See [[Wedge Marketing plan/02-keywords-and-google-ads|Keywords & Google Ads]] — `ccna_browser_labs` table maps 1:1 to **`CCNA_Wedge_Lab`**.
+- **Hero variants:** `public/js/ccna-home-conversion.js` (`exam-readiness`, `browser-labs`, `timed-sim`)
 
 ## Related
 
 - [[CCNA Campaign]] — original combined campaign (portal + browser labs)
-- [[Wedge Marketing plan/04-content-and-landing-pages|Landing pages]] — P1 wedge page **Live**
+- [[Wedge Marketing plan/04-content-and-landing-pages|Landing pages]]
 - [[Wedge Marketing plan/06-30-day-action-plan|30-day action plan]]
