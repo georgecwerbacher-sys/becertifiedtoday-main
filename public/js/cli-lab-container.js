@@ -5694,6 +5694,12 @@
       }
     }
 
+    if (gl.indexOf("ip route ") === 0 || gl.indexOf("ipv6 route ") === 0) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase() === "line con 0") return i;
+      }
+    }
+
     for (i = 0; i < lines.length; i++) {
       if (lines[i].trim() === "end") return i;
     }

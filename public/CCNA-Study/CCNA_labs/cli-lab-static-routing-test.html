@@ -474,11 +474,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -2077,7 +2082,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         if (!trimmed) return;
         if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP))) return;
         if (matchShowVersion(line)) { cliLabContainer.appendLabShowVersion(appendSw); return; }
-        if (matchShowIpIntBrief(line)) { appendSw("line-showrun", SWITCH_SHOW_IP_INT_BRIEF); return; }
+        if (matchShowIpInterfaceBrief(line)) { appendSw("line-showrun", SWITCH_SHOW_IP_INT_BRIEF); return; }
         __fo.submitR1(__foCtx(
           line,
           appendSw,
