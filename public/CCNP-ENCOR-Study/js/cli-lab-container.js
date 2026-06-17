@@ -5700,6 +5700,7 @@
     var baseline = String(baselineText || "").replace(/\r\n/g, "\n");
     var globalLines = [];
     var ifLines = {};
+    var blockKinds = {};
 
     function applyGlobal(line) {
       var raw = String(line || "");
@@ -5722,6 +5723,7 @@
       var t = String(line || "").trim();
       if (!key || !t) return;
       if (!ifLines[key]) ifLines[key] = [];
+      blockKinds[key] = lineBlock ? "line" : "interface";
       var sub = runningConfigSubcmdLine(t);
       if (ifLines[key].indexOf(sub) === -1) ifLines[key].push(sub);
     }
@@ -5729,6 +5731,7 @@
     function reset() {
       globalLines = [];
       ifLines = {};
+      blockKinds = {};
     }
 
     function interfaceBlockHasLine(out, ifKey, subTrimmed) {
@@ -5752,6 +5755,7 @@
     function render() {
       var lines = baseline.split("\n");
       var out = [];
+      var seenBlocks = {};
       var i = 0;
       while (i < lines.length) {
         var line = lines[i];
@@ -5759,12 +5763,21 @@
         if (ifMatch) {
           var ifKind = ifMatch[1].toLowerCase();
           var ifKey = normalizeRunningConfigBlockName(ifKind, ifMatch[2]);
+          seenBlocks[ifKey] = true;
           var pendingApplied = ifLines[ifKey] ? ifLines[ifKey].slice() : [];
           var insertedApplied = {};
           out.push(line);
           i++;
           while (i < lines.length) {
             var inner = lines[i];
+            if (/^(interface|line)\s+(.+)$/i.test(inner.trim())) {
+              for (var b = 0; b < pendingApplied.length; b++) {
+                var boundaryRem = pendingApplied[b].trim();
+                if (insertedApplied[boundaryRem]) continue;
+                if (!interfaceBlockHasLine(out, ifKey, boundaryRem)) out.push(pendingApplied[b]);
+              }
+              break;
+            }
             if (inner.trim() === "!") {
               for (var r = 0; r < pendingApplied.length; r++) {
                 var rem = pendingApplied[r].trim();
@@ -5792,6 +5805,20 @@
         out.push(line);
         i++;
       }
+      Object.keys(ifLines).forEach(function (key) {
+        if (seenBlocks[key]) return;
+        var kind = blockKinds[key] || (key.indexOf("line ") === 0 ? "line" : "interface");
+        var header = kind === "line" ? key : "interface " + key;
+        var insertAt = out.length;
+        for (var bi = 0; bi < out.length; bi++) {
+          if (out[bi].trim() === "end") {
+            insertAt = bi;
+            break;
+          }
+        }
+        var block = [header].concat(ifLines[key]).concat("!");
+        Array.prototype.splice.apply(out, [insertAt, 0].concat(block));
+      });
       insertAppliedGlobals(out, globalLines);
       return out.join("\r\n");
     }

@@ -1,6 +1,7 @@
 <!doctype html>
 <!--
   TEST COPY — sandbox for router/switch CLI experiments. Production lab: cli-lab-nat-dhcp-sim.html
+  -->
   Dynamic show running-config: accepted lab commands merge into baseline via cliLabContainer.createRunningConfigView().
 
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
@@ -488,6 +489,7 @@
       border: 1px solid #1f7a58;
       font-weight: 700;
       line-height: 1.45;
+      color: #ffffff;
     }
     .pass-banner.visible {
       display: block;
@@ -1436,16 +1438,16 @@ Sw1#</pre>
 
       function recordR1LabCommand(line) {
         var u = normalize(line);
-        if (matchR1NatPatOverload(line)) {
-          r1RunningConfig.applyGlobal("ip nat inside source list 192 interface Ethernet0/0 overload");
+        if (/^ip nat inside source /.test(u)) {
+          r1RunningConfig.applyGlobal(u);
           return true;
         }
         if (u === "ntp master") {
           r1RunningConfig.applyGlobal("ntp master");
           return true;
         }
-        if (u === "ntp source loopback0") {
-          r1RunningConfig.applyGlobal("ntp source Loopback0");
+        if (/^ntp source /.test(u)) {
+          r1RunningConfig.applyGlobal(u);
           return true;
         }
         return false;
@@ -1464,12 +1466,13 @@ Sw1#</pre>
           sw1RunningConfig.applyInterface("Ethernet0/1", "ip helper-address " + helperIp);
           return true;
         }
-        if (matchSw1CryptoRsa(line)) {
+        if (/^crypto key generate rsa /.test(normalize(line))) {
           sw1CryptoKeyDone = true;
           return true;
         }
-        if (matchSw1SshV2(line)) {
-          sw1RunningConfig.applyGlobal("ip ssh version 2");
+        var sshV = normalize(line);
+        if (/^ip ssh version /.test(sshV)) {
+          sw1RunningConfig.applyGlobal(sshV);
           return true;
         }
         return false;
@@ -2205,52 +2208,7 @@ Sw1#</pre>
         appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function (e) {
-          if (e.target && e.target.closest && e.target.closest("button, input, textarea, select, label, a[href]")) {
-            return;
-          }
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);

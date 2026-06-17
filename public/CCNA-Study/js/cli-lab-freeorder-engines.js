@@ -166,7 +166,19 @@
       return S.tryRecordIpRoute(view, u);
     }
 
+    function syncModeFromPrompt(state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
     function submitR1(ctx) {
+      r1Mode = syncModeFromPrompt(r1State, ctx.getPromptText);
       var u = ctx.normalize(ctx.line);
       if (ctx.matchShowRun(ctx.line)) {
         ctx.append("line-showrun", r1View.render());
@@ -184,6 +196,7 @@
     }
 
     function submitR3(ctx) {
+      r3Mode = syncModeFromPrompt(r3State, ctx.getPromptText);
       var u = ctx.normalize(ctx.line);
       if (ctx.matchShowRun(ctx.line)) {
         ctx.append("line-showrun", r3View.render());
@@ -278,9 +291,30 @@
       return false;
     }
 
+    function syncModeFromPrompt(modeKey, state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          if (modeKey === "r1") r1Mode = parsed;
+          else r2Mode = parsed;
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
+    function afterModeNavigation(st, u) {
+      if (st.activeIfs && st.activeIfs.length) st.activeIf = st.activeIfs[0];
+      if (u.indexOf("interface ") === 0) {
+        var parsedIf = S.parseSingleInterface(u);
+        if (parsedIf) st.activeIf = parsedIf;
+      }
+    }
+
     function makeSubmit(modeKey, stateKey, view, flags, host) {
       return function (ctx) {
-        var mode = modeKey === "r1" ? r1Mode : r2Mode;
+        var mode = syncModeFromPrompt(modeKey, stateKey, ctx.getPromptText);
         var u = ctx.normalize(ctx.line);
         if (ctx.matchShowRun(ctx.line)) {
           ctx.append("line-showrun", view.render());
@@ -301,10 +335,7 @@
         }
         var st = stateKey;
         if (S.handleRouterModeNavigation(st, u, setMode)) {
-          if (key === "sw3" && /^line vty /.test(u)) {
-            S.tryRecordLineVty(view, u);
-            sw3Flags.vty = true;
-          }
+          afterModeNavigation(st, u);
           return;
         }
         if (S.handleCopyRunStart(mode, u, ctx.append, opts.container)) return;
@@ -391,10 +422,33 @@
       return false;
     }
 
+    function syncModeFromPrompt(deviceId, state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          modes[deviceId] = parsed;
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
+    function afterModeNavigation(deviceId, st, u) {
+      if (st.activeIfs && st.activeIfs.length) st.activeIf = st.activeIfs[0];
+      if (u.indexOf("interface ") === 0) {
+        var parsedIf = S.parseSingleInterface(u);
+        if (parsedIf) st.activeIf = parsedIf;
+      }
+      if (/^vlan \d+$/.test(u)) {
+        S.tryRecordVlan(views[deviceId], u);
+      }
+    }
+
     function makeSubmit(deviceId, hostLabel) {
       return function (ctx) {
-        var mode = modes[deviceId];
         var st = states[deviceId];
+        var mode = syncModeFromPrompt(deviceId, st, ctx.getPromptText);
         var u = ctx.normalize(ctx.line);
         if (ctx.matchShowRun(ctx.line)) {
           ctx.append("line-showrun", views[deviceId].render());
@@ -406,10 +460,11 @@
           ctx.setPrompt(S.switchPromptForMode(hostLabel, m));
         }
         if (S.handleRouterModeNavigation(st, u, setMode)) {
-          if (st.activeIfs && st.activeIfs.length) st.activeIf = st.activeIfs[0];
+          afterModeNavigation(deviceId, st, u);
           return;
         }
         if (S.handleCopyRunStart(mode, u, ctx.append, opts.container)) return;
+        if ((mode === "config" || mode === "config-vlan") && S.tryRecordVlan(views[deviceId], u)) return;
         if ((mode === "config-if" || mode === "config-if-range") && record(deviceId, u, st)) return;
         ctx.append("line-bad", opts.container.INVALID_INPUT_MSG);
       };
@@ -489,10 +544,54 @@
       return { ok: missing.length === 0, missing: missing, passHtml: "ACL, DHCP snooping, and Sw3 user tasks are complete." };
     }
 
+    function syncModeFromPrompt(key, state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          if (parsed === "config-acl") parsed = "config-ext-nacl";
+          modes[key] = parsed;
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
+    function tryRecordIpAccessListExtended(view, u) {
+      if (!/^ip access-list extended \S+$/.test(u)) return false;
+      view.applyGlobal(u);
+      return true;
+    }
+
+    function afterModeNavigation(view, st, u) {
+      if (st.activeIfs && st.activeIfs.length) st.activeIf = st.activeIfs[0];
+      if (u.indexOf("interface ") === 0) {
+        var parsedIf = S.parseSingleInterface(u);
+        if (parsedIf) st.activeIf = parsedIf;
+      }
+      if (/^ip access-list extended \S+$/.test(u)) {
+        tryRecordIpAccessListExtended(view, u);
+      }
+      if (/^line vty /.test(u)) {
+        S.tryRecordLineVty(view, u);
+      }
+    }
+
+    function recordNamedAclLabLines(view, mode, st, u) {
+      if (mode === "config" && S.tryRecordIpDhcpSnoopingGlobal(view, u)) return true;
+      if (mode === "config" && tryRecordIpAccessListExtended(view, u)) return true;
+      if ((mode === "config-ext-nacl" || mode === "config-acl") && S.tryRecordAclAce(view, u)) return true;
+      if (mode === "config-if" && st.activeIf && S.tryRecordIpAccessGroup(view, st.activeIf, u)) return true;
+      if (mode === "config" && S.tryRecordUsername(view, u)) return true;
+      if (mode === "config" && S.tryRecordLineVty(view, u)) return true;
+      if ((mode === "config" || mode === "config-line") && S.tryRecordLineVtySubcmd(view, u)) return true;
+      return false;
+    }
+
     function makeSubmit(key, view, host) {
       return function (ctx) {
-        var mode = modes[key];
         var st = states[key];
+        var mode = syncModeFromPrompt(key, st, ctx.getPromptText);
         var u = ctx.normalize(ctx.line);
         if (ctx.matchShowRun(ctx.line)) {
           ctx.append("line-showrun", view.render());
@@ -503,28 +602,12 @@
           st.mode = m;
           ctx.setPrompt(S.routerPromptForMode(host, m));
         }
-        if (S.handleRouterModeNavigation(st, u, setMode)) return;
+        if (S.handleRouterModeNavigation(st, u, setMode)) {
+          afterModeNavigation(view, st, u);
+          return;
+        }
         if (S.handleCopyRunStart(mode, u, ctx.append, opts.container)) return;
-        if (key === "sw1" && mode === "config" && S.tryRecordIpDhcpSnoopingGlobal(view, u)) return;
-        if (key === "r1") {
-          if (mode === "config-ext-nacl" && S.tryRecordAclAce(view, u)) return;
-          if (mode === "config-if" && st.activeIf && S.tryRecordIpAccessGroup(view, st.activeIf, u)) return;
-        }
-        if (key === "sw3") {
-          if (mode === "config" && S.tryRecordUsername(view, u)) {
-            sw3Flags.user = true;
-            return;
-          }
-          if (mode === "config" && S.tryRecordLineVty(view, u)) {
-            sw3Flags.vty = true;
-            return;
-          }
-          if ((mode === "config" || mode === "config-line") && S.tryRecordLineVtySubcmd(view, u)) {
-            if (u.indexOf("transport input telnet") !== -1) sw3Flags.telnet = true;
-            if (u === "login local") sw3Flags.login = true;
-            return;
-          }
-        }
+        if (recordNamedAclLabLines(view, mode, st, u)) return;
         ctx.append("line-bad", opts.container.INVALID_INPUT_MSG);
       };
     }
@@ -836,10 +919,34 @@
       return false;
     }
 
+    function syncModeFromPrompt(modeKey, state, getPromptText) {
+      if (opts.container && typeof opts.container.parsePromptMode === "function" && getPromptText) {
+        var parsed = opts.container.parsePromptMode(getPromptText());
+        if (parsed) {
+          if (modeKey === "sw1") sw1Mode = parsed;
+          else sw2Mode = parsed;
+          state.mode = parsed;
+          return parsed;
+        }
+      }
+      return state.mode;
+    }
+
+    function afterModeNavigation(view, st, vlanMap, u) {
+      if (st.activeIfs && st.activeIfs.length) st.activeIf = st.activeIfs[0];
+      if (u.indexOf("interface ") === 0) {
+        var parsedIf = S.parseSingleInterface(u);
+        if (parsedIf) st.activeIf = parsedIf;
+      }
+      if (/^vlan \d+$/.test(u) && recordVlan(vlanMap, u)) {
+        view.applyGlobal(u);
+      }
+    }
+
     function makeSubmit(modeKey, stateKey, view, vlanMap, host) {
       return function (ctx) {
-        var mode = modeKey === "sw1" ? sw1Mode : sw2Mode;
         var st = stateKey;
+        var mode = syncModeFromPrompt(modeKey, st, ctx.getPromptText);
         var u = ctx.normalize(ctx.line);
         if (ctx.matchShowRun(ctx.line)) {
           ctx.append("line-showrun", view.render());
@@ -851,7 +958,10 @@
           st.mode = m;
           ctx.setPrompt(S.switchPromptForMode(host, m));
         }
-        if (S.handleRouterModeNavigation(st, u, setMode)) return;
+        if (S.handleRouterModeNavigation(st, u, setMode)) {
+          afterModeNavigation(view, st, vlanMap, u);
+          return;
+        }
         if (S.handleCopyRunStart(mode, u, ctx.append, opts.container)) return;
         if ((mode === "config" || mode === "config-vlan") && recordVlan(vlanMap, u)) {
           view.applyGlobal(u);

@@ -109,6 +109,30 @@ assert(
   "VTY subcommands before line block delimiter"
 );
 
+const adjacentLineBlocks = createRunningConfigView(
+  ["hostname SW", "!", "line aux 0", "line vty 0 4", " login", "!", "end"].join("\r\n")
+);
+adjacentLineBlocks.applyInterface("line vty 0 4", "transport input telnet");
+const withAdjacentVty = adjacentLineBlocks.render();
+assert(
+  withAdjacentVty.indexOf(" transport input telnet") > withAdjacentVty.indexOf("line vty 0 4"),
+  "VTY subcommand inserted when line blocks are adjacent"
+);
+assert(
+  withAdjacentVty.indexOf(" transport input telnet") < withAdjacentVty.indexOf("\r\n!\r\nend"),
+  "adjacent VTY subcommand remains inside VTY block"
+);
+
+const missingInterface = createRunningConfigView(["hostname SW", "!", "end"].join("\r\n"));
+missingInterface.applyInterface("Port-channel15", "switchport mode trunk");
+const withMissingInterface = missingInterface.render();
+assert(withMissingInterface.includes("interface Port-channel15"), "missing interface block created");
+assert(withMissingInterface.includes(" switchport mode trunk"), "missing interface subcommand rendered");
+assert(
+  withMissingInterface.indexOf("interface Port-channel15") < withMissingInterface.indexOf("\r\nend"),
+  "created interface block before end"
+);
+
 view.reset();
 assert(view.render() === baseline, "reset restores baseline only");
 
