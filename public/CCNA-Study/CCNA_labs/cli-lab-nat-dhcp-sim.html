@@ -1,15 +1,14 @@
 <!doctype html>
 <!--
   Dynamic show running-config: accepted lab commands merge into baseline via cliLabContainer.createRunningConfigView().
-  Free-order config on R1/Sw1; pass/fail via Submit Lab (running-config validation).
 
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
   tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
 
   Includes:
-  - Router (R1): free-order IOS modes; lab commands merge into show running-config
-  - Switch (Sw1): second IOS CLI — free-order config; Submit Lab validates running-config
+  - Router (R1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
+  - Switch (Sw1): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as R1-style IOS)
   - PC1: one modal; device picker sets PC1>; extend submitPc() for ping, ipconfig, etc.
   - Device picker (R1 / Sw1 / PC1), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
 
@@ -488,6 +487,7 @@
       border: 1px solid #1f7a58;
       font-weight: 700;
       line-height: 1.45;
+      color: #ffffff;
     }
     .pass-banner.visible {
       display: block;
@@ -542,11 +542,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -631,7 +636,8 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 0.8rem;
       line-height: 1.45;
-      white-space: pre;
+      white-space: pre-wrap;
+      word-break: break-word;
       overflow-x: auto;
     }
     .lab-check-result {
@@ -759,7 +765,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
     </p>
   </div>
 
-  <!-- Primary router CLI (R1 — free-order config + running-config merge) -->
+  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
   <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="swCliDialog"
@@ -1343,7 +1349,7 @@ Sw1#</pre>
       /**
        * ## Prompt / modes (IOS-shaped)
        *
-       * - Free-order IOS modes on R1/Sw1; Submit Lab validates merged running-config.
+       * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
        * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
        * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.
@@ -1436,16 +1442,16 @@ Sw1#</pre>
 
       function recordR1LabCommand(line) {
         var u = normalize(line);
-        if (matchR1NatPatOverload(line)) {
-          r1RunningConfig.applyGlobal("ip nat inside source list 192 interface Ethernet0/0 overload");
+        if (/^ip nat inside source /.test(u)) {
+          r1RunningConfig.applyGlobal(u);
           return true;
         }
         if (u === "ntp master") {
           r1RunningConfig.applyGlobal("ntp master");
           return true;
         }
-        if (u === "ntp source loopback0") {
-          r1RunningConfig.applyGlobal("ntp source Loopback0");
+        if (/^ntp source /.test(u)) {
+          r1RunningConfig.applyGlobal(u);
           return true;
         }
         return false;
@@ -1464,12 +1470,13 @@ Sw1#</pre>
           sw1RunningConfig.applyInterface("Ethernet0/1", "ip helper-address " + helperIp);
           return true;
         }
-        if (matchSw1CryptoRsa(line)) {
+        if (/^crypto key generate rsa /.test(normalize(line))) {
           sw1CryptoKeyDone = true;
           return true;
         }
-        if (matchSw1SshV2(line)) {
-          sw1RunningConfig.applyGlobal("ip ssh version 2");
+        var sshV = normalize(line);
+        if (/^ip ssh version /.test(sshV)) {
+          sw1RunningConfig.applyGlobal(sshV);
           return true;
         }
         return false;
@@ -2205,52 +2212,7 @@ Sw1#</pre>
         appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function (e) {
-          if (e.target && e.target.closest && e.target.closest("button, input, textarea, select, label, a[href]")) {
-            return;
-          }
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
