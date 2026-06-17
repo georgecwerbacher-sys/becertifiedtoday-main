@@ -28,12 +28,15 @@
   var VARIANTS = {
     "wedge-default": {
       id: "wedge-default",
-      adHeadline: "CCNA Browser Labs",
-      eyebrow: "CCNA 200-301 · browser labs · timed simulation",
-      headline: "Browser CCNA Labs — No GNS3. Timed Sim. Verified Answers.",
-      lead: WEDGE_LEAD,
-      ctaPrimary: "Preview free CCNA samples",
-      stickyPrimary: "Free samples",
+      adHeadline: "Are you ready?",
+      eyebrow: "Be Certified Today · CCNA 200-301 exam prep in your browser",
+      headline: "Are you ready?",
+      lead:
+        "Courses, videos, books done—the <strong>$330</strong> CCNA exam is next. " +
+        "<strong>Practice for test day</strong> for <strong>less than $1/day</strong> ($9.99/10 days · $19.99/30 days). " +
+        "<strong>Preview NGTE below</strong>—no payment, same test-day experience as full access—then unlock the library with one payment.",
+      ctaPrimary: "Preview NGTE samples",
+      stickyPrimary: "NGTE previews",
     },
     "browser-labs": {
       id: "browser-labs",
@@ -140,7 +143,7 @@
       eyebrow: "Study for CCNA · questions, labs & D&D",
       headline: "Study for the CCNA — questions, labs & drag-and-drop online",
       lead:
-        "Study for the CCNA with <strong>700+ interactive questions</strong>, CLI labs, and drag-and-drop—all in your browser. " +
+        "Study for the CCNA with <strong>800+ interactive questions</strong>, CLI labs, and drag-and-drop—all in your browser. " +
         "Try free samples first. No PDFs or additional apps.",
       ctaPrimary: "Preview free CCNA samples",
       stickyPrimary: "Free samples",
@@ -160,7 +163,7 @@
       id: "questions-online",
       adHeadline: "CCNA Questions Online",
       eyebrow: "CCNA questions online · browser-based",
-      headline: "CCNA Questions Online — 700+ items in your browser",
+      headline: "CCNA Questions Online — 800+ items in your browser",
       lead:
         "Access CCNA questions online with topology exhibits, CLI labs, and drag-and-drop—no downloads. " +
         "Start with free sample questions. <strong>Browser-only CCNA prep—no PDFs.</strong>",
@@ -467,14 +470,14 @@
     var variant =
       window.bccCcnaHomeHeadlineVariantData ||
       getVariant(window.bccCcnaHomeHeadlineVariant || DEFAULT_VARIANT);
-    var stickyPrimary = variant.stickyPrimary || "Free samples";
+    var stickyPrimary = variant.stickyPrimary || "NGTE previews";
     var stickyHref = resolveCtaHref(variant.ctaHref || SAMPLES_SECTION);
 
     var bar = document.createElement("div");
     bar.id = "ccnaMobileStickyCta";
     bar.className = "ccna-mobile-sticky-cta";
     bar.setAttribute("role", "region");
-    bar.setAttribute("aria-label", "Preview free CCNA samples");
+    bar.setAttribute("aria-label", "Preview NGTE samples");
     bar.setAttribute("aria-hidden", "true");
     bar.hidden = true;
     bar.innerHTML =

@@ -122,7 +122,7 @@
               "name": "Why did you build Be Certified Today?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "I built Be Certified Today so you can practice in peace with current, exam-realistic CCNA 200-301 prep, verified explanations, and no membership noise. Practice like test day. Walk in ready."
+                "text": "We built Be Certified Today so you can practice in peace with current, exam-realistic CCNA 200-301 prep, verified explanations, and no membership noise. Practice like test day. Walk in ready."
               }
             },
             {
@@ -585,24 +585,47 @@
       order: 0;
       margin: 0;
     }
-    #purchase {
+    .landing-page-intro h1 {
+      font-size: clamp(1.85rem, 4.8vw, 2.55rem);
+      max-width: none;
+    }
+    .landing-page-intro .lead {
+      max-width: none;
+      width: 100%;
+      font-size: clamp(1.02rem, 2.2vw, 1.12rem);
+      line-height: 1.55;
+    }
+    .landing-page-intro__who {
+      margin-bottom: 0.55em;
+      color: var(--page-text, #0b1020);
+    }
+    .landing-page-intro__offer {
+      margin-bottom: clamp(20px, 3vw, 26px);
+      color: var(--page-muted);
+    }
+    .samples-stack {
       order: 1;
       margin: 0;
     }
-    .samples-stack {
+    #purchase.home-pricing-section {
+      order: 2;
+      margin: 0;
+    }
+    .landing-gns3-compare {
+      margin: 0;
+      padding: 0;
+    }
+    #ccna-gns3-compare {
+      order: 3;
+    }
+    #ccna-compare {
       order: 4;
     }
-    .landing-compare-section {
+    .benefits--deferred {
       order: 5;
     }
-    #purchase-details {
-      order: 6;
-    }
-    .benefits--deferred {
-      order: 7;
-    }
     .reviews-section {
-      order: 8;
+      order: 6;
     }
     .formats-section {
       order: 7;
@@ -612,6 +635,258 @@
     }
     .purchase-fold .purchase-track-box {
       margin-top: 0;
+    }
+    .home-pricing-section {
+      padding: clamp(28px, 4vw, 40px) clamp(18px, 3vw, 26px);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #0a0f1a 0%, #0d1526 100%);
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 32px rgba(13, 21, 40, 0.14);
+    }
+    .home-pricing-inner {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+    .home-pricing-choose-heading {
+      margin: 0 0 8px;
+      font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #e8eef8;
+      text-align: center;
+    }
+    .home-pricing-choose-lead {
+      margin: 0 0 clamp(22px, 3.5vw, 28px);
+      font-size: clamp(0.9rem, 2vw, 0.98rem);
+      line-height: 1.5;
+      color: #a8b8d4;
+      text-align: center;
+    }
+    .home-pricing-grid {
+      display: grid;
+      gap: clamp(20px, 3vw, 28px);
+      align-items: stretch;
+    }
+    @media (min-width: 640px) {
+      .home-pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(24px, 4vw, 32px);
+      }
+    }
+    @media (max-width: 639px) {
+      .home-pricing-card--featured {
+        order: -1;
+      }
+      .home-pricing-grid {
+        padding-top: 8px;
+      }
+    }
+    .home-pricing-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: clamp(22px, 3.5vw, 28px) clamp(18px, 3vw, 24px);
+      border-radius: 16px;
+      border: 1px solid rgba(79, 132, 216, 0.28);
+      background: #121a2b;
+      color: #c8d4e8;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .home-pricing-card--featured {
+      border-color: rgba(59, 122, 217, 0.75);
+      padding-top: clamp(28px, 4vw, 34px);
+      box-shadow:
+        0 0 0 1px rgba(59, 122, 217, 0.35),
+        0 12px 40px rgba(47, 102, 191, 0.28);
+    }
+    .home-pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 14px;
+      border-radius: 999px;
+      background: linear-gradient(165deg, #3b7ad9 0%, #2f66bf 100%);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(47, 102, 191, 0.45);
+    }
+    .home-pricing-tier {
+      margin: 0 0 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #8a94a6;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .home-pricing-price {
+      margin: 0 0 4px;
+      font-size: clamp(2rem, 4.5vw, 2.6rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .home-pricing-period {
+      margin: 0 0 clamp(16px, 3vw, 20px);
+      font-size: 0.88rem;
+      color: #8a94a6;
+    }
+    .home-pricing-daily {
+      margin: -2px 0 6px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #4ade80;
+      letter-spacing: 0.01em;
+    }
+    .home-pricing-features {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      padding: 0;
+      list-style: none;
+      flex: 1;
+    }
+    .home-pricing-features li {
+      position: relative;
+      margin: 0 0 10px;
+      padding-left: 1.55rem;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: #d4deef;
+    }
+    .home-pricing-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #4ade80;
+      font-weight: 800;
+    }
+    .home-pricing-features li strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    .home-pricing-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 50px;
+      margin: 0;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(165deg, #3b7ad9 0%, #2f66bf 48%, #1f4282 100%);
+      color: #fff;
+      font-size: 0.98rem;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(47, 102, 191, 0.35);
+    }
+    .home-pricing-cta:hover {
+      filter: brightness(1.06);
+    }
+    .home-pricing-cta:disabled {
+      opacity: 0.7;
+      cursor: wait;
+    }
+    .home-pricing-footnote {
+      margin: clamp(20px, 3vw, 28px) 0 0;
+      font-size: 0.85rem;
+      color: #8a94a6;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .landing-gns3-compare h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      line-height: 1.25;
+      color: #0b1020;
+    }
+    .landing-gns3-lead {
+      margin: 0 0 16px;
+      max-width: 52ch;
+      font-size: clamp(0.94rem, 2vw, 1.02rem);
+      line-height: 1.55;
+      color: var(--page-muted);
+    }
+    .landing-gns3-lead strong {
+      font-weight: 700;
+    }
+    .landing-gns3-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(79, 132, 216, 0.35);
+    }
+    .landing-gns3-table {
+      width: 100%;
+      min-width: 480px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .landing-gns3-table th,
+    .landing-gns3-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .landing-gns3-table thead th {
+      background: rgba(18, 26, 43, 0.95);
+      color: #c8daf8;
+      font-weight: 800;
+    }
+    .landing-gns3-table tbody th {
+      color: #0b1020;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+    .landing-gns3-table thead th.landing-gns3-col-bct {
+      background: #eef4fc;
+      color: #1f4282;
+    }
+    .landing-gns3-table .landing-gns3-cell-bct {
+      background: rgba(47, 102, 191, 0.08);
+      font-weight: 700;
+      color: #1f4282;
+    }
+    .landing-gns3-compare .landing-mission-pitch {
+      margin-top: clamp(28px, 4vw, 40px);
+    }
+    .landing-gns3-compare .landing-compare-cta {
+      margin: clamp(16px, 2.5vw, 20px) 0 0;
+      max-width: 52ch;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+      color: var(--page-muted);
+      font-weight: 600;
+    }
+    .landing-gns3-compare .landing-compare-cta a {
+      color: #2f66bf;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .landing-gns3-compare .landing-compare-cta a:hover {
+      color: #3a74d4;
+    }
+    .landing-gns3-compare .landing-compare-note {
+      margin: clamp(12px, 2vw, 16px) 0 0;
+      max-width: 52ch;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #64748b;
+      font-weight: 400;
+    }
+    .samples-block-intro .samples-first-visit {
+      margin: 0 0 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #ffffff;
     }
     .purchase-blueprint-details {
       margin: 0 0 clamp(20px, 4vw, 28px);
@@ -994,8 +1269,15 @@
       max-width: 520px;
     }
     html.ccna-landing-portal-10d #ccnaPurchase30d,
+    html.ccna-landing-portal-10d .home-pricing-card--featured,
     html.ccna-landing-portal-10d .purchase-alt-tier-note {
       display: none !important;
+    }
+    html.ccna-landing-portal-10d .home-pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
     }
     .purchase-alt-tier-note {
       margin: 14px 0 0;
@@ -1829,127 +2111,6 @@
     .landing-hero-atf-cta a:hover {
       color: #3a74d4;
     }
-    .landing-compare-section {
-      margin: 0;
-      padding: 0;
-    }
-    .funnel > .landing-compare-section {
-      width: 100%;
-    }
-    .landing-compare-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      width: 100%;
-      text-align: left;
-    }
-    .landing-compare-section .formats-head {
-      color: #475569;
-      text-align: left;
-    }
-    .landing-compare-section h2 {
-      margin: 0 0 12px;
-      color: #0b1020;
-      line-height: 1.25;
-      max-width: 48rem;
-      text-align: left;
-    }
-    .landing-compare-section .formats-lead {
-      margin: 0 0 clamp(20px, 3vw, 28px);
-      max-width: 48rem;
-      color: #334155;
-      font-weight: 700;
-      line-height: 1.6;
-      text-align: left;
-    }
-    .landing-compare-section .formats-lead strong {
-      font-weight: 800;
-    }
-    .landing-compare-table-wrap {
-      margin: 0 0 clamp(18px, 3vw, 24px);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 12px;
-      border: 1px solid rgba(79, 132, 216, 0.35);
-      background: rgba(11, 16, 32, 0.45);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
-    }
-    .landing-compare-table {
-      width: 100%;
-      min-width: 520px;
-      border-collapse: collapse;
-      font-size: clamp(0.84rem, 1.9vw, 0.94rem);
-    }
-    .landing-compare-table th,
-    .landing-compare-table td {
-      padding: 12px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      line-height: 1.45;
-      font-weight: 700;
-    }
-    .landing-compare-table thead th {
-      background: rgba(18, 26, 43, 0.95);
-      font-weight: 800;
-      color: #c8daf8;
-      font-size: clamp(0.8rem, 1.85vw, 0.9rem);
-      letter-spacing: 0.03em;
-    }
-    .landing-compare-table thead th.landing-compare-col-bct {
-      background: linear-gradient(165deg, rgba(47, 102, 191, 0.45) 0%, rgba(31, 66, 130, 0.35) 100%);
-      color: #f4f7ff;
-    }
-    .landing-compare-table tbody th {
-      width: 22%;
-      color: #ffffff;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-    @media (max-width: 640px) {
-      .landing-compare-table tbody th {
-        white-space: normal;
-      }
-    }
-    .landing-compare-table tbody td {
-      color: #ffffff;
-      font-weight: 700;
-    }
-    .landing-compare-table tbody td.landing-compare-cell-bct {
-      color: #ffffff;
-      font-weight: 700;
-      background: rgba(47, 102, 191, 0.12);
-    }
-    .landing-compare-table tbody tr:last-child th,
-    .landing-compare-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-    .landing-compare-cta {
-      margin: 0;
-      max-width: 48rem;
-      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
-      line-height: 1.55;
-      color: var(--page-muted);
-      font-weight: 600;
-      text-align: left;
-    }
-    .landing-compare-cta a {
-      color: #2f66bf;
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .landing-compare-cta a:hover {
-      color: #3a74d4;
-    }
-    .landing-compare-note {
-      margin: clamp(12px, 2vw, 16px) 0 0;
-      max-width: 48rem;
-      font-size: 0.82rem;
-      line-height: 1.5;
-      color: #64748b;
-      font-weight: 400;
-      text-align: left;
-    }
     .visually-hidden {
       position: absolute;
       width: 1px;
@@ -2765,16 +2926,22 @@
       <div class="hero-content">
         <div class="funnel">
 
-          <div class="funnel-intro hero-conversion" id="exam-audience" data-ccna-hl-pending="1">
-            <p class="eyebrow" id="hero-conversion-eyebrow">CCNA 200-301 · browser labs · timed simulation</p>
+          <div class="funnel-intro hero-conversion landing-page-intro" id="exam-audience" data-ccna-hl-pending="1">
+            <p class="eyebrow" id="hero-conversion-eyebrow">Be Certified Today · CCNA 200-301 exam prep in your browser</p>
             <p class="landing-tagline">Practice like test day. Walk in ready.</p>
-            <h1 id="hero-conversion-title">Browser CCNA Labs — No GNS3. Timed Sim. Verified Answers.</h1>
-            <p class="lead lead--full" id="hero-conversion-lead">
-              Exam in 2–3 weeks? Run CLI labs, drag-and-drop, and a <strong>120-minute timed simulation</strong> in your browser—no GNS3, Packet Tracer, or PDFs.
-              <strong>Try the free samples below</strong> to judge quality first, then unlock a <strong>10-day sprint for $9.99</strong> when you want the full library.
+            <h1 id="hero-conversion-title">Are you ready?</h1>
+            <p class="lead lead--full landing-page-intro__who" id="hero-conversion-who">
+              <strong>Be Certified Today</strong> — browser CCNA 200-301 prep: <strong>CLI labs</strong>, <strong>drag-and-drop</strong>,
+              <strong>question banks</strong>, and a <strong>120-minute timed simulation</strong> with verified Cisco answers (v1.1 &amp; v2.0).
+              No GNS3, Packet Tracer, PDF dumps, or subscription—phone, tablet, and desktop.
+            </p>
+            <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead">
+              Courses, videos, books done—the <strong>$330</strong> CCNA exam is next.
+              <strong>Practice for test day</strong> for <strong>less than $1/day</strong> ($9.99/10 days · $19.99/30 days).
+              <strong>Preview NGTE below</strong>—no payment, same test-day experience as full access—then unlock the library with one payment.
             </p>
             <div class="landing-hero-highlights">
-              <ul class="landing-value-pillars" aria-label="CCNA library highlights">
+              <ul class="landing-value-pillars" aria-label="What Be Certified Today includes">
                 <li>
                   <strong>CLI labs &amp; drag-and-drop</strong>
                   Browser VLAN, routing, and performance-style items. No GNS3, Packet Tracer, or app install.
@@ -2792,14 +2959,6 @@
                   Same interactive UI everywhere with touch-friendly drag-and-drop.
                 </li>
               </ul>
-              <div class="hero-atf-ctas hero-atf-ctas--conversion">
-                <a
-                  class="cta-main cta-main--free cta-main--hero-primary"
-                  id="hero-conversion-cta-primary"
-                  href="#home-ccna-samples-title"
-                  >Preview free CCNA samples</a
-                >
-              </div>
               <p class="hero-atf-upgrade">
                 Ready for full access? <a href="#purchase">Get 10-day CCNA access · $9.99</a>
               </p>
@@ -2810,112 +2969,17 @@
               <li>v1.1 &amp; v2.0</li>
               <li>No subscription</li>
             </ul>
-            <ul class="benefits" aria-label="What you get">
-              <li>700+ practice questions organized by domain—not a random PDF list.</li>
-              <li>Timed simulation practice, drag-and-drop, CLI labs, and domain-organized question banks.</li>
-              <li>Verified explanations aligned to Cisco CCNA 200-301 objectives (v1.1). No unvetted dumps.</li>
-              <li>100% interactive in the browser. No static PDFs, slide decks, or third-party apps.</li>
-              <li>Review modes loop missed answers back so you focus weak topics before test day.</li>
-              <li>Progress tracking shows where to spend study time.</li>
-              <li>One-time access windows. No recurring subscription.</li>
-              <li>Latest questions using Version 1.1 and 2.0 available with verified answers.</li>
-            </ul>
-          </div>
-
-          <div class="card purchase-card purchase-fold" id="purchase">
-            <div class="purchase-card-inner">
-              <div class="purchase-card-main purchase-card-main--10d" id="ccnaPurchaseDefault">
-                <p class="purchase-label">Get CCNA access</p>
-                <h2 class="purchase-heading">CCNA 200-301 · 10 days for $9.99</h2>
-                <p class="purchase-lead purchase-lead--tight">
-                  Full question bank, VLAN CLI labs, drag-and-drop sets, and 120-minute timed simulation—one-time purchase, no subscription.
-                </p>
-                <div class="purchase-cta-stack purchase-cta-stack--single">
-                  <div class="purchase-primary-cta">
-                    <div
-                      class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option purchase-track-box--one-time-live"
-                      aria-label="10-day CCNA access purchase"
-                    >
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">10-day access</p>
-                        <span class="encor-live-badge">One-time</span>
-                      </div>
-                      <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
-                        $9.99 <span>/ 10 days</span>
-                      </p>
-                      <p class="purchase-track-sub">
-                        Question banks, CLI labs, drag-and-drop sets, practice portal modes, and the 120-minute timed simulation—all in your browser.
-                      </p>
-                      <p class="purchase-version-plug">
-                        Tests: Version 1.1 and 2.0. Study sessions: pre v1.0, with new questions added continuously.
-                      </p>
-                      <p class="purchase-track-cta-wrap">
-                        <button
-                          type="button"
-                          class="cta-main cta-main--block"
-                          id="ccnaPortal10dPurchaseBtn"
-                          data-ccna-portal-10d-checkout
-                          data-bcc-item-id="ccna_portal_10d"
-                          data-bcc-item-name="CCNA 10-day access"
-                          data-bcc-value="9.99"
-                          data-bcc-currency="USD"
-                          aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
-                        >
-                          Get 10-day access · $9.99
-                        </button>
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p class="purchase-alt-tier-note">
-                  Need more time? <strong>30-day access ($19.99)</strong> below uses the same library with a longer study window.
-                </p>
-              </div>
-              <div class="purchase-secondary-shell" id="ccnaPurchase30d">
-                <p class="purchase-tier-eyebrow purchase-tier-eyebrow--secondary">More study time</p>
-                <div class="purchase-track-box purchase-track-box--thirty-day purchase-pricing-option" aria-label="30-day CCNA access purchase">
-                  <div class="purchase-track-head">
-                    <p class="purchase-track-title">30-day access</p>
-                    <span class="encor-live-badge">Live</span>
-                  </div>
-                  <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
-                    $19.99 <span>/ 30 days</span>
-                  </p>
-                  <p class="purchase-track-sub">
-                    Full library access for a month: question banks, CLI labs, drag-and-drop sets, practice portal modes, and timed simulation practice.
-                  </p>
-                  <p class="purchase-version-plug">
-                    Tests: Version 1.1 and 2.0. Study sessions: pre v1.0, with new questions added continuously.
-                  </p>
-                  <p class="purchase-track-cta-wrap">
-                    <button
-                      type="button"
-                      class="cta-main cta-main--block"
-                      id="ccnaPortal30dPurchaseBtn"
-                      data-ccna-portal-30d-checkout
-                      aria-label="Purchase 30-day CCNA library access for nineteen ninety-nine"
-                    >
-                      Get 30-day access · $19.99
-                    </button>
-                  </p>
-                  <p class="purchase-access-disclaimer">
-                    <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="samples-stack" id="ccna-samples">
             <section class="samples-block" aria-labelledby="home-ccna-samples-title">
               <div class="samples-block-intro">
-                <h2 class="samples-block-title" id="home-ccna-samples-title">Preview Quality on Phone, Tablet, or Desktop</h2>
+                <p class="samples-first-visit">New here? Pick any preview below—same NGTE experience as full access.</p>
+                <h2 class="samples-block-title" id="home-ccna-samples-title">Three NGTE Previews — Train Like It&rsquo;s Test Day</h2>
                 <p class="samples-block-lead">
-                  You get three free previews from the CCNA question bank, drag-and-drop set, and VLAN lab. Same verified explanations and browser UI as full access.
-                  Open a sample on your phone to confirm layout before you commit. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish sample</strong>). No checkout required.
+                  See how realistic CCNA prep feels in our <strong>Next Generation Testing Engine (NGTE)</strong>—the same browser UI you use with full access.
+                  Preview <strong>questions</strong>, <strong>drag-and-drop</strong>, and a <strong>VLAN CLI lab</strong> before checkout.
+                  Open one on your phone to confirm layout, then try the others. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish sample</strong>).
                 </p>
               </div>
               <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
@@ -2986,193 +3050,223 @@
             </section>
           </div>
 
-          <section class="landing-compare-section" id="ccna-compare" aria-labelledby="ccna-compare-title">
-            <div class="landing-compare-inner">
-              <p class="formats-head">Why interactive prep</p>
-              <h2 id="ccna-compare-title">Browser Exam Prep vs. PDF Dumps and Desktop Lab Software</h2>
-              <p class="formats-lead">
-                Many CCNA sites sell <strong>printable PDFs</strong> or require <strong>GNS3, Packet Tracer, or desktop test engines</strong> for labs.
-                Be Certified Today is built for <strong>interactive practice</strong> in the same browser format you use on test day.
-              </p>
-              <div class="landing-compare-table-wrap">
-                <table class="landing-compare-table" aria-describedby="ccna-compare-caption">
-                  <caption id="ccna-compare-caption" class="visually-hidden">
-                    Comparison of typical PDF dump sellers and desktop lab tools versus Be Certified Today CCNA exam prep
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Capability</th>
-                      <th scope="col">Typical PDF / Desktop Site</th>
-                      <th scope="col" class="landing-compare-col-bct">Be Certified Today</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Primary format</th>
-                      <td>PDF download or desktop test engine</td>
-                      <td class="landing-compare-cell-bct">Interactive HTML in your browser</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Mobile study</th>
-                      <td>Often PDF zoom or desktop-only player</td>
-                      <td class="landing-compare-cell-bct">Responsive UI on phone, tablet, and desktop</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">CLI labs</th>
-                      <td>Usually requires GNS3, Packet Tracer, or VM install</td>
-                      <td class="landing-compare-cell-bct">Browser CLI simulations + free VLAN lab sample</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Drag-and-drop</th>
-                      <td>Rare or static screenshots in PDFs</td>
-                      <td class="landing-compare-cell-bct">Multiple D&amp;D sets + free shuffled sample</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Timed 120-min exam</th>
-                      <td>Rare, or separate desktop engine only</td>
-                      <td class="landing-compare-cell-bct">Full timed simulation in the practice portal</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Weak-area review</th>
-                      <td>Static Q&amp;A list</td>
-                      <td class="landing-compare-cell-bct">Review modes loop missed topics back</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Content updates</th>
-                      <td>&ldquo;90 days free updates&rdquo; on a PDF file</td>
-                      <td class="landing-compare-cell-bct">Living site with continuous question additions</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Exam policy</th>
-                      <td>Often markets braindump memorization</td>
-                      <td class="landing-compare-cell-bct">Exam prep only. Verified practice, not actual exam questions</td>
-                    </tr>
-                  </tbody>
-                </table>
+          <section class="home-pricing-section purchase-fold" id="purchase" aria-labelledby="ccna-pricing-heading">
+            <div class="home-pricing-inner">
+              <h2 id="ccna-pricing-heading" class="home-pricing-choose-heading">Choose your access</h2>
+              <p class="home-pricing-choose-lead">One-time payment. Same full library on both plans. No auto-renew.</p>
+
+              <div class="home-pricing-grid">
+                <article
+                  class="home-pricing-card purchase-track-box purchase-track-box--ten-day purchase-track-box--one-time-live"
+                  id="ccnaPurchaseDefault"
+                  aria-label="10-day CCNA access"
+                >
+                  <p class="home-pricing-tier">10-Day Sprint</p>
+                  <p class="home-pricing-price" aria-label="9 dollars and 99 cents for 10 days">$9.99</p>
+                  <p class="home-pricing-daily">Less than <strong>$1.00/day</strong></p>
+                  <p class="home-pricing-period">one-time · 10 days of full library access</p>
+                  <ul class="home-pricing-features">
+                    <li><strong>10 days</strong> of full library access</li>
+                    <li>800+ questions · v1.1 &amp; v2.0</li>
+                    <li>Browser CLI labs (VLAN, routing &amp; more)</li>
+                    <li>Drag-and-drop practice sets</li>
+                    <li>120-minute timed simulation</li>
+                    <li>Progress tracking on phone &amp; desktop</li>
+                    <li>Study paths by <strong>CCNA 200-301</strong> domain weights</li>
+                    <li>Adaptive testing option for more precise learning</li>
+                    <li>Verified Cisco explanations</li>
+                  </ul>
+                  <button
+                    type="button"
+                    class="home-pricing-cta"
+                    id="ccnaPortal10dPurchaseBtn"
+                    data-ccna-portal-10d-checkout
+                    data-bcc-item-id="ccna_portal_10d"
+                    data-bcc-item-name="CCNA 10-day access"
+                    data-bcc-value="9.99"
+                    data-bcc-currency="USD"
+                    aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
+                  >
+                    Get 10-day access
+                  </button>
+                </article>
+
+                <article
+                  class="home-pricing-card home-pricing-card--featured"
+                  id="ccnaPurchase30d"
+                  aria-label="30-day CCNA access"
+                >
+                  <span class="home-pricing-badge">Best value</span>
+                  <p class="home-pricing-tier">30-Day Access</p>
+                  <p class="home-pricing-price" aria-label="19 dollars and 99 cents for 30 days">$19.99</p>
+                  <p class="home-pricing-daily">Less than <strong>$1.00/day</strong></p>
+                  <p class="home-pricing-period">one-time · 30 days of full library access</p>
+                  <ul class="home-pricing-features">
+                    <li><strong>30 days</strong> of full library access</li>
+                    <li>800+ questions · v1.1 &amp; v2.0</li>
+                    <li>Browser CLI labs (VLAN, routing &amp; more)</li>
+                    <li>Drag-and-drop practice sets</li>
+                    <li>120-minute timed simulation</li>
+                    <li>Progress tracking on phone &amp; desktop</li>
+                    <li>Study paths by <strong>CCNA 200-301</strong> domain weights</li>
+                    <li>Adaptive testing option for more precise learning</li>
+                    <li><strong>33% less</strong> than three 10-day passes</li>
+                  </ul>
+                  <button
+                    type="button"
+                    class="home-pricing-cta"
+                    id="ccnaPortal30dPurchaseBtn"
+                    data-ccna-portal-30d-checkout
+                    data-bcc-item-id="ccna_portal_30d"
+                    data-bcc-item-name="CCNA 30-day access"
+                    data-bcc-value="19.99"
+                    data-bcc-currency="USD"
+                    aria-label="Purchase 30-day CCNA library access for nineteen ninety-nine"
+                  >
+                    Get 30-day access
+                  </button>
+                </article>
               </div>
-              <p class="landing-compare-cta">
-                <a href="#home-ccna-samples-title">Try free CCNA samples →</a>
-              </p>
-              <div class="landing-mission-pitch" id="ccna-mission" aria-labelledby="ccna-mission-title">
-                <h3 id="ccna-mission-title">Why I built Be Certified Today</h3>
-                <p class="landing-mission-lead">
-                  I built this for CCNA prep you can trust: current 200-301 practice with timed simulations, drag-and-drop, and CLI labs —
-                  presented the way the real exam does — with answers verified against official Cisco sources.
-                  Try free samples first, no account required. When you are ready, unlock the full library for one payment, one period —
-                  no membership, no ads inside the portal.
-                </p>
-                <ul class="landing-mission-pillars" aria-label="What I promise">
-                  <li><strong>Current material</strong> — aligned to CCNA 200-301 objectives (v1.1), not a stale PDF.</li>
-                  <li><strong>Exam-realistic practice</strong> — timed sim, drag-and-drop, and browser CLI labs on phone, tablet, or desktop.</li>
-                  <li><strong>Verified answers</strong> — keys and explanations tied to official sources, not dump sites.</li>
-                  <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
-                </ul>
-                <p class="landing-mission-cta">
-                  <a href="#purchase">Unlock CCNA access when you are ready →</a>
-                </p>
-              </div>
-              <p class="landing-compare-note">
-                Cisco does not endorse third-party braindumps. Practice on this site is for preparation only; see the disclaimer below.
+
+              <p class="home-pricing-footnote">
+                Same full library on both plans. One-time payment—no auto-renew. Access is tied to this browser.
               </p>
             </div>
           </section>
 
-          <div class="card purchase-card" id="purchase-details">
-            <div class="purchase-card-inner">
-              <div class="purchase-card-main">
-                <p class="purchase-label">Study plan</p>
-                <h2 class="purchase-heading">Match your prep to CCNA 200-301</h2>
-                <p class="purchase-lead purchase-lead--tight">
-                  Domain weights and a suggested study order. Unlock the full library from the purchase cards above.
-                </p>
-                <div class="purchase-blueprint-callout" aria-labelledby="purchase-blueprint-title">
-                  <h3 class="purchase-blueprint-title" id="purchase-blueprint-title">
-                    Match your prep to how Cisco weights CCNA 200-301
-                  </h3>
-                  <p class="purchase-blueprint-lead">
-                    The live CCNA 200-301 exam (v1.1) certifies associate-level networking skills across routing, switching,
-                    IP services, security, and automation. Cisco publishes six domains; official guidance puts the heaviest weight on
-                    <strong>IP connectivity</strong> (25%), with <strong>network fundamentals</strong> and <strong>network access</strong>
-                    (20% each) close behind.
-                  </p>
-                  <p class="purchase-blueprint-note">
-                    Domain weights below come from Cisco exam guidance. Use them to budget study hours, not as a guarantee of how
-                    many questions you will see on a specific attempt. The exam allows up to <strong>120 minutes</strong> with
-                    multiple-choice, drag-and-drop, and simulation-style items.
-                  </p>
-                  <div class="purchase-blueprint-table-wrap">
-                    <table class="purchase-domain-table" aria-label="Approximate CCNA 200-301 domain weights and study focus">
-                      <thead>
-                        <tr>
-                          <th scope="col">Domain</th>
-                          <th scope="col">Weight</th>
-                          <th scope="col">What to study</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">Network fundamentals</th>
-                          <td>20%</td>
-                          <td>OSI and TCP/IP models, IPv4/IPv6, cabling, devices, topologies, subnetting basics</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Network access</th>
-                          <td>20%</td>
-                          <td>VLANs, trunking, basic STP, EtherChannel, wireless concepts, switch port configuration</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">IP connectivity</th>
-                          <td>25%</td>
-                          <td>Routing tables, static routing, OSPF fundamentals, path selection, troubleshooting routing</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">IP services</th>
-                          <td>10%</td>
-                          <td>NAT, DHCP, DNS, NTP, SNMP, syslog, QoS basics</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Security fundamentals</th>
-                          <td>15%</td>
-                          <td>Device hardening, ACLs, authentication, AAA basics, secure management access</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Automation and programmability</th>
-                          <td>10%</td>
-                          <td>APIs, controllers, automation concepts, JSON, Python basics, intent-based networking</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <p class="purchase-blueprint-lead">
-                    <strong>What to focus on first:</strong> network fundamentals and IP connectivity underpin subnetting, routing, and
-                    a large share of drag-and-drop or simulation-style prompts. Add network access and security fundamentals next. They
-                    show up on both theory and configuration-style questions.
-                  </p>
-                  <p class="purchase-blueprint-order-title">Suggested study order</p>
-                  <ol class="purchase-blueprint-order">
-                    <li>Network fundamentals (models, addressing, subnetting)</li>
-                    <li>Network access (VLANs, switching, wireless basics)</li>
-                    <li>IP connectivity (routing, OSPF, troubleshooting)</li>
-                    <li>IP services (NAT, DHCP, DNS, NTP)</li>
-                    <li>Security fundamentals (ACLs, device hardening, AAA)</li>
-                    <li>Automation and programmability (APIs, JSON, Python basics)</li>
-                  </ol>
-                  <p class="purchase-blueprint-lead">
-                    Under time pressure, leaning hardest into <strong>IP connectivity</strong> and <strong>network fundamentals</strong>
-                    before you polish lighter domains mirrors where Cisco weights the blueprint. The timed simulation on this site rehearses
-                    that mixed multiple-choice, drag-and-drop, and CLI lab pressure across all six domains in one exam-style session.
-                  </p>
-                  <p class="purchase-blueprint-note">
-                    Source: Cisco CCNA 200-301 exam blueprint, v1.1.
-                  </p>
-                </div>
-                <div class="purchase-notes">
-                  <strong>No recurring membership.</strong> Choose a 10-day ($9.99) or 30-day ($19.99) access window. Renew only if you want more time.
-                  <strong>No additional software</strong> is required. Everything runs in your browser.
-                </div>
-              </div>
+          <section class="landing-gns3-compare" id="ccna-gns3-compare" aria-labelledby="ccna-gns3-compare-title">
+            <h2 id="ccna-gns3-compare-title">Browser Labs vs. GNS3 / Packet Tracer</h2>
+            <p class="landing-gns3-lead">
+              Objective-focused CLI simulations in your browser—no images, VMs, or IT install approvals. Same testing engine as the free VLAN lab sample above.
+            </p>
+            <div class="landing-gns3-table-wrap">
+              <table class="landing-gns3-table" aria-describedby="ccna-gns3-compare-caption">
+                <caption id="ccna-gns3-compare-caption" class="visually-hidden">
+                  Comparison of GNS3 and Packet Tracer versus Be Certified Today browser CLI labs
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Need</th>
+                    <th scope="col">GNS3 / Packet Tracer</th>
+                    <th scope="col" class="landing-gns3-col-bct bct-brand-name">Be Certified Today</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Setup</th>
+                    <td>Install app, images, or PT files</td>
+                    <td class="landing-gns3-cell-bct">Open a URL—lab runs in browser</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Work laptop</th>
+                    <td>Often blocked by IT policy</td>
+                    <td class="landing-gns3-cell-bct">No admin rights required</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Exam alignment</th>
+                    <td>Topology building practice</td>
+                    <td class="landing-gns3-cell-bct">Objective-focused CLI sims + timed mixed exam</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Mobile study</th>
+                    <td>Usually desktop-only</td>
+                    <td class="landing-gns3-cell-bct">Touch-friendly on phone and tablet</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
+            <p class="landing-compare-cta">
+              <a href="/sample?track=ccna-vlan">Try free VLAN lab sample →</a>
+            </p>
+          </section>
+
+          <section class="landing-gns3-compare" id="ccna-compare" aria-labelledby="ccna-compare-title">
+            <h2 id="ccna-compare-title">Browser Exam Prep vs. PDF Dumps and Desktop Lab Software</h2>
+            <p class="landing-gns3-lead">
+              Many CCNA sites sell <strong>printable PDFs</strong> or require <strong>GNS3, Packet Tracer, or desktop test engines</strong> for labs.
+              Be Certified Today is built for <strong>interactive practice</strong> in the same browser format you use on test day.
+            </p>
+            <div class="landing-gns3-table-wrap">
+              <table class="landing-gns3-table" aria-describedby="ccna-compare-caption">
+                <caption id="ccna-compare-caption" class="visually-hidden">
+                  Comparison of typical PDF dump sellers and desktop lab tools versus Be Certified Today CCNA exam prep
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Capability</th>
+                    <th scope="col">Typical PDF / Desktop Site</th>
+                    <th scope="col" class="landing-gns3-col-bct bct-brand-name">Be Certified Today</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Primary format</th>
+                    <td>PDF download or desktop test engine</td>
+                    <td class="landing-gns3-cell-bct">Interactive HTML in your browser</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Mobile study</th>
+                    <td>Often PDF zoom or desktop-only player</td>
+                    <td class="landing-gns3-cell-bct">Responsive UI on phone, tablet, and desktop</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">CLI labs</th>
+                    <td>Usually requires GNS3, Packet Tracer, or VM install</td>
+                    <td class="landing-gns3-cell-bct">Browser CLI simulations + VLAN lab preview</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Drag-and-drop</th>
+                    <td>Rare or static screenshots in PDFs</td>
+                    <td class="landing-gns3-cell-bct">Multiple D&amp;D sets + shuffled preview</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Timed 120-min exam</th>
+                    <td>Rare, or separate desktop engine only</td>
+                    <td class="landing-gns3-cell-bct">Full timed simulation in the practice portal</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Weak-area review</th>
+                    <td>Static Q&amp;A list</td>
+                    <td class="landing-gns3-cell-bct">Review modes loop missed topics back</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Content updates</th>
+                    <td>&ldquo;90 days free updates&rdquo; on a PDF file</td>
+                    <td class="landing-gns3-cell-bct">Living site with continuous question additions</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Exam policy</th>
+                    <td>Often markets braindump memorization</td>
+                    <td class="landing-gns3-cell-bct">Exam prep only. Verified practice, not actual exam questions</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="landing-compare-cta">
+              <a href="#home-ccna-samples-title">Preview NGTE samples →</a>
+            </p>
+            <div class="landing-mission-pitch" id="ccna-mission" aria-labelledby="ccna-mission-title">
+              <h3 id="ccna-mission-title">Why we built Be Certified Today</h3>
+              <p class="landing-mission-lead">
+                We built this for CCNA prep you can trust: current 200-301 practice with timed simulations, drag-and-drop, and CLI labs —
+                presented the way the real exam does — with answers verified against official Cisco sources.
+                Preview NGTE samples first, no account required. When you are ready, unlock the full library for one payment, one period —
+                no membership, no ads inside the portal.
+              </p>
+              <ul class="landing-mission-pillars" aria-label="What we promise">
+                <li><strong>Current material</strong> — aligned to CCNA 200-301 objectives (v1.1), not a stale PDF.</li>
+                <li><strong>Exam-realistic practice</strong> — timed sim, drag-and-drop, and browser CLI labs on phone, tablet, or desktop.</li>
+                <li><strong>Verified answers</strong> — keys and explanations tied to official sources, not dump sites.</li>
+                <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
+              </ul>
+              <p class="landing-mission-cta">
+                <a href="#purchase">Unlock CCNA access when you are ready →</a>
+              </p>
+            </div>
+            <p class="landing-compare-note">
+              Cisco does not endorse third-party braindumps. Practice on this site is for preparation only; see the disclaimer below.
+            </p>
+          </section>
 
           <ul class="benefits benefits--deferred" aria-label="What you get with full access">
             <li>100% interactive. You click, type, and drag in the app, not static dumps or slide decks.</li>
@@ -3263,7 +3357,7 @@
                 <div class="faq-answer">
                   <p>
                     I know what exam day feels like — the pressure and the worry that your prep is already out of date.
-                    I built Be Certified Today so you can practice in peace with <strong>current, exam-realistic CCNA 200-301 prep</strong>,
+                    We built Be Certified Today so you can practice in peace with <strong>current, exam-realistic CCNA 200-301 prep</strong>,
                     <strong>verified explanations</strong>, and <strong>no membership noise</strong>.
                     My tagline is simple: <strong>Practice like test day. Walk in ready.</strong>
                   </p>
@@ -3478,7 +3572,7 @@
       </button>
       <p id="ccna10dLastChanceTitle" class="bcc-last-chance-bar__eyebrow">Last chance · one-time offer</p>
       <p class="bcc-last-chance-bar__copy">
-        <strong>$9.99</strong> · 10-day CCNA bank — 700+ questions, VLAN CLI labs, drag-and-drop &amp; timed sim
+        <strong>$9.99</strong> · 10-day CCNA bank — 800+ questions, VLAN CLI labs, drag-and-drop &amp; timed sim
       </p>
       <button
         type="button"
