@@ -1,15 +1,15 @@
 <!doctype html>
 <!--
+  TEST COPY — sandbox for router/switch CLI experiments. Production lab: cli-lab-nat-dhcp-sim.html
   Dynamic show running-config: accepted lab commands merge into baseline via cliLabContainer.createRunningConfigView().
-  Free-order config on R1/Sw1; pass/fail via Submit Lab (running-config validation).
 
   CLI lab baseline — patterns aligned with public/CCNA-Study/CCNA_labs/cli-lab-ip-services-sim-v2.html (multi-device,
   tasks panel, spoiler terminal blocks, full IOS command forms). ENCOR reference:
   public/CCNP-ENCOR-Study/ENCOR_Samples/cli-lab-rapid-pvst-lacp-new.html.
 
   Includes:
-  - Router (R1): free-order IOS modes; lab commands merge into show running-config
-  - Switch (Sw1): second IOS CLI — free-order config; Submit Lab validates running-config
+  - Router (R1): LAB_STEPS[] { mode, test(raw) }; mode drives prompt via promptForMode(); normalize() accepts common abbreviations
+  - Switch (Sw1): second IOS CLI — read-only exhibit + optional mode practice (same prompt helpers as R1-style IOS)
   - PC1: one modal; device picker sets PC1>; extend submitPc() for ping, ipconfig, etc.
   - Device picker (R1 / Sw1 / PC1), Helper / Spoiler modals, tasks-blue-box, draggable modals, command history
 
@@ -62,7 +62,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
-<title>CCNA: DHCP, NAT, and SSH Simulation V.3 | Be Certified Today</title>
+<title>[TEST] CCNA: DHCP, NAT, and SSH Simulation V.3 | Be Certified Today</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -678,7 +678,7 @@
     </a>
     </header>
     <main class="card">
-      <h1>CCNA: DHCP, NAT, and SSH Simulation V.3</h1>
+      <h1>[TEST] CCNA: DHCP, NAT, and SSH Simulation V.3</h1>
 
       <div class="diagram-wrap" aria-label="Topology diagram">
         <div class="diagram-stage">
@@ -759,7 +759,7 @@ access-list 192 permit ip 192.168.0.0 0.0.3.255 any</pre>
     </p>
   </div>
 
-  <!-- Primary router CLI (R1 — free-order config + running-config merge) -->
+  <!-- Primary switch CLI (editable lab device — LAB_STEPS engine) -->
   <div id="swCliOverlay" class="cli-modal-overlay" aria-hidden="true">
     <div
       id="swCliDialog"
@@ -1343,7 +1343,7 @@ Sw1#</pre>
       /**
        * ## Prompt / modes (IOS-shaped)
        *
-       * - Free-order IOS modes on R1/Sw1; Submit Lab validates merged running-config.
+       * - LAB_STEPS: finite list of { mode, test(raw) }. Steps advance only when test(raw) is true for the CURRENT index.
        * - mode selects the DISPLAYED prompt via promptForMode(host, mode).
        * - Add modes as needed: config-router, config-ext-nacl, config-pmap, control-plane, …
        * - Abbreviations: normalize() expands common forms (conf t, sh run, int …) so tests can match canonical strings.

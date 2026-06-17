@@ -1304,10 +1304,7 @@ R3(config-line)# end</pre>
       /** null = DEFAULT_ROUTER_CLI_HELP (baseline for all routers). */
       var ROUTER_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
-      var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
-      var COPY_RUN_START_EXEC_ONLY_MSG =
-        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the Task 1 NAT STEPS on R2 until you return to privileged EXEC (R2#), then save to startup-config.";
       var COPY_RUN_START_AFTER_R2_TASK1_MSG =
@@ -1791,13 +1788,13 @@ R3(config-line)# end</pre>
         }
 
         if (swIpInEnableMode() && matchShowVersion(line)) {
-          appendSw("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swIpInEnableMode()) {
-            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (stepIndex < STEPS.length) {
@@ -1995,7 +1992,7 @@ R3(config-line)# end</pre>
         }
 
         if (r1Mode === "exec" && matchShowVersion(line)) {
-          appendR1("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendR1);
           return;
         }
 
@@ -2006,7 +2003,7 @@ R3(config-line)# end</pre>
 
         if (matchCopyRunStart(line)) {
           if (r1Mode !== "exec") {
-            appendR1("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendR1("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (stepIndex < STEPS.length) {
@@ -2116,7 +2113,7 @@ R3(config-line)# end</pre>
         }
 
         if (r3Mode === "exec" && matchShowVersion(line)) {
-          appendR3("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendR3);
           return;
         }
 
@@ -2127,7 +2124,7 @@ R3(config-line)# end</pre>
 
         if (matchCopyRunStart(line)) {
           if (r3Mode !== "exec") {
-            appendR3("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendR3("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (stepIndex < STEPS.length) {
@@ -2151,7 +2148,13 @@ R3(config-line)# end</pre>
         if (r3Mode === "config-if" && u === "ip address dhcp") {
           return;
         }
-        if (r3Mode === "config" && u === "crypto key generate rsa modulus 1024") {
+        if (
+          cliLabContainer.tryAppendCryptoKeyGenerateRsaOutput(line, appendR3, {
+            normalize: normalize,
+            requireConfigMode: true,
+            mode: r3Mode,
+          })
+        ) {
           return;
         }
         if (r3Mode === "config" && u === "username root privilege 15 secret s3cret") {

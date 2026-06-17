@@ -14,13 +14,9 @@
       "% Context-sensitive help is not available for this command in this scenario.",
     SHOW_DISABLED: "% Unrecognized show command in this lab simulation",
     SHOW_VERSION_DEFAULT:
-      "Cisco IOS Software, BeCertifiedToday Lab Simulator\n" +
-      "Version 17.9.4a, RELEASE SOFTWARE\n" +
-      "Technical Support: context-sensitive help limited to scenario-required commands\n" +
-      "Copyright (c) BeCertifiedToday. All rights reserved.",
+      (container && container.LAB_SHOW_VERSION_MSG) ||
+      "BeCertifiedToday version 2026\nNGTE v1.2 (Next Generation Testing Engine) all rights reserved",
     COPY_OK: container ? container.COPY_RUN_START_OK_MSG : "configuration has been written to memory",
-    COPY_EXEC_ONLY:
-      "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.",
     COPY_STEPS_INCOMPLETE:
       "% Error: Finish the lab task sequence on this device before saving to startup-config.",
     VERIFY_HINT: container ? container.CLI_VERIFY_INSTRUCTIONS_MSG : "% Check lab Tasks for the required value.",
@@ -300,7 +296,13 @@
         return true;
       }
       if (inPrivilegedExec(host, steps, stepIndex, exploreNav ? exploreNav.getMode() : null) && matchShowVersion(line)) {
-        appendBlock(el.scroll, "line-sys", showVersionText);
+        if (container && typeof container.appendLabShowVersion === "function") {
+          container.appendLabShowVersion(function (cls, text) {
+            appendLine(el.scroll, cls, text);
+          });
+        } else {
+          appendBlock(el.scroll, "line-sys", showVersionText);
+        }
         return true;
       }
       if (matchShowHistory(line)) {
@@ -326,7 +328,7 @@
     function handleCopyRunStart() {
       if (copyCfg.enabled === false) return false;
       if (!inPrivilegedExec(host, steps, stepIndex, exploreNav ? exploreNav.getMode() : null)) {
-        appendLine(el.scroll, "line-bad", MSG.COPY_EXEC_ONLY);
+        appendLine(el.scroll, "line-bad", MSG.UNSUPPORTED);
         return true;
       }
       if (copyCfg.requireStepsComplete !== false && graded && stepIndex < steps.length) {

@@ -46,6 +46,19 @@
       var ROUTER_CLI_HELP = null;
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
 
+      function normalizeCmd(s) {
+        var t = String(s || "")
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ");
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        return t;
+      }
+
+      function isShowVersion(raw) {
+        return normalizeCmd(raw) === "show version";
+      }
+
       var r1Prompt = document.getElementById("r1Prompt");
       var r1Cmdline = document.getElementById("r1Cmdline");
       var r1Scrollback = document.getElementById("r1Scrollback");
@@ -75,6 +88,11 @@
             cliLabContainer.iosHelpOpts("router", promptText, ROUTER_CLI_HELP)
           )
         ) {
+          return;
+        }
+
+        if (isShowVersion(trimmed)) {
+          cliLabContainer.appendLabShowVersion(appendR1);
           return;
         }
 

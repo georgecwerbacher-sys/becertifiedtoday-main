@@ -1252,10 +1252,7 @@ Sw2# copy running-config startup-config</pre>
       /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
-      var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
-      var COPY_RUN_START_EXEC_ONLY_MSG =
-        "% Error: Run copy running-config startup-config only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var VLAN_LAB_ALL_DONE_MSG =
@@ -1762,13 +1759,13 @@ Sw2# copy running-config startup-config</pre>
         }
 
         if (swInEnableMode(stepIndexSw1, sw1PromptOverride) && matchShowVersion(line)) {
-          appendSw("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swInEnableMode(stepIndexSw1, sw1PromptOverride)) {
-            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (stepIndexSw1 < LAB_STEPS.length) {
@@ -1960,13 +1957,13 @@ Sw2# copy running-config startup-config</pre>
         }
 
         if (swInEnableMode(stepIndexSw2, sw2PromptOverride) && matchShowVersion(line)) {
-          appendSw2("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw2);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swInEnableMode(stepIndexSw2, sw2PromptOverride)) {
-            appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (stepIndexSw2 < LAB_STEPS.length) {

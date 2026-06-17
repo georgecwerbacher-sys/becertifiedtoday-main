@@ -52,6 +52,20 @@
   var CLI_HELP_UNAVAILABLE_MSG =
     "% Context-sensitive help is not available for this command in this scenario.";
   var COPY_RUN_START_OK_MSG = "configuration has been written to memory";
+  /** Privileged EXEC `show version` — all CCNA CLI lab devices. */
+  var LAB_SHOW_VERSION_MSG =
+    "BeCertifiedToday version 2026\n" +
+    "NGTE v1.2 (Next Generation Testing Engine) all rights reserved";
+
+  /** Append LAB_SHOW_VERSION_MSG as separate line-sys rows (all devices). */
+  function appendLabShowVersion(appendFn) {
+    if (!appendFn || typeof appendFn !== "function") return;
+    var lines = String(LAB_SHOW_VERSION_MSG || "").split("\n");
+    for (var i = 0; i < lines.length; i++) {
+      if (lines[i]) appendFn("line-sys", lines[i]);
+    }
+  }
+
   var CCNA_TRAINING_PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
   /** Order matches CCNA_Training_Portal.html Lab Simulations grid. */
   var CCNA_LAB_CHAIN = [
@@ -3283,6 +3297,57 @@
     return true;
   }
 
+  /**
+   * Parse `crypto key generate rsa [general-keys] [modulus <bits>]` after lab normalize().
+   * Returns bit size (360–4096) or null if not an RSA key-generate command.
+   */
+  function parseCryptoKeyGenerateRsaModulus(normalizedCmd) {
+    var t = String(normalizedCmd || "")
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/[.;]+$/, "");
+    if (t === "crypto key generate rsa" || t === "crypto key generate rsa general-keys") {
+      return 2048;
+    }
+    var m = /^crypto key generate rsa(?:\s+general-keys)?\s+modulus\s+(\d+)$/.exec(t);
+    if (!m) return null;
+    var bits = parseInt(m[1], 10);
+    if (isNaN(bits) || bits < 360 || bits > 4096) return null;
+    return bits;
+  }
+
+  /** IOS-style scrollback when RSA keys are generated (2048, 4096, etc.). */
+  function cryptoKeyGenerateRsaSysMsg(bits) {
+    var n = parseInt(bits, 10);
+    if (isNaN(n) || n < 360) n = 2048;
+    return "% Generating " + n + " bit RSA keys, keys will be non-exportable...";
+  }
+
+  /**
+   * If line is crypto RSA key generation, append IOS sys message. Returns bit size or false.
+   * opts: { normalize, requireConfigMode, mode }
+   */
+  function tryAppendCryptoKeyGenerateRsaOutput(line, appendFn, opts) {
+    if (!appendFn || typeof appendFn !== "function") return false;
+    opts = opts || {};
+    var u = line;
+    if (opts.normalize && typeof opts.normalize === "function") {
+      u = opts.normalize(line);
+    } else {
+      u = String(line || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .replace(/[.;]+$/, "");
+    }
+    var bits = parseCryptoKeyGenerateRsaModulus(u);
+    if (bits === null) return false;
+    if (opts.requireConfigMode && opts.mode !== "config") return false;
+    appendFn("line-sys", cryptoKeyGenerateRsaSysMsg(bits));
+    return bits;
+  }
+
   /** `(config)# ip dhcp ?` — DHCP global subcommands. */
 
   function isIpDhcpHelpQuery(raw) {
@@ -5412,6 +5477,206 @@
     };
   }
 
+  /**
+   * Build IOS-style show running-config from a baseline snapshot plus lab-applied lines.
+   * Only lines passed to applyGlobal / applyInterface appear — not a full IOS config store.
+   *
+   * @param {string} baselineText - static preconfigured show run (\\r\\n or \\n)
+   * @returns {{ applyGlobal: Function, applyInterface: Function, reset: Function, render: Function }}
+   */
+  function normalizeRunningConfigInterfaceName(name) {
+    var t = String(name || "").trim();
+    var m =
+      /^ethernet\s*(\d+)\/(\d+)$/i.exec(t) ||
+      /^e(\d+)\/(\d+)$/i.exec(t) ||
+      /^ethernet(\d+)\/(\d+)$/i.exec(t);
+    if (m) return "Ethernet" + m[1] + "/" + m[2];
+    m = /^loopback\s*(\d+)$/i.exec(t) || /^loopback(\d+)$/i.exec(t);
+    if (m) return "Loopback" + m[1];
+    m = /^vlan\s*(\d+)$/i.exec(t) || /^vlan(\d+)$/i.exec(t);
+    if (m) return "Vlan" + m[1];
+    m = /^gigabitethernet\s*(\d+)\/(\d+)$/i.exec(t) || /^gigabitethernet(\d+)\/(\d+)$/i.exec(t);
+    if (m) return "GigabitEthernet" + m[1] + "/" + m[2];
+    return t;
+  }
+
+  function runningConfigSubcmdLine(line) {
+    var t = String(line || "").trim();
+    return t.indexOf(" ") === 0 ? t : " " + t;
+  }
+
+  /** Insert interface sub-commands after anchor lines (e.g. helper-address after ip address). */
+  function interfaceSubcmdFollowsAnchor(anchorTrimmed, subTrimmed) {
+    var anchor = String(anchorTrimmed || "").toLowerCase();
+    var sub = String(subTrimmed || "").toLowerCase();
+    if (sub.indexOf("ip helper-address") === 0 && anchor.indexOf("ip address ") === 0) return true;
+    if (sub.indexOf("ip nat ") === 0 && anchor.indexOf("ip address ") === 0) return true;
+    return false;
+  }
+
+  /** IOS-like global line placement in show running-config (lab approximation). */
+  function findGlobalInsertIndex(lines, globalLine) {
+    var gl = String(globalLine || "").trim().toLowerCase();
+    var i;
+
+    if (gl.indexOf("ip nat inside source") === 0) {
+      var aclM = /list\s+(\d+)/.exec(gl);
+      if (aclM) {
+        for (i = 0; i < lines.length; i++) {
+          if (lines[i].trim().toLowerCase().indexOf("access-list " + aclM[1] + " ") === 0) return i + 1;
+        }
+      }
+      for (i = lines.length - 1; i >= 0; i--) {
+        if (lines[i].trim().toLowerCase().indexOf("access-list ") === 0) return i + 1;
+      }
+    }
+
+    if (gl.indexOf("ntp ") === 0) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("ntp ") === 0) {
+          var lastNtp = i;
+          while (lastNtp + 1 < lines.length && lines[lastNtp + 1].trim().toLowerCase().indexOf("ntp ") === 0) {
+            lastNtp++;
+          }
+          return lastNtp + 1;
+        }
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("ip name-server ") === 0) return i + 1;
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("ip domain-name ") === 0) return i + 1;
+      }
+    }
+
+    if (gl.indexOf("ip ssh ") === 0) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase() === "line con 0") return i;
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("ip domain-name ") === 0) return i + 1;
+      }
+    }
+
+    for (i = 0; i < lines.length; i++) {
+      if (lines[i].trim() === "end") return i;
+    }
+    return lines.length;
+  }
+
+  function insertAppliedGlobals(out, globalLines) {
+    for (var g = 0; g < globalLines.length; g++) {
+      var gl = globalLines[g];
+      var glLower = gl.trim().toLowerCase();
+      var dup = false;
+      for (var x = 0; x < out.length; x++) {
+        if (out[x].trim().toLowerCase() === glLower) {
+          dup = true;
+          break;
+        }
+      }
+      if (dup) continue;
+      out.splice(findGlobalInsertIndex(out, gl), 0, gl);
+    }
+  }
+
+  function createRunningConfigView(baselineText) {
+    var baseline = String(baselineText || "").replace(/\r\n/g, "\n");
+    var globalLines = [];
+    var ifLines = {};
+
+    function applyGlobal(line) {
+      var t = String(line || "").trim();
+      if (!t) return;
+      if (globalLines.indexOf(t) === -1) globalLines.push(t);
+    }
+
+    function applyInterface(ifName, line) {
+      var key = normalizeRunningConfigInterfaceName(ifName);
+      var t = String(line || "").trim();
+      if (!key || !t) return;
+      if (!ifLines[key]) ifLines[key] = [];
+      var sub = runningConfigSubcmdLine(t);
+      if (ifLines[key].indexOf(sub) === -1) ifLines[key].push(sub);
+    }
+
+    function reset() {
+      globalLines = [];
+      ifLines = {};
+    }
+
+    function interfaceBlockHasLine(out, ifKey, subTrimmed) {
+      var inBlock = false;
+      var needle = subTrimmed.toLowerCase();
+      for (var k = 0; k < out.length; k++) {
+        var trimmed = out[k].trim();
+        var ifMatch = /^interface\s+(.+)$/i.exec(trimmed);
+        if (ifMatch) {
+          inBlock = normalizeRunningConfigInterfaceName(ifMatch[1]) === ifKey;
+          continue;
+        }
+        if (inBlock) {
+          if (trimmed === "!") inBlock = false;
+          else if (trimmed.toLowerCase() === needle) return true;
+        }
+      }
+      return false;
+    }
+
+    function render() {
+      var lines = baseline.split("\n");
+      var out = [];
+      var i = 0;
+      while (i < lines.length) {
+        var line = lines[i];
+        var ifMatch = /^interface\s+(.+)$/i.exec(line.trim());
+        if (ifMatch) {
+          var ifKey = normalizeRunningConfigInterfaceName(ifMatch[1]);
+          var pendingApplied = ifLines[ifKey] ? ifLines[ifKey].slice() : [];
+          var insertedApplied = {};
+          out.push(line);
+          i++;
+          while (i < lines.length) {
+            var inner = lines[i];
+            if (inner.trim() === "!") {
+              for (var r = 0; r < pendingApplied.length; r++) {
+                var rem = pendingApplied[r].trim();
+                if (insertedApplied[rem]) continue;
+                if (!interfaceBlockHasLine(out, ifKey, rem)) out.push(pendingApplied[r]);
+              }
+              out.push(inner);
+              i++;
+              break;
+            }
+            out.push(inner);
+            for (var j = 0; j < pendingApplied.length; j++) {
+              var sub = pendingApplied[j];
+              var subTrim = sub.trim();
+              if (insertedApplied[subTrim]) continue;
+              if (interfaceSubcmdFollowsAnchor(inner.trim(), subTrim)) {
+                if (!interfaceBlockHasLine(out, ifKey, subTrim)) out.push(sub);
+                insertedApplied[subTrim] = true;
+              }
+            }
+            i++;
+          }
+          continue;
+        }
+        out.push(line);
+        i++;
+      }
+      insertAppliedGlobals(out, globalLines);
+      return out.join("\r\n");
+    }
+
+    return {
+      applyGlobal: applyGlobal,
+      applyInterface: applyInterface,
+      reset: reset,
+      render: render,
+    };
+  }
+
   var api = {
     isModeNavigationCommand: isModeNavigationCommand,
     expandInterfaceEcho: expandInterfaceEcho,
@@ -5421,6 +5686,8 @@
     CLI_VERIFY_INSTRUCTIONS_MSG: CLI_VERIFY_INSTRUCTIONS_MSG,
     CLI_HELP_UNAVAILABLE_MSG: CLI_HELP_UNAVAILABLE_MSG,
     COPY_RUN_START_OK_MSG: COPY_RUN_START_OK_MSG,
+    LAB_SHOW_VERSION_MSG: LAB_SHOW_VERSION_MSG,
+    appendLabShowVersion: appendLabShowVersion,
     CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
     CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
     initCcnaLabTopChrome: initCcnaLabTopChrome,
@@ -5433,6 +5700,8 @@
     applyLabStepInterfaceNav: applyLabStepInterfaceNav,
     bindLocalHistory: bindLocalHistory,
     createExploreNav: createExploreNav,
+    createRunningConfigView: createRunningConfigView,
+    normalizeRunningConfigInterfaceName: normalizeRunningConfigInterfaceName,
     isShowHelpQuery: isShowHelpQuery,
     showCommandHelpText: showCommandHelpText,
     tryAppendShowHelp: tryAppendShowHelp,
@@ -5580,6 +5849,9 @@
     isCryptoKeyGenerateRsaModulusHelpQuery: isCryptoKeyGenerateRsaModulusHelpQuery,
     cryptoKeyGenerateRsaModulusCommandHelpText: cryptoKeyGenerateRsaModulusCommandHelpText,
     tryAppendCryptoKeyGenerateRsaModulusHelp: tryAppendCryptoKeyGenerateRsaModulusHelp,
+    parseCryptoKeyGenerateRsaModulus: parseCryptoKeyGenerateRsaModulus,
+    cryptoKeyGenerateRsaSysMsg: cryptoKeyGenerateRsaSysMsg,
+    tryAppendCryptoKeyGenerateRsaOutput: tryAppendCryptoKeyGenerateRsaOutput,
     isIpNatPoolNetmaskHelpQuery: isIpNatPoolNetmaskHelpQuery,
     ipNatPoolNetmaskCommandHelpText: ipNatPoolNetmaskCommandHelpText,
     tryAppendIpNatPoolNetmaskHelp: tryAppendIpNatPoolNetmaskHelp,

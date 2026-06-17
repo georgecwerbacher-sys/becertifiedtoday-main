@@ -1551,10 +1551,7 @@ Sw2(config-if)# end</pre>
       /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
-      var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
-      var COPY_RUN_START_EXEC_ONLY_MSG =
-        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var TRUNK_LAB_ALL_DONE_MSG =
         "[OK] Lab complete: trunks + LACP on both switches, PC1 reachability verified, startup-config saved on Sw1 and Sw2.";
       var PASS_BANNER_TRUNK_PENDING =
@@ -1995,13 +1992,13 @@ Sw2(config-if)# end</pre>
         }
 
         if (swInEnableMode(stepIndexSw1, sw1PromptOverride) && matchShowVersion(line)) {
-          appendSw("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swInEnableMode(stepIndexSw1, sw1PromptOverride)) {
-            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           appendSw("line-sys", COPY_RUN_START_OK_MSG);
@@ -2147,13 +2144,13 @@ Sw2(config-if)# end</pre>
         }
 
         if (swInEnableMode(stepIndexSw2, sw2PromptOverride) && matchShowVersion(line)) {
-          appendSw2("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw2);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swInEnableMode(stepIndexSw2, sw2PromptOverride)) {
-            appendSw2("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           appendSw2("line-sys", COPY_RUN_START_OK_MSG);

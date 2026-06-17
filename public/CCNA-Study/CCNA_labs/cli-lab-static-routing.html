@@ -1268,7 +1268,6 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
        */
       var ROUTER_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
-      var SHOW_VERSION_MSG = "BeCertifiedToday version 2026";
       var SHOW_IP_INT_BRIEF_R1 = [
         "Interface                  IP-Address      OK? Method Status                Protocol",
         "Ethernet0/0                10.0.12.1       YES manual up                    up",
@@ -1294,8 +1293,6 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         "Loopback0                  10.3.3.3        YES manual up                    up",
       ].join("\n");
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
-      var COPY_RUN_START_EXEC_ONLY_MSG =
-        "% Error: Run copy running-configuration startup-configuration only from privileged EXEC (#), not from configuration mode.";
       var COPY_RUN_START_AFTER_STEPS_MSG =
         "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
       var R1_ROUTES_INCOMPLETE_MSG =
@@ -1608,13 +1605,13 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         }
 
         if (swInEnableMode() && matchShowVersion(line)) {
-          appendSw("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw);
           return;
         }
 
         if (matchCopyRunStart(line)) {
           if (!swInEnableMode()) {
-            appendSw("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (!r1RoutesComplete()) {
@@ -1721,7 +1718,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         }
 
         if (matchShowVersion(line)) {
-          appendSw2("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw2);
           return;
         }
 
@@ -1775,7 +1772,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
         }
 
         if (sw3Mode === "exec" && matchShowVersion(line)) {
-          appendSw3("line-sys", SHOW_VERSION_MSG);
+          cliLabContainer.appendLabShowVersion(appendSw3);
           return;
         }
 
@@ -1791,7 +1788,7 @@ R3(config)#ip route 0.0.0.0 0.0.0.0 209.165.201.1</pre>
 
         if (matchCopyRunStart(line)) {
           if (sw3Mode !== "exec") {
-            appendSw3("line-sys", COPY_RUN_START_EXEC_ONLY_MSG);
+            appendSw3("line-bad", cliLabContainer.INVALID_INPUT_MSG);
             return;
           }
           if (!r1RoutesComplete()) {

@@ -46,6 +46,19 @@
       var SWITCH_CLI_HELP = null;
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
 
+      function normalizeCmd(s) {
+        var t = String(s || "")
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, " ");
+        if (t === "sh ver" || t === "show ver" || t === "sh version") t = "show version";
+        return t;
+      }
+
+      function isShowVersion(raw) {
+        return normalizeCmd(raw) === "show version";
+      }
+
       var sw1Prompt = document.getElementById("sw1Prompt");
       var sw1Cmdline = document.getElementById("sw1Cmdline");
       var sw1Scrollback = document.getElementById("sw1Scrollback");
@@ -74,6 +87,11 @@
             cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
           )
         ) {
+          return;
+        }
+
+        if (isShowVersion(trimmed)) {
+          cliLabContainer.appendLabShowVersion(appendSw1);
           return;
         }
 
