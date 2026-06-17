@@ -15,7 +15,7 @@
     SHOW_DISABLED: "% Unrecognized show command in this lab simulation",
     SHOW_VERSION_DEFAULT:
       (container && container.LAB_SHOW_VERSION_MSG) ||
-      "BeCertifiedToday version 2026\nNGTE v1.2 (Next Generation Testing Engine) all rights reserved",
+      "BeCertifiedToday version 2026\nNGTE v1.2 (Next Generation Testing Engine)\nCopyright © 2026 Be Certified Today. All rights reserved.",
     COPY_OK: container ? container.COPY_RUN_START_OK_MSG : "configuration has been written to memory",
     COPY_STEPS_INCOMPLETE:
       "% Error: Finish the lab task sequence on this device before saving to startup-config.",
@@ -150,20 +150,12 @@
 
   function defaultLoginBanner(host) {
     if (isBctCliBannerContext()) {
-      return container && container.EXAM_SIM_CLI_BANNER_TEXT
-        ? container.EXAM_SIM_CLI_BANNER_TEXT
-        : (
-            "================================================================================\n" +
-            "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
-            "================================================================================\n" +
-            "\n" +
-            (container && container.BCT_CLI_HELP_NOTICE
-              ? container.BCT_CLI_HELP_NOTICE
-              : "Some context-sensitive help (?) is limited in this scenario.\n" +
-                "Help for commands required to complete the lab remains available.") +
-            "\n\nUse the Helper button to review the lab outline and topology if needed.\n" +
-            "================================================================================"
-          );
+      if (container && container.EXAM_SIM_CLI_BANNER_TEXT) return container.EXAM_SIM_CLI_BANNER_TEXT;
+      if (container && typeof container.buildExamSimCliBannerText === "function") {
+        return container.buildExamSimCliBannerText();
+      }
+    } else if (container && typeof container.buildIosLabLoginBanner === "function") {
+      return container.buildIosLabLoginBanner(host);
     }
     var helpNotice =
       container && container.BCT_CLI_HELP_NOTICE
@@ -172,7 +164,8 @@
           "Help for commands required to complete the lab remains available.";
     return (
       "================================================================================\n" +
-      "  Be Certified Today (BCT) IOS Lab Simulator — " +
+      "  Be Certified Today — NGTE v1.2 (Next Generation Testing Engine)\n" +
+      "  BCT IOS Lab Simulator — " +
       host +
       "\n" +
       "================================================================================\n" +
@@ -184,7 +177,7 @@
       "\n" +
       "Not affiliated with Cisco Systems, Inc.\n" +
       "\n" +
-      "Copyright (c) Be Certified Today. All rights reserved.\n" +
+      "Copyright © 2026 Be Certified Today. All rights reserved.\n" +
       "================================================================================"
     );
   }

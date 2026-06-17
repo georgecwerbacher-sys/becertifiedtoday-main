@@ -53,9 +53,12 @@
     "% Context-sensitive help is not available for this command in this scenario.";
   var COPY_RUN_START_OK_MSG = "configuration has been written to memory";
   /** Privileged EXEC `show version` — all CCNA CLI lab devices. */
+  var NGTE_PRODUCT_LINE = "NGTE v1.2 (Next Generation Testing Engine)";
+  var BCT_COPYRIGHT_LINE = "Copyright © 2026 Be Certified Today. All rights reserved.";
   var LAB_SHOW_VERSION_MSG =
     "BeCertifiedToday version 2026\n" +
-    "NGTE v1.2 (Next Generation Testing Engine) all rights reserved";
+    NGTE_PRODUCT_LINE + "\n" +
+    BCT_COPYRIGHT_LINE;
 
   /** Append LAB_SHOW_VERSION_MSG as separate line-sys rows (all devices). */
   function appendLabShowVersion(appendFn) {
@@ -339,14 +342,53 @@
     "Help for commands required to complete the lab remains available.\n" +
     "Using ? help is read-only — it does not change configuration, advance lab steps, or affect completion.";
 
-  var EXAM_SIM_CLI_BANNER_TEXT =
-    "================================================================================\n" +
-    "  Be Certified Today — BCT Lab Simulator v.1_2026\n" +
-    "================================================================================\n" +
-    "\n" +
-    BCT_CLI_HELP_NOTICE +
-    "\n\nUse the Helper button to review the lab outline and topology if needed.\n" +
-    "================================================================================";
+  function buildExamSimCliBannerText() {
+    return (
+      "================================================================================\n" +
+      "  Be Certified Today — " +
+      NGTE_PRODUCT_LINE +
+      "\n" +
+      "  BCT Lab Simulator · Authorized training use only\n" +
+      "================================================================================\n" +
+      "\n" +
+      "Browser-based IOS lab simulation for certification exam preparation.\n" +
+      "Not affiliated with Cisco Systems, Inc.\n" +
+      "\n" +
+      BCT_CLI_HELP_NOTICE +
+      "\n\nUse the Helper button to review the lab outline and topology if needed.\n" +
+      "\n" +
+      BCT_COPYRIGHT_LINE +
+      "\n" +
+      "================================================================================"
+    );
+  }
+
+  function buildIosLabLoginBanner(host) {
+    var device = host ? String(host) : "device";
+    return (
+      "================================================================================\n" +
+      "  Be Certified Today — " +
+      NGTE_PRODUCT_LINE +
+      "\n" +
+      "  BCT IOS Lab Simulator — " +
+      device +
+      "\n" +
+      "================================================================================\n" +
+      "\n" +
+      "This is a browser-based training simulator, not a live Cisco device.\n" +
+      BCT_CLI_HELP_NOTICE +
+      "\n\nOnly commands required for this lab scenario are supported — designed\n" +
+      "for realistic exam-style practice, not full IOS.\n" +
+      "\n" +
+      "Not affiliated with Cisco Systems, Inc.\n" +
+      "\n" +
+      BCT_COPYRIGHT_LINE +
+      "\n" +
+      "================================================================================"
+    );
+  }
+
+  var EXAM_SIM_CLI_BANNER_TEXT = buildExamSimCliBannerText();
 
   /** Login-style banner when a CLI modal opens on CCNA lab pages. */
   function showExamSimCliBanner(scrollbackEl) {
@@ -5687,6 +5729,8 @@
     CLI_HELP_UNAVAILABLE_MSG: CLI_HELP_UNAVAILABLE_MSG,
     COPY_RUN_START_OK_MSG: COPY_RUN_START_OK_MSG,
     LAB_SHOW_VERSION_MSG: LAB_SHOW_VERSION_MSG,
+    NGTE_PRODUCT_LINE: NGTE_PRODUCT_LINE,
+    BCT_COPYRIGHT_LINE: BCT_COPYRIGHT_LINE,
     appendLabShowVersion: appendLabShowVersion,
     CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
     CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
@@ -6023,6 +6067,8 @@
     isExamSimEmbed: isExamSimEmbed,
     isBctCliBannerContext: isBctCliBannerContext,
     EXAM_SIM_CLI_BANNER_TEXT: EXAM_SIM_CLI_BANNER_TEXT,
+    buildExamSimCliBannerText: buildExamSimCliBannerText,
+    buildIosLabLoginBanner: buildIosLabLoginBanner,
     BCT_CLI_HELP_NOTICE: BCT_CLI_HELP_NOTICE,
     showExamSimCliBanner: showExamSimCliBanner,
     injectBctCliBannerLabStyles: injectBctCliBannerLabStyles,
