@@ -32,9 +32,12 @@
   <meta charset="UTF-8" />
   <link rel="canonical" href="https://becertifiedtoday.com/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html" />
   <meta name="description" content="Free CCNA 200-301 CLI lab sample — trunk and LACP practice in your browser. Exam prep, not a training course. No GNS3 required." />
-  <meta name="robots" content="index, follow" />
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-shared.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-engines.js"></script>
+
 <title>CCNA: LACP and Trunking Simulation V.3 | Be Certified Today</title>
   <style>
     :root {
@@ -435,6 +438,7 @@
       border: 1px solid #1f7a58;
       font-weight: 700;
       line-height: 1.45;
+      color: #ffffff;
     }
     .pass-banner.visible {
       display: block;
@@ -489,11 +493,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -591,6 +600,48 @@
     .spoiler-verify-list li {
       margin: 0.4em 0;
     }
+
+    .lab-check-result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    .lab-check-result.visible {
+      display: block;
+    }
+    .lab-check-result.is-pass {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #d1fae5;
+    }
+    .lab-check-result.is-fail {
+      background: #3a1f24;
+      border: 1px solid #7a2f3d;
+      color: #fecdd3;
+    }
+    .lab-check-result ul {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .lab-check-result li {
+      margin: 4px 0;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+    }
+    .freeorder-test-banner {
+      margin: 0 0 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #2a2414;
+      border: 1px solid #8a6d2f;
+      color: #fde68a;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-format-topic-meta.css" />
@@ -653,8 +704,12 @@
         <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          
+          <button type="button" class="device-link" id="checkLabBtn">Submit Lab</button>
+
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
         </div>
+        <div id="inlineLabCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
       </div>
 </main>
     <p class="question-topic-meta ccna-format-topic-meta" aria-label="Format and topic">
@@ -701,6 +756,9 @@
             Run command
           </button>
         </div>
+        
+        <div id="labCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
+
         <div id="passBanner" class="pass-banner" role="status">
           Complete the STEPS sequence on Sw1 and Sw2, verify PC1 ping to PC2, then from enable mode run copy running-configuration startup-configuration on both switches.
         </div>
@@ -2259,53 +2317,7 @@ Sw2(config-if)# end</pre>
         }
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function (e) {
-          /* Bumping z-index on every tap (incl. buttons) can reorder the dialog mid-gesture and drop click/tap. */
-          if (e.target && e.target.closest && e.target.closest("button, input, textarea, select, label, a[href]")) {
-            return;
-          }
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
@@ -2428,17 +2440,17 @@ Sw2(config-if)# end</pre>
           submitFn();
         });
       }
-      wireCliEnterKeydown(swCmdline, submitSw);
-      wireCliEnterKeydown(sw2Cmdline, submitSw2);
-      wireCliEnterKeydown(pcCmdline, submitPc);
+      wireCliEnterKeydown(swCmdline, function () { submitSw(); });
+      wireCliEnterKeydown(sw2Cmdline, function () { submitSw2(); });
+      wireCliEnterKeydown(pcCmdline, function () { submitPc(); });
       /** Run command: backup when the host swallows keyboard events. */
       (function () {
         var r1 = document.getElementById("swCliRunBtn");
         var r2 = document.getElementById("sw2CliRunBtn");
         var r3 = document.getElementById("pcCliRunBtn");
-        if (r1) r1.addEventListener("click", submitSw);
-        if (r2) r2.addEventListener("click", submitSw2);
-        if (r3) r3.addEventListener("click", submitPc);
+        if (r1) r1.addEventListener("click", function () { submitSw(); });
+        if (r2) r2.addEventListener("click", function () { submitSw2(); });
+        if (r3) r3.addEventListener("click", function () { submitPc(); });
       })();
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
@@ -2502,6 +2514,63 @@ Sw2(config-if)# end</pre>
       });
 
       syncOpenCliLabel();
+
+      // __CCNA_FREEORDER_TEST_WIRE__
+      var __fo = createTrunkLacpTestEngine({
+        container: cliLabContainer,
+        sw1Baseline: SWITCH_SHOW_RUNNING_SNAPSHOT,
+        sw2Baseline: SWITCH2_SHOW_RUNNING_SNAPSHOT,
+        checkBtn: document.getElementById("checkLabBtn"),
+        labCheckEl: document.getElementById("inlineLabCheckResult"),
+        passBanner: passBanner,
+        passMsg: "[OK] Lab complete: trunks, VLANs, and LACP on Sw1 and Sw2.",
+        pendingMsg: "Configure both switches in any order, then click Submit Lab.",
+      });
+      function __foSwCtx(line, append, setPrompt, getPromptText) {
+        return {
+          line: line,
+          normalize: normalize,
+          append: append,
+          setPrompt: setPrompt,
+          matchShowRun: matchShowRun,
+          getPromptText: getPromptText,
+        };
+      }
+      var __submitSwOrig = submitSw;
+      submitSw = function () {
+        var line = swCmdline.value;
+        var trimmed = String(line || "").trim();
+        if (trimmed) appendSw("line-user", swPrompt.textContent + " " + expandInterfaceEcho(trimmed));
+        pushLocalHistory(swCmdline, line);
+        swCmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("switch", swPrompt.textContent, SWITCH_CLI_HELP))) return;
+        __fo.submitSw1(__foSwCtx(
+          line,
+          appendSw,
+          function (t) { swPrompt.textContent = t; },
+          function () { return swPrompt.textContent; }
+        ));
+      };
+      var __submitSw2Orig = submitSw2;
+      submitSw2 = function () {
+        var line = sw2Cmdline.value;
+        var trimmed = String(line || "").trim();
+        if (trimmed) appendSw2("line-user", sw2Prompt.textContent + " " + expandInterfaceEcho(trimmed));
+        pushLocalHistory(sw2Cmdline, line);
+        sw2Cmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, cliLabContainer.iosHelpOpts("switch", sw2Prompt.textContent, SWITCH_CLI_HELP))) return;
+        __fo.submitSw2(__foSwCtx(
+          line,
+          appendSw2,
+          function (t) { sw2Prompt.textContent = t; },
+          function () { return sw2Prompt.textContent; }
+        ));
+      };
+      var __resetSwLabOrig = resetSwLab;
+      resetSwLab = function () { __resetSwLabOrig(); __fo.reset(); };
+
       resetSwLab();
     })();
   </script>
