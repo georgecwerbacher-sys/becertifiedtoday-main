@@ -35,6 +35,9 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-shared.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-freeorder-engines.js"></script>
+
 <title>CCNA: Native VLAN and LACP Simulation V.3 | Be Certified Today</title>
   <style>
     :root {
@@ -407,6 +410,7 @@
       border: 1px solid #1f7a58;
       font-weight: 700;
       line-height: 1.45;
+      color: #ffffff;
     }
     .pass-banner.visible {
       display: block;
@@ -461,11 +465,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -553,6 +562,48 @@
       white-space: pre;
       overflow-x: auto;
     }
+
+    .lab-check-result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      line-height: 1.5;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    .lab-check-result.visible {
+      display: block;
+    }
+    .lab-check-result.is-pass {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #d1fae5;
+    }
+    .lab-check-result.is-fail {
+      background: #3a1f24;
+      border: 1px solid #7a2f3d;
+      color: #fecdd3;
+    }
+    .lab-check-result ul {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .lab-check-result li {
+      margin: 4px 0;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
+    }
+    .freeorder-test-banner {
+      margin: 0 0 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #2a2414;
+      border: 1px solid #8a6d2f;
+      color: #fde68a;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
   </style>
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-format-topic-meta.css" />
@@ -612,8 +663,12 @@
         <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          
+          <button type="button" class="device-link" id="checkLabBtn">Submit Lab</button>
+
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
         </div>
+        <div id="inlineLabCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
       </div>
 </main>
     <p class="question-topic-meta ccna-format-topic-meta" aria-label="Format and topic">
@@ -657,6 +712,9 @@
         <div class="controls">
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
+        
+        <div id="labCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
+
         <div id="passBanner" class="pass-banner" role="status">
           Complete all required tasks, then from enable mode on SW-1, SW-2, SW3, and SW-4 run copy running-config startup-config on each switch.
         </div>
@@ -1782,49 +1840,7 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
         appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function () {
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
@@ -2018,6 +2034,91 @@ SW-4(config-if-range)#channel-group 34 mode passive</pre>
       });
 
       syncOpenCliLabel();
+
+      // __CCNA_FREEORDER_TEST_WIRE__
+      var __fo = createNativeVlanLacpTestEngine({
+        container: cliLabContainer,
+        hosts: [
+          { id: "sw1", label: "SW1", baseline: SWITCH_SHOW_RUNNING_SNAPSHOT },
+          { id: "sw2", label: "SW2", baseline: SWITCH2_SHOW_RUNNING_SNAPSHOT },
+          { id: "sw3", label: "SW3", baseline: SWITCH3_SHOW_RUNNING_SNAPSHOT },
+          { id: "sw4", label: "SW4", baseline: SWITCH4_SHOW_RUNNING_SNAPSHOT },
+        ],
+        required: [
+          { deviceId: "sw1", label: "SW1", lines: [
+            { ifName: "Ethernet0/0", line: "switchport trunk allowed vlan 5,6" },
+            { ifName: "Ethernet0/1", line: "switchport trunk native vlan 77" },
+          ]},
+          { deviceId: "sw2", label: "SW2", lines: [
+            { ifName: "Ethernet0/1", line: "switchport trunk native vlan 77" },
+            { ifName: "Ethernet0/2", line: "switchport trunk allowed vlan 6" },
+          ]},
+          { deviceId: "sw3", label: "SW3", lines: [
+            { ifName: "Ethernet0/0", line: "channel-group 34 mode active" },
+            { ifName: "Ethernet0/1", line: "channel-group 34 mode active" },
+          ]},
+          { deviceId: "sw4", label: "SW4", lines: [
+            { ifName: "Ethernet0/0", line: "channel-group 34 mode passive" },
+            { ifName: "Ethernet0/1", line: "channel-group 34 mode passive" },
+          ]},
+        ],
+        checkBtn: document.getElementById("checkLabBtn"),
+        labCheckEl: document.getElementById("inlineLabCheckResult"),
+        passBanner: passBanner,
+        passMsg: "[OK] Lab complete: native VLAN and LACP tasks on all four switches.",
+        pendingMsg: "Configure all switches in any order, then click Submit Lab.",
+      });
+      function __foSwCtx(line, append, setPrompt, getPromptText) {
+        return {
+          line: line,
+          normalize: normalize,
+          append: append,
+          setPrompt: setPrompt,
+          matchShowRun: matchShowRun,
+          getPromptText: getPromptText,
+        };
+      }
+      var __submitSwOrig = submitSw;
+      submitSw = function () {
+        var dev = getLabDev();
+        var id = dev === "SW3" ? "sw3" : "sw1";
+        var promptText = swPrompt.textContent;
+        var line = swCmdline.value;
+        var trimmed = String(line || "").trim();
+        if (trimmed) appendSw("line-user", promptText + " " + expandInterfaceEcho(trimmed));
+        pushLocalHistory(swCmdline, line);
+        swCmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))) return;
+        __fo["submit_" + id](__foSwCtx(
+          line,
+          appendSw,
+          function (t) { swPrompt.textContent = t; },
+          function () { return swPrompt.textContent; }
+        ));
+      };
+      var __submitSw2Orig = submitSw2;
+      submitSw2 = function () {
+        var dev = getLabDev();
+        var id = dev === "SW4" ? "sw4" : "sw2";
+        var promptText = sw2Prompt.textContent;
+        var line = sw2Cmdline.value;
+        var trimmed = String(line || "").trim();
+        if (trimmed) appendSw2("line-user", promptText + " " + expandInterfaceEcho(trimmed));
+        pushLocalHistory(sw2Cmdline, line);
+        sw2Cmdline.value = "";
+        if (!trimmed) return;
+        if (cliLabContainer.tryAppendIosHelp(line, appendSw2, cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP))) return;
+        __fo["submit_" + id](__foSwCtx(
+          line,
+          appendSw2,
+          function (t) { sw2Prompt.textContent = t; },
+          function () { return sw2Prompt.textContent; }
+        ));
+      };
+      var __resetSwLabOrig = resetSwLab;
+      resetSwLab = function () { __resetSwLabOrig(); __fo.reset(); };
+
       resetSwLab();
     })();
   </script>

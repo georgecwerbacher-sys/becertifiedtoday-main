@@ -4,9 +4,8 @@
 
 
   CCNA VLAN lab: dual switches Sw1/Sw2, VLANs 77/88 (data) and 177/188 (voice), access-mode interface
-  assignments per topology. Task 2 accepts interface range or per-interface lines (e.g. e0/1 and e0/2
-  separately) and interfaces may be configured in any order when each port is complete by save. Optional
-  LLDP/CDP tasks are permissive. Lab complete = copy run start on both switches.
+  assignments per topology. Free-order IOS on both switches; dynamic show running-config via
+  createRunningConfigView(); pass/fail via Submit Lab (running-config validation).
 
   IOS `?` help — SWITCH_CLI_HELP = null → DEFAULT_SWITCH_CLI_HELP (/js/cli-lab-container.js):
   tryAppendIosHelp(..., iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)) in every switch submit handler.
@@ -33,6 +32,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="/js/cli-lab-container.js"></script>
+  <script src="/CCNA-Study/js/cli-lab-vlan-sim-engine.js"></script>
 <title>CCNA: VLAN Setup Simulation V.3 | Be Certified Today</title>
   <style>
     :root {
@@ -464,11 +464,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -560,8 +565,37 @@
       margin: 0;
       padding: 0 0 4px 1.2em;
       color: #b8c3d6;
-      font-size: 0.88rem;
+    }
+    .lab-check-result {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
       line-height: 1.5;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    .lab-check-result.visible {
+      display: block;
+    }
+    .lab-check-result.is-pass {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #d1fae5;
+    }
+    .lab-check-result.is-fail {
+      background: #3a1f24;
+      border: 1px solid #7a2f3d;
+      color: #fecdd3;
+    }
+    .lab-check-result ul {
+      margin: 8px 0 0;
+      padding-left: 1.25rem;
+    }
+    .lab-check-result li {
+      margin: 4px 0;
+      font-family: "SF Mono", ui-monospace, Consolas, monospace;
+      font-size: 0.82rem;
     }
     .spoiler-verify-list li {
       margin: 0.4em 0;
@@ -628,8 +662,10 @@
         <div class="device-links device-links-after-tasks" aria-label="Lab aids">
           <button type="button" class="device-link" id="openHelperFileBtn">Helper</button>
           <button type="button" class="device-link" id="inlineResetLabBtn">Reset lab</button>
+          <button type="button" class="device-link" id="checkLabBtn">Submit Lab</button>
           <button type="button" class="device-link" id="openSpoilerBtn">Spoiler</button>
         </div>
+        <div id="labCheckResult" class="lab-check-result" role="status" aria-live="polite"></div>
       </div>
 </main>
     <p class="question-topic-meta ccna-format-topic-meta" aria-label="Format and topic">
@@ -674,7 +710,7 @@
           <button type="button" class="btn btn-secondary" id="swResetBtn">Reset lab</button>
         </div>
         <div id="passBanner" class="pass-banner" role="status">
-          Complete all required steps on Sw1 and Sw2, then from enable mode run copy running-config startup-config on both switches.
+          Configure Sw1 and Sw2 in any order, then click Submit Lab on the main page.
         </div>
       </footer>
     </div>
@@ -829,7 +865,8 @@ Sw1,Sw2(config-if-range)#no lldp transmit
 Sw1,Sw2(config-if-range)#no lldp receive</pre>
             </li>
             <li>
-              <strong>Save the configuration:</strong>
+              <strong>When finished:</strong> click <strong>Submit Lab</strong> on the main page (optional:
+              <code>copy running-config startup-config</code> on each switch).
               <pre class="spoiler-cli-pre">Sw1,Sw2# copy running-config startup-config</pre>
             </li>
           </ul>
@@ -1237,66 +1274,14 @@ Sw2# copy running-config startup-config</pre>
         return !!(m && LAB_VLAN_IDS[m[1]]);
       }
 
-      /** Indices 0 = enter config mode; after that commands are validated permissively. */
-      var TASK1_LEN = 1;
-
-      var LAB_STEPS = [
-        { mode: "exec", test: function (raw) { return normalize(raw) === "configure terminal"; }},
-      ];
-
       var HELP_DISABLED_MSG = cliLabContainer.CLI_HELP_UNAVAILABLE_MSG;
-      /**
-       * Per-lab IOS `?` help overrides. null = shared defaults in cli-lab-container.js
-       * (DEFAULT_SWITCH_CLI_HELP — VLAN, trunk, LACP, show vlan, interface range, switchport, lldp, …).
-       */
-      /** null = DEFAULT_SWITCH_CLI_HELP (baseline for all switches). */
       var SWITCH_CLI_HELP = null;
       var SHOW_DISABLED_MSG = "this command is disabled for this lab";
       var COPY_RUN_START_OK_MSG = cliLabContainer.COPY_RUN_START_OK_MSG;
-      var COPY_RUN_START_AFTER_STEPS_MSG =
-        "% Error: Finish the full STEPS sequence on this switch until you return to privileged EXEC (#), then save to startup-config.";
-      var VLAN_LAB_ALL_DONE_MSG =
-        "[OK] Lab complete: VLAN configuration saved to startup-config on Sw1 and Sw2.";
+      var LAB_CHECK_PASS_MSG =
+        "[OK] Lab complete: VLAN names and access/voice port assignments on Sw1 and Sw2 match the topology.";
       var PASS_BANNER_VLAN_PENDING =
-        "Complete the VLAN tasks on Sw1 and Sw2, then from enable mode run copy running-configuration startup-configuration on both switches.";
-      /** Shown on Sw1 or Sw2 after that switch finishes Task 1 (Gi0/1–0/2 trunks + exits); same text on both. */
-      var SHOW_INTERFACES_TRUNK_TASK1_MSG = [
-        "Port        Mode         Encapsulation  Status        Native vlan",
-        "Po15        on           802.1q         trunking      45",
-        "",
-        "Port        Vlans allowed on trunk",
-        "Po15        15,45",
-        "",
-        "Port        Vlans allowed and active in management domain",
-        "Po15        15",
-        "",
-        "Port        Vlans in spanning tree forwarding state and not pruned",
-        "Po15        15",
-      ].join("\n");
-      var SHOW_INTERFACES_TRUNK_WAIT_MSG =
-        "% Trunk summary not available yet — complete Task 1 (both physical trunks and exits) on this switch first.";
-      /** After both switches finish the full STEPS sequence (including Po15 + end). */
-      var SHOW_ETHERCHANNEL_SUMMARY_MSG = [
-        "Flags:  D - down        P - in port-channel",
-        "        I - stand-alone s - suspended",
-        "        H - Hot-standby (LACP only)",
-        "        R - Layer3      S - Layer2",
-        "        U - in use      f - failed to allocate aggregator",
-        "        u - unsuitable for bundling",
-        "        w - waiting to be aggregated",
-        "        d - default port",
-        "",
-        "",
-        "Number of channel-groups in use: 1",
-        "Number of aggregators:           1",
-        "",
-        "Group  Port-channel  Protocol    Ports",
-        "------+-------------+-----------+----------------------------------------------",
-        "",
-        "15     Po15(SU)           LACP   Gi0/1(P) Gi0/2(P)",
-      ].join("\n");
-      var SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG =
-        "% EtherChannel summary not available yet — complete the full STEPS sequence (including LACP and Port-channel15) on Sw1 and Sw2 first.";
+        "Configure Sw1 and Sw2 in any order, then click Submit Lab on the main page.";
 
       function matchShowRun(raw) {
         var u = normalize(raw);
@@ -1307,250 +1292,25 @@ Sw2# copy running-config startup-config</pre>
         return normalize(raw) === "show version";
       }
 
-      function matchShowInterfacesTrunk(raw) {
-        var u = normalize(raw);
-        return u === "show interfaces trunk" || u === "do show interfaces trunk";
-      }
-
-      function matchShowEtherchannelSummary(raw) {
-        var u = normalize(raw);
-        return u === "show etherchannel summary" || u === "do show etherchannel summary";
-      }
-
       function matchCopyRunStart(raw) {
         return normalize(raw) === "copy running-configuration startup-configuration";
       }
 
-      var nvramSavedSw1 = false;
-      var nvramSavedSw2 = false;
-      var pc1PingOk = false;
-
-      function tryCompleteVlanLab(append) {
-        if (!nvramSavedSw1 || !nvramSavedSw2) {
-          return;
-        }
-        if (passBanner.classList.contains("visible")) return;
-        passBanner.classList.add("visible");
-        passBanner.textContent = VLAN_LAB_ALL_DONE_MSG;
-        if (append) append("line-sys", VLAN_LAB_ALL_DONE_MSG);
-        if (typeof window.bccNotifyCliLabComplete === "function") {
-          window.bccNotifyCliLabComplete({ lab: "vlan-sim" });
-        }
+      function matchShowHistory(raw) {
+        var u = normalize(raw);
+        return u === "show history" || u === "do show history";
       }
 
-      function isModeNavigationCommand(normalizedCmd) {
-        return (
-          normalizedCmd === "configure terminal" ||
-          normalizedCmd === "end" ||
-          normalizedCmd === "exit" ||
-          normalizedCmd.indexOf("interface ") === 0
-        );
+      function formatHistoryFor(input) {
+        var state = getLocalHistoryState(input);
+        if (!state.entries.length) return "  (history is empty)";
+        return state.entries
+          .slice(-10)
+          .map(function (cmd, i) {
+            return "  " + (i + 1) + "  " + cmd;
+          })
+          .join("\n");
       }
-
-      /** LLDP practice lines from spoilers — accepted whenever IOS mode matches (including mid–LAB_STEPS). */
-      function isPermissiveLldpGlobal(line) {
-        var u = normalize(line);
-        return u === "lldp run" || u === "no lldp run";
-      }
-      function isPermissiveLldpIf(line) {
-        var u = normalize(line);
-        return (
-          u === "lldp transmit" ||
-          u === "no lldp transmit" ||
-          u === "lldp receive" ||
-          u === "no lldp receive"
-        );
-      }
-      function isPermissiveCdpIf(line) {
-        var u = normalize(line);
-        return (
-          u === "no cdp enable" ||
-          u === "cdp enable" ||
-          u === "no cdp run" ||
-          u === "cdp run"
-        );
-      }
-
-      function swInEnableMode(stepIdx, ovr) {
-        if (ovr !== null && ovr !== undefined) {
-          if (
-            ovr === "config" ||
-            ovr === "config-vlan" ||
-            ovr === "config-if" ||
-            ovr === "config-if-range" ||
-            ovr === "config-router" ||
-            ovr === "config-std-nacl" ||
-            ovr === "config-ext-nacl" ||
-            ovr === "config-pmap" ||
-            ovr === "control-plane"
-          ) {
-            return false;
-          }
-          if (ovr === "exec") return true;
-        }
-        if (stepIdx >= LAB_STEPS.length) return true;
-        return LAB_STEPS[stepIdx].mode === "exec";
-      }
-
-      /**
-       * IOS-like exit / end / conf t for prompt only — does not advance STEPS or change lab flags.
-       * When the line matches the current LAB step, returns false so normal STEPS handling runs.
-       */
-      /** Canonical range line after normalize() — matches `int range e0/1 - 2, e0/3` and Gi spellings. */
-      var LAB_INTERFACE_RANGE_GI012 = "interface range gigabitethernet0/1 - 2";
-
-      /** IOS-like config hierarchy modes that accept interface / interface range navigation. */
-      function isVlanLabInterfaceNavMode(mode) {
-        return (
-          mode === "config" ||
-          mode === "config-vlan" ||
-          mode === "config-if" ||
-          mode === "config-if-range"
-        );
-      }
-
-      function isNonRangeInterfaceNavLine(line) {
-        var u = normalize(line);
-        return u.indexOf("interface ") === 0 && u.indexOf("interface range ") !== 0;
-      }
-
-      function trySwNavSoftLine(line, stepIdx, getOvr, setOvrAndRefresh, swNum) {
-        var u = normalize(line);
-        /* Always allow spoiler/lab Gi0/1–2 range when already in a config hierarchy (incl. after STEPS complete). */
-        if (u === LAB_INTERFACE_RANGE_GI012) {
-          var ovr = getOvr();
-          var stepMode = stepIdx < LAB_STEPS.length ? LAB_STEPS[stepIdx].mode : "exec";
-          var rangeCtxMode = ovr !== null && ovr !== undefined ? ovr : stepMode;
-          if (isVlanLabInterfaceNavMode(rangeCtxMode)) {
-            if (stepIdx < LAB_STEPS.length && LAB_STEPS[stepIdx].test(line, swNum)) return false;
-            setOvrAndRefresh("config-if-range");
-            return true;
-          }
-        }
-        if (stepIdx >= LAB_STEPS.length) {
-          var ovrDone = getOvr();
-          var modeDone = ovrDone !== null && ovrDone !== undefined ? ovrDone : "exec";
-          if (u === "configure terminal" && modeDone === "exec") {
-            setOvrAndRefresh("config");
-            return true;
-          }
-          if (u.indexOf("interface range ") === 0 && isVlanLabInterfaceNavMode(modeDone)) {
-            setOvrAndRefresh("config-if-range");
-            return true;
-          }
-          if (u.indexOf("interface ") === 0 && isVlanLabInterfaceNavMode(modeDone)) {
-            setOvrAndRefresh("config-if");
-            return true;
-          }
-          if (u === "end") {
-            if (modeDone !== "exec") setOvrAndRefresh("exec");
-            return true;
-          }
-          if (u !== "exit") return false;
-          if (modeDone === "exec") return false;
-          if (modeDone === "config-vlan") {
-            setOvrAndRefresh("config");
-            return true;
-          }
-          if (modeDone === "config-if" || modeDone === "config-if-range") {
-            setOvrAndRefresh("config");
-            return true;
-          }
-          if (modeDone === "config") {
-            setOvrAndRefresh("exec");
-            return true;
-          }
-          return false;
-        }
-        if (stepIdx === 0 && u === "configure terminal") return false;
-        var currentMode = getOvr() || LAB_STEPS[stepIdx].mode;
-        if (u === "configure terminal" && stepIdx > 0 && getOvr() === "exec") {
-          setOvrAndRefresh(null);
-          return true;
-        }
-        if (u === "end") {
-          if (getOvr() !== "exec") setOvrAndRefresh("exec");
-          return true;
-        }
-        if (u !== "exit") return false;
-        if (getOvr() === "exec") return false;
-        var mode = LAB_STEPS[stepIdx].mode;
-        var ovr = getOvr();
-        if (ovr === "config-vlan") {
-          setOvrAndRefresh("config");
-          return true;
-        }
-        if (mode === "config-if" || mode === "config-if-range") {
-          if (!ovr) {
-            setOvrAndRefresh("config");
-            return true;
-          }
-          if (ovr === "config") {
-            setOvrAndRefresh("exec");
-            return true;
-          }
-          return false;
-        }
-        if (mode === "config") {
-          setOvrAndRefresh("exec");
-          return true;
-        }
-        return false;
-      }
-
-      /** IOS-like direct interface switch + sub-mode re-entry (shared cli-lab-container.js). */
-      function trySwStepInterfaceNav(line, getStepIndex, setStepIndex, promptEl, getOvr, setOvrAndRefresh, refreshPrompt) {
-        return cliLabContainer.applyLabStepInterfaceNav({
-          steps: LAB_STEPS,
-          stepIndex: getStepIndex(),
-          line: line,
-          normalizedCmd: normalize(line),
-          promptText: promptEl.textContent,
-          overrideMode: getOvr(),
-          setStepIndex: setStepIndex,
-          clearOverride: function () {
-            setOvrAndRefresh(null);
-          },
-          refreshPrompt: refreshPrompt,
-        });
-      }
-
-      function promptForMode(host, mode) {
-        switch (mode) {
-          case "exec":
-            return host + "#";
-          case "config":
-            return host + "(config)#";
-          case "config-vlan":
-            return host + "(config-vlan)#";
-          case "config-if":
-            return host + "(config-if)#";
-          case "config-if-range":
-            return host + "(config-if-range)#";
-          case "config-router":
-            return host + "(config-router)#";
-          case "config-std-nacl":
-            return host + "(config-std-nacl)#";
-          case "config-ext-nacl":
-            return host + "(config-ext-nacl)#";
-          case "config-pmap":
-            return host + "(config-pmap)#";
-          case "control-plane":
-            return host + "(config-control-plane)#";
-          default:
-            return host + "#";
-        }
-      }
-
-      function promptForLabStepIndex(host, index) {
-        if (index >= LAB_STEPS.length) return promptForMode(host, "exec");
-        return promptForMode(host, LAB_STEPS[index].mode);
-      }
-
-      var stepIndexSw1 = 0;
-      var stepIndexSw2 = 0;
-      var sw1PromptOverride = null;
-      var sw2PromptOverride = null;
 
       var swCliOverlay = document.getElementById("swCliOverlay");
       var swCliDialog = document.getElementById("swCliDialog");
@@ -1574,6 +1334,38 @@ Sw2# copy running-config startup-config</pre>
       var spoilerOverlay = document.getElementById("spoilerOverlay");
       var spoilerDialog = document.getElementById("spoilerDialog");
 
+      var vlanEngine = createVlanSimEngine({
+        container: cliLabContainer,
+        normalize: normalize,
+        expandInterfaceEcho: expandInterfaceEcho,
+        sw1Baseline: SWITCH_SHOW_RUNNING_SNAPSHOT,
+        sw2Baseline: SWITCH2_SHOW_RUNNING_SNAPSHOT,
+        sw1Host: SWITCH_HOST,
+        sw2Host: SWITCH2_HOST,
+        labVlanIds: LAB_VLAN_IDS,
+        passBanner: passBanner,
+        labCheckEl: document.getElementById("labCheckResult"),
+        passMsg: LAB_CHECK_PASS_MSG,
+        pendingMsg: PASS_BANNER_VLAN_PENDING,
+        showDisabledMsg: SHOW_DISABLED_MSG,
+      });
+
+      function appendSw(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        swScrollback.appendChild(div);
+        swScrollback.scrollTop = swScrollback.scrollHeight;
+      }
+
+      function appendSw2(cls, text) {
+        var div = document.createElement("div");
+        div.className = cls;
+        div.textContent = text;
+        sw2Scrollback.appendChild(div);
+        sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
+      }
+
       var modalStackZ = 30000;
       function bumpOverlayZ(overlay) {
         if (!overlay) return;
@@ -1591,22 +1383,6 @@ Sw2# copy running-config startup-config</pre>
         if (d === "PC1" || d === "PC2") openSelectedCliBtn.textContent = "Open " + d + " prompt";
         else if (d === "SW2") openSelectedCliBtn.textContent = "Open " + SWITCH2_HOST + " CLI";
         else openSelectedCliBtn.textContent = "Open " + SWITCH_HOST + " CLI";
-      }
-
-      function appendSw(cls, text) {
-        var div = document.createElement("div");
-        div.className = cls;
-        div.textContent = text;
-        swScrollback.appendChild(div);
-        swScrollback.scrollTop = swScrollback.scrollHeight;
-      }
-
-      function appendSw2(cls, text) {
-        var div = document.createElement("div");
-        div.className = cls;
-        div.textContent = text;
-        sw2Scrollback.appendChild(div);
-        sw2Scrollback.scrollTop = sw2Scrollback.scrollHeight;
       }
 
       var pcCliOverlay = document.getElementById("pcCliOverlay");
@@ -1636,11 +1412,9 @@ Sw2# copy running-config startup-config</pre>
         syncPcPromptLabel();
       }
 
-
       function submitPc() {
         var promptText = pcPrompt.textContent;
         var line = pcCmdline.value;
-        var dev = getLabDev();
         pushLocalHistory(pcCmdline, line);
         appendPc("line-user", promptText + " " + line);
         pcCmdline.value = "";
@@ -1650,7 +1424,7 @@ Sw2# copy running-config startup-config</pre>
           return;
         }
         var u = normalize(line);
-        if (dev === "PC1" && (u === "ping 10.15.15.20" || u === "ping 10.15.15.20 -n 4")) {
+        if (u === "ping 10.15.15.20" || u === "ping 10.15.15.20 -n 4") {
           appendPc(
             "line-bad",
             "Request timed out.\nUse the switch CLI to complete VLAN and interface assignments first."
@@ -1666,33 +1440,17 @@ Sw2# copy running-config startup-config</pre>
       }
 
       function setSw1Prompt() {
-        if (sw1PromptOverride !== null && sw1PromptOverride !== undefined) {
-          swPrompt.textContent = promptForMode(SWITCH_HOST, sw1PromptOverride);
-          return;
-        }
-        swPrompt.textContent = promptForLabStepIndex(SWITCH_HOST, stepIndexSw1);
+        swPrompt.textContent = vlanEngine.sw1PromptForMode();
       }
 
       function setSw2Prompt() {
-        if (sw2PromptOverride !== null && sw2PromptOverride !== undefined) {
-          sw2Prompt.textContent = promptForMode(SWITCH2_HOST, sw2PromptOverride);
-          return;
-        }
-        sw2Prompt.textContent = promptForLabStepIndex(SWITCH2_HOST, stepIndexSw2);
+        sw2Prompt.textContent = vlanEngine.sw2PromptForMode();
       }
 
       function resetSwLab() {
-        stepIndexSw1 = 0;
-        stepIndexSw2 = 0;
-        sw1PromptOverride = null;
-        sw2PromptOverride = null;
-        nvramSavedSw1 = false;
-        nvramSavedSw2 = false;
-        pc1PingOk = false;
+        vlanEngine.reset();
         swScrollback.innerHTML = "";
         sw2Scrollback.innerHTML = "";
-        passBanner.classList.remove("visible");
-        passBanner.textContent = PASS_BANNER_VLAN_PENDING;
         swCmdline.disabled = false;
         swCmdline.value = "";
         sw2Cmdline.value = "";
@@ -1700,452 +1458,46 @@ Sw2# copy running-config startup-config</pre>
         clearLocalHistory(sw2Cmdline);
         setSw1Prompt();
         setSw2Prompt();
+        resetPc();
       }
 
       function submitSw() {
-        var promptText = swPrompt.textContent;
-        var line = swCmdline.value;
-        pushLocalHistory(swCmdline, line);
-        var trimmed = String(line || "").trim();
-        var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
-        var echoLine = expandInterfaceEcho(trimmed);
-        if (
-          !hideInputLine ||
-          normalized.indexOf("interface ") === 0 ||
-          /^ethernet \d+\/\d+$/.test(normalize(trimmed))
-        ) {
-          appendSw("line-user", promptText + " " + echoLine);
-        }
-        swCmdline.value = "";
-        if (!trimmed) return;
-
-        if (
-          cliLabContainer.tryAppendIosHelp(
-            line,
-            appendSw,
-            cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
-          )
-        ) {
-          return;
-        }
-
-        if (matchShowRun(line)) {
-          appendSw("line-showrun", SWITCH_SHOW_RUNNING_SNAPSHOT);
-          return;
-        }
-
-        if (matchShowHistory(line)) {
-          appendSw("line-showrun", formatHistoryFor(swCmdline));
-          return;
-        }
-
-        if (matchShowInterfacesTrunk(line)) {
-          if (stepIndexSw1 >= TASK1_LEN) {
-            appendSw("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
-          } else {
-            appendSw("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
-          }
-          return;
-        }
-
-        if (matchShowEtherchannelSummary(line)) {
-          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
-            appendSw("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
-          } else {
-            appendSw("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
-          }
-          return;
-        }
-
-        if (swInEnableMode(stepIndexSw1, sw1PromptOverride) && matchShowVersion(line)) {
-          cliLabContainer.appendLabShowVersion(appendSw);
-          return;
-        }
-
-        if (matchCopyRunStart(line)) {
-          if (!swInEnableMode(stepIndexSw1, sw1PromptOverride)) {
-            appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-            return;
-          }
-          if (stepIndexSw1 < LAB_STEPS.length) {
-            appendSw("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-            return;
-          }
-          appendSw("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw1 = true;
-          tryCompleteVlanLab(function (cls, text) {
-            appendSw(cls, text);
-          });
-          return;
-        }
-
-        if (
-          trySwNavSoftLine(line, stepIndexSw1, function () {
-            return sw1PromptOverride;
-          }, function (v) {
-            sw1PromptOverride = v;
-            setSw1Prompt();
-          }, 1)
-        ) {
-          return;
-        }
-
-        if (
-          trySwStepInterfaceNav(
-            line,
-            function () {
-              return stepIndexSw1;
-            },
-            function (n) {
-              stepIndexSw1 = n;
-            },
-            swPrompt,
-            function () {
-              return sw1PromptOverride;
-            },
-            function (v) {
-              sw1PromptOverride = v;
-              setSw1Prompt();
-            },
-            setSw1Prompt
-          )
-        ) {
-          return;
-        }
-
-        var uShow = normalize(line);
-        if (
-          swInEnableMode(stepIndexSw1, sw1PromptOverride) &&
-          (uShow.indexOf("show ") === 0 || uShow.indexOf("sh ") === 0)
-        ) {
-          appendSw("line-sys", SHOW_DISABLED_MSG);
-          return;
-        }
-
-        var sw1Mode = sw1PromptOverride || (stepIndexSw1 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw1].mode : "exec");
-        if (
-          (sw1Mode === "config" || sw1Mode === "config-vlan") &&
-          isLabVlanIdCommand(line)
-        ) {
-          sw1PromptOverride = "config-vlan";
-          setSw1Prompt();
-          return;
-        }
-
-        if (sw1Mode === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
-          // Accept VLAN name assignment in vlan submode without affecting step engine.
-          return;
-        }
-        if (
-          sw1Mode === "config-if-range" &&
-          (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
-        ) {
-          // Allow access-vlan style range commands in interface-range mode outside strict step flow.
-          return;
-        }
-        if (sw1Mode === "config-if-range" && isNonRangeInterfaceNavLine(line)) {
-          // Allow direct hop from interface-range mode to a single interface context.
-          sw1PromptOverride = "config-if";
-          setSw1Prompt();
-          return;
-        }
-        if (
-          sw1Mode === "config-if" &&
-          (normalize(line) === "switchport mode access" ||
-            /^switchport voice vlan \d+$/.test(normalize(line)) ||
-            /^switchport access vlan \d+$/.test(normalize(line)))
-        ) {
-          // Accept common interface access/voice VLAN commands in config-if mode.
-          return;
-        }
-        if (sw1Mode === "config-if" && isNonRangeInterfaceNavLine(line)) {
-          // Allow direct interface-to-interface hops from config-if mode.
-          sw1PromptOverride = "config-if";
-          setSw1Prompt();
-          return;
-        }
-        if (isVlanLabInterfaceNavMode(sw1Mode) && isNonRangeInterfaceNavLine(line)) {
-          // Allow interface navigation from config / vlan / interface contexts (any port order).
-          sw1PromptOverride = "config-if";
-          setSw1Prompt();
-          return;
-        }
-        if (isVlanLabInterfaceNavMode(sw1Mode) && normalize(line).indexOf("interface range ") === 0) {
-          sw1PromptOverride = "config-if-range";
-          setSw1Prompt();
-          return;
-        }
-        if (sw1Mode === "config" && isPermissiveLldpGlobal(line)) {
-          return;
-        }
-        if (
-          (sw1Mode === "config-if" || sw1Mode === "config-if-range") &&
-          (isPermissiveLldpIf(line) || isPermissiveCdpIf(line))
-        ) {
-          return;
-        }
-
-        if (stepIndexSw1 >= LAB_STEPS.length) {
-          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-          return;
-        }
-
-        if (LAB_STEPS[stepIndexSw1].test(line, 1)) {
-          stepIndexSw1 += 1;
-          sw1PromptOverride = normalize(line) === "configure terminal" ? "config" : null;
-          setSw1Prompt();
-        } else {
-          appendSw("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        pushLocalHistory(swCmdline, swCmdline.value);
+        vlanEngine.submitSw1({
+          appendSw: appendSw,
+          swPrompt: swPrompt,
+          swCmdline: swCmdline,
+          setPrompt: setSw1Prompt,
+          matchShowRun: matchShowRun,
+          matchShowHistory: matchShowHistory,
+          matchShowVersion: matchShowVersion,
+          matchCopyRunStart: matchCopyRunStart,
+          formatHistory: formatHistoryFor,
+        });
       }
 
       function submitSw2() {
-        var promptText = sw2Prompt.textContent;
-        var line = sw2Cmdline.value;
-        pushLocalHistory(sw2Cmdline, line);
-        var trimmed = String(line || "").trim();
-        var normalized = normalize(line);
-        var hideInputLine = isModeNavigationCommand(normalized);
-        var echoLine = expandInterfaceEcho(trimmed);
-        if (
-          !hideInputLine ||
-          normalized.indexOf("interface ") === 0 ||
-          /^ethernet \d+\/\d+$/.test(normalize(trimmed))
-        ) {
-          appendSw2("line-user", promptText + " " + echoLine);
-        }
-        sw2Cmdline.value = "";
-        if (!trimmed) return;
-
-        if (
-          cliLabContainer.tryAppendIosHelp(
-            line,
-            appendSw2,
-            cliLabContainer.iosHelpOpts("switch", promptText, SWITCH_CLI_HELP)
-          )
-        ) {
-          return;
-        }
-
-        if (matchShowRun(line)) {
-          appendSw2("line-showrun", SWITCH2_SHOW_RUNNING_SNAPSHOT);
-          return;
-        }
-
-        if (matchShowHistory(line)) {
-          appendSw2("line-showrun", formatHistoryFor(sw2Cmdline));
-          return;
-        }
-
-        if (matchShowInterfacesTrunk(line)) {
-          if (stepIndexSw2 >= TASK1_LEN) {
-            appendSw2("line-showrun line-show-trunk", SHOW_INTERFACES_TRUNK_TASK1_MSG);
-          } else {
-            appendSw2("line-sys", SHOW_INTERFACES_TRUNK_WAIT_MSG);
-          }
-          return;
-        }
-
-        if (matchShowEtherchannelSummary(line)) {
-          if (stepIndexSw1 >= LAB_STEPS.length && stepIndexSw2 >= LAB_STEPS.length) {
-            appendSw2("line-showrun line-show-trunk", SHOW_ETHERCHANNEL_SUMMARY_MSG);
-          } else {
-            appendSw2("line-sys", SHOW_ETHERCHANNEL_SUMMARY_WAIT_MSG);
-          }
-          return;
-        }
-
-        if (swInEnableMode(stepIndexSw2, sw2PromptOverride) && matchShowVersion(line)) {
-          cliLabContainer.appendLabShowVersion(appendSw2);
-          return;
-        }
-
-        if (matchCopyRunStart(line)) {
-          if (!swInEnableMode(stepIndexSw2, sw2PromptOverride)) {
-            appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-            return;
-          }
-          if (stepIndexSw2 < LAB_STEPS.length) {
-            appendSw2("line-sys", COPY_RUN_START_AFTER_STEPS_MSG);
-            return;
-          }
-          appendSw2("line-sys", COPY_RUN_START_OK_MSG);
-          nvramSavedSw2 = true;
-          tryCompleteVlanLab(function (cls, text) {
-            appendSw2(cls, text);
-          });
-          return;
-        }
-
-        if (
-          trySwNavSoftLine(line, stepIndexSw2, function () {
-            return sw2PromptOverride;
-          }, function (v) {
-            sw2PromptOverride = v;
-            setSw2Prompt();
-          }, 2)
-        ) {
-          return;
-        }
-
-        if (
-          trySwStepInterfaceNav(
-            line,
-            function () {
-              return stepIndexSw2;
-            },
-            function (n) {
-              stepIndexSw2 = n;
-            },
-            sw2Prompt,
-            function () {
-              return sw2PromptOverride;
-            },
-            function (v) {
-              sw2PromptOverride = v;
-              setSw2Prompt();
-            },
-            setSw2Prompt
-          )
-        ) {
-          return;
-        }
-
-        var uShow2 = normalize(line);
-        if (
-          swInEnableMode(stepIndexSw2, sw2PromptOverride) &&
-          (uShow2.indexOf("show ") === 0 || uShow2.indexOf("sh ") === 0)
-        ) {
-          appendSw2("line-sys", SHOW_DISABLED_MSG);
-          return;
-        }
-
-        var sw2ModeNow = sw2PromptOverride || (stepIndexSw2 < LAB_STEPS.length ? LAB_STEPS[stepIndexSw2].mode : "exec");
-        if (
-          (sw2ModeNow === "config" || sw2ModeNow === "config-vlan") &&
-          isLabVlanIdCommand(line)
-        ) {
-          sw2PromptOverride = "config-vlan";
-          setSw2Prompt();
-          return;
-        }
-
-        if (sw2ModeNow === "config-vlan" && /^name\s+\S+/.test(normalize(line))) {
-          // Accept VLAN name assignment in vlan submode without affecting step engine.
-          return;
-        }
-        if (
-          sw2ModeNow === "config-if-range" &&
-          (normalize(line) === "switchport mode access" || /^switchport access vlan \d+$/.test(normalize(line)))
-        ) {
-          // Allow access-vlan style range commands in interface-range mode outside strict step flow.
-          return;
-        }
-        if (sw2ModeNow === "config-if-range" && isNonRangeInterfaceNavLine(line)) {
-          // Allow direct hop from interface-range mode to a single interface context.
-          sw2PromptOverride = "config-if";
-          setSw2Prompt();
-          return;
-        }
-        if (
-          sw2ModeNow === "config-if" &&
-          (normalize(line) === "switchport mode access" ||
-            /^switchport voice vlan \d+$/.test(normalize(line)) ||
-            /^switchport access vlan \d+$/.test(normalize(line)))
-        ) {
-          // Accept common interface access/voice VLAN commands in config-if mode.
-          return;
-        }
-        if (sw2ModeNow === "config-if" && isNonRangeInterfaceNavLine(line)) {
-          // Allow direct interface-to-interface hops from config-if mode.
-          sw2PromptOverride = "config-if";
-          setSw2Prompt();
-          return;
-        }
-        if (isVlanLabInterfaceNavMode(sw2ModeNow) && isNonRangeInterfaceNavLine(line)) {
-          // Allow interface navigation from config / vlan / interface contexts (any port order).
-          sw2PromptOverride = "config-if";
-          setSw2Prompt();
-          return;
-        }
-        if (isVlanLabInterfaceNavMode(sw2ModeNow) && normalize(line).indexOf("interface range ") === 0) {
-          sw2PromptOverride = "config-if-range";
-          setSw2Prompt();
-          return;
-        }
-        if (sw2ModeNow === "config" && isPermissiveLldpGlobal(line)) {
-          return;
-        }
-        if (
-          (sw2ModeNow === "config-if" || sw2ModeNow === "config-if-range") &&
-          (isPermissiveLldpIf(line) || isPermissiveCdpIf(line))
-        ) {
-          return;
-        }
-
-        if (stepIndexSw2 >= LAB_STEPS.length) {
-          appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-          return;
-        }
-
-        if (LAB_STEPS[stepIndexSw2].test(line, 2)) {
-          stepIndexSw2 += 1;
-          sw2PromptOverride = normalize(line) === "configure terminal" ? "config" : null;
-          setSw2Prompt();
-        } else {
-          appendSw2("line-bad", cliLabContainer.INVALID_INPUT_MSG);
-        }
+        pushLocalHistory(sw2Cmdline, sw2Cmdline.value);
+        vlanEngine.submitSw2({
+          appendSw2: appendSw2,
+          sw2Prompt: sw2Prompt,
+          sw2Cmdline: sw2Cmdline,
+          setPrompt: setSw2Prompt,
+          matchShowRun: matchShowRun,
+          matchShowHistory: matchShowHistory,
+          matchShowVersion: matchShowVersion,
+          matchCopyRunStart: matchCopyRunStart,
+          formatHistory: formatHistoryFor,
+        });
       }
 
-      function wireFloatingModal(dialogEl, overlayEl) {
-        var header = dialogEl.querySelector(".cli-modal-header");
-        if (!dialogEl || !overlayEl || !header) return;
-        dialogEl.addEventListener("pointerdown", function () {
-          bumpOverlayZ(overlayEl);
-        });
-        var drag = null;
-        header.addEventListener("pointerdown", function (e) {
-          if (e.button !== 0) return;
-          if (e.target.closest(".cli-modal-close")) return;
-          var r = dialogEl.getBoundingClientRect();
-          dialogEl.style.left = r.left + "px";
-          dialogEl.style.top = r.top + "px";
-          dialogEl.style.transform = "none";
-          dialogEl.classList.add("is-dragging");
-          drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, ox: r.left, oy: r.top };
-          try {
-            header.setPointerCapture(e.pointerId);
-          } catch (_) {}
-          e.preventDefault();
-        });
-        header.addEventListener("pointermove", function (e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          dialogEl.style.left = drag.ox + (e.clientX - drag.sx) + "px";
-          dialogEl.style.top = drag.oy + (e.clientY - drag.sy) + "px";
-        });
-        function endDrag(e) {
-          if (!drag || e.pointerId !== drag.id) return;
-          drag = null;
-          dialogEl.classList.remove("is-dragging");
-          try {
-            header.releasePointerCapture(e.pointerId);
-          } catch (_) {}
-        }
-        header.addEventListener("pointerup", endDrag);
-        header.addEventListener("pointercancel", endDrag);
-      }
 
-      wireFloatingModal(swCliDialog, swCliOverlay);
-      wireFloatingModal(sw2CliDialog, sw2CliOverlay);
-      wireFloatingModal(pcCliDialog, pcCliOverlay);
-      wireFloatingModal(helperFileDialog, helperFileOverlay);
-      wireFloatingModal(spoilerDialog, spoilerOverlay);
 
       function openSwCli() {
         bumpOverlayZ(swCliOverlay);
         swCliOverlay.classList.add("is-open");
         swCliOverlay.setAttribute("aria-hidden", "false");
+        setSw1Prompt();
         if (swTerminal) {
           swTerminal.classList.remove("terminal-flash");
           void swTerminal.offsetWidth;
@@ -2161,6 +1513,7 @@ Sw2# copy running-config startup-config</pre>
         bumpOverlayZ(sw2CliOverlay);
         sw2CliOverlay.classList.add("is-open");
         sw2CliOverlay.setAttribute("aria-hidden", "false");
+        setSw2Prompt();
         if (sw2Terminal) {
           sw2Terminal.classList.remove("terminal-flash");
           void sw2Terminal.offsetWidth;
@@ -2231,6 +1584,9 @@ Sw2# copy running-config startup-config</pre>
       document.getElementById("pcCliClose").addEventListener("click", closePcCli);
       swResetBtn.addEventListener("click", resetSwLab);
       document.getElementById("inlineResetLabBtn").addEventListener("click", resetSwLab);
+      document.getElementById("checkLabBtn").addEventListener("click", function () {
+        vlanEngine.showLabCheckResult(vlanEngine.getLabCheckResult());
+      });
 
       document.getElementById("openHelperFileBtn").addEventListener("click", function () {
         bumpOverlayZ(helperFileOverlay);
@@ -2259,20 +1615,6 @@ Sw2# copy running-config startup-config</pre>
         state = { entries: [], idx: 0 };
         localHistory.set(input, state);
         return state;
-      }
-      function matchShowHistory(raw) {
-        var u = normalize(raw);
-        return u === "show history" || u === "do show history";
-      }
-      function formatHistoryFor(input) {
-        var state = getLocalHistoryState(input);
-        if (!state.entries.length) return "  (history is empty)";
-        return state.entries
-          .slice(-10)
-          .map(function (cmd, i) {
-            return "  " + (i + 1) + "  " + cmd;
-          })
-          .join("\n");
       }
       function pushLocalHistory(input, raw) {
         var cmd = String(raw || "").trim();
