@@ -5700,6 +5700,15 @@
       }
     }
 
+    if (/^vlan \d+$/i.test(gl)) {
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase().indexOf("interface ") === 0) return i;
+      }
+      for (i = 0; i < lines.length; i++) {
+        if (lines[i].trim().toLowerCase() === "line con 0") return i;
+      }
+    }
+
     for (i = 0; i < lines.length; i++) {
       if (lines[i].trim() === "end") return i;
     }

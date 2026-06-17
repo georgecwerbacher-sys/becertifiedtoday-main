@@ -496,11 +496,16 @@
     }
     .spoiler-modal-dialog {
       width: min(720px, calc(100vw - 24px));
+      height: min(85vh, 720px);
     }
     .spoiler-cli-body {
       display: flex;
       flex-direction: column;
       gap: 18px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
     }
     .spoiler-task {
       display: flex;
@@ -2438,17 +2443,17 @@ Sw2(config-if)# end</pre>
           submitFn();
         });
       }
-      wireCliEnterKeydown(swCmdline, submitSw);
-      wireCliEnterKeydown(sw2Cmdline, submitSw2);
-      wireCliEnterKeydown(pcCmdline, submitPc);
+      wireCliEnterKeydown(swCmdline, function () { submitSw(); });
+      wireCliEnterKeydown(sw2Cmdline, function () { submitSw2(); });
+      wireCliEnterKeydown(pcCmdline, function () { submitPc(); });
       /** Run command: backup when the host swallows keyboard events. */
       (function () {
         var r1 = document.getElementById("swCliRunBtn");
         var r2 = document.getElementById("sw2CliRunBtn");
         var r3 = document.getElementById("pcCliRunBtn");
-        if (r1) r1.addEventListener("click", submitSw);
-        if (r2) r2.addEventListener("click", submitSw2);
-        if (r3) r3.addEventListener("click", submitPc);
+        if (r1) r1.addEventListener("click", function () { submitSw(); });
+        if (r2) r2.addEventListener("click", function () { submitSw2(); });
+        if (r3) r3.addEventListener("click", function () { submitPc(); });
       })();
 
       document.getElementById("swCliClose").addEventListener("click", closeSwCli);
