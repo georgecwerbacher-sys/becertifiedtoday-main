@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">R1 static route to R3 LAN via shared transit</title>
+  <desc id="desc">R1, R2, and R3 share transit network 10.0.4.0/24. R1 has LAN 10.0.1.0/24, R2 has LAN 10.0.2.0/24, and R3 has LAN 10.0.3.0/24.</desc>
+  <rect width="900" height="420" fill="#f8fafc"/>
+  <style>
+    .router{fill:#1d4ed8;stroke:#0f172a;stroke-width:2}
+    .lan{fill:#0f766e;stroke:#0f172a;stroke-width:2}
+    .link{stroke:#334155;stroke-width:4}
+    .transit{stroke:#7c3aed;stroke-width:6}
+    .label{font-family:Arial,sans-serif;font-size:19px;font-weight:700;fill:#0f172a}
+    .sub{font-family:Arial,sans-serif;font-size:15px;fill:#334155}
+  </style>
+  <rect class="lan" x="70" y="55" width="150" height="58" rx="12"/>
+  <text class="label" x="145" y="90" text-anchor="middle" fill="#fff">10.0.1.0/24</text>
+  <circle class="router" cx="300" cy="85" r="52"/>
+  <text class="label" x="300" y="92" text-anchor="middle" fill="#fff">R1</text>
+  <line class="link" x1="220" y1="85" x2="248" y2="85"/>
+  <text class="sub" x="300" y="34" text-anchor="middle">Gi0/0 LAN</text>
+  <rect class="lan" x="70" y="300" width="150" height="58" rx="12"/>
+  <text class="label" x="145" y="335" text-anchor="middle" fill="#fff">10.0.2.0/24</text>
+  <circle class="router" cx="300" cy="329" r="52"/>
+  <text class="label" x="300" y="336" text-anchor="middle" fill="#fff">R2</text>
+  <line class="link" x1="220" y1="329" x2="248" y2="329"/>
+  <rect class="lan" x="680" y="178" width="150" height="58" rx="12"/>
+  <text class="label" x="755" y="213" text-anchor="middle" fill="#fff">10.0.3.0/24</text>
+  <circle class="router" cx="600" cy="207" r="52"/>
+  <text class="label" x="600" y="214" text-anchor="middle" fill="#fff">R3</text>
+  <line class="link" x1="652" y1="207" x2="680" y2="207"/>
+  <line class="transit" x1="300" y1="137" x2="300" y2="277"/>
+  <line class="transit" x1="300" y1="207" x2="548" y2="207"/>
+  <text class="label" x="420" y="192" text-anchor="middle">10.0.4.0/24 transit</text>
+  <text class="sub" x="315" y="165">R1 Gi0/1 10.0.4.1</text>
+  <text class="sub" x="315" y="265">R2 Gi0/1 10.0.4.2</text>
+  <text class="sub" x="490" y="235">R3 Gi0/1 10.0.4.3</text>
+  <text class="sub" x="450" y="385" text-anchor="middle">R1 route to 10.0.3.0/24 uses next hop 10.0.4.3</text>
+</svg>

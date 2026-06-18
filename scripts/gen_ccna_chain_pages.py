@@ -4620,7 +4620,7 @@ Group   Port-channel  Protocol   Ports
             "title": "CCNA — Make R1 the OSPF DR (choose two)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/ospf-area0-r1-r2-r3-sw-star-topology.png" alt="Topology: switch SW in the center; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0 to SW Fa0/0; R2 10.10.10.2 on FastEthernet0/2 to SW Fa0/2; R3 10.10.10.3 on FastEthernet0/1 to SW Fa0/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: switch SW in the center; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0 to SW Fa0/0; R2 10.10.10.2 on FastEthernet0/2 to SW Fa0/2; R3 10.10.10.3 on FastEthernet0/1 to SW Fa0/1." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
         <pre>R1#show ip ospf neighbor
@@ -5562,7 +5562,7 @@ Management Addresses:
             "title": "CCNA — OSPF: elect R1 as DR (priority and clear)",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/ospf-area0-r1-r2-r3-sw-star-topology.png" alt="Topology: switch SW; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0; R2 10.10.10.2 on FastEthernet0/2; R3 10.10.10.3 on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-dr-r1-r2-r3-area0-lan-topology.png" alt="Topology: switch SW; OSPF Area 0. R1 10.10.10.1 on FastEthernet0/0; R2 10.10.10.2 on FastEthernet0/2; R3 10.10.10.3 on FastEthernet0/1." width="900" decoding="async" loading="lazy" />
       </figure>
       <div class="exhibit-router-cli" role="region" aria-label="R1 show ip ospf neighbor">
         <pre>R1#show ip ospf neighbor
@@ -5589,7 +5589,7 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
             "title": "CCNA — DC-1 & HQ-1: first/last usable IPv4 per mask",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/dc1-hq1-isp-topology-ip-assignment.png" alt="Topology: Internet cloud to ISP; ISP Gi1/0 to DC-1 Gi1/0; DC-1 Gi1/1 to HQ-1 Gi1/1; DC-1 Gi1/2 to a switch and firewall; HQ-1 Gi1/3 to HQ-SW1 and a workstation." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/dc1-hq1-isp-topology-ip-assignment.svg" alt="Topology: Internet cloud to ISP; ISP Gi1/0 to DC-1 Gi1/0; DC-1 Gi1/1 to HQ-1 Gi1/1; DC-1 Gi1/2 to a switch and firewall; HQ-1 Gi1/3 to HQ-SW1 and a workstation." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "stem": "Refer to the exhibit. The IPv4 address configuration must be completed on routers DC-1 and HQ-1 using only these subnets (no VLSM overlap):\n\u2022 DC-1 GigabitEthernet1/0 \u2192 10.0.0.0/30 toward ISP\n\u2022 DC-1 GigabitEthernet1/1 and HQ-1 GigabitEthernet1/1 \u2192 10.0.0.8/29\n\u2022 DC-1 GigabitEthernet1/2 \u2192 10.0.0.16/28 toward the switch/firewall block\n\u2022 HQ-1 GigabitEthernet1/3 toward HQ-SW1 \u2192 10.0.0.32/29\n\nRequirements: DC-1 Gi1/0 must be the last usable address on the /30; DC-1 Gi1/1 must be the first usable address on the /29; DC-1 Gi1/2 must be the last usable address on the /28; HQ-1 Gi1/3 must be the last usable address on the /29. Which configuration meets the requirements?",
@@ -5631,7 +5631,7 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
             "title": "CCNA — Trunks: PC2\u2013PC7 VLAN 14 and PC3\u2013PC9 VLAN 108",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/sw1-sw4-sw9-sw11-pc2-pc7-vlan14-trunk-topology.png" alt="Topology: SW1, SW4, SW9, SW11 with inter-switch links; PC2 VLAN 14 and PC3 VLAN 108 on SW4; PC7 VLAN 14 on SW9; PC9 VLAN 108 on SW11." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/sw1-sw4-sw9-sw11-pc2-pc7-vlan14-trunk-topology.svg" alt="Topology: SW1, SW4, SW9, SW11 with inter-switch links; PC2 VLAN 14 and PC3 VLAN 108 on SW4; PC7 VLAN 14 on SW9; PC9 VLAN 108 on SW11." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "stem": "Refer to the exhibit. These facts apply:\n\n\u2022 SW1 is fully configured for all traffic.\n\u2022 The SW4 and SW9 links to SW1 are already configured.\n\u2022 SW4 interface GigabitEthernet0/1 (PC2) and SW9 GigabitEthernet0/0 (PC7) are already configured.\n\u2022 The remaining switches have had all VLANs added to their VLAN database.\n\nWhich configuration establishes a successful ping from PC2 to PC7 without interrupting traffic between the other PCs (for example PC3 and PC9 in VLAN 108)?",
@@ -5652,7 +5652,7 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
             "title": "CCNA — OSPF: R1 neighbors only R2, no DR, fixed router-id",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-fa00-10-100-1-0-topology.png" alt="Topology: R1 FastEthernet0/0 connected to R2 FastEthernet0/0; segment labeled 10.100.1.0; host .1 on R1 and .2 on R2 (10.100.1.1 and 10.100.1.2)." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/ospf-r1-r2-fa00-10-100-1-0-topology.svg" alt="Topology: R1 FastEthernet0/0 connected to R2 FastEthernet0/0; segment labeled 10.100.1.0; host .1 on R1 and .2 on R2 (10.100.1.1 and 10.100.1.2)." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "stem": "Refer to the exhibit. An OSPF neighbor relationship must be configured on R1 using these guidelines:\n\n\u2022 R1 is only permitted to establish a neighbor with R2 (out FastEthernet0/0).\n\u2022 R1 will never participate in DR elections.\n\u2022 R1 will use a router ID of 10.1.1.1.\n\nWhich configuration meets all requirements?",
@@ -5673,7 +5673,7 @@ Neighbor ID     Pri   State      Dead Time   Address         Interface
             "title": "CCNA — R1 static route to 10.0.3.0/24 via R3",
             "prepend_html": """    <div class="exhibit-stack">
       <figure class="exhibit-photo">
-        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-3-via-r3-10-0-4-3-topology.png" alt="Topology: R1 on 10.0.1.0/24 (Gig0/0) and 10.0.4.1/24 (Gig0/1); R2 on 10.0.2.0/24 and 10.0.4.2/24; R3 on 10.0.3.0/24 (Gig0/0) and 10.0.4.3/24 (Gig0/1); shared transit 10.0.4.0/24." width="900" decoding="async" loading="lazy" />
+        <img src="/CCNA-Study/CCNA_questions/images/r1-static-route-10-0-3-via-r3-10-0-4-3-topology.svg" alt="Topology: R1 on 10.0.1.0/24 (Gig0/0) and 10.0.4.1/24 (Gig0/1); R2 on 10.0.2.0/24 and 10.0.4.2/24; R3 on 10.0.3.0/24 (Gig0/0) and 10.0.4.3/24 (Gig0/1); shared transit 10.0.4.0/24." width="900" decoding="async" loading="lazy" />
       </figure>
     </div>""",
             "stem": "Refer to the exhibit. Router R1 must be configured so that traffic from the 10.0.1.0/24 segment can reach networks on 10.0.3.0/24. Which command must be used to configure the route on R1?",

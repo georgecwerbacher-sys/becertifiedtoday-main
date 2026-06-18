@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">DC-1 and HQ-1 IPv4 subnet assignment topology</title>
+  <desc id="desc">Internet connects to ISP, ISP connects to DC-1, DC-1 connects to HQ-1, a switch and firewall block, and HQ-1 connects to HQ-SW1 and a workstation.</desc>
+  <rect width="900" height="420" fill="#f8fafc"/>
+  <style>
+    .node{fill:#1d4ed8;stroke:#0f172a;stroke-width:2}
+    .switch{fill:#0f766e;stroke:#0f172a;stroke-width:2}
+    .host{fill:#f59e0b;stroke:#0f172a;stroke-width:2}
+    .cloud{fill:#e0f2fe;stroke:#0369a1;stroke-width:2}
+    .link{stroke:#334155;stroke-width:4}
+    .label{font-family:Arial,sans-serif;font-size:18px;font-weight:700;fill:#0f172a}
+    .sub{font-family:Arial,sans-serif;font-size:15px;fill:#334155}
+  </style>
+  <ellipse class="cloud" cx="95" cy="95" rx="70" ry="36"/>
+  <text class="label" x="95" y="101" text-anchor="middle">Internet</text>
+  <line class="link" x1="165" y1="95" x2="260" y2="95"/>
+  <rect class="node" x="260" y="58" width="100" height="74" rx="14"/>
+  <text class="label" x="310" y="88" text-anchor="middle" fill="#fff">ISP</text>
+  <text class="sub" x="310" y="112" text-anchor="middle" fill="#e0f2fe">Gi1/0</text>
+  <line class="link" x1="360" y1="95" x2="455" y2="95"/>
+  <rect class="node" x="455" y="58" width="110" height="74" rx="14"/>
+  <text class="label" x="510" y="88" text-anchor="middle" fill="#fff">DC-1</text>
+  <text class="sub" x="407" y="80" text-anchor="middle">10.0.0.0/30</text>
+  <text class="sub" x="510" y="113" text-anchor="middle" fill="#e0f2fe">Gi1/0</text>
+  <line class="link" x1="565" y1="95" x2="675" y2="95"/>
+  <rect class="node" x="675" y="58" width="110" height="74" rx="14"/>
+  <text class="label" x="730" y="88" text-anchor="middle" fill="#fff">HQ-1</text>
+  <text class="sub" x="620" y="80" text-anchor="middle">10.0.0.8/29</text>
+  <text class="sub" x="510" y="42" text-anchor="middle">DC-1 Gi1/1 first usable</text>
+  <text class="sub" x="730" y="42" text-anchor="middle">HQ-1 Gi1/1</text>
+  <line class="link" x1="510" y1="132" x2="510" y2="245"/>
+  <rect class="switch" x="410" y="245" width="200" height="74" rx="14"/>
+  <text class="label" x="510" y="275" text-anchor="middle" fill="#fff">Switch / Firewall</text>
+  <text class="sub" x="510" y="300" text-anchor="middle" fill="#ccfbf1">10.0.0.16/28</text>
+  <text class="sub" x="395" y="190" text-anchor="middle">DC-1 Gi1/2 last usable</text>
+  <line class="link" x1="730" y1="132" x2="730" y2="245"/>
+  <rect class="switch" x="670" y="245" width="120" height="64" rx="14"/>
+  <text class="label" x="730" y="283" text-anchor="middle" fill="#fff">HQ-SW1</text>
+  <line class="link" x1="730" y1="309" x2="730" y2="352"/>
+  <rect class="host" x="670" y="352" width="120" height="44" rx="10"/>
+  <text class="label" x="730" y="380" text-anchor="middle">Workstation</text>
+  <text class="sub" x="808" y="205" text-anchor="middle">10.0.0.32/29</text>
+  <text class="sub" x="808" y="226" text-anchor="middle">HQ-1 Gi1/3 last usable</text>
+</svg>
