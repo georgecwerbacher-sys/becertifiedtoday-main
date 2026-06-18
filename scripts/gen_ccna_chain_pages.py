@@ -693,6 +693,17 @@ def main() -> None:
         {
             "slug": "arp-first-ping-switch-flood",
             "title": "CCNA — ARP broadcast on a switch",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Switch S1 port layout">
+        <pre>PC1 -- S1 Gi0/0
+PC2 -- S1 Gi0/1
+PC3 -- S1 Gi0/2
+PC4 -- S1 Gi0/3
+
+PC1 sends the first ARP request toward PC3.
+The ARP frame enters S1 on Gi0/0.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. PC1 is trying to ping PC3 for the first time and sends out an ARP to S1. Which action is taken by S1? (Assume PC1 is on the port excluded in the correct answer.)",
             "name": "arpf",
             "correct": "B",
@@ -707,6 +718,14 @@ def main() -> None:
         {
             "slug": "stp-bpduguard-portfast-errdisable",
             "title": "CCNA — BPDU Guard and err-disable",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Switch access interface configuration">
+        <pre>interface GigabitEthernet1/11
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. What is the result if Gig1/11 receives an STP BPDU?",
             "name": "bpdug",
             "correct": "D",
@@ -721,6 +740,16 @@ def main() -> None:
         {
             "slug": "stp-root-bridge-vlan110",
             "title": "CCNA — STP root bridge for VLAN 110",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="VLAN 110 bridge ID comparison">
+        <pre>VLAN 110 bridge IDs
+
+Switch 1  Priority 32778
+Switch 2  Priority 24586
+Switch 3  Priority 28682
+Switch 4  Priority 64000</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. Which switch becomes the root of the spanning tree for VLAN 110?",
             "name": "stproot110",
             "correct": "B",
@@ -861,6 +890,17 @@ def main() -> None:
         {
             "slug": "voice-data-vlan-access-ports-sw11",
             "title": "CCNA — Voice and data VLANs on access ports",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="SW11 access port topology">
+        <pre>SW11
+
+Gi1/1 ---- PC-1
+Gi1/3 ---- Phone-1 ---- PC-2
+
+Data VLAN:  8
+Voice VLAN: 9</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. An administrator must configure interfaces Gi1/1 and Gi1/3 on switch SW11. PC-1 and PC-2 must be placed in the Data VLAN and Phone-1 must be placed in the Voice VLAN. Which configuration meets these requirements?",
             "name": "voicevlan",
             "correct": "C",
@@ -875,6 +915,17 @@ def main() -> None:
         {
             "slug": "pat-vlan200-inside-source-overload",
             "title": "CCNA — PAT and NAT extended ACL",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Router PAT topology and addressing">
+        <pre>Router subinterfaces
+
+Gi2/0/1.100  VLAN 100  192.168.100.0/27   ip nat inside
+Gi2/0/1.200  VLAN 200  192.168.100.32/27  ip nat inside
+Gi1/0/0      Internet  209.165.201.2      ip nat outside
+
+Requirement: use PAT so only VLAN 200 inside addresses are translated.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. Which configuration must be applied to the router so PAT translates addresses in VLAN 200 while devices on VLAN 100 use their own IP addresses? Choose the option that matches the correct full configuration block.",
             "name": "pat",
             "correct": "D",
@@ -1189,6 +1240,16 @@ network 10.73.65.64 0.0.0.3 area 0""",
         {
             "slug": "standard-acl-permit-deny-two-subnets",
             "title": "CCNA — Standard ACL for two interfaces",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Router interface source networks for standard ACL">
+        <pre>Router interfaces
+
+GigabitEthernet0/0  source network 10.100.100.0/24
+GigabitEthernet0/1  source network 192.168.0.0/16
+
+Policy: permit G0/0 hosts and deny G0/1 hosts.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit (standard ACL 99, permit 10.100.100.0/24, deny Gi0/1 subnet). An access list is required to permit traffic from any host on interface G0/0 and deny traffic from interface Gi0/1. Which access list must be applied?",
             "name": "stdacl",
             "correct": "A",
@@ -1272,6 +1333,16 @@ network 10.73.65.64 0.0.0.3 area 0""",
         {
             "slug": "trunk-allowed-vlan-add-no-disruption",
             "title": "CCNA — Add VLAN to trunk allow list",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Existing trunk VLAN allow list">
+        <pre>Switch trunk status
+
+VLANs allowed on trunk: 10,11,12
+PC A and the File Server are in VLAN 13.
+
+Requirement: add VLAN 13 without removing the currently allowed VLANs.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. A network engineer must enable communication between PC A and the File Server without interrupting other VLANs on the trunk. Which command must be configured?",
             "name": "trkadd",
             "correct": "C",
@@ -1611,6 +1682,14 @@ network 10.73.65.64 0.0.0.3 area 0""",
         {
             "slug": "dtp-dynamic-auto-passive-trunk",
             "title": "CCNA — DTP passive trunk negotiation",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="DTP link between SW1 and SW2">
+        <pre>SW1 Gi1/1 -------- SW2 Gi1/1
+
+SW2 Gi1/1 is configured as dynamic desirable or trunk.
+SW1 Gi1/1 must passively negotiate trunking with SW2.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. Which command must be executed for Gi1/1 on SW1 to passively become a trunk port if Gi1/1 on SW2 is configured in desirable or trunk mode?",
             "name": "dtpmode",
             "correct": "C",
@@ -1692,6 +1771,15 @@ switchport trunk encapsulation negotiate""",
         {
             "slug": "route-ad-ebgp-eigrp-ospf-r4-server",
             "title": "CCNA — AD when OSPF, eBGP, and EIGRP compete",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R4 competing routes to server">
+        <pre>R4 learns the server prefix from three neighbors:
+
+R1 via OSPF Area 20
+R2 via BGP
+R3 via EIGRP autonomous system 777</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. Router R4 is dynamically learning the path to the server. If R4 is connected to R1 via OSPF Area 20, to R2 via BGP, and to R3 via EIGRP 777, which path is installed in the routing table of R4?",
             "name": "admix",
             "correct": "A",
@@ -1743,6 +1831,13 @@ switchport trunk encapsulation negotiate""",
         {
             "slug": "router-inter-subnet-forwarding-role",
             "title": "CCNA — Router forwards between subnets",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Inter-subnet forwarding topology">
+        <pre>PC-A 192.168.10.10/24 ---- Switch ---- Router ---- Switch ---- PC-B 192.168.20.10/24
+
+PC-A and PC-B are in different IPv4 subnets.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. When PC-A sends traffic to PC-B, which network component is in charge of receiving the packet from PC-A verifying the IP addresses, and forwarding the packet to PC-B?",
             "name": "rtrpc",
             "correct": "D",
@@ -1864,6 +1959,17 @@ switchport trunk encapsulation negotiate""",
         {
             "slug": "ipv6-static-summary-and-host-via-next-hops",
             "title": "CCNA — IPv6 static routes (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="IPv6 static route next-hop topology">
+        <pre>R1 next-hop reachability
+
+R1 -> R2 next hop fd00:12::2
+R1 -> R3 next hop fd00:13::3
+
+Destination network: 2001:db8:23::/64
+Preferred host exception: 2001:db8:23::14 through R3</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. Which two commands, when configured on router R1, fulfill these requirements? (Choose two) – Packets toward the entire network 2001:db8:23::/64 must be forwarded through router R2. – Packets toward host 2001:db8:23::14 preferably must be forwarded through R3.",
             "name": "v6stat2",
             "choose_two": True,
@@ -1936,6 +2042,16 @@ switchport trunk encapsulation negotiate""",
         {
             "slug": "routing-longest-match-default-172-16-1-1",
             "title": "CCNA — Longest match vs default for 172.16.1.1",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route excerpt">
+        <pre>R1#show ip route
+
+Gateway of last resort is 192.168.14.4 to network 0.0.0.0
+
+C      172.16.1.128/25 is directly connected, GigabitEthernet1/1/0
+O*E2   0.0.0.0/0 [110/1] via 192.168.14.4, FastEthernet1/0</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. R1#show ip route (output shows: Gateway of last resort is 192.168.14.4 to network 0.0.0.0; C 172.16.1.128/25 is directly connected, GigabitEthernet1/1/0; O*E2 0.0.0.0/0 [110/1] via 192.168.14.4, FastEthernet1/0; other routes omitted.) If R1 receives a packet destined to 172.16.1.1, to which IP address does it send the packet?",
             "name": "rt172",
             "correct": "C",
@@ -2119,6 +2235,13 @@ switchport trunk encapsulation negotiate""",
         {
             "slug": "subnet-included-hosts-192-168-1-0-26",
             "title": "CCNA — Hosts inside 192.168.1.0/26 (choose two)",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R2 show ip route connected prefix">
+        <pre>R2#show ip route
+
+C      192.168.1.0/26 is directly connected, FastEthernet0/1</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. R2#show ip route shows: C 192.168.1.0/26 is directly connected, FastEthernet0/1. Which two prefixes are included in this routing table entry? (Choose two)",
             "name": "sub26",
             "choose_two": True,
@@ -2441,6 +2564,17 @@ Packets with Invalid Option          = 0</pre>
         {
             "slug": "ospf-dr-election-priority-options",
             "title": "CCNA — OSPF DR/BDR election change",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="Current OSPF DR and BDR state">
+        <pre>Current OSPF segment
+
+R5 is the DR.
+R4 is the BDR.
+R2 and R3 are eligible neighbors on the same broadcast network.
+
+Goal: elect a different DR and BDR because R4 and R5 interfaces are flapping.</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. R5 is the current DR on the network, and R4 is the BDR. Their interfaces are flapping, so a network engineer wants the OSPF network to elect a different DR and BDR. Which set of configurations must the engineer implement? Option A: R4 Gi0/0 ip ospf priority 20; R5 Gi0/0 ip ospf priority 10. Option B: R2 priority 259; R3 priority 256. Option C: R3 priority 255; R2 priority 240. Option D: R5 priority 120; R4 priority 110.",
             "name": "ospfdr",
             "correct": "C",
@@ -2526,6 +2660,18 @@ O*IA 0.0.0.0/0 [110/84] via 192.168.30.10, 00:10:36, Serial0/0.1</pre>
         {
             "slug": "route-no-match-101016-discard",
             "title": "CCNA — No route for 10.10.10.16",
+            "prepend_html": """    <div class="exhibit-stack">
+      <div class="exhibit-router-cli" role="region" aria-label="R1 show ip route no default route">
+        <pre>R1#show ip route
+
+Gateway of last resort is not set
+
+C      10.10.10.0/28 is directly connected, GigabitEthernet0/0
+B      10.10.20.0/24 [20/0] via 192.0.2.2
+O      10.10.30.0/24 [110/20] via 192.0.2.3
+D      10.10.40.0/24 [90/3072] via 192.0.2.4</pre>
+      </div>
+    </div>""",
             "stem": "Refer to the exhibit. R1#show ip route includes: Gateway of last resort is not set; C 10.10.10.0/28 is directly connected, GigabitEthernet0/0; additional BGP/OSPF/EIGRP routes for other subnets that do not cover 10.10.10.16. Which action is taken when R1 receives a packet sourced from 10.10.10.2 and destined for 10.10.10.16?",
             "name": "rt1010",
             "correct": "A",
