@@ -694,15 +694,9 @@ def main() -> None:
             "slug": "arp-first-ping-switch-flood",
             "title": "CCNA — ARP broadcast on a switch",
             "prepend_html": """    <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="Switch S1 port layout">
-        <pre>PC1 -- S1 Gi0/0
-PC2 -- S1 Gi0/1
-PC3 -- S1 Gi0/2
-PC4 -- S1 Gi0/3
-
-PC1 sends the first ARP request toward PC3.
-The ARP frame enters S1 on Gi0/0.</pre>
-      </div>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/first-ping-switch-flood.png" alt="Topology: PC1 connects to SW1 G0/0, PC2 connects to SW1 G0/1, SW1 G0/2 connects to SW2, PC3 and PC4 connect to SW2, and SW1 has an uplink on G0/3." width="900" decoding="async" loading="lazy" />
+      </figure>
     </div>""",
             "stem": "Refer to the exhibit. PC1 is trying to ping PC3 for the first time and sends out an ARP to S1. Which action is taken by S1? (Assume PC1 is on the port excluded in the correct answer.)",
             "name": "arpf",
