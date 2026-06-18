@@ -735,13 +735,18 @@ def main() -> None:
             "slug": "stp-root-bridge-vlan110",
             "title": "CCNA — STP root bridge for VLAN 110",
             "prepend_html": """    <div class="exhibit-stack">
-      <div class="exhibit-router-cli" role="region" aria-label="VLAN 110 bridge ID comparison">
-        <pre>VLAN 110 bridge IDs
-
-Switch 1  Priority 32778
-Switch 2  Priority 24586
-Switch 3  Priority 28682
-Switch 4  Priority 64000</pre>
+      <figure class="exhibit-photo">
+        <img src="/CCNA-Study/CCNA_questions/images/stp-root-bridge-vlan110-hq-lan-topology.png" alt="HQ LAN topology with Switch 1, Switch 2, Switch 3, and Switch 4 connected by 10G links, with HQ-1 and HQ-2 routers connected above the switching block." width="900" decoding="async" loading="lazy" />
+      </figure>
+      <div class="exhibit-router-cli" role="region" aria-label="VLAN 110 spanning-tree bridge IDs">
+        <pre>Switch 1
+VLAN 110 - 32778 0018.184e.3c00
+Switch 2
+VLAN 110 - 24586 001a.e3ff.a680
+Switch 3
+VLAN 110 - 28682 0022.55cf.cc00
+Switch 4
+VLAN 110 - 64000 0e38.7363.657f</pre>
       </div>
     </div>""",
             "stem": "Refer to the exhibit. Which switch becomes the root of the spanning tree for VLAN 110?",
