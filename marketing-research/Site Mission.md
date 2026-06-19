@@ -73,7 +73,7 @@ That is the line I want you to remember. It ties the site name to what I actuall
 
 ## What I promise you (most important first)
 
-1. **Material that stays current** — I align practice to today’s exam objectives (CCNA v1.1, ENCOR v1.2, Security+ v5.0) and keep adding questions. You are not stuck memorizing a PDF that stopped updating last year.
+1. **Material that stays current** — I align practice to today’s exam objectives (CCNA V_2025, ENCOR v1.2, Security+ v5.0) and keep adding questions. You are not stuck memorizing a PDF that stopped updating last year.
 
 2. **Practice that feels like the real exam** — Timed runs, drag-and-drop, CLI labs, and mixed question types — presented the way you will see them on test day, not as a random list of trivia.
 
@@ -114,7 +114,7 @@ Paid and organic traffic lands on exam home pages with **purchase first** — mi
 
 | What I care about | What you get |
 |-------------------|--------------|
-| Current material | v1.1 / v1.2 alignment; questions added over time |
+| Current material | V_2025 / v1.2 alignment; questions added over time |
 | Exam-realistic practice | Timed sim, drag-and-drop, browser CLI labs, scorecard |
 | Trustworthy answers | Explanations tied to official sources |
 | Low friction | Free samples; portal access by period; no membership |

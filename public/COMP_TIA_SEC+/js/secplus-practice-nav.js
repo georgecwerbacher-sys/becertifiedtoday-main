@@ -8,7 +8,7 @@
   var PORTAL = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
   var TOPIC_MAP_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-map.json";
   var SECPLUS_STATIC_SAMPLE_TOTAL = 3;
-  var SECPLUS_VERSION_LABEL = "Version 1.1 2026";
+  var SECPLUS_VERSION_LABEL = "V_2025";
   var SECPLUS_DOMAIN_NAMES = {
     "1.0": "General Security Concepts",
     "2.0": "Threats, Vulnerabilities, and Mitigations",

@@ -186,7 +186,7 @@
       eyebrow: "CCNA certification prep · 200-301",
       headline: "CCNA Certification Prep — no membership required",
       lead:
-        "CCNA certification prep with questions, labs, and drag-and-drop aligned to 200-301 v1.1. " +
+        "CCNA certification prep with questions, labs, and drag-and-drop aligned to 200-301 V_2025. " +
         "<strong>No recurring membership.</strong> Try free samples first; pay once when you want full access.",
       ctaPrimary: "Preview free CCNA samples",
       stickyPrimary: "Free samples",

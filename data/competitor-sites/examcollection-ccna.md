@@ -12,7 +12,7 @@ question_poll:
   id: examcollection-ccna
   sample_url: https://www.examcollection.com/200-301-dumps.html
   parser: generic_mcq
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   topic_notes: Tier C catalog — sample MCQs on dumps page; discovery only
 pbq_poll:
   enabled: true

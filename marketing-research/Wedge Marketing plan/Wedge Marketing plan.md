@@ -52,7 +52,7 @@ created: 2026-06-14
 | Free samples → $300–$2,000 course | **$9.99 / 10-day exam sprint** |
 | 10,000 static questions | **Timed sim + drag-drop + CLI labs in browser** |
 | GNS3 / Packet Tracer / IOU | **No install — labs in the testing engine** |
-| PDF / dump / forum votes | **Verified explanations (v1.1 & v2.0)** |
+| PDF / dump / forum votes | **Verified explanations (V_2025 & V_2026)** |
 | Big bank, random order | **Review loops weak topics** |
 
 ---

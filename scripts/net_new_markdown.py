@@ -23,7 +23,12 @@ def _format_revision(revision: str) -> str | None:
     m = re.search(r"v?(\d+)\.(\d+)", (revision or "").strip(), re.I)
     if not m:
         return None
-    return f"V{m.group(1)}.{m.group(2)}"
+    major, minor = int(m.group(1)), int(m.group(2))
+    if major == 1 and minor == 1:
+        return "V_2025"
+    if major == 2 and minor == 0:
+        return "V_2026"
+    return f"V{major}.{minor}"
 
 
 def version_line(
@@ -43,7 +48,12 @@ def version_line(
 
     rev = re.search(r"v(\d+)\.(\d+)", raw, re.I)
     if rev:
-        return f"V{rev.group(1)}.{rev.group(2)}"
+        major, minor = int(rev.group(1)), int(rev.group(2))
+        if major == 1 and minor == 1:
+            return "V_2025"
+        if major == 2 and minor == 0:
+            return "V_2026"
+        return f"V{major}.{minor}"
 
     fallback = (blueprint_by_source or {}).get((source_id or "").strip())
     if fallback:

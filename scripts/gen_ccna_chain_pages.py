@@ -15,9 +15,9 @@ OUT = ROOT / "public/CCNA-Study/CCNA_questions"
 HUB_JS = ROOT / "public/CCNA-Study/js/ccna-practice-100-hub.js"
 # Last hub slug before the generated chain (hand-maintained prefix stays first in ALL_SLUGS).
 HUB_CHAIN_ANCHOR = "vty-access-list-ssh-secure"
-VERSION_11_LABEL = "Version 1.1 2026"
-VERSION_20_LABEL = "Version 2.0 2026"
-VERSION_20_SLUGS_JSON = ROOT / "public/CCNA-Study/data/ccna-version-2-0-slugs.json"
+VERSION_11_LABEL = "V_2025"
+VERSION_20_LABEL = "V_2026"
+VERSION_20_SLUGS_JSON = ROOT / "public/CCNA-Study/data/ccna-version-2026-slugs.json"
 # Topology / exhibit raster files live in OUT/images/ (see .cursor/rules/ccna-extra-question-chain.mdc).
 
 
@@ -16146,11 +16146,11 @@ Route C: via Gi0/2, cost 20</pre>
         },
         {
             "slug": "terraform-provider-plugins-ccna-v1-1",
-            "title": "CCNA v1.1 — Terraform declarative IaC and provider plugins",
-            "stem": "Which configuration management tool uses declarative configuration files called \"plans\" and communicates with infrastructure providers through provider plugins, and was added to the CCNA v1.1 exam, replacing Puppet and Chef?",
+            "title": "CCNA V_2025 — Terraform declarative IaC and provider plugins",
+            "stem": "Which configuration management tool uses declarative configuration files called \"plans\" and communicates with infrastructure providers through provider plugins, and was added to the CCNA V_2025 exam, replacing Puppet and Chef?",
             "name": "tfccnav11",
             "correct": "B",
-            "explain": "Correct. B — Terraform is declarative infrastructure-as-code: you define desired state in configuration files (HCL), run terraform plan to preview changes, and terraform apply to enforce that state through provider plugins. CCNA v1.1 emphasizes Ansible and Terraform rather than Puppet and Chef. Ansible (A) is agentless automation with playbooks, not provider-plugin IaC. SaltStack (C) and Jenkins (D) are not the CCNA v1.1 replacement pair for Puppet/Chef in this context.",
+            "explain": "Correct. B — Terraform is declarative infrastructure-as-code: you define desired state in configuration files (HCL), run terraform plan to preview changes, and terraform apply to enforce that state through provider plugins. CCNA V_2025 emphasizes Ansible and Terraform rather than Puppet and Chef. Ansible (A) is agentless automation with playbooks, not provider-plugin IaC. SaltStack (C) and Jenkins (D) are not the CCNA V_2025 replacement pair for Puppet/Chef in this context.",
             "choices": [
                 "Ansible",
                 "Terraform",

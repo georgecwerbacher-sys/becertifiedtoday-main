@@ -5,7 +5,7 @@
   var BANK_SIZE = 100;
   var FILTER_BANK_ID = "filter";
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
-  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2026-slugs.json";
   var DOMAIN_NAMES = {
     "1": "Network fundamentals",
     "2": "LAN switching (network access)",
@@ -48,7 +48,7 @@
   window.CCNA_PRACTICE_100._version20SlugSet = null;
   window.CCNA_PRACTICE_100._version20SlugsPromise = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
     .then(function (res) {
-      if (!res.ok) throw new Error("version 2.0 slugs http " + res.status);
+      if (!res.ok) throw new Error("version 2026 slugs http " + res.status);
       return res.json();
     })
     .then(function (data) {
@@ -130,7 +130,7 @@
     var sel = document.getElementById("ccna-practice-domain-select");
     if (!sel) return { domain: null, version: null };
     var v = String(sel.value || "").trim();
-    if (v === "v11-2026") return { domain: null, version: "v11" };
+    if (v === "v2025" || v === "v11-2026") return { domain: null, version: "v11" };
     if (v === "v20") return { domain: null, version: "v20" };
     if (/^[1-6]$/.test(v)) return { domain: v, version: null };
     return { domain: null, version: null };
@@ -142,8 +142,8 @@
   }
 
   function filterSessionLabel(filter) {
-    if (filter.version === "v11") return "Version 1.1 2026";
-    if (filter.version === "v20") return "Version 2.0 2026";
+    if (filter.version === "v11") return "V_2025";
+    if (filter.version === "v20") return "V_2026";
     if (filter.domain) {
       var name = DOMAIN_NAMES[filter.domain] || "Domain " + filter.domain;
       return filter.domain + " — " + name;
@@ -151,7 +151,7 @@
     return "Filtered set";
   }
 
-  /** Version filters use the explicit Version 2.0 slug list (~70 tagged questions). */
+  /** Version filters use the explicit V_2026 slug list (~70 tagged questions). */
   function slugsForVersionBounds(filter) {
     var all = window.CCNA_PRACTICE_100.ALL_SLUGS;
     if (!Array.isArray(all)) return [];
@@ -389,12 +389,12 @@
       meta.textContent = "Loading question count…";
     } else if (filter.version === "v20") {
       meta.textContent =
-        (count === 1 ? "1 Version 2.0 2026 question" : count + " Version 2.0 2026 questions") +
-        " (tagged in the bank). Version 1.1 questions are excluded.";
+        (count === 1 ? "1 V_2026 question" : count + " V_2026 questions") +
+        " (tagged in the bank). V_2025 questions are excluded.";
     } else if (filter.version === "v11") {
       meta.textContent =
-        (count === 1 ? "1 Version 1.1 2026 question" : count + " Version 1.1 2026 questions") +
-        " (default bank set). Version 2.0 questions are excluded.";
+        (count === 1 ? "1 V_2025 question" : count + " V_2025 questions") +
+        " (default bank set). V_2026 questions are excluded.";
     } else if (count === 1) {
       meta.textContent = "1 question across the full hub (not a numbered bank)";
     } else {
@@ -497,9 +497,9 @@
       total++;
       if (isVersion20Slug(all[i], v20Set)) v20Count++;
     }
-    if (!total || !v20Count) return "Version 1.1 2026";
-    if (v20Count === total) return "Version 2.0 2026";
-    return "Version 1.1 2026 & Version 2.0 2026";
+    if (!total || !v20Count) return "V_2025";
+    if (v20Count === total) return "V_2026";
+    return "V_2025 & V_2026";
   }
 
   /** CCNA_Training_Portal.html: numbered banks, or one temporary bank when a filter is active. */

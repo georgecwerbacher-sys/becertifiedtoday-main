@@ -83,7 +83,7 @@ Same topics as landing pages, 800–1,200 words:
 
 - “CCNA labs without GNS3 or Packet Tracer (step-by-step)”
 - “How to use a timed CCNA practice test the week before your exam”
-- “CCNA Version 1.1 vs 2.0: what to practice”
+- “CCNA V_2025 vs 2.0: what to practice”
 
 Canonical URL = landing page; blog can syndicate or live under `/blog/` with canonical tag.
 

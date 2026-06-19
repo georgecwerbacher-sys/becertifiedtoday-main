@@ -12,7 +12,7 @@ question_poll:
   id: crucialexams-ccna-samples
   sample_url: https://crucialexams.com/exams/cisco/ccna/200-301/practice-tests-practice-questions
   parser: crucialexams
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   max_questions: 20
   topic_notes: Tier B — free demo up to 20 Q; verify answer on Cisco Tier A
 pbq_poll:

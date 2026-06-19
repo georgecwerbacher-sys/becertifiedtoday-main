@@ -15,7 +15,7 @@ MANIFEST = ROOT / "public" / "CCNA-Study" / "data" / "ccna-practice-questions-ma
 PORTAL_HOME = "/CCNA-Study/CCNA_Training_Portal.html"
 QUESTIONS_BASE = "/CCNA-Study/CCNA_questions/"
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
-VERSION_LABEL = "Version 1.1 2026"
+VERSION_LABEL = "V_2025"
 
 KEEP_CSS_KEYWORDS = (
     "exhibit",

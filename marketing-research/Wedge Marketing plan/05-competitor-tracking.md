@@ -27,12 +27,12 @@ Use competitors to find **positioning gaps**, not to copy dumps.
 
 Copy this table into a new note each month: `Wedge Marketing plan/competitor-matrix-YYYY-MM.md`
 
-| Site | Free sample | Timed sim | Browser labs | No install | Adaptive / weak-area | Sub? | Entry $ | v2.0 / current |
+| Site | Free sample | Timed sim | Browser labs | No install | Adaptive / weak-area | Sub? | Entry $ | V_2026 / current |
 |------|-------------|-----------|--------------|------------|----------------------|------|---------|----------------|
-| **Be Certified Today** | ✓ | ✓ 120m | ✓ | ✓ | ✓ review loop | No | $9.99/10d | ✓ v1.1 & v2.0 |
-| Mastery Exam Prep | ✓ | ? | CLI in page | ✓ | ? | ? | ? | v2.0 samples |
-| HowToNetwork | ✓ | ? | images | ✓ | ? | ? | free | v1.1 |
-| OpenExamPrep | ✓ | ? | ? | ✓ | ? | ? | free | v1.1 |
+| **Be Certified Today** | ✓ | ✓ 120m | ✓ | ✓ | ✓ review loop | No | $9.99/10d | ✓ V_2025 & V_2026 |
+| Mastery Exam Prep | ✓ | ? | CLI in page | ✓ | ? | ? | ? | V_2026 samples |
+| HowToNetwork | ✓ | ? | images | ✓ | ? | ? | free | V_2025 |
+| OpenExamPrep | ✓ | ? | ? | ✓ | ? | ? | free | V_2025 |
 | Boson | demo | ✓ | desktop | ✗ install | ? | ? | $$$ | current |
 | INE / CBT | video | ? | PT/GNS3 | ✗ | course path | Yes | $$$ | course |
 | ExamTopics | community | ✗ | ✗ | ✓ | ✗ | ? | free | mixed |
@@ -87,8 +87,8 @@ Search terms report → columns:
 
 Monthly hunt finds **net-new** items competitors surface:
 
-- v2.0 Mastery samples → `Hunt/ccna/…/v2.0/`
-- v1.1 walkthroughs → `Hunt/ccna/…/v1.1/`
+- V_2026 Mastery samples → `Hunt/ccna/…/V_2026/`
+- V_2025 walkthroughs → `Hunt/ccna/…/V_2025/`
 
 Marketing message: *newer questions added continuously* — only if bank actually grows (verify in portal counts).
 

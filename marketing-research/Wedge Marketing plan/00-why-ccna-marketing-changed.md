@@ -66,7 +66,7 @@ Full table: [[01-positioning-and-audience#What competitors optimize for (avoid t
 | Free samples → expensive course | **$9.99 / 10-day exam sprint** |
 | 10,000 static questions | **Timed sim + drag-drop + CLI labs in browser** |
 | GNS3 / Packet Tracer / IOU | **No install — labs in the testing engine** |
-| PDF / dump / forum votes | **Verified explanations (v1.1 & v2.0)** |
+| PDF / dump / forum votes | **Verified explanations (V_2025 & V_2026)** |
 | Big bank, random order | **Review loops on weak topics** |
 
 **Primary audience:** person **2–3 weeks from exam day** asking *Am I ready?* — not shopping for the cheapest dump. [[01-positioning-and-audience#Primary audience]]

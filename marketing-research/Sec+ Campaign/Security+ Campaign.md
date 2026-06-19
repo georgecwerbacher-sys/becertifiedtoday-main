@@ -22,21 +22,21 @@ Head-term **portal baseline** — practice test / question bank. Deprioritize vs
 
 ## Campaign shell
 
-| Setting | Value |
-|---------|--------|
+| Setting       | Value                                              |
+| ------------- | -------------------------------------------------- |
 | Campaign name | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
-| Daily budget | **$10.00/day** |
-| Bidding | Maximize clicks, max CPC **$2.75** |
-| utm_campaign | `secplus_portal` |
-| Conversion | GA4 `begin_checkout` |
+| Daily budget  | **$10.00/day**                                     |
+| Bidding       | Maximize clicks, max CPC **$2.75**                 |
+| utm_campaign  | `secplus_portal`                                   |
+| Conversion    | GA4 `begin_checkout`                               |
 
 ## Ad group — secplus_portal_10d only
 
-| Setting | Value |
-|---------|--------|
+| Setting      | Value                         |
+| ------------ | ----------------------------- |
 | Display path | `Security+` / `10-Day-Access` |
-| Pin H1 | `Security+ Practice Test` |
-| Pin H2 | `$9.99 for 10-Day Access` |
+| Pin H1       | `Security+ Practice Test`     |
+| Pin H2       | `$9.99 for 10-Day Access`     |
 
 **Final URL:**
 

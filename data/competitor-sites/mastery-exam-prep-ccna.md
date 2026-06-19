@@ -12,7 +12,7 @@ question_poll:
   id: mastery-ccna-public
   sample_url: https://masteryexamprep.com/exams/cisco/ccna/
   parser: mastery
-  version_note: 200-301 v2.0
+  version_note: 200-301 V_2026
   topic_notes: Tier B — 24 on-page samples; verify answer on Cisco Tier A
 pbq_poll:
   enabled: true
@@ -20,7 +20,7 @@ pbq_poll:
   id: mastery-ccna-pbq
   sample_url: https://masteryexamprep.com/exams/cisco/ccna/
   parser: generic_pbq
-  version_note: 200-301 v2.0
+  version_note: 200-301 V_2026
   topic_notes: Tier B PBQ — scan landing for performance-based / sim copy
 ---
 
@@ -28,7 +28,7 @@ pbq_poll:
 
 ## Model
 
-- **24** public sample MCQs on the CCNA landing page (v2.0 domain weights)  
+- **24** public sample MCQs on the CCNA landing page (V_2026 domain weights)  
 - Free diagnostic page + larger bank behind **IT Mastery** (paid)  
 - Cisco hub: https://masteryexamprep.com/exams/cisco/
 

@@ -19,6 +19,7 @@ Hub for competitor intel, ad campaigns, and weekly analytics.
 - [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — positioning, wedge keywords, content, 30-day checklist
 
 - [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Ads setup, keywords, portal ref
+- [[Reddit/README|Reddit]] — paid ads + organic posting (voice guide, checklists, post log)
 - [[Competitors]] — SEC+, CCNA, ENCOR prep sites
 - [[Campaigns]] — Google Ads setup and UTM registry (**initial 7-day test** through 2026-06-21)
   - [[campaigns/CCNA Campaign|CCNA Campaign]] — checklist: 1 campaign, 2 ad groups (`ccna_portal_10v1` + `ccna_browser_labs`)
@@ -29,6 +30,7 @@ Hub for competitor intel, ad campaigns, and weekly analytics.
 
 | Folder | Source in repo |
 |--------|----------------|
+| `Reddit/` | paid Reddit ads · organic posting voice + log |
 | `competitor-sites/` | `data/competitor-sites/` |
 | `encor-competitors/` | `data/encor-question-sourcing/competitor-sites/` |
 | `weekly-reports/` | `data/reports/weekly/` |

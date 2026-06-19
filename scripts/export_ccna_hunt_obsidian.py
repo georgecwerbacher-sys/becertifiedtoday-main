@@ -18,8 +18,8 @@ CONFIG = ROOT / "data" / "ccna-question-sourcing" / "config" / "ccna-web-sources
 sys.path.insert(0, str(ROOT / "scripts"))
 from net_new_markdown import version_line  # noqa: E402
 
-V11_DIR = "v1.1"
-V20_DIR = "v2.0"
+V11_DIR = "V_2025"
+V20_DIR = "V_2026"
 
 EXHIBIT_INLINE_RE = re.compile(r"\s+Exhibit:\s+", re.I)
 BARE_EXHIBIT_RE = re.compile(r"^(?:the\s+)?exhibit\.?\s+", re.I)
@@ -82,8 +82,9 @@ def question_filename(index: int, stem: str) -> str:
 
 
 def version_subdir(revision: str | None) -> str:
-    """Obsidian folder under each run: v1.1 (default) or v2.0."""
-    if revision and revision.strip().upper().startswith("V2"):
+    """Obsidian folder under each run: V_2025 (default) or V_2026."""
+    rev = (revision or "").strip().upper()
+    if rev in ("V_2026", "V_2026") or rev.startswith("V2."):
         return V20_DIR
     return V11_DIR
 
@@ -634,8 +635,8 @@ def write_index(
         f"- Discovered: **{discovered}**",
         f"- Likely already in BCT: **{dup_count}**",
         f"- Net-new in this run: **{len(rows)}**",
-        f"  - [[{run_id}/{V11_DIR}|Version 1.1]]: **{len(v11_rows)}**",
-        f"  - [[{run_id}/{V20_DIR}|Version 2.0]]: **{len(v20_rows)}**",
+        f"  - [[{run_id}/{V11_DIR}|V_2025]]: **{len(v11_rows)}**",
+        f"  - [[{run_id}/{V20_DIR}|V_2026]]: **{len(v20_rows)}**",
         "",
         "**Exhibits:** "
         + ", ".join(f"{k} **{v}**" for k, v in sorted(exhibit_counts.items())),
@@ -663,13 +664,13 @@ def write_index(
             )
         lines.append("")
 
-    append_section("Version 1.1", V11_DIR, v11_rows)
-    append_section("Version 2.0", V20_DIR, v20_rows)
+    append_section("V_2025", V11_DIR, v11_rows)
+    append_section("V_2026", V20_DIR, v20_rows)
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def write_version_readme(path: Path, *, run_id: str, version_dir: str, count: int) -> None:
-    label = "Version 1.1" if version_dir == V11_DIR else "Version 2.0"
+    label = "V_2025" if version_dir == V11_DIR else "V_2026"
     path.write_text(
         "\n".join(
             [
@@ -754,7 +755,7 @@ def export_run(run_id: str) -> int:
     )
 
     readme = OUT_BASE / "README.md"
-    link = f"- [[{run_id}|{run_id}]] — {len(rows)} net-new ({v11_count} v1.1, {v20_count} v2.0)"
+    link = f"- [[{run_id}|{run_id}]] — {len(rows)} net-new ({v11_count} V_2025, {v20_count} V_2026)"
     if not readme.is_file():
         readme.write_text(
             "\n".join(

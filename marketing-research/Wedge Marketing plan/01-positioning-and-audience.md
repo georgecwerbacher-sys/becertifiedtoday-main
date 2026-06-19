@@ -39,7 +39,7 @@ They are **not** shopping for the cheapest question dump. They are asking: *Am I
 
 1. **Browser CLI labs** — VLAN, routing concepts, ENCOR ACL/CoPP; no third-party software
 2. **120-min timed simulation** — mixed MCQ, drag-and-drop, lab-style pressure
-3. **Verified explanations** — Cisco / CompTIA official sources; v1.1 & v2.0 (CCNA)
+3. **Verified explanations** — Cisco / CompTIA official sources; V_2025 & V_2026 (CCNA)
 4. **Review modes** — missed answers loop back; focus weak topics before test day
 5. **One-time access** — $9.99 / 10 days or $19.99 / 30 days; progress included in pass
 6. **Free try-first** — assessment, samples, VLAN lab — judge quality before checkout

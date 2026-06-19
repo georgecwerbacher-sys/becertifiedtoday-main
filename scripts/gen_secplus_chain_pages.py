@@ -578,7 +578,7 @@ def build_question_nav(prev_slug: str | None, next_slug: str | None) -> str:
 
 
 LOGO_IMG = "/images/logo/becertifiedtoday_logo_image_trans.png"
-SECPLUS_VERSION_META = "Version 1.1 2026"
+SECPLUS_VERSION_META = "V_2025"
 
 
 def build_page_shell_open() -> str:

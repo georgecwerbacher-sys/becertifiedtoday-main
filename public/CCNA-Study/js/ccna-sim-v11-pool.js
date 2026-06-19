@@ -1,11 +1,11 @@
 /**
- * CCNA timed simulations: MCQ pool limited to Version 1.1 2026 (excludes tagged v2.0 slugs).
+ * CCNA timed simulations: MCQ pool limited to V_2025 (excludes tagged V_2026 slugs).
  * Hub order matches ccna-practice-questions-manifest.json / ccna-practice-100-hub.js ALL_SLUGS.
  */
 (function () {
   "use strict";
 
-  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2026-slugs.json";
   /** @type {Record<string, true>|null} */
   var version20SlugSet = null;
   var loadPromise = null;
@@ -24,7 +24,7 @@
     if (loadPromise) return loadPromise;
     loadPromise = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
       .then(function (r) {
-        if (!r.ok) throw new Error("version 2.0 slugs http " + r.status);
+        if (!r.ok) throw new Error("version 2026 slugs http " + r.status);
         return r.json();
       })
       .then(function (data) {

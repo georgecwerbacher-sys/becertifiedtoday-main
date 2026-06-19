@@ -12,7 +12,7 @@ question_poll:
   id: certimaan-ccna-samples
   sample_url: https://www.certimaan.com/post/ccna-sample-questions
   parser: certimaan
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   topic_notes: Tier C — dumps SEO on site; 90+ static MCQs; verify on Cisco Tier A
 pbq_poll:
   enabled: false
@@ -41,7 +41,7 @@ pbq_poll:
 
 ## BCT angle
 
-Interactive practice + explanations + **v1.1 objective** alignment; no dump vocabulary.
+Interactive practice + explanations + **V_2025 objective** alignment; no dump vocabulary.
 
 **Tracker row:** id **6** in [[../competitors-ccna-practice-samples-tracker.csv]]
 

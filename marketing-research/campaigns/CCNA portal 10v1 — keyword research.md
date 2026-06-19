@@ -53,7 +53,7 @@ See [[Site Mission]] for full positioning. For this ad group:
 | Free try-first | ccna free practice test, free ccna mock exam | Free assessment, samples ATF |
 | Scorecard | ccna practice test scorecard | Free assessment scorecard |
 | Cisco-branded | cisco ccna practice test online | Meta + Cisco CCNA Prep variant |
-| Exam code | ccna 200-301 practice questions | v1.1 / 200-301 copy throughout |
+| Exam code | ccna 200-301 practice questions | V_2025 / 200-301 copy throughout |
 | Anti-PDF | ccna practice test not pdf, interactive ccna prep | “No PDFs” positioning |
 
 **Day 7 rule:** add Tier B terms only if search terms report shows ≥5 clicks and ≥1 checkout, or ≥10 clicks with strong CTR (>2%).
@@ -106,7 +106,7 @@ Fill table below from Search terms + GA4:
 Use in RSA tests, not as new keywords until search terms validate:
 
 - vs **Boson/INE**: no install, browser-only, $9.99 entry
-- vs **PDF/dumps**: interactive, verified explanations, v1.1
+- vs **PDF/dumps**: interactive, verified explanations, V_2025
 - vs **Packet Tracer/GNS3**: VLAN lab in browser (browser_labs ad group later)
 
 ## Data sources in repo

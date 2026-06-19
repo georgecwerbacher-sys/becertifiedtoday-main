@@ -12,7 +12,7 @@ question_poll:
   id: openexamprep-ccna
   sample_url: https://open-exam-prep.com/practice/ccna
   parser: openexamprep
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   max_questions: 200
   topic_notes: Tier B — verify answer on Cisco Tier A; enable when CCNA monthly collect ships
 pbq_poll:
@@ -21,7 +21,7 @@ pbq_poll:
   id: openexamprep-ccna-pbq
   sample_url: https://open-exam-prep.com/practice/ccna
   parser: generic_pbq
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   topic_notes: Tier B PBQ — scan page for drag-drop / sim copy; verify on Cisco Tier A
 ---
 
@@ -31,7 +31,7 @@ pbq_poll:
 
 - **200+** free 200-301 MCQs in browser; no signup for core quiz  
 - AI tutor / explanations on page  
-- Page cites **v1.1** (Aug 2024) topics: Terraform, AI/ML in ops; 10 static samples below the interactive quiz  
+- Page cites **V_2025** (Aug 2024) topics: Terraform, AI/ML in ops; 10 static samples below the interactive quiz  
 - Multi-cert platform (same family as SY0-701 OpenExamPrep note)
 
 ## Weakness vs BCT
@@ -42,7 +42,7 @@ pbq_poll:
 
 ## BCT angle
 
-**700+** bank + **CLI labs** + **drag-and-drop** + **120-min timed sim**; verify every key against 200-301 v1.1 objectives.
+**700+** bank + **CLI labs** + **drag-and-drop** + **120-min timed sim**; verify every key against 200-301 V_2025 objectives.
 
 **Tracker row:** id **1** in [[../competitors-ccna-practice-samples-tracker.csv]]
 

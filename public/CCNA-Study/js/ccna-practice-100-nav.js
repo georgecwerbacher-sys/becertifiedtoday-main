@@ -77,10 +77,10 @@
     "5.0": "Security Fundamentals",
     "6.0": "Automation and Programmability",
   };
-  var CCNA_VERSION_11_LABEL = "Version 1.1 2026";
-  var CCNA_VERSION_20_LABEL = "Version 2.0 2026";
+  var CCNA_VERSION_11_LABEL = "V_2025";
+  var CCNA_VERSION_20_LABEL = "V_2026";
   var CCNA_UPDATED_LABEL = "Updated for 2026";
-  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2-0-slugs.json";
+  var VERSION_20_SLUGS_URL = "/CCNA-Study/data/ccna-version-2026-slugs.json";
 
   function sessionVersionFilter(session) {
     if (!session) return "";
@@ -325,7 +325,7 @@
     if (!inst._version20SlugsPromiseNav) {
       inst._version20SlugsPromiseNav = fetch(VERSION_20_SLUGS_URL, { credentials: "same-origin" })
         .then(function (res) {
-          if (!res.ok) throw new Error("version 2.0 slugs http " + res.status);
+          if (!res.ok) throw new Error("version 2026 slugs http " + res.status);
           return res.json();
         })
         .then(function (data) {

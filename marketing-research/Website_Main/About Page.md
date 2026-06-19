@@ -83,7 +83,7 @@ Free samples use the **same UI and testing engine** as paid access. Judge qualit
 
 | Exam | What you practice |
 |------|-------------------|
-| **CCNA 200-301** | Timed sim, drag-and-drop, browser CLI labs, 700+ questions, v1.1 & v2.0 |
+| **CCNA 200-301** | Timed sim, drag-and-drop, browser CLI labs, 700+ questions, V_2025 & V_2026 |
 | **CCNP ENCOR 350-401** | Timed sim, drag-and-drop, browser ACL/CoPP-style labs |
 | **CompTIA Security+ SY0-701** | 1,000+ questions, 28 PBQ scenarios, 90-min timed sim, adaptive review |
 

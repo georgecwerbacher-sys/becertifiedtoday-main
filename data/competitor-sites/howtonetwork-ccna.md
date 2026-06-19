@@ -12,7 +12,7 @@ question_poll:
   id: howtonetwork-ccna-walkthrough
   sample_url: https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/
   parser: howtonetwork
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   topic_notes: Tier B — WatuPro walkthrough; verify answer on Cisco Tier A
 pbq_poll:
   enabled: true
@@ -20,7 +20,7 @@ pbq_poll:
   id: howtonetwork-ccna-pbq
   sample_url: https://www.howtonetwork.com/free/cisco-ccna-exam-walkthrough/
   parser: generic_pbq
-  version_note: 200-301 v1.1
+  version_note: 200-301 V_2025
   topic_notes: Tier B — 103 Q walkthrough with D&D + multi-select; H5P embed
 ---
 
