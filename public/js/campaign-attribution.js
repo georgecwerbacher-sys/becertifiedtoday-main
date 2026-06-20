@@ -8,16 +8,30 @@
   var STORAGE_KEY = "bcc_campaign_attribution_v1";
   var PARAMS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid"];
 
-  function readQuery() {
+  function paramsFromSearchString(search) {
     var out = {};
+    if (!search) return out;
     try {
-      var qs = new URLSearchParams(window.location.search);
+      var qs = new URLSearchParams(search.charAt(0) === "?" ? search.slice(1) : search);
       PARAMS.forEach(function (key) {
         var val = qs.get(key);
         if (val) out[key] = val;
       });
     } catch (e) {
       /* ignore */
+    }
+    return out;
+  }
+
+  function readQuery() {
+    var out = paramsFromSearchString(window.location.search || "");
+    if (Object.keys(out).length) return out;
+
+    // Google Ads sitelinks often use ccna-home.html#purchase?utm_source=… — UTMs after # are not in location.search.
+    var hash = window.location.hash || "";
+    var qIndex = hash.indexOf("?");
+    if (qIndex >= 0) {
+      out = paramsFromSearchString(hash.slice(qIndex));
     }
     return out;
   }
@@ -49,11 +63,11 @@
 
   function campaignFields(attrs) {
     return {
-      campaign_source: attrs.utm_source || undefined,
-      campaign_medium: attrs.utm_medium || undefined,
-      campaign_name: attrs.utm_campaign || undefined,
-      campaign_content: attrs.utm_content || undefined,
-      campaign_term: attrs.utm_term || undefined,
+      source: attrs.utm_source || undefined,
+      medium: attrs.utm_medium || undefined,
+      campaign: attrs.utm_campaign || undefined,
+      content: attrs.utm_content || undefined,
+      term: attrs.utm_term || undefined,
       gclid: attrs.gclid || undefined,
     };
   }

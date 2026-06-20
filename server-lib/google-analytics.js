@@ -620,6 +620,56 @@ export async function fetchHomeLandingPageViews(client, propertyId, range, paths
   }));
 }
 
+/**
+ * Page views / sessions on ad landing paths, split by session source + medium.
+ * Use this to reconcile Google/Reddit ad clicks with GA4 landing traffic.
+ */
+export async function fetchLandingPagesTrafficBySource(
+  client,
+  propertyId,
+  range,
+  paths,
+  limit = 60
+) {
+  const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  if (!pagePaths.length) return [];
+
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      {
+        orGroup: {
+          expressions: pagePaths.map((p) => ({
+            filter: {
+              fieldName: "pagePath",
+              stringFilter: { matchType: "EXACT", value: p },
+            },
+          })),
+        },
+      }
+    ),
+    dimensions: [{ name: "pagePath" }, { name: "sessionSource" }, { name: "sessionMedium" }],
+    metrics: [
+      { name: "screenPageViews" },
+      { name: "sessions" },
+      { name: "activeUsers" },
+    ],
+    orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    pagePath: row.dimensionValues?.[0]?.value || "",
+    source: row.dimensionValues?.[1]?.value || "(not set)",
+    medium: row.dimensionValues?.[2]?.value || "(not set)",
+    pageViews: Number(row.metricValues?.[0]?.value || 0),
+    sessions: Number(row.metricValues?.[1]?.value || 0),
+    users: Number(row.metricValues?.[2]?.value || 0),
+  }));
+}
+
 export function rangeFromPreset(preset) {
   switch (preset) {
     case "today":

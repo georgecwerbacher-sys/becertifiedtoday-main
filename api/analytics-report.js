@@ -7,11 +7,13 @@
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
 import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
+import { AD_LANDING_MONITOR_PATHS } from "../server-lib/campaign-marketing-registry.js";
 import { buildSampleCheckoutReport } from "../server-lib/sample-checkout-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
   fetchDailyTrend,
+  fetchLandingPagesTrafficBySource,
   fetchRealtimeActiveUsers,
   fetchTopPages,
   getAnalyticsDataClient,
@@ -143,11 +145,20 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, topPages, dailyTrend, realtimeActiveUsers] = await Promise.all([
+    const [summary, topPages, dailyTrend, realtimeActiveUsers, landingTrafficBySource] =
+      await Promise.all([
       fetchAnalyticsSummary(client, env.propertyId, range),
       fetchTopPages(client, env.propertyId, range, 20),
       fetchDailyTrend(client, env.propertyId, range),
       fetchRealtimeActiveUsers(client, env.propertyId),
+      fetchLandingPagesTrafficBySource(
+        client,
+        env.propertyId,
+        range,
+        AD_LANDING_MONITOR_PATHS
+      ).catch((err) => ({
+        error: err?.message || "Landing traffic by source failed",
+      })),
     ]);
 
     const campaignResult = await buildCampaignMarketingReport(client, env.propertyId, range).catch(
@@ -203,6 +214,21 @@ export default async function handler(req, res) {
       topPages,
       dailyTrend,
       realtimeActiveUsers,
+      landingTrafficBySource:
+        landingTrafficBySource && !landingTrafficBySource.error
+          ? {
+              rows: landingTrafficBySource,
+              paths: AD_LANDING_MONITOR_PATHS,
+              note:
+                "Page views on ad landing URLs split by GA4 session source/medium. " +
+                "Compare google/cpc and reddit/cpc rows to Ads click counts (not 1:1 — ad blockers and consent reduce GA4). " +
+                "Signing in to /admin opts this browser out of GA4, so your own ad clicks will not appear.",
+            }
+          : {
+              rows: [],
+              paths: AD_LANDING_MONITOR_PATHS,
+              error: landingTrafficBySource?.error || "Landing traffic unavailable",
+            },
       campaignMarketing,
       sampleCheckout,
       fetchedAt: new Date().toISOString(),

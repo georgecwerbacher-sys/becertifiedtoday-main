@@ -337,6 +337,32 @@
       </div>
 
       <div class="panel">
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Ad landing traffic by source</h2>
+        <p class="section-note">
+          GA4 page views on paid landing URLs (<code>/ccna-home.html</code>, etc.) grouped by
+          <code>sessionSource</code> / <code>sessionMedium</code>. Look for <strong>google / cpc</strong> and
+          <strong>reddit / cpc</strong>. Ad platform clicks are often higher than GA4 (blockers, ITP, no JS). Your
+          browser is opted out of GA4 after you sign in here — use incognito or another device to test ads.
+        </p>
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Landing page</th>
+                <th>Source</th>
+                <th>Medium</th>
+                <th>Page views</th>
+                <th>Sessions</th>
+                <th>Users</th>
+              </tr>
+            </thead>
+            <tbody id="landingTrafficBySourceBody"></tbody>
+          </table>
+        </div>
+        <p id="landingTrafficBySourceStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel">
         <h2 style="margin:0 0 10px;font-size:1.05rem">Sample &amp; home traffic (from top pages)</h2>
         <p class="section-note">
           Paths matching free samples, sample hubs, or certification home pages in the selected date range.
@@ -712,6 +738,56 @@
           (data.measurementId || "—") +
           " · Updated " +
           (data.fetchedAt || "");
+      }
+
+      function renderLandingTrafficBySource(data) {
+        var body = document.getElementById("landingTrafficBySourceBody");
+        var status = document.getElementById("landingTrafficBySourceStatus");
+        if (!body) return;
+        var rows = (data && data.rows) || [];
+        if (data && data.error) {
+          body.innerHTML =
+            '<tr><td colspan="6" style="color:var(--muted)">Could not load landing traffic.</td></tr>';
+          if (status) {
+            status.textContent = data.error;
+            status.className = "status err";
+          }
+          return;
+        }
+        if (!rows.length) {
+          body.innerHTML =
+            '<tr><td colspan="6" style="color:var(--muted)">No landing page views in this range yet.</td></tr>';
+          if (status) {
+            status.textContent =
+              (data && data.note) ||
+              "No hits on monitored landing paths — confirm GA4 tag fires on ccna-home.html.";
+            status.className = "status";
+          }
+          return;
+        }
+        body.innerHTML = rows
+          .map(function (r) {
+            return (
+              "<tr><td class=\"path\">" +
+              r.pagePath +
+              "</td><td>" +
+              r.source +
+              "</td><td>" +
+              r.medium +
+              "</td><td>" +
+              fmt(r.pageViews) +
+              "</td><td>" +
+              fmt(r.sessions) +
+              "</td><td>" +
+              fmt(r.users) +
+              "</td></tr>"
+            );
+          })
+          .join("");
+        if (status) {
+          status.textContent = data.note || "";
+          status.className = "status ok";
+        }
       }
 
       function renderSampleTraffic(rows) {
@@ -1497,6 +1573,7 @@
             }
 
             renderSummary(ga.body);
+            renderLandingTrafficBySource(ga.body.landingTrafficBySource);
             renderSampleTraffic(ga.body.topPages);
             renderTopPages(ga.body.topPages);
             renderTrend(ga.body.dailyTrend);

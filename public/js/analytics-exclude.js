@@ -27,6 +27,7 @@
     if (p === "/ccna-home.html") return true;
     if (p === "/ccnp-home.html") return true;
     if (p === "/comptia-sec+-home.html") return true;
+    if (p === "/secplus/pbq-practice-browser.html") return true;
     if (p === "/ccna/labs-without-gns3.html") return true;
     if (p === "/sample" || p === "/sample.html") return true;
     if (p.indexOf("ccna-portal-30d-checkout-success") !== -1) return true;

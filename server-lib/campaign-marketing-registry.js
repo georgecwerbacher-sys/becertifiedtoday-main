@@ -42,7 +42,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     landingHash: "#purchase",
     utmContentPrimary: "portal-10d",
     finalUrl:
-      "https://becertifiedtoday.com/ccna-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d",
+      "https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_portal&utm_content=portal-10d#purchase",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["ccna_portal_10d", "ccna_portal_30d"],
     primaryOffer: "10-day $9.99 — initial AdWords test through 2026-06-21",
@@ -87,7 +87,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     landingHash: "#purchase",
     utmContentPrimary: "portal-30d",
     finalUrl:
-      "https://becertifiedtoday.com/ccnp-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=portal-30d",
+      "https://becertifiedtoday.com/ccnp-home.html?utm_source=google&utm_medium=cpc&utm_campaign=encor_portal&utm_content=portal-30d#purchase",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["encor_portal_30d", "encor_portal_10d"],
     primaryOffer: "30-day $19.99 primary — initial AdWords test through 2026-06-21",
@@ -108,7 +108,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     landingHash: "#purchase",
     utmContentPrimary: "portal-10d",
     finalUrl:
-      "https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d",
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d#purchase",
     redditAdsCampaignName: "SEC+ timed sim Reddit",
     redditFinalUrl:
       "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=reddit-timed-sim",
@@ -148,6 +148,15 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
 export function getCampaignMarketingRegistry() {
   return CAMPAIGN_MARKETING_REGISTRY.map((c) => ({ ...c }));
 }
+
+/** Ad landing paths monitored on /admin (exact GA4 pagePath). */
+export const AD_LANDING_MONITOR_PATHS = [
+  "/ccna-home.html",
+  "/ccnp-home.html",
+  "/comptia-sec+-home.html",
+  "/secplus/pbq-practice-browser.html",
+  "/ccna/labs-without-gns3.html",
+];
 
 export function utmCampaignNames() {
   return CAMPAIGN_MARKETING_REGISTRY.map((c) => c.utmCampaign);
