@@ -176,20 +176,87 @@ function propertyName(propertyId) {
   return `properties/${propertyId}`;
 }
 
+/** GA4 Data API standard property limit is 10 concurrent requests — stay under it. */
+const GA_REPORT_CONCURRENCY = 5;
+let gaReportInflight = 0;
+/** @type {Array<{ run: () => Promise<unknown>, resolve: (v: unknown) => void, reject: (e: unknown) => void }>} */
+const gaReportQueue = [];
+
+function drainGaReportQueue() {
+  while (gaReportInflight < GA_REPORT_CONCURRENCY && gaReportQueue.length) {
+    const job = gaReportQueue.shift();
+    if (!job) break;
+    gaReportInflight += 1;
+    Promise.resolve()
+      .then(job.run)
+      .then(job.resolve, job.reject)
+      .finally(() => {
+        gaReportInflight -= 1;
+        drainGaReportQueue();
+      });
+  }
+}
+
+function enqueueGaReportTask(run) {
+  return new Promise((resolve, reject) => {
+    gaReportQueue.push({ run, resolve, reject });
+    drainGaReportQueue();
+  });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isGaQuotaError(err) {
+  const msg = err && err.message ? String(err.message) : "";
+  return msg.includes("RESOURCE_EXHAUSTED") || msg.includes("429");
+}
+
+async function runGaReport(client, request) {
+  let lastErr;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      return await enqueueGaReportTask(async () => {
+        const [response] = await client.runReport(request);
+        return response;
+      });
+    } catch (err) {
+      lastErr = err;
+      if (!isGaQuotaError(err) || attempt >= 3) throw err;
+      await sleep(400 * (attempt + 1));
+    }
+  }
+  throw lastErr;
+}
+
+async function runGaRealtimeReport(client, request) {
+  let lastErr;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    try {
+      return await enqueueGaReportTask(async () => {
+        const [response] = await client.runRealtimeReport(request);
+        return response;
+      });
+    } catch (err) {
+      lastErr = err;
+      if (!isGaQuotaError(err) || attempt >= 3) throw err;
+      await sleep(400 * (attempt + 1));
+    }
+  }
+  throw lastErr;
+}
+
 /**
  * @param {import('@google-analytics/data').BetaAnalyticsDataClient} client
- * @param {string} propertyId
- * @param {{ startDate: string, endDate: string }} range
  */
 async function runReportSafe(client, request) {
   try {
-    const [response] = await client.runReport(request);
-    return response;
+    return await runGaReport(client, request);
   } catch (err) {
     const msg = err && err.message ? String(err.message) : "";
     if (!request.dimensionFilter || !msg.includes("INVALID_ARGUMENT")) throw err;
-    const [response] = await client.runReport({ ...request, dimensionFilter: undefined });
-    return response;
+    return runGaReport(client, { ...request, dimensionFilter: undefined });
   }
 }
 
@@ -263,7 +330,7 @@ export async function fetchDailyTrend(client, propertyId, range) {
 }
 
 export async function fetchRealtimeActiveUsers(client, propertyId) {
-  const [response] = await client.runRealtimeReport({
+  const response = await runGaRealtimeReport(client, {
     property: propertyName(propertyId),
     metrics: [{ name: "activeUsers" }],
   });
@@ -323,7 +390,7 @@ function beginCheckoutEventFilter() {
   };
 }
 
-async function runBeginCheckoutEventReport(
+export async function runBeginCheckoutEventReport(
   client,
   propertyId,
   range,
@@ -424,44 +491,71 @@ export async function fetchBeginCheckoutByItemId(client, propertyId, range, item
     .map((id) => String(id || "").trim())
     .filter(Boolean)
     .slice(0, limit);
+  if (!ids.length) return [];
 
-  const rows = await Promise.all(
-    ids.map(async (itemId) => {
-      const itemFilter = {
+  const itemFilter = {
+    orGroup: {
+      expressions: ids.map((itemId) => ({
         filter: {
           fieldName: "itemId",
           stringFilter: { matchType: "EXACT", value: itemId },
         },
-      };
-      const [checkoutClicks, uniqueUsers] = await Promise.all([
-        fetchBeginCheckoutEventCount(client, propertyId, range, itemFilter),
-        fetchBeginCheckoutActiveUsers(client, propertyId, range, itemFilter),
-      ]);
-      return { itemId, checkoutClicks, uniqueUsers };
-    })
-  );
+      })),
+    },
+  };
 
-  return rows.filter((row) => row.checkoutClicks > 0 || row.uniqueUsers > 0);
+  const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+    dimensions: [{ name: "itemId" }],
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+    extraFilter: itemFilter,
+    limit: ids.length,
+  });
+
+  const byId = Object.create(null);
+  for (const row of response.rows || []) {
+    const itemId = row.dimensionValues?.[0]?.value || "";
+    if (!itemId) continue;
+    byId[itemId] = {
+      itemId,
+      checkoutClicks: Number(row.metricValues?.[0]?.value || 0),
+      uniqueUsers: Number(row.metricValues?.[1]?.value || 0),
+    };
+  }
+
+  return ids
+    .map((itemId) => byId[itemId] || { itemId, checkoutClicks: 0, uniqueUsers: 0 })
+    .filter((row) => row.checkoutClicks > 0 || row.uniqueUsers > 0);
 }
 
 /**
- * Google Ads traffic: sessionSource = google, sessionMedium = cpc.
+ * Paid traffic for a source/medium pair, grouped by sessionCampaignName.
  */
-export async function fetchGoogleCpcByCampaign(client, propertyId, range, limit = 25) {
+export async function fetchPaidSessionsBySourceCampaign(
+  client,
+  propertyId,
+  range,
+  source,
+  medium,
+  limit = 25
+) {
   const response = await runReportSafe(client, {
     property: propertyName(propertyId),
     dateRanges: [range],
-    dimensionFilter: mergeDimensionFilters(gaCustomerTrafficDimensionFilter(), {
-      filter: {
-        fieldName: "sessionSource",
-        stringFilter: { matchType: "EXACT", value: "google" },
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      {
+        filter: {
+          fieldName: "sessionSource",
+          stringFilter: { matchType: "EXACT", value: String(source || "").trim() },
+        },
       },
-    }, {
-      filter: {
-        fieldName: "sessionMedium",
-        stringFilter: { matchType: "EXACT", value: "cpc" },
-      },
-    }),
+      {
+        filter: {
+          fieldName: "sessionMedium",
+          stringFilter: { matchType: "EXACT", value: String(medium || "").trim() },
+        },
+      }
+    ),
     dimensions: [{ name: "sessionCampaignName" }],
     metrics: [{ name: "sessions" }, { name: "activeUsers" }],
     orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
@@ -473,6 +567,21 @@ export async function fetchGoogleCpcByCampaign(client, propertyId, range, limit 
     sessions: Number(row.metricValues?.[0]?.value || 0),
     users: Number(row.metricValues?.[1]?.value || 0),
   }));
+}
+
+/** Google Ads traffic: sessionSource = google, sessionMedium = cpc. */
+export async function fetchGoogleCpcByCampaign(client, propertyId, range, limit = 25) {
+  return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "google", "cpc", limit);
+}
+
+/** Reddit Ads traffic: sessionSource = reddit, sessionMedium = cpc. */
+export async function fetchRedditCpcByCampaign(client, propertyId, range, limit = 25) {
+  return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "cpc", limit);
+}
+
+/** Organic Reddit links (replies, community posts): sessionSource = reddit, sessionMedium = organic. */
+export async function fetchRedditOrganicByCampaign(client, propertyId, range, limit = 25) {
+  return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "organic", limit);
 }
 
 /**

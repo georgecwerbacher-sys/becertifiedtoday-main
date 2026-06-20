@@ -143,36 +143,41 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [coreResults, campaignResult, checkoutResult] = await Promise.all([
-      Promise.all([
-        fetchAnalyticsSummary(client, env.propertyId, range),
-        fetchTopPages(client, env.propertyId, range, 20),
-        fetchDailyTrend(client, env.propertyId, range),
-        fetchRealtimeActiveUsers(client, env.propertyId),
-      ]),
-      buildCampaignMarketingReport(client, env.propertyId, range).catch((err) => ({
-        error: err?.message || "Campaign marketing report failed",
-      })),
-      buildSampleCheckoutReport(client, env.propertyId, range).catch((err) => ({
-        error: err?.message || "Sample checkout report failed",
-      })),
+    const [summary, topPages, dailyTrend, realtimeActiveUsers] = await Promise.all([
+      fetchAnalyticsSummary(client, env.propertyId, range),
+      fetchTopPages(client, env.propertyId, range, 20),
+      fetchDailyTrend(client, env.propertyId, range),
+      fetchRealtimeActiveUsers(client, env.propertyId),
     ]);
 
-    const [summary, topPages, dailyTrend, realtimeActiveUsers] = coreResults;
+    const campaignResult = await buildCampaignMarketingReport(client, env.propertyId, range).catch(
+      (err) => ({
+        error: err?.message || "Campaign marketing report failed",
+      })
+    );
+
+    const checkoutResult = await buildSampleCheckoutReport(client, env.propertyId, range).catch(
+      (err) => ({
+        error: err?.message || "Sample checkout report failed",
+      })
+    );
     const campaignMarketing =
       campaignResult && !campaignResult.error
         ? {
             ...campaignResult,
             note:
-              "Sessions use GA4 sessionCampaignName (utm_campaign). begin_checkout by campaign uses sessions with an event filter (GA4 disallows eventCount with session dimensions). " +
-              "Google Ads click data is not pulled via API yet — use Ads UI for spend/impressions. " +
-              "Setup docs: scripts/*-google-ads.txt in the repo.",
+              "Sessions use GA4 sessionCampaignName (utm_campaign). Google CPC = sessionSource google + medium cpc; Reddit CPC = reddit + cpc; Reddit organic = reddit + organic. " +
+              "begin_checkout by campaign uses sessions with an event filter (GA4 disallows eventCount with session dimensions). " +
+              "Ad spend is not pulled via API yet — export from Google Ads or ads.reddit.com. " +
+              "Setup docs: scripts/*-google-ads.txt and marketing-research/Reddit/ in the repo.",
           }
         : {
             campaigns: [],
             otherCampaignSessions: [],
             allBeginCheckout: [],
             allGoogleCpc: [],
+            allRedditCpc: [],
+            allRedditOrganic: [],
             landingPages: [],
             error: campaignResult?.error || "Campaign marketing unavailable",
           };

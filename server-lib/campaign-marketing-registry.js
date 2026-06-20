@@ -17,6 +17,8 @@
  * @property {string} landingHash
  * @property {string} utmContentPrimary
  * @property {string} finalUrl
+ * @property {string} [redditFinalUrl] — Reddit Ads landing URL (utm_source=reddit)
+ * @property {string} [redditAdsCampaignName] — label in ads.reddit.com
  * @property {string} primaryConversion
  * @property {string[]} conversionItemIds
  * @property {string} primaryOffer
@@ -62,6 +64,9 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     utmContentPrimary: "exam-readiness",
     finalUrl:
       "https://becertifiedtoday.com/ccna-home.html?utm_source=google&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=exam-readiness",
+    redditAdsCampaignName: "CCNA_Wedge_Reddit",
+    redditFinalUrl:
+      "https://becertifiedtoday.com/ccna-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=reddit-labs",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["ccna_portal_10d", "ccna_portal_30d"],
     primaryOffer: "10-day $9.99 · 30-day $19.99 — ccna-home exam-ready funnel",
@@ -104,6 +109,9 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     utmContentPrimary: "portal-10d",
     finalUrl:
       "https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d",
+    redditAdsCampaignName: "SEC+ timed sim Reddit",
+    redditFinalUrl:
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=reddit-timed-sim",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
     primaryOffer: "10-day $9.99 (portal-10d landing) · 30-day $19.99 on organic home",
@@ -125,6 +133,9 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     utmContentPrimary: "pbq-wedge",
     finalUrl:
       "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=pbq-wedge",
+    redditAdsCampaignName: "SEC+_Wedge_Reddit",
+    redditFinalUrl:
+      "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
     primaryOffer: "10-day $9.99 · 30-day $19.99 — wedge PBQ landing",

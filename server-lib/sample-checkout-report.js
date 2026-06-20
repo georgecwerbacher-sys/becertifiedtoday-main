@@ -3,8 +3,8 @@
  */
 import {
   fetchBeginCheckoutByItemId,
-  fetchBeginCheckoutByItemPrefix,
   fetchBeginCheckoutSummary,
+  runBeginCheckoutEventReport,
 } from "./google-analytics.js";
 
 const PRODUCT_LABELS = {
@@ -37,18 +37,33 @@ function productKeyFromItemId(itemId) {
 
 async function fetchByProduct(client, propertyId, range) {
   const keys = ["ccna", "encor", "secplus"];
-  const rows = await Promise.all(
-    keys.map(async (key) => {
-      const metrics = await fetchBeginCheckoutByItemPrefix(client, propertyId, range, key);
-      return {
-        product: key,
-        label: PRODUCT_LABELS[key] || key,
-        checkoutClicks: metrics.checkoutClicks,
-        uniqueUsers: metrics.uniqueUsers,
-      };
-    })
-  );
-  return rows.filter((r) => r.checkoutClicks > 0 || r.uniqueUsers > 0);
+  const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+    dimensions: [{ name: "itemId" }],
+    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+    limit: 50,
+  });
+
+  const totals = Object.create(null);
+  for (const key of keys) {
+    totals[key] = { checkoutClicks: 0, uniqueUsers: 0 };
+  }
+
+  for (const row of response.rows || []) {
+    const itemId = String(row.dimensionValues?.[0]?.value || "").toLowerCase();
+    const key = productKeyFromItemId(itemId);
+    if (!totals[key]) continue;
+    totals[key].checkoutClicks += Number(row.metricValues?.[0]?.value || 0);
+    totals[key].uniqueUsers += Number(row.metricValues?.[1]?.value || 0);
+  }
+
+  return keys
+    .map((key) => ({
+      product: key,
+      label: PRODUCT_LABELS[key] || key,
+      checkoutClicks: totals[key].checkoutClicks,
+      uniqueUsers: totals[key].uniqueUsers,
+    }))
+    .filter((r) => r.checkoutClicks > 0 || r.uniqueUsers > 0);
 }
 
 /**
