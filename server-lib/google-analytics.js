@@ -621,8 +621,8 @@ export async function fetchHomeLandingPageViews(client, propertyId, range, paths
 }
 
 /**
- * Page views / sessions on ad landing paths, split by session source + medium.
- * Use this to reconcile Google/Reddit ad clicks with GA4 landing traffic.
+ * Sessions on ad landing paths, split by session source + medium.
+ * Uses landingPage (session scope) — do not mix pagePath with sessionSource in one report.
  */
 export async function fetchLandingPagesTrafficBySource(
   client,
@@ -643,31 +643,35 @@ export async function fetchLandingPagesTrafficBySource(
         orGroup: {
           expressions: pagePaths.map((p) => ({
             filter: {
-              fieldName: "pagePath",
+              fieldName: "landingPage",
               stringFilter: { matchType: "EXACT", value: p },
             },
           })),
         },
       }
     ),
-    dimensions: [{ name: "pagePath" }, { name: "sessionSource" }, { name: "sessionMedium" }],
-    metrics: [
-      { name: "screenPageViews" },
-      { name: "sessions" },
-      { name: "activeUsers" },
-    ],
-    orderBys: [{ metric: { metricName: "screenPageViews" }, desc: true }],
+    dimensions: [{ name: "landingPage" }, { name: "sessionSource" }, { name: "sessionMedium" }],
+    metrics: [{ name: "sessions" }, { name: "activeUsers" }, { name: "engagedSessions" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
     limit,
   });
 
-  return (response.rows || []).map((row) => ({
-    pagePath: row.dimensionValues?.[0]?.value || "",
-    source: row.dimensionValues?.[1]?.value || "(not set)",
-    medium: row.dimensionValues?.[2]?.value || "(not set)",
-    pageViews: Number(row.metricValues?.[0]?.value || 0),
-    sessions: Number(row.metricValues?.[1]?.value || 0),
-    users: Number(row.metricValues?.[2]?.value || 0),
-  }));
+  return (response.rows || [])
+    .map((row) => {
+      const source = row.dimensionValues?.[1]?.value || "";
+      const medium = row.dimensionValues?.[2]?.value || "";
+      const sessions = Number(row.metricValues?.[0]?.value || 0);
+      return {
+        pagePath: row.dimensionValues?.[0]?.value || "",
+        source: source || "(not set)",
+        medium: medium || "(not set)",
+        sourceUnavailable: source === "(data not available)" || medium === "(data not available)",
+        sessions,
+        users: Number(row.metricValues?.[1]?.value || 0),
+        engagedSessions: Number(row.metricValues?.[2]?.value || 0),
+      };
+    })
+    .filter((row) => row.sessions > 0 || row.users > 0);
 }
 
 export function rangeFromPreset(preset) {

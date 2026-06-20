@@ -220,9 +220,9 @@ export default async function handler(req, res) {
               rows: landingTrafficBySource,
               paths: AD_LANDING_MONITOR_PATHS,
               note:
-                "Page views on ad landing URLs split by GA4 session source/medium. " +
-                "Compare google/cpc and reddit/cpc rows to Ads click counts (not 1:1 — ad blockers and consent reduce GA4). " +
-                "Signing in to /admin opts this browser out of GA4, so your own ad clicks will not appear.",
+                "Sessions whose first page (landingPage) matches an ad URL, split by session source/medium. " +
+                "Compare google/cpc and reddit/cpc session counts to Ads clicks (not 1:1 — blockers, ITP). " +
+                "buy.stripe.com/referral = return from Stripe checkout. Signing in to /admin opts this browser out of GA4.",
             }
           : {
               rows: [],

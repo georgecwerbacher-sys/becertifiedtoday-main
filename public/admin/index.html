@@ -339,10 +339,11 @@
       <div class="panel">
         <h2 style="margin:0 0 10px;font-size:1.05rem">Ad landing traffic by source</h2>
         <p class="section-note">
-          GA4 page views on paid landing URLs (<code>/ccna-home.html</code>, etc.) grouped by
-          <code>sessionSource</code> / <code>sessionMedium</code>. Look for <strong>google / cpc</strong> and
-          <strong>reddit / cpc</strong>. Ad platform clicks are often higher than GA4 (blockers, ITP, no JS). Your
-          browser is opted out of GA4 after you sign in here — use incognito or another device to test ads.
+          Sessions that <strong>started</strong> on a paid landing URL (<code>landingPage</code> in GA4), grouped by
+          <code>sessionSource</code> / <code>sessionMedium</code>. Compare <strong>google / cpc</strong> and
+          <strong>reddit / cpc</strong> session counts to ad clicks (often lower due to blockers). Rows like
+          <strong>buy.stripe.com / referral</strong> are checkout returns, not ads. Your browser is opted out of GA4
+          after admin sign-in — test ads in incognito.
         </p>
         <div style="overflow-x:auto">
           <table>
@@ -351,9 +352,9 @@
                 <th>Landing page</th>
                 <th>Source</th>
                 <th>Medium</th>
-                <th>Page views</th>
                 <th>Sessions</th>
                 <th>Users</th>
+                <th>Engaged</th>
               </tr>
             </thead>
             <tbody id="landingTrafficBySourceBody"></tbody>
@@ -767,19 +768,23 @@
         }
         body.innerHTML = rows
           .map(function (r) {
+            var src =
+              r.source === "(data not available)" ? "—" : r.source;
+            var med =
+              r.medium === "(data not available)" ? "—" : r.medium;
             return (
               "<tr><td class=\"path\">" +
               r.pagePath +
               "</td><td>" +
-              r.source +
+              src +
               "</td><td>" +
-              r.medium +
-              "</td><td>" +
-              fmt(r.pageViews) +
+              med +
               "</td><td>" +
               fmt(r.sessions) +
               "</td><td>" +
               fmt(r.users) +
+              "</td><td>" +
+              fmt(r.engagedSessions || 0) +
               "</td></tr>"
             );
           })
