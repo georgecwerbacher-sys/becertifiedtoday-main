@@ -6,16 +6,11 @@
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
-import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
-import { AD_LANDING_MONITOR_PATHS } from "../server-lib/campaign-marketing-registry.js";
-import { buildSampleCheckoutReport } from "../server-lib/sample-checkout-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
   fetchDailyTrend,
-  fetchLandingPagesTrafficBySource,
   fetchRealtimeActiveUsers,
-  fetchTopPages,
   getAnalyticsDataClient,
   getAnalyticsDiagnostics,
   getGoogleAnalyticsEnv,
@@ -145,65 +140,11 @@ export default async function handler(req, res) {
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, topPages, dailyTrend, realtimeActiveUsers, landingTrafficBySource] =
-      await Promise.all([
+    const [summary, dailyTrend, realtimeActiveUsers] = await Promise.all([
       fetchAnalyticsSummary(client, env.propertyId, range),
-      fetchTopPages(client, env.propertyId, range, 20),
       fetchDailyTrend(client, env.propertyId, range),
       fetchRealtimeActiveUsers(client, env.propertyId),
-      fetchLandingPagesTrafficBySource(
-        client,
-        env.propertyId,
-        range,
-        AD_LANDING_MONITOR_PATHS
-      ).catch((err) => ({
-        error: err?.message || "Landing traffic by source failed",
-      })),
     ]);
-
-    const campaignResult = await buildCampaignMarketingReport(client, env.propertyId, range).catch(
-      (err) => ({
-        error: err?.message || "Campaign marketing report failed",
-      })
-    );
-
-    const checkoutResult = await buildSampleCheckoutReport(client, env.propertyId, range).catch(
-      (err) => ({
-        error: err?.message || "Sample checkout report failed",
-      })
-    );
-    const campaignMarketing =
-      campaignResult && !campaignResult.error
-        ? {
-            ...campaignResult,
-            note:
-              "Sessions use GA4 sessionCampaignName (utm_campaign). Google CPC = sessionSource google + medium cpc; Reddit CPC = reddit + cpc; Reddit organic = reddit + organic. " +
-              "begin_checkout by campaign uses sessions with an event filter (GA4 disallows eventCount with session dimensions). " +
-              "Ad spend is not pulled via API yet — export from Google Ads or ads.reddit.com. " +
-              "Setup docs: scripts/*-google-ads.txt and marketing-research/Reddit/ in the repo.",
-          }
-        : {
-            campaigns: [],
-            otherCampaignSessions: [],
-            allBeginCheckout: [],
-            allGoogleCpc: [],
-            allRedditCpc: [],
-            allRedditOrganic: [],
-            landingPages: [],
-            error: campaignResult?.error || "Campaign marketing unavailable",
-          };
-
-    const sampleCheckout =
-      checkoutResult && !checkoutResult.error
-        ? checkoutResult
-        : {
-            summary: { checkoutClicks: 0, uniqueUsers: 0 },
-            byProduct: [],
-            byItem: [],
-            error: checkoutResult?.error || "Checkout metrics unavailable",
-            note:
-              "GA4 begin_checkout metrics could not be loaded. Core traffic charts above may still be valid.",
-          };
 
     return res.status(200).json({
       ok: true,
@@ -211,26 +152,8 @@ export default async function handler(req, res) {
       measurementId: env.measurementId || null,
       range,
       summary,
-      topPages,
       dailyTrend,
       realtimeActiveUsers,
-      landingTrafficBySource:
-        landingTrafficBySource && !landingTrafficBySource.error
-          ? {
-              rows: landingTrafficBySource,
-              paths: AD_LANDING_MONITOR_PATHS,
-              note:
-                "Sessions whose first page (landingPage) matches an ad URL, split by session source/medium. " +
-                "Compare google/cpc and reddit/cpc session counts to Ads clicks (not 1:1 — blockers, ITP). " +
-                "buy.stripe.com/referral = return from Stripe checkout. Signing in to /admin opts this browser out of GA4.",
-            }
-          : {
-              rows: [],
-              paths: AD_LANDING_MONITOR_PATHS,
-              error: landingTrafficBySource?.error || "Landing traffic unavailable",
-            },
-      campaignMarketing,
-      sampleCheckout,
       fetchedAt: new Date().toISOString(),
     });
   } catch (err) {

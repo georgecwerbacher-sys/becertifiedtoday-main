@@ -10,10 +10,18 @@ import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js"
 import { enrichPortalRowsWithCheckout as enrichCcnaRows } from "../server-lib/ccna-portal-customers.js";
 import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
 import { filterPortalSubscriberRows } from "../server-lib/analytics-internal.js";
+import { filterRowsFromUtcStart } from "../server-lib/google-analytics.js";
+import {
+  aggregateMagicLinkRequestsReport,
+  enrichPortalBlockWithMagicLinkCounts,
+  magicLinkCountsByEmail,
+  readPortalMagicLinkRequests,
+} from "../server-lib/portal-magic-link-requests.js";
 import {
   enrichPortalRowsWithCheckout,
   listAllPortalSubscribersFromStripe,
 } from "../server-lib/portal-subscribers-stripe.js";
+import { buildStripePurchasesReport } from "../server-lib/stripe-purchases-report.js";
 import {
   isEncorPortalProduct,
   isSecplusPortalProduct,
@@ -87,14 +95,41 @@ export default async function handler(req, res) {
 
   const body = readJsonBody(req);
   const verifyCheckout = body.verifyCheckout === true;
+  const rangePreset =
+    typeof body.range === "string" && body.range.trim() ? body.range.trim() : "7d";
   const stripe = new Stripe(sk.secret);
 
   try {
-    const listed = await listAllPortalSubscribersFromStripe(stripe);
+    const [listed, purchasesInRange, magicLinkAllRows] = await Promise.all([
+      listAllPortalSubscribersFromStripe(stripe),
+      buildStripePurchasesReport(stripe, rangePreset).catch((err) => ({
+        error: err?.message || "Stripe purchases report failed",
+      })),
+      readPortalMagicLinkRequests().catch((err) => ({
+        error: err?.message || "Magic link requests read failed",
+      })),
+    ]);
+
+    let magicLinkResets = null;
+    let magicLinkResetsError = null;
+    let magicLinkEmailCounts = null;
+    if (magicLinkAllRows && !magicLinkAllRows.error) {
+      const inRange = filterRowsFromUtcStart(magicLinkAllRows, rangePreset);
+      magicLinkResets = aggregateMagicLinkRequestsReport(inRange);
+      magicLinkEmailCounts = magicLinkCountsByEmail(inRange);
+    } else {
+      magicLinkResetsError = magicLinkAllRows?.error || "Magic link requests unavailable";
+    }
 
     let ccna = applyCounts(filterProductBlock(listed.ccna));
     let encor = applyCounts(filterProductBlock(listed.encor));
     let secplus = applyCounts(filterProductBlock(listed.secplus));
+
+    if (magicLinkEmailCounts) {
+      enrichPortalBlockWithMagicLinkCounts(ccna, magicLinkEmailCounts);
+      enrichPortalBlockWithMagicLinkCounts(encor, magicLinkEmailCounts);
+      enrichPortalBlockWithMagicLinkCounts(secplus, magicLinkEmailCounts);
+    }
 
     if (verifyCheckout) {
       const enrichIfSmall = async (block, enrichFn) => {
@@ -123,6 +158,11 @@ export default async function handler(req, res) {
       ccna,
       encor,
       secplus,
+      purchasesInRange:
+        purchasesInRange && !purchasesInRange.error ? purchasesInRange : null,
+      purchasesInRangeError: purchasesInRange?.error || null,
+      magicLinkResets,
+      magicLinkResetsError,
       active: ccna.active,
       expired: ccna.expired,
       counts: ccna.counts,
@@ -130,7 +170,7 @@ export default async function handler(req, res) {
       scanTruncated: listed.scanTruncated,
       fetchedAt: new Date().toISOString(),
       note:
-        "Emails from Stripe checkout (10-day or 30-day portal access). Not live browsing — use GA4 Realtime for anonymous visitors.",
+        "Emails from Stripe checkout (10-day or 30-day portal access). One row per email per product. Not live browsing — use GA4 Realtime for anonymous visitors.",
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Stripe API error";

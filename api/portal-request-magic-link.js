@@ -29,6 +29,7 @@ import {
   sendEncorPortalMagicEmail,
   sendSecplusPortalMagicEmail,
 } from "../server-lib/ccna-portal-resend.js";
+import { appendPortalMagicLinkRequest } from "../server-lib/portal-magic-link-requests.js";
 
 function readJsonBody(req) {
   try {
@@ -144,6 +145,16 @@ export default async function handler(req, res) {
 
   const stripe = new Stripe(sk.secret);
 
+  function logMagicLinkRequest(payload) {
+    appendPortalMagicLinkRequest({
+      email,
+      track,
+      ...payload,
+    }).catch((err) => {
+      console.warn("[portal-magic-link] log failed:", err?.message || err);
+    });
+  }
+
   try {
     const found = await cfg.findSession(stripe, email);
     if (!found) {
@@ -151,6 +162,7 @@ export default async function handler(req, res) {
       if (track === "ccna") {
         const hints = await getCcnaPurchaseHintsForEmail(stripe, email);
         if (hints.timedExamOnly) {
+          logMagicLinkRequest({ found: false, sent: false, reason: "test-simulation-only" });
           return res.status(200).json({
             ok: true,
             sent: false,
@@ -161,6 +173,7 @@ export default async function handler(req, res) {
           });
         }
         if (hints.portalExpired) {
+          logMagicLinkRequest({ found: false, sent: false, reason: "portal-expired" });
           return res.status(200).json({
             ok: true,
             sent: false,
@@ -174,6 +187,7 @@ export default async function handler(req, res) {
       if (track === "secplus") {
         const hints = await getSecplusPurchaseHintsForEmail(stripe, email);
         if (hints.timedExamOnly) {
+          logMagicLinkRequest({ found: false, sent: false, reason: "test-simulation-only" });
           return res.status(200).json({
             ok: true,
             sent: false,
@@ -184,6 +198,7 @@ export default async function handler(req, res) {
           });
         }
         if (hints.portalExpired) {
+          logMagicLinkRequest({ found: false, sent: false, reason: "portal-expired" });
           return res.status(200).json({
             ok: true,
             sent: false,
@@ -200,6 +215,7 @@ export default async function handler(req, res) {
           : track === "encor"
             ? "No active ENCOR library pass was found for that email. Use the same address you entered at Stripe checkout for a 10-day or 30-day purchase. If you only bought the one-time timed exam, use Restore access with your checkout session ID (cs_…) instead."
             : cfg.generic;
+      logMagicLinkRequest({ found: false, sent: false, reason: "no-active-portal" });
       return res.status(200).json({
         ok: true,
         sent: false,
@@ -227,6 +243,12 @@ export default async function handler(req, res) {
 
     if (!sent) {
       console.error(`[${cfg.logTag}] Resend did not accept magic-link email`);
+      logMagicLinkRequest({
+        found: true,
+        sent: false,
+        reason: "send-failed",
+        checkoutSessionId: session.id,
+      });
       return res.status(200).json({
         ok: true,
         found: true,
@@ -237,6 +259,12 @@ export default async function handler(req, res) {
     }
 
     console.info(`[${cfg.logTag}] magic link email sent for active portal purchase`);
+    logMagicLinkRequest({
+      found: true,
+      sent: true,
+      reason: "sent",
+      checkoutSessionId: session.id,
+    });
     return res.status(200).json({
       ok: true,
       sent: true,

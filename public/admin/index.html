@@ -309,156 +309,151 @@
 
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
-        <a href="#section-traffic">Traffic</a>
-        <a href="#section-sample-completions">Samples</a>
-        <a href="#section-samples">Checkout</a>
+        <a href="#section-register">Stripe checkout</a>
+        <a href="#section-magic-link">Magic link reset</a>
+        <a href="#section-traffic">Site traffic</a>
         <a href="#section-questions">Questions</a>
         <a href="#section-portal-access">Portal access</a>
-        <a href="#section-subscribers">Subscribers</a>
-        <a href="#section-campaigns">Campaigns</a>
       </nav>
 
+      <div class="panel row" style="align-items:flex-end;gap:12px;margin-bottom:0">
+        <div>
+          <label for="range">Date range</label>
+          <select id="range">
+            <option value="today" selected>Today</option>
+            <option value="7d">Last 7 days</option>
+            <option value="28d">Last 28 days</option>
+            <option value="90d">Last 90 days</option>
+          </select>
+        </div>
+        <button type="button" id="refreshBtn">Refresh</button>
+        <button type="button" id="logoutBtn" class="secondary">Sign out</button>
+      </div>
+
+      <div class="panel" id="portalPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-register">Stripe checkout · New Register</h2>
+        <p class="section-note" style="margin-top:0">
+          Paid checkouts from Stripe in the selected date range (UTC). Track Google Ads and Reddit in those platforms —
+          this section is <strong>completed purchases only</strong> (email + product + checkout session).
+          <strong>New Register</strong> = distinct checkout emails in the range.
+        </p>
+        <div class="cards" id="stripePurchasesSummaryCards"></div>
+        <div class="portal-table-wrap" style="margin-bottom:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>When (UTC)</th>
+                <th>Email</th>
+                <th>Product</th>
+                <th>Checkout session</th>
+              </tr>
+            </thead>
+            <tbody id="stripePurchasesRecentBody"></tbody>
+          </table>
+        </div>
+        <p id="stripePurchasesStatus" class="status" aria-live="polite"></p>
+
+        <h3 class="portal-product-title" style="margin-top:24px" id="section-magic-link">Magic link reset</h3>
+        <p class="section-note" style="margin-top:0">
+          When a learner requests a fresh portal login email (new browser, cleared site data, etc.) from a
+          <strong>Request magic link</strong> page. Filtered by the date range above (UTC).
+        </p>
+        <div class="cards" id="magicLinkResetSummaryCards"></div>
+        <div class="portal-table-wrap" style="margin-bottom:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>When (UTC)</th>
+                <th>Email</th>
+                <th>Track</th>
+                <th>Found</th>
+                <th>Sent</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="magicLinkResetBody"></tbody>
+          </table>
+        </div>
+        <p id="magicLinkResetStatus" class="status" aria-live="polite"></p>
+
+        <h3 class="portal-product-title" style="margin-top:20px">Active portal access (all time)</h3>
+        <p style="margin:0 0 12px;font-size:0.85rem;color:var(--muted)">
+          Current and expired library passes from Stripe metadata — not limited to the date range above.
+        </p>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNA (200-301)</h3>
+          <div class="cards" id="portalSummaryCcna"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Magic link resets</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersCcna"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNP ENCOR (350-401)</h3>
+          <div class="cards" id="portalSummaryEncor"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Magic link resets</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersEncor"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CompTIA Security+ (SY0-701)</h3>
+          <div class="cards" id="portalSummarySecplus"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Magic link resets</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersSecplus"></tbody>
+            </table>
+          </div>
+        </div>
+        <p id="portalStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel" id="section-traffic">
-        <div class="row">
-          <div>
-            <label for="range">Date range</label>
-            <select id="range">
-              <option value="today" selected>Today</option>
-              <option value="7d">Last 7 days</option>
-              <option value="28d">Last 28 days</option>
-              <option value="90d">Last 90 days</option>
-            </select>
-          </div>
-          <button type="button" id="refreshBtn">Refresh</button>
-          <button type="button" id="logoutBtn" class="secondary">Sign out</button>
-        </div>
-        <p id="metaLine" class="status ok" style="margin-top:12px"></p>
+        <h2 style="margin:0 0 10px;font-size:1.05rem">Site traffic (GA4 · optional)</h2>
+        <p class="section-note">
+          Lightweight site analytics. Ad campaigns (Google Ads, Reddit) — monitor in those dashboards.
+          Purchases are under <a href="#section-register">Stripe checkout</a>.
+        </p>
+        <p id="metaLine" class="status ok"></p>
         <div class="cards" id="summaryCards"></div>
-      </div>
-
-      <div class="panel">
-        <h2 style="margin:0 0 10px;font-size:1.05rem">Ad landing traffic by source</h2>
-        <p class="section-note">
-          Sessions that <strong>started</strong> on a paid landing URL (<code>landingPage</code> in GA4), grouped by
-          <code>sessionSource</code> / <code>sessionMedium</code>. Compare <strong>google / cpc</strong> and
-          <strong>reddit / cpc</strong> session counts to ad clicks (often lower due to blockers). Rows like
-          <strong>buy.stripe.com / referral</strong> are checkout returns, not ads. Your browser is opted out of GA4
-          after admin sign-in — test ads in incognito.
-        </p>
+        <h3 class="portal-product-title">Daily trend</h3>
         <div style="overflow-x:auto">
           <table>
             <thead>
-              <tr>
-                <th>Landing page</th>
-                <th>Source</th>
-                <th>Medium</th>
-                <th>Sessions</th>
-                <th>Users</th>
-                <th>Engaged</th>
-              </tr>
+              <tr><th>Date</th><th>Users</th><th>Sessions</th><th>Page views</th></tr>
             </thead>
-            <tbody id="landingTrafficBySourceBody"></tbody>
+            <tbody id="trendBody"></tbody>
           </table>
         </div>
-        <p id="landingTrafficBySourceStatus" class="status" aria-live="polite"></p>
-      </div>
-
-      <div class="panel">
-        <h2 style="margin:0 0 10px;font-size:1.05rem">Sample &amp; home traffic (from top pages)</h2>
-        <p class="section-note">
-          Paths matching free samples, sample hubs, or certification home pages in the selected date range.
-        </p>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr><th>Page path</th><th>Views</th><th>Users</th></tr>
-            </thead>
-            <tbody id="sampleTrafficBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="panel" id="section-sample-completions">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">Free sample completions</h2>
-        <p class="section-note">
-          How many times visitors <strong>finished</strong> a free sample track (CCNA, ENCOR, or Security+).
-          Uses the <strong>date range</strong> selector above (UTC).
-        </p>
-        <div class="row" style="margin-bottom:12px">
-          <button type="button" id="sampleFunnelRefreshBtn" class="secondary">Refresh sample stats</button>
-        </div>
-        <div class="cards" id="sampleFunnelSummaryCards"></div>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Certification</th>
-                <th>Questions</th>
-                <th>Drag &amp; drop</th>
-                <th>Labs</th>
-                <th>Simulation</th>
-                <th>Total finished</th>
-                <th>Email unlocks</th>
-              </tr>
-            </thead>
-            <tbody id="sampleFunnelBody"></tbody>
-          </table>
-        </div>
-        <p id="sampleFunnelStatus" class="status" aria-live="polite"></p>
-      </div>
-
-      <div class="panel">
-        <h2 style="margin:0 0 10px;font-size:1.05rem">Top pages (all)</h2>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr><th>Page path</th><th>Views</th><th>Users</th></tr>
-            </thead>
-            <tbody id="topPagesBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="panel" id="sampleCheckoutPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-samples">Stripe checkout (from samples &amp; home)</h2>
-        <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
-          Visitors who clicked a <strong>Get access</strong> or timed-simulation checkout button and triggered GA4
-          <code>begin_checkout</code> (redirect to Stripe). Same date range as traffic above. Completed purchases are
-          listed under <a href="#section-subscribers">Portal subscribers</a>.
-        </p>
-        <div class="cards" id="sampleCheckoutSummaryCards"></div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">By product</h3>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Checkout clicks</th>
-                  <th>Unique users</th>
-                </tr>
-              </thead>
-              <tbody id="sampleCheckoutProductBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">By offer (item ID)</h3>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Offer</th>
-                  <th>Item ID</th>
-                  <th>Checkout clicks</th>
-                  <th>Unique users</th>
-                </tr>
-              </thead>
-              <tbody id="sampleCheckoutItemBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <p id="sampleCheckoutStatus" class="status" aria-live="polite"></p>
       </div>
 
       <div class="panel" id="visitorQuestionsPanel">
@@ -505,137 +500,6 @@
         <p id="portalBypassStatus" class="status" aria-live="polite"></p>
       </div>
 
-      <div class="panel" id="portalPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-subscribers">Portal subscribers (CCNA · ENCOR · Security+)</h2>
-        <p style="margin:0 0 16px;font-size:0.85rem;color:var(--muted)">
-          Paid 10-day or 30-day library access from Stripe (checkout email). Not live “who is online” — use GA4
-          Realtime for anonymous visitors.
-        </p>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">CCNA (200-301)</h3>
-          <div class="cards" id="portalSummaryCcna"></div>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Email</th>
-                  <th>Access until (UTC)</th>
-                  <th>Checkout session</th>
-                </tr>
-              </thead>
-              <tbody id="portalUsersCcna"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">CCNP ENCOR (350-401)</h3>
-          <div class="cards" id="portalSummaryEncor"></div>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Email</th>
-                  <th>Access until (UTC)</th>
-                  <th>Checkout session</th>
-                </tr>
-              </thead>
-              <tbody id="portalUsersEncor"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">CompTIA Security+ (SY0-701)</h3>
-          <div class="cards" id="portalSummarySecplus"></div>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Email</th>
-                  <th>Access until (UTC)</th>
-                  <th>Checkout session</th>
-                </tr>
-              </thead>
-              <tbody id="portalUsersSecplus"></tbody>
-            </table>
-          </div>
-        </div>
-        <p id="portalStatus" class="status" aria-live="polite"></p>
-      </div>
-
-      <div class="panel" id="campaignMarketingPanel">
-        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-campaigns">Campaign marketing</h2>
-        <p class="section-note">
-          Google Ads and Reddit Ads for CCNA, ENCOR, and Security+. Metrics from GA4 for the selected date range
-          (<code>sessionCampaignName</code> = <code>utm_campaign</code>; source/medium splits Google vs Reddit).
-          Setup docs: <code>scripts/*-google-ads.txt</code> (Google) and
-          <code>marketing-research/Reddit/</code> (Reddit). Spend and keyword clicks are not pulled via API yet —
-          export from Google Ads or <a href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">ads.reddit.com</a>.
-        </p>
-        <div class="cards" id="campaignSummaryCards"></div>
-        <div class="campaign-grid" id="campaignCards"></div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">Other campaigns (GA4 sessions)</h3>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Campaign</th>
-                  <th>Sessions</th>
-                  <th>Users</th>
-                  <th>Engaged sessions</th>
-                </tr>
-              </thead>
-              <tbody id="campaignOtherBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">Reddit Ads sessions (utm_source=reddit, medium=cpc)</h3>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Campaign (utm_campaign)</th>
-                  <th>Sessions</th>
-                  <th>Users</th>
-                </tr>
-              </thead>
-              <tbody id="campaignRedditCpcBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <div class="portal-product-block">
-          <h3 class="portal-product-title">All begin_checkout events by campaign</h3>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Campaign</th>
-                  <th>begin_checkout</th>
-                </tr>
-              </thead>
-              <tbody id="campaignCheckoutBody"></tbody>
-            </table>
-          </div>
-        </div>
-        <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
-      </div>
-
-      <div class="panel">
-        <h2 style="margin:0 0 10px;font-size:1.05rem">Daily trend</h2>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr><th>Date</th><th>Users</th><th>Sessions</th><th>Page views</th></tr>
-            </thead>
-            <tbody id="trendBody"></tbody>
-          </table>
-        </div>
-      </div>
-
       <p id="dashStatus" class="status" aria-live="polite"></p>
     </section>
 
@@ -655,7 +519,6 @@
       var loginStatus = document.getElementById("loginStatus");
       var dashStatus = document.getElementById("dashStatus");
       var summaryCards = document.getElementById("summaryCards");
-      var topPagesBody = document.getElementById("topPagesBody");
       var trendBody = document.getElementById("trendBody");
       var metaLine = document.getElementById("metaLine");
       var rangeEl = document.getElementById("range");
@@ -671,13 +534,6 @@
         secplus: "Security+",
         general: "General",
       };
-      var SAMPLE_FUNNEL_PRODUCTS = [
-        { key: "ccna", label: "CCNA (200-301)" },
-        { key: "encor", label: "ENCOR (350-401)" },
-        { key: "secplus", label: "Security+ (SY0-701)" },
-      ];
-      var SAMPLE_PATH_RE =
-        /secplus-sample|\/ccna-home|\/ccnp-home|comptia-sec\+-home|\/ccna-study\/ccna_samples|\/ccnp-encor-study\/encor_samples|\/comp_tia_sec+\/sec\+_samples|sample-question|\/secplus-sample/i;
       var portalBypassCache = [];
 
       function token() {
@@ -714,7 +570,7 @@
         var s = data.summary || {};
         var cards = [
           ["Active users", fmt(s.activeUsers)],
-          ["New users", fmt(s.newUsers)],
+          ["New visitors (GA4)", fmt(s.newUsers)],
           ["Sessions", fmt(s.sessions)],
           ["Page views", fmt(s.screenPageViews)],
           ["Realtime users", fmt(data.realtimeActiveUsers)],
@@ -739,102 +595,6 @@
           (data.measurementId || "—") +
           " · Updated " +
           (data.fetchedAt || "");
-      }
-
-      function renderLandingTrafficBySource(data) {
-        var body = document.getElementById("landingTrafficBySourceBody");
-        var status = document.getElementById("landingTrafficBySourceStatus");
-        if (!body) return;
-        var rows = (data && data.rows) || [];
-        if (data && data.error) {
-          body.innerHTML =
-            '<tr><td colspan="6" style="color:var(--muted)">Could not load landing traffic.</td></tr>';
-          if (status) {
-            status.textContent = data.error;
-            status.className = "status err";
-          }
-          return;
-        }
-        if (!rows.length) {
-          body.innerHTML =
-            '<tr><td colspan="6" style="color:var(--muted)">No landing page views in this range yet.</td></tr>';
-          if (status) {
-            status.textContent =
-              (data && data.note) ||
-              "No hits on monitored landing paths — confirm GA4 tag fires on ccna-home.html.";
-            status.className = "status";
-          }
-          return;
-        }
-        body.innerHTML = rows
-          .map(function (r) {
-            var src =
-              r.source === "(data not available)" ? "—" : r.source;
-            var med =
-              r.medium === "(data not available)" ? "—" : r.medium;
-            return (
-              "<tr><td class=\"path\">" +
-              r.pagePath +
-              "</td><td>" +
-              src +
-              "</td><td>" +
-              med +
-              "</td><td>" +
-              fmt(r.sessions) +
-              "</td><td>" +
-              fmt(r.users) +
-              "</td><td>" +
-              fmt(r.engagedSessions || 0) +
-              "</td></tr>"
-            );
-          })
-          .join("");
-        if (status) {
-          status.textContent = data.note || "";
-          status.className = "status ok";
-        }
-      }
-
-      function renderSampleTraffic(rows) {
-        var body = document.getElementById("sampleTrafficBody");
-        if (!body) return;
-        var filtered = (rows || []).filter(function (r) {
-          return SAMPLE_PATH_RE.test(String(r.pagePath || ""));
-        });
-        if (!filtered.length) {
-          body.innerHTML =
-            '<tr><td colspan="3" style="color:var(--muted)">No sample/home paths in this range yet.</td></tr>';
-          return;
-        }
-        body.innerHTML = filtered
-          .map(function (r) {
-            return (
-              "<tr><td class=\"path\">" +
-              r.pagePath +
-              "</td><td>" +
-              fmt(r.screenPageViews) +
-              "</td><td>" +
-              fmt(r.activeUsers) +
-              "</td></tr>"
-            );
-          })
-          .join("");
-      }
-
-      function renderTopPages(rows) {
-        topPagesBody.innerHTML = (rows || [])
-          .map(function (r) {
-            return (
-              "<tr><td class=\"path\">" +
-              r.pagePath +
-              "</td><td>" +
-              fmt(r.screenPageViews) +
-              "</td><td>" +
-              fmt(r.activeUsers) +
-              "</td></tr>"
-            );
-          })
-          .join("");
       }
 
       function renderTrend(rows) {
@@ -889,7 +649,7 @@
         var rows = active.concat(expired);
         if (!rows.length) {
           bodyEl.innerHTML =
-            '<tr><td colspan="4" style="color:var(--muted)">No portal subscribers on file yet.</td></tr>';
+            '<tr><td colspan="5" style="color:var(--muted)">No portal subscribers on file yet.</td></tr>';
           return;
         }
         bodyEl.innerHTML = rows
@@ -898,12 +658,24 @@
               ? '<span class="badge active">Active</span>'
               : '<span class="badge expired">Expired</span>';
             var plan = r.productId ? ' <span style="color:var(--muted)">(' + r.productId + ")</span>" : "";
+            var magicCount = Number(r.magicLinkResetsInRange) || 0;
+            var magicCell =
+              magicCount > 0
+                ? fmt(magicCount) +
+                  (r.lastMagicLinkResetAt
+                    ? ' <span style="color:var(--muted);font-size:0.78rem">last ' +
+                      fmtIsoUtcShort(r.lastMagicLinkResetAt) +
+                      "</span>"
+                    : "")
+                : "—";
             return (
               "<tr><td>" +
               badge +
               '</td><td class="email">' +
               r.email +
               plan +
+              "</td><td>" +
+              magicCell +
               "</td><td>" +
               fmtIsoUtc(r.accessExpiresAt) +
               '</td><td class="path">' +
@@ -914,7 +686,147 @@
           .join("");
       }
 
+      function renderMagicLinkResets(data, error) {
+        var cardsEl = document.getElementById("magicLinkResetSummaryCards");
+        var bodyEl = document.getElementById("magicLinkResetBody");
+        var statusEl = document.getElementById("magicLinkResetStatus");
+        if (!cardsEl || !bodyEl) return;
+
+        if (error || !data) {
+          cardsEl.innerHTML = "";
+          bodyEl.innerHTML =
+            '<tr><td colspan="6" style="color:var(--muted)">Magic link reset log not loaded.</td></tr>';
+          if (statusEl) {
+            statusEl.textContent = error || "";
+            statusEl.className = error ? "status err" : "status";
+          }
+          return;
+        }
+
+        cardsEl.innerHTML = [
+          ["Requests", fmt(data.total)],
+          ["Email sent", fmt(data.sentCount)],
+          ["Access found", fmt(data.foundCount)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var items = data.items || [];
+        if (!items.length) {
+          bodyEl.innerHTML =
+            '<tr><td colspan="6" style="color:var(--muted)">No magic link requests in this range yet.</td></tr>';
+        } else {
+          bodyEl.innerHTML = items
+            .slice(0, 100)
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                fmtIsoUtcShort(r.capturedAt) +
+                '</td><td class="email">' +
+                (r.email || "—") +
+                "</td><td>" +
+                (r.track || "—") +
+                "</td><td>" +
+                (r.found ? "yes" : "no") +
+                "</td><td>" +
+                (r.sent ? "yes" : "no") +
+                "</td><td>" +
+                (r.reason || "—") +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        if (statusEl) {
+          statusEl.textContent =
+            "Logged when learners submit Request magic link (CCNA, ENCOR, or Security+).";
+          statusEl.className = "status ok";
+        }
+      }
+
+      function renderStripePurchases(data) {
+        var cardsEl = document.getElementById("stripePurchasesSummaryCards");
+        var bodyEl = document.getElementById("stripePurchasesRecentBody");
+        var statusEl = document.getElementById("stripePurchasesStatus");
+        if (!cardsEl || !bodyEl) return;
+
+        if (!data) {
+          cardsEl.innerHTML = "";
+          bodyEl.innerHTML =
+            '<tr><td colspan="4" style="color:var(--muted)">Stripe purchase stats not loaded.</td></tr>';
+          if (statusEl) statusEl.textContent = "";
+          return;
+        }
+
+        var byProduct = data.byProduct || {};
+        cardsEl.innerHTML = [
+          ["New Register", fmt(data.newRegister != null ? data.newRegister : data.uniqueCustomers)],
+          ["Total purchases", fmt(data.totalPurchases)],
+          ["CCNA purchases", fmt(byProduct.ccna)],
+          ["ENCOR purchases", fmt(byProduct.encor)],
+          ["Security+ purchases", fmt(byProduct.secplus)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var recent = data.recentPurchases || [];
+        if (!recent.length) {
+          bodyEl.innerHTML =
+            '<tr><td colspan="4" style="color:var(--muted)">No paid checkouts in this range yet.</td></tr>';
+        } else {
+          bodyEl.innerHTML = recent
+            .map(function (r) {
+              return (
+                "<tr><td>" +
+                fmtIsoUtcShort(r.purchasedAt) +
+                '</td><td class="email">' +
+                (r.email || "—") +
+                "</td><td>" +
+                (r.productId || "—") +
+                '</td><td class="path">' +
+                (r.checkoutSessionId || "—") +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        if (statusEl) {
+          var note = data.note || "";
+          if (data.rangeLabel) note = data.rangeLabel + ". " + note;
+          if (data.truncated) note += " Stripe list capped; older sessions in range may be missing.";
+          statusEl.textContent = note;
+          statusEl.className = "status ok";
+        }
+      }
+
       function renderPortalUsers(data) {
+        renderStripePurchases(data.purchasesInRange);
+        renderMagicLinkResets(data.magicLinkResets, data.magicLinkResetsError);
+        if (data.purchasesInRangeError && !data.purchasesInRange) {
+          var statusEl = document.getElementById("stripePurchasesStatus");
+          if (statusEl) {
+            statusEl.textContent = data.purchasesInRangeError;
+            statusEl.className = "status err";
+          }
+        }
         PORTAL_PRODUCTS.forEach(function (p) {
           var summaryEl = document.getElementById(p.summaryId);
           var bodyEl = document.getElementById(p.bodyId);
@@ -931,6 +843,8 @@
       }
 
       function clearPortalPanels() {
+        renderStripePurchases(null);
+        renderMagicLinkResets(null, null);
         PORTAL_PRODUCTS.forEach(function (p) {
           var summaryEl = document.getElementById(p.summaryId);
           var bodyEl = document.getElementById(p.bodyId);
@@ -948,85 +862,6 @@
         }
       }
 
-      function renderSampleCheckoutReport(data) {
-        if (!data) {
-          document.getElementById("sampleCheckoutSummaryCards").innerHTML = "";
-          document.getElementById("sampleCheckoutProductBody").innerHTML = "";
-          document.getElementById("sampleCheckoutItemBody").innerHTML = "";
-          document.getElementById("sampleCheckoutStatus").textContent =
-            "Checkout metrics not included in analytics report.";
-          document.getElementById("sampleCheckoutStatus").className = "status err";
-          return;
-        }
-
-        var summary = data.summary || {};
-        var byProduct = data.byProduct || [];
-        var byItem = data.byItem || [];
-
-        document.getElementById("sampleCheckoutSummaryCards").innerHTML = [
-          ["Checkout clicks", fmt(summary.checkoutClicks)],
-          ["Unique users (payment page)", fmt(summary.uniqueUsers)],
-        ]
-          .map(function (c) {
-            return (
-              '<div class="card"><div class="val">' +
-              c[1] +
-              '</div><div class="lbl">' +
-              c[0] +
-              "</div></div>"
-            );
-          })
-          .join("");
-
-        var productBody = document.getElementById("sampleCheckoutProductBody");
-        if (!byProduct.length) {
-          productBody.innerHTML =
-            '<tr><td colspan="3" style="color:var(--muted)">No begin_checkout events in this range.</td></tr>';
-        } else {
-          productBody.innerHTML = byProduct
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                (r.label || SAMPLE_PRODUCT_LABELS[r.product] || r.product) +
-                "</td><td>" +
-                fmt(r.checkoutClicks) +
-                "</td><td>" +
-                fmt(r.uniqueUsers) +
-                "</td></tr>"
-              );
-            })
-            .join("");
-        }
-
-        var itemBody = document.getElementById("sampleCheckoutItemBody");
-        if (!byItem.length) {
-          itemBody.innerHTML =
-            '<tr><td colspan="4" style="color:var(--muted)">No item-level checkout data yet — click a checkout button on a certification home page.</td></tr>';
-        } else {
-          itemBody.innerHTML = byItem
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                (r.label || r.itemId) +
-                '</td><td class="path">' +
-                (r.itemId || "—") +
-                "</td><td>" +
-                fmt(r.checkoutClicks) +
-                "</td><td>" +
-                fmt(r.uniqueUsers) +
-                "</td></tr>"
-              );
-            })
-            .join("");
-        }
-
-        document.getElementById("sampleCheckoutStatus").textContent =
-          (data.error ? data.error + " " : "") + (data.note || "");
-        document.getElementById("sampleCheckoutStatus").className = data.error
-          ? "status err"
-          : "status ok";
-      }
-
       function postJson(url, payload) {
         return fetch(url, {
           method: "POST",
@@ -1040,246 +875,6 @@
             return { ok: r.ok, body: j };
           });
         });
-      }
-
-      function pctRate(rate) {
-        if (rate == null || !Number.isFinite(rate)) return "—";
-        return (rate * 100).toFixed(1) + "%";
-      }
-
-      function campaignMetricCell(label, value) {
-        return (
-          '<div class="campaign-metric"><div class="val">' +
-          value +
-          '</div><div class="lbl">' +
-          label +
-          "</div></div>"
-        );
-      }
-
-      function renderCampaignMarketing(data) {
-        var campaigns = data.campaigns || [];
-        var totalSessions = 0;
-        var totalCheckout = 0;
-        var totalCpc = 0;
-        var totalRedditCpc = 0;
-        campaigns.forEach(function (c) {
-          var m = c.metrics || {};
-          totalSessions += Number(m.sessions) || 0;
-          totalCheckout += Number(m.beginCheckout) || 0;
-          totalCpc += Number(m.googleCpcSessions) || 0;
-          totalRedditCpc += Number(m.redditCpcSessions) || 0;
-        });
-
-        document.getElementById("campaignSummaryCards").innerHTML = [
-          ["Tracked campaigns", fmt(campaigns.length)],
-          ["Sessions (utm campaigns)", fmt(totalSessions)],
-          ["begin_checkout", fmt(totalCheckout)],
-          ["Google CPC sessions", fmt(totalCpc)],
-          ["Reddit CPC sessions", fmt(totalRedditCpc)],
-        ]
-          .map(function (c) {
-            return (
-              '<div class="card"><div class="val">' +
-              c[1] +
-              '</div><div class="lbl">' +
-              c[0] +
-              "</div></div>"
-            );
-          })
-          .join("");
-
-        var cardsEl = document.getElementById("campaignCards");
-        if (!campaigns.length) {
-          cardsEl.innerHTML =
-            '<p class="section-note">No campaign definitions loaded.</p>';
-        } else {
-          cardsEl.innerHTML = campaigns
-            .map(function (c, idx) {
-              var m = c.metrics || {};
-              var redditUrlBlock = c.redditFinalUrl
-                ? '<p class="campaign-url"><strong>Reddit URL:</strong> <span id="campaignRedditUrl' +
-                  idx +
-                  '">' +
-                  c.redditFinalUrl +
-                  "</span></p>"
-                : "";
-              var redditCopyBtn = c.redditFinalUrl
-                ? '<button type="button" data-copy-campaign-reddit-url="' +
-                  idx +
-                  '">Copy Reddit URL</button>'
-                : "";
-              return (
-                '<article class="campaign-card" data-campaign-idx="' +
-                idx +
-                '"><h3>' +
-                c.label +
-                (c.redditAdsCampaignName
-                  ? ' <span style="font-weight:400;color:var(--muted);font-size:0.85rem">· Reddit: ' +
-                    c.redditAdsCampaignName +
-                    "</span>"
-                  : "") +
-                '</h3><p class="campaign-meta"><strong>utm_campaign:</strong> ' +
-                c.utmCampaign +
-                " · <strong>ad group:</strong> " +
-                c.adGroup +
-                " · <strong>budget:</strong> $" +
-                c.dailyBudgetUsd +
-                "/day · max CPC $" +
-                c.maxCpcUsd +
-                "<br><strong>Offer:</strong> " +
-                c.primaryOffer +
-                "<br><strong>Setup doc:</strong> <code>" +
-                c.setupDocTxt +
-                "</code></p>" +
-                '<div class="campaign-metrics">' +
-                campaignMetricCell("Sessions", fmt(m.sessions)) +
-                campaignMetricCell("Users", fmt(m.users)) +
-                campaignMetricCell("Google CPC", fmt(m.googleCpcSessions)) +
-                campaignMetricCell("Reddit CPC", fmt(m.redditCpcSessions)) +
-                campaignMetricCell("Reddit organic", fmt(m.redditOrganicSessions)) +
-                campaignMetricCell("Landing views", fmt(m.landingPageViews)) +
-                campaignMetricCell("begin_checkout", fmt(m.beginCheckout)) +
-                campaignMetricCell("Checkout / session", pctRate(m.checkoutRate)) +
-                "</div>" +
-                '<p class="campaign-url" id="campaignUrl' +
-                idx +
-                '">' +
-                c.finalUrl +
-                "</p>" +
-                redditUrlBlock +
-                '<div class="campaign-actions">' +
-                '<a class="btn-inline" href="' +
-                c.finalUrl.replace(/&/g, "&amp;") +
-                '" target="_blank" rel="noopener noreferrer">Open landing</a>' +
-                '<button type="button" class="primary" data-copy-campaign-url="' +
-                idx +
-                '">Copy Google URL</button>' +
-                redditCopyBtn +
-                '<button type="button" data-copy-campaign-utm="' +
-                idx +
-                '">Copy utm_campaign</button>' +
-                "</div></article>"
-              );
-            })
-            .join("");
-
-          cardsEl.querySelectorAll("[data-copy-campaign-url]").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              var idx = parseInt(btn.getAttribute("data-copy-campaign-url") || "0", 10);
-              var c = campaigns[idx];
-              if (!c || !navigator.clipboard) return;
-              navigator.clipboard.writeText(c.finalUrl);
-              document.getElementById("campaignMarketingStatus").textContent =
-                "Copied Google final URL for " + c.label + ".";
-              document.getElementById("campaignMarketingStatus").className = "status ok";
-            });
-          });
-          cardsEl.querySelectorAll("[data-copy-campaign-reddit-url]").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              var idx = parseInt(btn.getAttribute("data-copy-campaign-reddit-url") || "0", 10);
-              var c = campaigns[idx];
-              if (!c || !c.redditFinalUrl || !navigator.clipboard) return;
-              navigator.clipboard.writeText(c.redditFinalUrl);
-              document.getElementById("campaignMarketingStatus").textContent =
-                "Copied Reddit final URL for " + c.label + ".";
-              document.getElementById("campaignMarketingStatus").className = "status ok";
-            });
-          });
-          cardsEl.querySelectorAll("[data-copy-campaign-utm]").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-              var idx = parseInt(btn.getAttribute("data-copy-campaign-utm") || "0", 10);
-              var c = campaigns[idx];
-              if (!c || !navigator.clipboard) return;
-              navigator.clipboard.writeText(c.utmCampaign);
-              document.getElementById("campaignMarketingStatus").textContent =
-                "Copied utm_campaign: " + c.utmCampaign;
-              document.getElementById("campaignMarketingStatus").className = "status ok";
-            });
-          });
-        }
-
-        var other = data.otherCampaignSessions || [];
-        var otherBody = document.getElementById("campaignOtherBody");
-        if (!other.length) {
-          otherBody.innerHTML =
-            '<tr><td colspan="4" style="color:var(--muted)">No other named campaigns in this range.</td></tr>';
-        } else {
-          otherBody.innerHTML = other
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                r.campaign +
-                "</td><td>" +
-                fmt(r.sessions) +
-                "</td><td>" +
-                fmt(r.users) +
-                "</td><td>" +
-                fmt(r.engagedSessions) +
-                "</td></tr>"
-              );
-            })
-            .join("");
-        }
-
-        var redditCpcRows = data.allRedditCpc || [];
-        var redditCpcBody = document.getElementById("campaignRedditCpcBody");
-        if (!redditCpcRows.length) {
-          redditCpcBody.innerHTML =
-            '<tr><td colspan="3" style="color:var(--muted)">No Reddit CPC sessions in this range — confirm ads use utm_source=reddit and utm_medium=cpc.</td></tr>';
-        } else {
-          redditCpcBody.innerHTML = redditCpcRows
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                r.campaign +
-                "</td><td>" +
-                fmt(r.sessions) +
-                "</td><td>" +
-                fmt(r.users) +
-                "</td></tr>"
-              );
-            })
-            .join("");
-        }
-
-        var checkoutRows = data.allBeginCheckout || [];
-        var checkoutBody = document.getElementById("campaignCheckoutBody");
-        if (!checkoutRows.length) {
-          checkoutBody.innerHTML =
-            '<tr><td colspan="2" style="color:var(--muted)">No begin_checkout events in this range.</td></tr>';
-        } else {
-          checkoutBody.innerHTML = checkoutRows
-            .map(function (r) {
-              return (
-                "<tr><td>" +
-                r.campaign +
-                "</td><td>" +
-                fmt(r.beginCheckout) +
-                "</td></tr>"
-              );
-            })
-            .join("");
-        }
-
-        var note = data.note || "";
-        if (data.error) note = data.error + (note ? " " + note : "");
-        if (!totalSessions && !totalCheckout && !totalRedditCpc && !data.error) {
-          note +=
-            " No tagged campaign traffic yet — confirm ads use utm_campaign values ccna_portal, ccna_wedge_lab, encor_portal, secplus_portal, or secplus_wedge_pbq.";
-        }
-        document.getElementById("campaignMarketingStatus").textContent = note;
-        document.getElementById("campaignMarketingStatus").className = data.error
-          ? "status err"
-          : "status ok";
-      }
-
-      function clearCampaignMarketing() {
-        document.getElementById("campaignSummaryCards").innerHTML = "";
-        document.getElementById("campaignCards").innerHTML = "";
-        document.getElementById("campaignOtherBody").innerHTML = "";
-        document.getElementById("campaignRedditCpcBody").innerHTML = "";
-        document.getElementById("campaignCheckoutBody").innerHTML = "";
       }
 
       function escapeAttr(s) {
@@ -1425,93 +1020,6 @@
         document.getElementById("visitorQuestionsStatus").className = "status ok";
       }
 
-      function renderSampleFunnelReport(data) {
-        var summary = data.summary || {};
-        var byKind = data.byKind || {};
-        var totals = data.totals || {};
-        document.getElementById("sampleFunnelSummaryCards").innerHTML = [
-          ["Total sample finishes", fmt(totals.sampleCompletions || 0)],
-          ["CCNA finished", fmt((summary.ccna && summary.ccna.sampleCompletions) || 0)],
-          ["ENCOR finished", fmt((summary.encor && summary.encor.sampleCompletions) || 0)],
-          ["Security+ finished", fmt((summary.secplus && summary.secplus.sampleCompletions) || 0)],
-        ]
-          .map(function (c) {
-            return (
-              '<div class="card"><div class="val">' +
-              c[1] +
-              '</div><div class="lbl">' +
-              c[0] +
-              "</div></div>"
-            );
-          })
-          .join("");
-
-        var body = document.getElementById("sampleFunnelBody");
-        body.innerHTML = SAMPLE_FUNNEL_PRODUCTS.map(function (p) {
-          var s = summary[p.key] || {};
-          var kinds = byKind[p.key] || {};
-          return (
-            "<tr><td>" +
-            p.label +
-            "</td><td>" +
-            fmt(kinds.questions || 0) +
-            "</td><td>" +
-            fmt(kinds.dnd || 0) +
-            "</td><td>" +
-            fmt(kinds.lab || 0) +
-            "</td><td>" +
-            fmt(kinds.simulation || 0) +
-            "</td><td>" +
-            fmt(s.sampleCompletions || 0) +
-            "</td><td>" +
-            fmt(s.captureSuccesses || 0) +
-            "</td></tr>"
-          );
-        }).join("");
-
-        var note = data.note || "";
-        if (data.storageRepo) note += " Repo: " + data.storageRepo + ".";
-        if (typeof data.rowCount === "number") {
-          note += " Showing " + data.rowCount + " in range";
-          if (typeof data.totalRowCount === "number" && data.totalRowCount !== data.rowCount) {
-            note += " (" + data.totalRowCount + " all time)";
-          }
-          note += ".";
-        }
-        if (!(totals.sampleCompletions || 0)) {
-          note += " Finishes appear after visitors complete a sample and see the scorecard or unlock modal.";
-        }
-        document.getElementById("sampleFunnelStatus").textContent = note;
-        document.getElementById("sampleFunnelStatus").className = "status ok";
-      }
-
-      function loadSampleFunnelReport() {
-        document.getElementById("sampleFunnelStatus").textContent = "Loading sample completions…";
-        document.getElementById("sampleFunnelStatus").className = "status";
-        return postJson("/api/sample-lead", { action: "report", range: rangeEl.value })
-          .then(function (res) {
-            if (!res.ok) {
-              document.getElementById("sampleFunnelSummaryCards").innerHTML = "";
-              document.getElementById("sampleFunnelBody").innerHTML =
-                '<tr><td colspan="7" style="color:var(--muted)">Could not load sample stats.</td></tr>';
-              var msg = (res.body && res.body.error) || "Sample funnel report failed";
-              if (res.body && res.body.hint) msg += " — " + res.body.hint;
-              document.getElementById("sampleFunnelStatus").textContent = msg;
-              document.getElementById("sampleFunnelStatus").className = "status err";
-              return;
-            }
-            renderSampleFunnelReport(res.body);
-          })
-          .catch(function (err) {
-            document.getElementById("sampleFunnelSummaryCards").innerHTML = "";
-            document.getElementById("sampleFunnelBody").innerHTML =
-              '<tr><td colspan="7" style="color:var(--muted)">Could not load sample stats.</td></tr>';
-            document.getElementById("sampleFunnelStatus").textContent =
-              err.message || "Failed to load sample completions";
-            document.getElementById("sampleFunnelStatus").className = "status err";
-          });
-      }
-
       function loadVisitorQuestions() {
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
@@ -1547,21 +1055,24 @@
         dashStatus.className = "status";
         portalStatus.textContent = "Loading portal subscribers…";
         portalStatus.className = "status";
-        document.getElementById("sampleCheckoutStatus").textContent = "Loading Stripe checkout metrics…";
-        document.getElementById("sampleCheckoutStatus").className = "status";
+        var stripeStatus = document.getElementById("stripePurchasesStatus");
+        if (stripeStatus) {
+          stripeStatus.textContent = "Loading Stripe checkout…";
+          stripeStatus.className = "status";
+        }
+        var magicStatus = document.getElementById("magicLinkResetStatus");
+        if (magicStatus) {
+          magicStatus.textContent = "Loading magic link resets…";
+          magicStatus.className = "status";
+        }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
-        document.getElementById("sampleFunnelStatus").textContent = "Loading sample completions…";
-        document.getElementById("sampleFunnelStatus").className = "status";
-        document.getElementById("campaignMarketingStatus").textContent = "Loading campaign marketing…";
-        document.getElementById("campaignMarketingStatus").className = "status";
 
         loadVisitorQuestions();
-        loadSampleFunnelReport();
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
-          postJson("/api/portal-users-report", {}),
+          postJson("/api/portal-users-report", { range: rangeEl.value }),
         ])
           .then(function (results) {
             var ga = results[0];
@@ -1578,11 +1089,7 @@
             }
 
             renderSummary(ga.body);
-            renderLandingTrafficBySource(ga.body.landingTrafficBySource);
-            renderSampleTraffic(ga.body.topPages);
-            renderTopPages(ga.body.topPages);
             renderTrend(ga.body.dailyTrend);
-            renderSampleCheckoutReport(ga.body.sampleCheckout);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";
 
@@ -1595,23 +1102,13 @@
             } else {
               renderPortalUsers(portal.body);
             }
-
-            if (ga.body && ga.body.campaignMarketing) {
-              renderCampaignMarketing(ga.body.campaignMarketing);
-            } else {
-              clearCampaignMarketing();
-              document.getElementById("campaignMarketingStatus").textContent =
-                "Campaign marketing data not included in analytics report.";
-              document.getElementById("campaignMarketingStatus").className = "status err";
-            }
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
             dashStatus.className = "status err";
             portalStatus.textContent = "";
-            document.getElementById("sampleCheckoutStatus").textContent = "";
-            clearCampaignMarketing();
-            document.getElementById("campaignMarketingStatus").textContent = "";
+            if (stripeStatus) stripeStatus.textContent = "";
+            if (magicStatus) magicStatus.textContent = "";
           });
       }
 
@@ -1713,7 +1210,6 @@
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
       document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
-      document.getElementById("sampleFunnelRefreshBtn").addEventListener("click", loadSampleFunnelReport);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         setToken("");

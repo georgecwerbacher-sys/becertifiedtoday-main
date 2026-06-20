@@ -6,8 +6,6 @@ import {
   fetchBeginCheckoutByCampaign,
   fetchGoogleCpcByCampaign,
   fetchHomeLandingPageViews,
-  fetchRedditCpcByCampaign,
-  fetchRedditOrganicByCampaign,
   fetchSessionsByCampaign,
 } from "./google-analytics.js";
 
@@ -30,21 +28,17 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
   const registry = getCampaignMarketingRegistry();
   const landingPaths = registry.map((c) => c.landingPath);
 
-  const [sessionsByCampaign, checkoutByCampaign, cpcByCampaign, redditCpcByCampaign, redditOrganicByCampaign, landingPages] =
+  const [sessionsByCampaign, checkoutByCampaign, cpcByCampaign, landingPages] =
     await Promise.all([
       fetchSessionsByCampaign(client, propertyId, range),
       fetchBeginCheckoutByCampaign(client, propertyId, range),
       fetchGoogleCpcByCampaign(client, propertyId, range),
-      fetchRedditCpcByCampaign(client, propertyId, range),
-      fetchRedditOrganicByCampaign(client, propertyId, range),
       fetchHomeLandingPageViews(client, propertyId, range, landingPaths),
     ]);
 
   const sessionsMap = indexByCampaign(sessionsByCampaign);
   const checkoutMap = indexByCampaign(checkoutByCampaign);
   const cpcMap = indexByCampaign(cpcByCampaign);
-  const redditCpcMap = indexByCampaign(redditCpcByCampaign);
-  const redditOrganicMap = indexByCampaign(redditOrganicByCampaign);
   const landingMap = Object.create(null);
   for (const row of landingPages) {
     landingMap[row.pagePath] = row;
@@ -55,8 +49,6 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     const sess = sessionsMap[utm] || {};
     const checkout = checkoutMap[utm] || {};
     const cpc = cpcMap[utm] || {};
-    const redditCpc = redditCpcMap[utm] || {};
-    const redditOrganic = redditOrganicMap[utm] || {};
     const landing = landingMap[def.landingPath] || {};
     const sessions = Number(sess.sessions || 0);
     const beginCheckout = Number(checkout.beginCheckout || 0);
@@ -71,10 +63,6 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
         beginCheckout,
         googleCpcSessions: Number(cpc.sessions || 0),
         googleCpcUsers: Number(cpc.users || 0),
-        redditCpcSessions: Number(redditCpc.sessions || 0),
-        redditCpcUsers: Number(redditCpc.users || 0),
-        redditOrganicSessions: Number(redditOrganic.sessions || 0),
-        redditOrganicUsers: Number(redditOrganic.users || 0),
         landingPageViews: Number(landing.screenPageViews || 0),
         landingPageUsers: Number(landing.activeUsers || 0),
         checkoutRate: sessions > 0 ? beginCheckout / sessions : null,
@@ -91,8 +79,6 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     otherCampaignSessions,
     allBeginCheckout: checkoutByCampaign,
     allGoogleCpc: cpcByCampaign,
-    allRedditCpc: redditCpcByCampaign,
-    allRedditOrganic: redditOrganicByCampaign,
     landingPages,
   };
 }

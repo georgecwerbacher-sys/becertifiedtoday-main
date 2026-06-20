@@ -51,8 +51,38 @@ function parsePortalMetadata(customer, config) {
   };
 }
 
+/** One row per email per product — keeps latest access window (fixes duplicate Stripe customers). */
+function dedupeRowsByEmail(rows) {
+  const byKey = new Map();
+  for (const row of rows) {
+    const email = String(row.email || "")
+      .trim()
+      .toLowerCase();
+    const key =
+      email && email !== "(no email on file)" ? `email:${email}` : `customer:${row.customerId}`;
+    const existing = byKey.get(key);
+    if (!existing) {
+      byKey.set(key, row);
+      continue;
+    }
+    if (row.accessExpiresAtMs > existing.accessExpiresAtMs) {
+      byKey.set(key, row);
+      continue;
+    }
+    if (
+      row.accessExpiresAtMs === existing.accessExpiresAtMs &&
+      row.active &&
+      !existing.active
+    ) {
+      byKey.set(key, row);
+    }
+  }
+  return Array.from(byKey.values());
+}
+
 function splitActiveExpired(rows) {
-  const sorted = rows.slice().sort((a, b) => b.accessExpiresAtMs - a.accessExpiresAtMs);
+  const deduped = dedupeRowsByEmail(rows);
+  const sorted = deduped.slice().sort((a, b) => b.accessExpiresAtMs - a.accessExpiresAtMs);
   const active = sorted.filter((r) => r.active);
   const expired = sorted.filter((r) => !r.active);
   return {
