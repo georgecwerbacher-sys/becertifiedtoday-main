@@ -537,14 +537,21 @@
       color: var(--page-text);
       line-height: 1.5;
     }
-    .secplus-hero-atf-cta a {
+    .secplus-hero-atf-cta a:not(.cta-main) {
       color: #5b21b6;
       font-weight: 800;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-    .secplus-hero-atf-cta a:hover {
+    .secplus-hero-atf-cta a:not(.cta-main):hover {
       color: #6d28d9;
+    }
+    .secplus-hero-atf-cta a.cta-main {
+      color: #fff;
+      text-decoration: none;
+    }
+    .secplus-hero-atf-cta a.cta-main:hover {
+      color: #fff;
     }
     .bcc-last-chance-bar {
       position: fixed;
@@ -2237,126 +2244,93 @@
     .formats-section .formats-grid .format-card:not(.format-card--path-cta-bottom) > .format-sample:last-child {
       margin-top: auto;
     }
-    .secplus-compare-section {
-      margin: 0 0 clamp(28px, 5vw, 40px);
+    .funnel > #secplus-compare {
+      order: 4;
+    }
+    .landing-gns3-compare {
+      margin: 0;
       padding: 0;
     }
-    .funnel > .secplus-compare-section {
-      width: 100%;
-    }
-    .secplus-compare-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      width: 100%;
-      text-align: left;
-    }
-    .secplus-compare-section .formats-head {
-      color: #475569;
-      text-align: left;
-    }
-    .secplus-compare-section h2 {
+    .landing-gns3-compare h2 {
       margin: 0 0 12px;
-      color: #0b1020;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
       line-height: 1.25;
-      max-width: 48rem;
-      text-align: left;
+      color: #0b1020;
     }
-    .secplus-compare-section .formats-lead {
-      margin: 0 0 clamp(20px, 3vw, 28px);
-      max-width: 48rem;
-      color: #334155;
+    .landing-gns3-lead {
+      margin: 0 0 16px;
+      max-width: 52ch;
+      font-size: clamp(0.94rem, 2vw, 1.02rem);
+      line-height: 1.55;
+      color: var(--page-muted);
+    }
+    .landing-gns3-lead strong {
       font-weight: 700;
-      line-height: 1.6;
-      text-align: left;
     }
-    .secplus-compare-section .formats-lead strong {
-      font-weight: 800;
-    }
-    .secplus-compare-table-wrap {
-      margin: 0 0 clamp(18px, 3vw, 24px);
+    .landing-gns3-table-wrap {
       overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
       border-radius: 12px;
-      border: 1px solid rgba(79, 132, 216, 0.35);
-      background: rgba(11, 16, 32, 0.45);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(139, 92, 246, 0.35);
     }
-    .secplus-compare-table {
+    .landing-gns3-table {
       width: 100%;
-      min-width: 520px;
+      min-width: 480px;
       border-collapse: collapse;
-      font-size: clamp(0.84rem, 1.9vw, 0.94rem);
+      font-size: 0.9rem;
     }
-    .secplus-compare-table th,
-    .secplus-compare-table td {
+    .landing-gns3-table th,
+    .landing-gns3-table td {
       padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
-      line-height: 1.45;
-      font-weight: 700;
     }
-    .secplus-compare-table thead th {
+    .landing-gns3-table thead th {
       background: rgba(18, 26, 43, 0.95);
-      font-weight: 800;
       color: #c8daf8;
-      font-size: clamp(0.8rem, 1.85vw, 0.9rem);
-      letter-spacing: 0.03em;
-    }
-    .secplus-compare-table thead th.secplus-compare-col-bct {
-      background: linear-gradient(165deg, rgba(139, 92, 246, 0.35) 0%, rgba(91, 33, 182, 0.25) 100%);
-      color: #f4f7ff;
-    }
-    .secplus-compare-table tbody th {
-      width: 22%;
-      color: #ffffff;
       font-weight: 800;
+    }
+    .landing-gns3-table tbody th {
+      color: #0b1020;
       white-space: nowrap;
-    }
-    @media (max-width: 640px) {
-      .secplus-compare-table tbody th {
-        white-space: normal;
-      }
-    }
-    .secplus-compare-table tbody td {
-      color: #ffffff;
       font-weight: 700;
     }
-    .secplus-compare-table tbody td.secplus-compare-cell-bct {
-      color: #ffffff;
+    .landing-gns3-table thead th.landing-gns3-col-bct {
+      background: #f3e8ff;
+      color: #5b21b6;
+    }
+    .landing-gns3-table .landing-gns3-cell-bct {
+      background: rgba(109, 40, 217, 0.08);
       font-weight: 700;
-      background: rgba(91, 33, 182, 0.12);
+      color: #5b21b6;
     }
-    .secplus-compare-table tbody tr:last-child th,
-    .secplus-compare-table tbody tr:last-child td {
-      border-bottom: none;
+    .landing-gns3-compare .landing-mission-pitch {
+      margin-top: clamp(28px, 4vw, 40px);
     }
-    .secplus-compare-cta {
-      margin: 0;
-      max-width: 48rem;
+    .landing-gns3-compare .landing-compare-cta {
+      margin: clamp(16px, 2.5vw, 20px) 0 0;
+      max-width: 52ch;
       font-size: clamp(0.92rem, 2.1vw, 0.98rem);
       line-height: 1.55;
       color: var(--page-muted);
       font-weight: 600;
-      text-align: left;
     }
-    .secplus-compare-cta a {
-      color: #5b21b6;
+    .landing-gns3-compare .landing-compare-cta a {
+      color: #7c3aed;
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-    .secplus-compare-cta a:hover {
-      color: #6d28d9;
+    .landing-gns3-compare .landing-compare-cta a:hover {
+      color: #8b5cf6;
     }
-    .secplus-compare-note {
+    .landing-gns3-compare .landing-compare-note {
       margin: clamp(12px, 2vw, 16px) 0 0;
-      max-width: 48rem;
+      max-width: 52ch;
       font-size: 0.82rem;
       line-height: 1.5;
       color: #64748b;
       font-weight: 400;
-      text-align: left;
     }
     .faq-section {
       margin-top: clamp(32px, 5vw, 48px);
@@ -2979,7 +2953,7 @@
           data-secplus-portal-nav
           title="Security+ practice portal, library access required"
           aria-label="Open Security+ practice portal"
-          >Full Library (Paid Access)</a
+          >Sec+ Exam Prep</a
         >
       </div>
     </header>
@@ -3224,91 +3198,87 @@
             </section>
           </div>
 
-          <section class="secplus-compare-section" id="secplus-compare" aria-labelledby="secplus-compare-title">
-            <div class="secplus-compare-inner">
-              <p class="formats-head">Why interactive prep</p>
-              <h2 id="secplus-compare-title">Browser Exam Prep vs. PDF and Test-Engine Question Banks</h2>
-              <p class="formats-lead">
-                Many SY0-701 sites sell <strong>printable PDFs</strong> or <strong>VCE/ETE files</strong> that require desktop players.
-                Be Certified Today is built for <strong>interactive practice</strong> in the same browser format you use on test day.
+          <section class="landing-gns3-compare" id="secplus-compare" aria-labelledby="secplus-compare-title">
+            <h2 id="secplus-compare-title">Browser Exam Prep vs. Static PDFs and Desktop Test-Engine Software</h2>
+            <p class="landing-gns3-lead">
+              Many Security+ sites sell <strong>printable PDFs</strong> or require <strong>VCE, ETE, or desktop test engines</strong> for practice.
+              Be Certified Today is built for <strong>interactive practice</strong> in the same browser format you use on test day.
+            </p>
+            <div class="landing-gns3-table-wrap">
+              <table class="landing-gns3-table" aria-describedby="secplus-compare-caption">
+                <caption id="secplus-compare-caption" class="visually-hidden">
+                  Comparison of typical static PDF and desktop test-engine tools versus Be Certified Today Security+ exam prep
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Capability</th>
+                    <th scope="col">Typical PDF / Desktop Site</th>
+                    <th scope="col" class="landing-gns3-col-bct bct-brand-name">Be Certified Today</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Primary format</th>
+                    <td>PDF download or desktop test engine</td>
+                    <td class="landing-gns3-cell-bct">Interactive HTML in your browser</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Mobile study</th>
+                    <td>Often PDF zoom or desktop-only player</td>
+                    <td class="landing-gns3-cell-bct">Responsive UI on phone, tablet, and desktop</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">PBQ / drag-and-drop</th>
+                    <td>Rare or static screenshots in PDFs</td>
+                    <td class="landing-gns3-cell-bct">28 scenarios (21 chain + 4 standalone + 1 hot spot + 2 exhibits)</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Timed 90-min exam</th>
+                    <td>Rare, or separate desktop engine only</td>
+                    <td class="landing-gns3-cell-bct">Full timed simulation in the practice portal</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Weak-area review</th>
+                    <td>Static Q&amp;A list</td>
+                    <td class="landing-gns3-cell-bct">Review modes loop missed topics back</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Content updates</th>
+                    <td>&ldquo;90 days free updates&rdquo; on a PDF file</td>
+                    <td class="landing-gns3-cell-bct">Living site with continuous question additions</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Exam policy</th>
+                    <td>Often focuses on memorization-only files</td>
+                    <td class="landing-gns3-cell-bct">Exam prep only. Original practice with verified explanations</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="landing-compare-cta">
+              <a href="#home-secplus-samples-title">Preview free sample questions →</a>
+            </p>
+            <div class="landing-mission-pitch" id="secplus-mission" aria-labelledby="secplus-mission-title">
+              <h3 id="secplus-mission-title">Why I built Be Certified Today</h3>
+              <p class="landing-mission-lead">
+                I built this for Security+ prep you can trust: current SY0-701 practice with 1000+ questions, 28 PBQ scenarios, adaptive review, and a timed exam —
+                presented the way test day works — with answers verified against official CompTIA objectives.
+                Try free samples first, no account required. When you are ready, unlock the full library for one payment, one period —
+                no membership, no ads inside the portal.
               </p>
-              <div class="secplus-compare-table-wrap">
-                <table class="secplus-compare-table" aria-describedby="secplus-compare-caption">
-                  <caption id="secplus-compare-caption" class="visually-hidden">
-                    Comparison of typical PDF and VCE exam-question sellers versus Be Certified Today Security+ exam prep
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Capability</th>
-                      <th scope="col">Typical PDF / VCE Site</th>
-                      <th scope="col" class="secplus-compare-col-bct">Be Certified Today</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Primary Format</th>
-                      <td>PDF, VCE, or ETE download</td>
-                      <td class="secplus-compare-cell-bct">Interactive HTML in your browser</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Mobile Study</th>
-                      <td>Often claimed; mostly PDF zoom or desktop-only player</td>
-                      <td class="secplus-compare-cell-bct">Responsive UI on phone, tablet, and desktop</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">PBQ / Drag-and-Drop</th>
-                      <td>Usually 0 to 3 items in desktop engine marketing</td>
-                      <td class="secplus-compare-cell-bct">28 scenarios (21 chain + 4 standalone + 1 hot spot + 2 exhibits)</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Timed 90-Min Exam</th>
-                      <td>Rare, or desktop test engine only</td>
-                      <td class="secplus-compare-cell-bct">Free sample questions + full 90-min timed sim</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Adaptive Weak-Area Loop</th>
-                      <td>No. Static Q&amp;A list</td>
-                      <td class="secplus-compare-cell-bct">Yes. Adaptive review in the portal</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Content Updates</th>
-                      <td>“90 days free updates” on a PDF file</td>
-                      <td class="secplus-compare-cell-bct">Living site with deployed improvements, 1000+ bank</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Exam Policy</th>
-                      <td>Often focuses on memorization-only files that may violate certification policies</td>
-                      <td class="secplus-compare-cell-bct">Exam prep only. Original practice with verified explanations</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <p class="secplus-compare-cta">
-                <a href="#home-secplus-samples-title">Preview free sample questions →</a>
-                · <a href="#purchase" data-secplus-portal-30d-checkout>Unlock 30-day access · $19.99 →</a>
-              </p>
-              <div class="landing-mission-pitch" id="secplus-mission" aria-labelledby="secplus-mission-title">
-                <h3 id="secplus-mission-title">Why I built Be Certified Today</h3>
-                <p class="landing-mission-lead">
-                  I built this for Security+ prep you can trust: current SY0-701 practice with 1000+ questions, 28 PBQ scenarios, adaptive review, and a timed exam —
-                  presented the way test day works — with answers verified against official CompTIA objectives.
-                  Try free samples first, no account required. When you are ready, unlock the full library for one payment, one period —
-                  no membership, no ads inside the portal.
-                </p>
-                <ul class="landing-mission-pillars" aria-label="What I promise">
-                  <li><strong>Current material</strong> — aligned to SY0-701 objectives (v5.0), not a stale PDF or VCE file.</li>
-                  <li><strong>Certification-style practice</strong> — timed sim, PBQ chains, hot spots, and adaptive weak-area review.</li>
-                  <li><strong>Verified answers</strong> — keys and explanations tied to official sources and original training content.</li>
-                  <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
-                </ul>
-                <p class="landing-mission-cta">
-                  <a href="#purchase" data-secplus-portal-30d-checkout>Unlock Security+ access when you are ready →</a>
-                </p>
-              </div>
-              <p class="secplus-compare-note">
-                CompTIA does not endorse third-party training products. Practice on this site is original study material for preparation only; see the disclaimer below.
+              <ul class="landing-mission-pillars" aria-label="What I promise">
+                <li><strong>Current material</strong> — aligned to SY0-701 objectives (v5.0), not a stale PDF or VCE file.</li>
+                <li><strong>Certification-style practice</strong> — timed sim, PBQ chains, hot spots, and adaptive weak-area review.</li>
+                <li><strong>Verified answers</strong> — keys and explanations tied to official sources and original training content.</li>
+                <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
+              </ul>
+              <p class="landing-mission-cta">
+                <a href="#purchase" data-secplus-portal-30d-checkout>Unlock Security+ access when you are ready →</a>
               </p>
             </div>
+            <p class="landing-compare-note">
+              CompTIA does not endorse third-party training products. Practice on this site is original study material for preparation only; see the disclaimer below.
+            </p>
           </section>
 
           <div class="card purchase-card" id="purchase-details">
