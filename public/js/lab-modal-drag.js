@@ -23,8 +23,136 @@
 
   function isInteractiveControl(target) {
     return !!(target && target.closest && target.closest(
-      "button, input, textarea, select, label, a[href], .cli-modal-close"
+      "button, input, textarea, select, label, a[href], .cli-modal-close, .cli-modal-resize-handle"
     ));
+  }
+
+  var MIN_DIALOG_W = 300;
+  var MIN_DIALOG_H = 260;
+
+  function clampDialogSize(width, height) {
+    var maxW = Math.max(MIN_DIALOG_W, window.innerWidth - 16);
+    var maxH = Math.max(MIN_DIALOG_H, window.innerHeight - 16);
+    return {
+      width: clamp(width, MIN_DIALOG_W, maxW),
+      height: clamp(height, MIN_DIALOG_H, maxH),
+    };
+  }
+
+  function pinDialogPosition(dialog) {
+    var rect = dialog.getBoundingClientRect();
+    dialog.style.transform = "none";
+    dialog.style.margin = "0";
+    dialog.style.left = rect.left + "px";
+    dialog.style.top = rect.top + "px";
+    return rect;
+  }
+
+  function loosenDialogScrollback(dialog) {
+    dialog.dataset.resized = "1";
+    dialog.style.maxHeight = "none";
+    var body = dialog.querySelector(".cli-modal-body");
+    if (body) {
+      body.style.display = "flex";
+      body.style.flexDirection = "column";
+      body.style.minHeight = "0";
+      body.style.flex = "1";
+      body.style.overflow = "hidden";
+    }
+    dialog.querySelectorAll(".terminal").forEach(function (terminal) {
+      terminal.style.display = "flex";
+      terminal.style.flexDirection = "column";
+      terminal.style.flex = "1";
+      terminal.style.minHeight = "0";
+    });
+    dialog.querySelectorAll(".scrollback-area").forEach(function (scroll) {
+      scroll.style.maxHeight = "none";
+      scroll.style.flex = "1";
+      scroll.style.minHeight = "8rem";
+    });
+  }
+
+  function ensureResizeHandle(dialog) {
+    var handle = dialog.querySelector(".cli-modal-resize-handle");
+    if (handle) return handle;
+    handle = document.createElement("div");
+    handle.className = "cli-modal-resize-handle";
+    handle.setAttribute("aria-hidden", "true");
+    handle.title = "Drag to resize";
+    dialog.appendChild(handle);
+    return handle;
+  }
+
+  function makeDialogResizable(dialog) {
+    if (!dialog || dialog.dataset.resizeReady === "1") return;
+    var handle = ensureResizeHandle(dialog);
+    if (!handle) return;
+    dialog.dataset.resizeReady = "1";
+
+    var resizing = false;
+    var pointerId = null;
+    var startX = 0;
+    var startY = 0;
+    var originW = 0;
+    var originH = 0;
+    var originLeft = 0;
+    var originTop = 0;
+
+    function onResizeMove(e) {
+      if (!resizing || e.pointerId !== pointerId) return;
+      var size = clampDialogSize(originW + (e.clientX - startX), originH + (e.clientY - startY));
+      dialog.style.width = size.width + "px";
+      dialog.style.height = size.height + "px";
+      var pos = positionWithinViewport(dialog, originLeft, originTop);
+      dialog.style.left = pos.left + "px";
+      dialog.style.top = pos.top + "px";
+    }
+
+    function endResize(e) {
+      if (!resizing || e.pointerId !== pointerId) return;
+      resizing = false;
+      dialog.classList.remove("is-resizing");
+      document.removeEventListener("pointermove", onResizeMove);
+      document.removeEventListener("pointerup", endResize);
+      document.removeEventListener("pointercancel", endResize);
+      try {
+        handle.releasePointerCapture(pointerId);
+      } catch (err) {}
+      pointerId = null;
+    }
+
+    handle.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0 && e.pointerType !== "touch") return;
+      e.stopPropagation();
+      var rect = pinDialogPosition(dialog);
+      resizing = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      originW = rect.width;
+      originH = rect.height;
+      originLeft = rect.left;
+      originTop = rect.top;
+      dialog.style.width = originW + "px";
+      dialog.style.height = originH + "px";
+      dialog.classList.add("is-resizing");
+      loosenDialogScrollback(dialog);
+      bumpOverlayZ(dialog.closest(".cli-modal-overlay"));
+
+      document.addEventListener("pointermove", onResizeMove);
+      document.addEventListener("pointerup", endResize);
+      document.addEventListener("pointercancel", endResize);
+
+      try {
+        handle.setPointerCapture(e.pointerId);
+      } catch (err) {}
+      e.preventDefault();
+    });
+  }
+
+  function wireDialogChrome(dialog) {
+    makeDialogResizable(dialog);
+    makeDialogDraggable(dialog);
   }
 
   function makeDialogDraggable(dialog) {
@@ -207,13 +335,13 @@
   }
 
   function init() {
-    document.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+    document.querySelectorAll(".cli-modal-dialog").forEach(wireDialogChrome);
     bindAllInputs();
   }
 
   window.bccInitLabModalDrag = init;
   window.bccWireFloatingModal = function (dialogEl, overlayEl) {
-    if (dialogEl) makeDialogDraggable(dialogEl);
+    if (dialogEl) wireDialogChrome(dialogEl);
     if (overlayEl) bumpOverlayZ(overlayEl);
   };
 
@@ -224,10 +352,10 @@
         mutation.addedNodes.forEach(function (node) {
           if (!node || node.nodeType !== 1) return;
           if (node.classList && node.classList.contains("cli-modal-dialog")) {
-            makeDialogDraggable(node);
+            wireDialogChrome(node);
           }
           if (node.querySelectorAll) {
-            node.querySelectorAll(".cli-modal-dialog").forEach(makeDialogDraggable);
+            node.querySelectorAll(".cli-modal-dialog").forEach(wireDialogChrome);
             node.querySelectorAll(
               'input.cmdline-input, .terminal input[type="text"], input.cmdline, #cmdline, [id^="cmd"], [id$="Cmdline"]'
             ).forEach(bindInputHistory);

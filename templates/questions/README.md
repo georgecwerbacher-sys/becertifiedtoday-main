@@ -33,7 +33,7 @@ Shared **Back / Home / Next** link boxes for practice question pages.
 
 ## Reference implementation
 
-`public/CCNA-Study/CCNA_Samples/sample-question-1.html` — choose-two sample with top link nav; bottom Home/Next bar appears automatically when `?sample=1` (via `ccna-practice-100-nav.js`).
+`public/CCNA-Study/CCNA_questions/private-ipv4-subnet-appropriate.html` — MCQ with top link nav; bottom Home/Next bar appears automatically when `?sample=1` (via `ccna-practice-100-nav.js`).
 
 ## Generator
 

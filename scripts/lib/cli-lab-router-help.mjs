@@ -98,12 +98,6 @@ export const ROUTER_LAB_META = {
     ],
     extraChains: [],
   },
-  "CCNA_Samples/cli-lab-ip-services-sim-v2.html": {
-    label: "IP Services Simulation V.3 (CCNA sample URL)",
-    pathname: "/CCNA-Study/CCNA_Samples/cli-lab-ip-services-sim-v2.html",
-    intro: ["Sample URL shell for IP Services lab — same router help baseline."],
-    extraChains: [],
-  },
 };
 
 /** Shared router smoke tests included in every router profile. */
@@ -188,11 +182,6 @@ export const ROUTER_HELP_PROFILES = {
     pathname: ROUTER_LAB_META["cli-lab-ip-services-sim-v2.html"].pathname,
     cases: [...CORE_ROUTER_CASES, ...IP_SERVICES_ROUTER_CASES],
   },
-  "CCNA_Samples/cli-lab-ip-services-sim-v2.html": {
-    label: ROUTER_LAB_META["CCNA_Samples/cli-lab-ip-services-sim-v2.html"].label,
-    pathname: ROUTER_LAB_META["CCNA_Samples/cli-lab-ip-services-sim-v2.html"].pathname,
-    cases: [...CORE_ROUTER_CASES, ...IP_SERVICES_ROUTER_CASES],
-  },
   "cli-lab-nat-dhcp-sim.html": {
     label: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].label,
     pathname: ROUTER_LAB_META["cli-lab-nat-dhcp-sim.html"].pathname,
@@ -222,7 +211,6 @@ export const ALL_PROFILE_KEYS = [
   "cli-lab-static-routing.html",
   "cli-lab-nat-dhcp-sim.html",
   "cli-lab-ip-services-sim-v2.html",
-  "CCNA_Samples/cli-lab-ip-services-sim-v2.html",
   "cli-lab-ospf_config_sim_v3.html",
   "ipv4_ipv6_assign.html",
   "cli-lab-named-acl-snoopimg.html",

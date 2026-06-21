@@ -150,6 +150,8 @@
 .cli-modal-dialog {
   width: min(540px, calc(100vw - 24px));
   max-height: min(85vh, 720px);
+  min-width: 300px;
+  min-height: 260px;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -165,8 +167,57 @@
   pointer-events: auto;
 }
 
-.cli-modal-dialog.is-dragging {
+.cli-modal-dialog.is-dragging,
+.cli-modal-dialog.is-resizing {
   user-select: none;
+}
+
+.cli-modal-resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+  touch-action: none;
+  z-index: 3;
+}
+
+.cli-modal-resize-handle::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #6b7c9a;
+  border-bottom: 2px solid #6b7c9a;
+  pointer-events: none;
+}
+
+.cli-modal-dialog[data-resized="1"] {
+  max-height: none;
+}
+
+.cli-modal-dialog[data-resized="1"] .cli-modal-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.cli-modal-dialog[data-resized="1"] .terminal {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cli-modal-dialog[data-resized="1"] .scrollback-area {
+  max-height: none;
+  flex: 1;
+  min-height: 8rem;
 }
 
 .cli-modal-header {
