@@ -69,6 +69,34 @@
   var lastChanceDelayId = null;
   var wired = false;
 
+  function offerProductKey() {
+    if (!cfg) return "";
+    if (cfg === CONFIGS.ccna) return "ccna";
+    if (cfg === CONFIGS.encor) return "encor";
+    if (cfg === CONFIGS.secplus) return "secplus";
+    return "";
+  }
+
+  function trackOfferEvent(action, extra) {
+    if (
+      typeof window.bccShouldTrackAnalytics === "function" &&
+      !window.bccShouldTrackAnalytics()
+    ) {
+      return;
+    }
+    if (typeof window.gtag !== "function") return;
+    var payload = {
+      product: offerProductKey(),
+      landing_path: location.pathname || "",
+    };
+    if (extra) {
+      for (var k in extra) {
+        if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+      }
+    }
+    window.gtag("event", "home_offer_popup_" + action, payload);
+  }
+
   function detectConfig() {
     if (document.getElementById(CONFIGS.ccna.rootId)) return CONFIGS.ccna;
     if (document.getElementById(CONFIGS.encor.rootId)) return CONFIGS.encor;
@@ -259,6 +287,7 @@
     try {
       panel.focus();
     } catch (_) {}
+    trackOfferEvent("shown");
     return true;
   }
 
@@ -285,6 +314,7 @@
 
     root.querySelectorAll("[data-bcc-10d-offer-dismiss]").forEach(function (el) {
       el.addEventListener("click", function (ev) {
+        trackOfferEvent("dismiss", { method: "button" });
         if (el.tagName === "A" && el.getAttribute("href") && el.getAttribute("href").charAt(0) === "#") {
           ev.preventDefault();
           dismissPopup(true);
@@ -299,6 +329,7 @@
     var checkoutBtn = root.querySelector("[" + cfg.checkoutAttr + "]");
     if (checkoutBtn) {
       checkoutBtn.addEventListener("click", function () {
+        trackOfferEvent("click", { surface: "modal" });
         markDismissed();
         closePopup(false);
       });
@@ -306,6 +337,7 @@
 
     document.addEventListener("keydown", function (ev) {
       if (ev.key !== "Escape" || !root.classList.contains("ccna-sim-promo-root--open")) return;
+      trackOfferEvent("dismiss", { method: "escape" });
       dismissPopup(true);
     });
   }
@@ -323,6 +355,7 @@
     var checkoutBtn = lastChanceBar.querySelector("[data-bcc-10d-last-chance-checkout]");
     if (checkoutBtn) {
       checkoutBtn.addEventListener("click", function () {
+        trackOfferEvent("click", { surface: "last_chance_bar" });
         markDismissed();
         hideLastChanceBar();
       });

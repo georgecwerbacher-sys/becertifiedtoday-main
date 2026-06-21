@@ -6,6 +6,7 @@
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
@@ -16,6 +17,7 @@ import {
   getGoogleAnalyticsEnv,
   rangeFromPreset,
 } from "../server-lib/google-analytics.js";
+import { readSampleLeadEvents } from "../server-lib/sample-lead-analytics.js";
 
 function readJsonBody(req) {
   try {
@@ -136,24 +138,48 @@ export default async function handler(req, res) {
     });
   }
 
-  const range = rangeFromPreset(typeof body.range === "string" ? body.range : "7d");
+  const rangePreset = typeof body.range === "string" && body.range.trim() ? body.range.trim() : "7d";
+  const range = rangeFromPreset(rangePreset);
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, dailyTrend, realtimeActiveUsers] = await Promise.all([
+    const [summary, dailyTrend, realtimeActiveUsers, sampleLeadRows] = await Promise.all([
       fetchAnalyticsSummary(client, env.propertyId, range),
       fetchDailyTrend(client, env.propertyId, range),
       fetchRealtimeActiveUsers(client, env.propertyId),
+      readSampleLeadEvents().catch((err) => ({
+        error: err?.message || "Sample lead CSV read failed",
+      })),
     ]);
+
+    const certHomeLanding = await buildCertHomeLandingReport(
+      client,
+      env.propertyId,
+      range,
+      rangePreset,
+      sampleLeadRows && !sampleLeadRows.error ? sampleLeadRows : []
+    ).catch((err) => ({
+      error: err?.message || "Cert home landing report failed",
+    }));
 
     return res.status(200).json({
       ok: true,
       propertyId: env.propertyId,
       measurementId: env.measurementId || null,
       range,
+      rangePreset,
       summary,
       dailyTrend,
       realtimeActiveUsers,
+      certHomeLanding:
+        certHomeLanding && !certHomeLanding.error
+          ? certHomeLanding
+          : {
+              pages: [],
+              totals: {},
+              error: certHomeLanding?.error || "Cert home landing unavailable",
+            },
+      sampleLeadCsvError: sampleLeadRows?.error || null,
       fetchedAt: new Date().toISOString(),
     });
   } catch (err) {

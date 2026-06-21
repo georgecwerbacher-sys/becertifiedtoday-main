@@ -310,6 +310,7 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-register">Stripe checkout</a>
+        <a href="#section-cert-homes">Home pages</a>
         <a href="#section-magic-link">Magic link reset</a>
         <a href="#section-traffic">Site traffic</a>
         <a href="#section-questions">Questions</a>
@@ -435,6 +436,38 @@
           </div>
         </div>
         <p id="portalStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel" id="section-cert-homes">
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Certification home pages</h2>
+        <p class="section-note" style="margin-top:0">
+          Landing traffic for <code>ccna-home.html</code>, <code>ccnp-home.html</code>, and
+          <code>comptia-sec+-home.html</code> in the selected date range (UTC). Sample and email-popup
+          metrics come from site logs; popup shown/click/dismiss from GA4 after this deploy.
+        </p>
+        <div class="cards" id="certHomeSummaryCards"></div>
+        <div class="portal-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Home page</th>
+                <th>Page views</th>
+                <th>Users</th>
+                <th>Landing sessions</th>
+                <th>Avg session</th>
+                <th>Avg on page</th>
+                <th>Samples done</th>
+                <th>Email popup</th>
+                <th>Offer popup</th>
+                <th>Popup checkout</th>
+                <th>Free sim</th>
+                <th>Checkout click</th>
+              </tr>
+            </thead>
+            <tbody id="certHomeLandingBody"></tbody>
+          </table>
+        </div>
+        <p id="certHomeLandingStatus" class="status" aria-live="polite"></p>
       </div>
 
       <div class="panel" id="section-traffic">
@@ -595,6 +628,116 @@
           (data.measurementId || "—") +
           " · Updated " +
           (data.fetchedAt || "");
+      }
+
+      function renderCertHomeLanding(data) {
+        var cardsEl = document.getElementById("certHomeSummaryCards");
+        var bodyEl = document.getElementById("certHomeLandingBody");
+        var statusEl = document.getElementById("certHomeLandingStatus");
+        if (!cardsEl || !bodyEl) return;
+
+        if (!data || data.error) {
+          cardsEl.innerHTML = "";
+          bodyEl.innerHTML =
+            '<tr><td colspan="12" style="color:var(--muted)">Home page metrics not loaded.</td></tr>';
+          if (statusEl) {
+            statusEl.textContent = (data && data.error) || "";
+            statusEl.className = data && data.error ? "status err" : "status";
+          }
+          return;
+        }
+
+        var totals = data.totals || {};
+        cardsEl.innerHTML = [
+          ["Total page views", fmt(totals.screenPageViews)],
+          ["Landing sessions", fmt(totals.landingSessions)],
+          ["Samples completed", fmt(totals.sampleCompletions)],
+          ["Checkout clicks", fmt(totals.checkoutClicks)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var pages = data.pages || [];
+        if (!pages.length) {
+          bodyEl.innerHTML =
+            '<tr><td colspan="12" style="color:var(--muted)">No home page traffic in this range yet.</td></tr>';
+        } else {
+          bodyEl.innerHTML = pages
+            .map(function (p) {
+              var popupCell =
+                fmt(p.offerPopupShown) +
+                (p.offerPopupDismiss
+                  ? ' <span style="color:var(--muted);font-size:0.78rem">(' +
+                    fmt(p.offerPopupDismiss) +
+                    " dismiss)</span>"
+                  : "");
+              var sampleDetail = "";
+              if (p.sampleByKind && p.sampleCompletions) {
+                var parts = [];
+                if (p.sampleByKind.questions) parts.push(p.sampleByKind.questions + " MCQ");
+                if (p.sampleByKind.dnd) parts.push(p.sampleByKind.dnd + " D&amp;D");
+                if (p.sampleByKind.lab) parts.push(p.sampleByKind.lab + " lab");
+                if (p.sampleByKind.simulation) parts.push(p.sampleByKind.simulation + " sim");
+                if (parts.length) {
+                  sampleDetail =
+                    ' <span style="color:var(--muted);font-size:0.78rem">(' +
+                    parts.join(", ") +
+                    ")</span>";
+                }
+              }
+              return (
+                "<tr><td><strong>" +
+                (p.label || p.path) +
+                '</strong><br><span class="path">' +
+                (p.path || "") +
+                "</span></td><td>" +
+                fmt(p.screenPageViews) +
+                "</td><td>" +
+                fmt(p.activeUsers) +
+                "</td><td>" +
+                fmt(p.landingSessions) +
+                "</td><td>" +
+                fmtDuration(p.avgSessionDurationSeconds) +
+                "</td><td>" +
+                fmtDuration(p.avgSecondsOnPage) +
+                "</td><td>" +
+                fmt(p.sampleCompletions) +
+                sampleDetail +
+                "</td><td>" +
+                fmt(p.emailModalOpens) +
+                (p.emailCaptureSuccesses
+                  ? ' <span style="color:var(--muted);font-size:0.78rem">(' +
+                    fmt(p.emailCaptureSuccesses) +
+                    " captured)</span>"
+                  : "") +
+                "</td><td>" +
+                popupCell +
+                "</td><td>" +
+                fmt(p.offerPopupClick) +
+                "</td><td>" +
+                fmt(p.freeSimStarts) +
+                "</td><td>" +
+                fmt(p.checkoutClicks) +
+                "</td></tr>"
+              );
+            })
+            .join("");
+        }
+
+        if (statusEl) {
+          var note = data.note || "";
+          if (data.rangeLabel) note = data.rangeLabel + ". " + note;
+          statusEl.textContent = note;
+          statusEl.className = "status ok";
+        }
       }
 
       function renderTrend(rows) {
@@ -1065,6 +1208,11 @@
           magicStatus.textContent = "Loading magic link resets…";
           magicStatus.className = "status";
         }
+        var certHomeStatus = document.getElementById("certHomeLandingStatus");
+        if (certHomeStatus) {
+          certHomeStatus.textContent = "Loading home page metrics…";
+          certHomeStatus.className = "status";
+        }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
 
@@ -1089,6 +1237,7 @@
             }
 
             renderSummary(ga.body);
+            renderCertHomeLanding(ga.body.certHomeLanding);
             renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";
@@ -1109,6 +1258,8 @@
             portalStatus.textContent = "";
             if (stripeStatus) stripeStatus.textContent = "";
             if (magicStatus) magicStatus.textContent = "";
+            if (certHomeStatus) certHomeStatus.textContent = "";
+            renderCertHomeLanding(null);
           });
       }
 

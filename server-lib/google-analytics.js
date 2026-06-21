@@ -587,6 +587,51 @@ export async function fetchRedditOrganicByCampaign(client, propertyId, range, li
 /**
  * Page views for certification home landing paths.
  */
+function pagePathExactFilter(pagePaths) {
+  const paths = Array.isArray(pagePaths) ? pagePaths.filter(Boolean) : [];
+  if (!paths.length) return undefined;
+  return {
+    orGroup: {
+      expressions: paths.map((p) => ({
+        filter: {
+          fieldName: "pagePath",
+          stringFilter: { matchType: "EXACT", value: p },
+        },
+      })),
+    },
+  };
+}
+
+function landingPageExactFilter(pagePaths) {
+  const paths = Array.isArray(pagePaths) ? pagePaths.filter(Boolean) : [];
+  if (!paths.length) return undefined;
+  return {
+    orGroup: {
+      expressions: paths.map((p) => ({
+        filter: {
+          fieldName: "landingPage",
+          stringFilter: { matchType: "EXACT", value: p },
+        },
+      })),
+    },
+  };
+}
+
+function eventNameExactFilter(eventNames) {
+  const names = Array.isArray(eventNames) ? eventNames.filter(Boolean) : [];
+  if (!names.length) return undefined;
+  return {
+    orGroup: {
+      expressions: names.map((name) => ({
+        filter: {
+          fieldName: "eventName",
+          stringFilter: { matchType: "EXACT", value: name },
+        },
+      })),
+    },
+  };
+}
+
 export async function fetchHomeLandingPageViews(client, propertyId, range, paths) {
   const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
   if (!pagePaths.length) return [];
@@ -596,16 +641,7 @@ export async function fetchHomeLandingPageViews(client, propertyId, range, paths
     dateRanges: [range],
     dimensionFilter: mergeDimensionFilters(
       gaCustomerTrafficDimensionFilter(),
-      {
-        orGroup: {
-          expressions: pagePaths.map((p) => ({
-            filter: {
-              fieldName: "pagePath",
-              stringFilter: { matchType: "EXACT", value: p },
-            },
-          })),
-        },
-      }
+      pagePathExactFilter(pagePaths)
     ),
     dimensions: [{ name: "pagePath" }],
     metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
@@ -618,6 +654,105 @@ export async function fetchHomeLandingPageViews(client, propertyId, range, paths
     screenPageViews: Number(row.metricValues?.[0]?.value || 0),
     activeUsers: Number(row.metricValues?.[1]?.value || 0),
   }));
+}
+
+/** Views, users, and engagement seconds per certification home path. */
+export async function fetchCertHomePageMetrics(client, propertyId, range, paths) {
+  const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  if (!pagePaths.length) return [];
+
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      pagePathExactFilter(pagePaths)
+    ),
+    dimensions: [{ name: "pagePath" }],
+    metrics: [
+      { name: "screenPageViews" },
+      { name: "activeUsers" },
+      { name: "userEngagementDuration" },
+    ],
+    limit: pagePaths.length,
+  });
+
+  return (response.rows || []).map((row) => {
+    const views = Number(row.metricValues?.[0]?.value || 0);
+    const engagementSeconds = Number(row.metricValues?.[2]?.value || 0);
+    return {
+      pagePath: row.dimensionValues?.[0]?.value || "",
+      screenPageViews: views,
+      activeUsers: Number(row.metricValues?.[1]?.value || 0),
+      userEngagementSeconds: engagementSeconds,
+      avgSecondsOnPage: views > 0 ? engagementSeconds / views : 0,
+    };
+  });
+}
+
+/** Sessions that started on a certification home page. */
+export async function fetchCertHomeLandingSessions(client, propertyId, range, paths) {
+  const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  if (!pagePaths.length) return [];
+
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      landingPageExactFilter(pagePaths)
+    ),
+    dimensions: [{ name: "landingPage" }],
+    metrics: [
+      { name: "sessions" },
+      { name: "activeUsers" },
+      { name: "averageSessionDuration" },
+      { name: "engagedSessions" },
+    ],
+    limit: pagePaths.length,
+  });
+
+  return (response.rows || []).map((row) => ({
+    landingPage: row.dimensionValues?.[0]?.value || "",
+    sessions: Number(row.metricValues?.[0]?.value || 0),
+    activeUsers: Number(row.metricValues?.[1]?.value || 0),
+    averageSessionDurationSeconds: Number(row.metricValues?.[2]?.value || 0),
+    engagedSessions: Number(row.metricValues?.[3]?.value || 0),
+  }));
+}
+
+/**
+ * GA4 custom/event counts on certification home paths (eventName × pagePath).
+ */
+export async function fetchCertHomeEventCounts(client, propertyId, range, paths, eventNames) {
+  const pagePaths = Array.isArray(paths) ? paths.filter(Boolean) : [];
+  const names = Array.isArray(eventNames) ? eventNames.filter(Boolean) : [];
+  if (!pagePaths.length || !names.length) return [];
+
+  try {
+    const response = await runReportSafe(client, {
+      property: propertyName(propertyId),
+      dateRanges: [range],
+      dimensionFilter: mergeDimensionFilters(
+        gaCustomerTrafficDimensionFilter(),
+        pagePathExactFilter(pagePaths),
+        eventNameExactFilter(names)
+      ),
+      dimensions: [{ name: "pagePath" }, { name: "eventName" }],
+      metrics: [{ name: "eventCount" }],
+      limit: pagePaths.length * names.length,
+    });
+
+    return (response.rows || []).map((row) => ({
+      pagePath: row.dimensionValues?.[0]?.value || "",
+      eventName: row.dimensionValues?.[1]?.value || "",
+      eventCount: Number(row.metricValues?.[0]?.value || 0),
+    }));
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (msg.includes("INVALID_ARGUMENT")) return [];
+    throw err;
+  }
 }
 
 /**
