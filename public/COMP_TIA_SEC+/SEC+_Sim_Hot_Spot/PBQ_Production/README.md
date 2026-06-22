@@ -6,7 +6,7 @@ Answer keys were verified against CompTIA-aligned objectives and primary sources
 
 **Adding a new scenario:** follow **[ADD-PBQ.md](ADD-PBQ.md)**.
 
-The **25-lab chain** is registered in `scripts/build-pbq-production-suite.py`. **BCT standalone sims** on the portal also live here as single-page HTML. Scenarios **not** on [`SEC+_Training_Portal.html`](../../SEC+_Training_Portal.html) stay in [`../pending/`](../pending/) for review.
+The **26-lab chain** is registered in `scripts/build-pbq-production-suite.py`. **BCT standalone sims** on the portal also live here as single-page HTML. Scenarios **not** on [`SEC+_Training_Portal.html`](../../SEC+_Training_Portal.html) stay in [`../pending/`](../pending/) for review.
 
 ## Entry points
 
@@ -47,6 +47,7 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 23. [SEC+ Incident Response and Phase Matching](incident-response-matching/incident-response-matching.html)
 24. [SEC+ Cryptographic Algorithms Matching](cryptographic-algorithms-matching/cryptographic-algorithms-matching.html)
 25. [SEC+ Malware Infection Log Analysis](malware-infection-log-analysis/malware-infection-log-analysis.html)
+26. [Sec+ Director and Administrator WLAN Setup](home-wlan-director-config/home-wlan-director-config.html)
 
 ## Section source files
 
@@ -85,6 +86,7 @@ npm run build:pbq-suite
 | [`incident-response-matching/`](incident-response-matching/) | NIST IR phase buckets — twelve action tokens |
 | [`cryptographic-algorithms-matching/`](cryptographic-algorithms-matching/) | Ten crypto algorithms matched to use-case descriptions |
 | [`malware-infection-log-analysis/`](malware-infection-log-analysis/) | Six-host AV + firewall log triage — source / infected / clean |
+| [`home-wlan-director-config/`](home-wlan-director-config/) | Director WLAN — WPA2, MAC filter, admin password |
 
 ## BCT standalone sims (portal, not in build chain)
 

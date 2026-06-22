@@ -41,7 +41,7 @@ Study and authoring notes for each scenario under `public/COMP_TIA_SEC+/SEC+_Sim
 | 23 | `incident-response-matching` | [IR phase matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/incident-response-matching/incident-response-matching.html) | [[incident-response-matching/notes|IR matching]] |
 | 24 | `cryptographic-algorithms-matching` | [Crypto matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) | [[cryptographic-algorithms-matching/notes|Crypto matching]] |
 
-**Pending (not on portal):** configuration PBQs `home-wlan-director-config`, `public-wlan-guest-config`, `mdm-enrollment-config`, `siem-alert-settings-config`, `network-protocols-matching`, `site-to-site-vpn-config`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
+**Pending (not on portal):** configuration PBQs `public-wlan-guest-config`, `mdm-enrollment-config`, `siem-alert-settings-config`, `network-protocols-matching`, `site-to-site-vpn-config`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
 
 **BCT standalone (production, on portal, not in chain):** `dark-web-account-protection`, `malware-outbreak-classification`, `secure-web-architecture-openssl`, `vpc-payment-architecture` → `PBQ_Production/`
 

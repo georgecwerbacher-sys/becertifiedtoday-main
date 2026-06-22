@@ -439,12 +439,38 @@ SCENARIOS = [
             "(exactly one source)."
         ),
         "prev": "cryptographic-algorithms-matching",
-        "next": None,
+        "next": "home-wlan-director-config",
         "sections": [
             {
                 "id": "malware-infection-log-analysis",
                 "label": "Log analysis",
                 "path": "malware-infection-log-analysis/sections/malware-infection-log-analysis.html",
+            },
+        ],
+    },
+    {
+        "slug": "home-wlan-director-config",
+        "title": "Sec+ Director and Administrator WLAN Setup",
+        "heading": "Sec+ Director and Administrator WLAN Setup",
+        "page_title": "Security+: Sec+ Director and Administrator WLAN Setup",
+        "meta_description": (
+            "Configure a router for the BeCertifiedToday Administrator department WLAN — "
+            "WPA2, SSID, passphrase, admin login, and MAC filtering for the Director's phone."
+        ),
+        "description": "",
+        "body_class": "pbq-home-router pbq-wap-config",
+        "objectives": "1.2 · 3.3 · 4.6",
+        "suite_instructions": (
+            "Review the <strong>requirements</strong>, then configure all three router tabs for wireless access for the "
+            "<strong>Director's phone</strong>."
+        ),
+        "prev": "malware-infection-log-analysis",
+        "next": None,
+        "sections": [
+            {
+                "id": "home-wlan-director",
+                "label": "Router configuration",
+                "path": "home-wlan-director-config/sections/home-wlan-director.html",
             },
         ],
     },

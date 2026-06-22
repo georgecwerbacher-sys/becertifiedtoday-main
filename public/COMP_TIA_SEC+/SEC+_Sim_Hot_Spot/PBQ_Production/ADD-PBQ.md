@@ -2,7 +2,7 @@
 
 Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.cursor/rules/secplus-pbq-dragdrop-pages.mdc`.
 
-**Current tail of chain:** `malware-infection-log-analysis` (`next: None` in `scripts/build-pbq-production-suite.py`).
+**Current tail of chain:** `home-wlan-director-config` (`next: None` in `scripts/build-pbq-production-suite.py`).
 
 ---
 

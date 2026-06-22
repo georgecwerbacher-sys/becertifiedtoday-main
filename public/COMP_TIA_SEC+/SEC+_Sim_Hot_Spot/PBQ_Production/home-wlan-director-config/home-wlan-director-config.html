@@ -1,15 +1,46 @@
-<meta name="robots" content="noindex, nofollow" />
-<article class="pbq-section-fragment" data-id="home-wlan-director">
-  <h1>Home WLAN — Director Router Configuration</h1>
-  <p class="pbq-sub">
-    You are an engineer at <strong>BeCertifiedToday</strong> setting up a new wireless network for the Director.
-    Configure the home router using the interface to the right so the WLAN is as secure as the device allows.
-  </p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure a router for the BeCertifiedToday Administrator department WLAN — WPA2, SSID, passphrase, admin login, and MAC filtering for the Director's phone." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/home-wlan-director-config/home-wlan-director-config.html" />
+  <title>Security+: Sec+ Director and Administrator WLAN Setup | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+</head>
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-wap-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.2 · 3.3 · 4.6</p>
+        <h1>Sec+ Director and Administrator WLAN Setup</h1>
+        <p class="instructions pbq-instructions">
+          Review the <strong>requirements</strong>, then configure all three router tabs for wireless access for the <strong>Director's phone</strong>.
+        </p>
+      </header>
 
-  <div class="sim-frame pbq-home-router-sim">
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="home-wlan-director" data-scenario="home-wlan-director-config" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-home-router-sim">
     <div class="layout layout--two-col pbq-home-router-layout">
       <section class="panel pbq-home-router-reqs" aria-labelledby="home-wlan-reqs-heading">
-        <h2 id="home-wlan-reqs-heading">Requirements</h2>
+        <h2 id="home-wlan-director-home-wlan-reqs-heading">Requirements</h2>
         <ul class="pbq-home-router-reqs__list">
           <li>Wi‑Fi enabled with the <strong>best possible security</strong> offered on this router</li>
           <li>Wi‑Fi passphrase: <code>becertified2day_2026</code></li>
@@ -25,7 +56,7 @@
       </section>
 
       <section class="panel pbq-home-router-console" aria-labelledby="home-wlan-console-heading">
-        <h2 id="home-wlan-console-heading" class="visually-hidden">Router configuration</h2>
+        <h2 id="home-wlan-director-home-wlan-console-heading" class="visually-hidden">Router configuration</h2>
         <div class="pbq-home-router-console-wrap">
           <div class="pbq-home-router-tabs" role="tablist" aria-label="Router settings">
             <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="wireless">Wireless Settings</button>
@@ -38,7 +69,7 @@
               <p class="pbq-home-router-pane__title">Wireless Settings</p>
               <div class="pbq-home-router-field">
                 <label for="wirelessStatus">Wireless Status</label>
-                <select class="pbq-home-router-select" id="wirelessStatus" data-field="wireless-status">
+                <select class="pbq-home-router-select" id="home-wlan-director-wirelessStatus" data-field="wireless-status">
                   <option value="">- Choose Option -</option>
                   <option value="enable">Enable</option>
                   <option value="disable">Disable</option>
@@ -46,11 +77,11 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wifiSsid">Wifi Network Name</label>
-                <input class="pbq-home-router-input" id="wifiSsid" data-field="ssid" type="text" maxlength="32" autocomplete="off" />
+                <input class="pbq-home-router-input" id="home-wlan-director-wifiSsid" data-field="ssid" type="text" maxlength="32" autocomplete="off" />
               </div>
               <div class="pbq-home-router-field">
                 <label for="ssidBroadcast">SSID Broadcast</label>
-                <select class="pbq-home-router-select" id="ssidBroadcast" data-field="ssid-broadcast">
+                <select class="pbq-home-router-select" id="home-wlan-director-ssidBroadcast" data-field="ssid-broadcast">
                   <option value="">- Choose Option -</option>
                   <option value="enabled">Enabled</option>
                   <option value="disabled">Disabled</option>
@@ -58,7 +89,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wifiChannel">Channel</label>
-                <select class="pbq-home-router-select" id="wifiChannel" data-field="channel">
+                <select class="pbq-home-router-select" id="home-wlan-director-wifiChannel" data-field="channel">
                   <option value="">- Choose Option -</option>
                   <option value="auto">auto</option>
                   <option value="1">1</option>
@@ -77,7 +108,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wifiSecurity">WiFi Security</label>
-                <select class="pbq-home-router-select" id="wifiSecurity" data-field="wifi-security">
+                <select class="pbq-home-router-select" id="home-wlan-director-wifiSecurity" data-field="wifi-security">
                   <option value="">- Choose Option -</option>
                   <option value="disable">Disable</option>
                   <option value="wep">WEP</option>
@@ -87,7 +118,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wifiPassphrase">WiFi Passphrase</label>
-                <input class="pbq-home-router-input" id="wifiPassphrase" data-field="passphrase" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="home-wlan-director-wifiPassphrase" data-field="passphrase" type="text" autocomplete="off" />
               </div>
             </div>
 
@@ -95,11 +126,11 @@
               <p class="pbq-home-router-pane__title">Router Security</p>
               <div class="pbq-home-router-field">
                 <label for="adminPassword">Admin Password</label>
-                <input class="pbq-home-router-input" id="adminPassword" data-field="admin-pass" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="home-wlan-director-adminPassword" data-field="admin-pass" type="text" autocomplete="off" />
               </div>
               <div class="pbq-home-router-field">
                 <label for="adminPasswordVerify">Verify Admin Password</label>
-                <input class="pbq-home-router-input" id="adminPasswordVerify" data-field="admin-pass-verify" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="home-wlan-director-adminPasswordVerify" data-field="admin-pass-verify" type="text" autocomplete="off" />
               </div>
             </div>
 
@@ -107,7 +138,7 @@
               <p class="pbq-home-router-pane__title">Network Security</p>
               <div class="pbq-home-router-field">
                 <label for="macFilter">Enable Hardware Address Filtering</label>
-                <select class="pbq-home-router-select" id="macFilter" data-field="mac-filter">
+                <select class="pbq-home-router-select" id="home-wlan-director-macFilter" data-field="mac-filter">
                   <option value="">- Choose Option -</option>
                   <option value="enabled">Enabled</option>
                   <option value="disabled">Disabled</option>
@@ -115,7 +146,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="macAddress">MAC Address</label>
-                <input class="pbq-home-router-input pbq-home-router-input--mono" id="macAddress" data-field="mac-address" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input pbq-home-router-input--mono" id="home-wlan-director-macAddress" data-field="mac-address" type="text" autocomplete="off" />
               </div>
             </div>
           </div>
@@ -125,12 +156,32 @@
   </div>
 
   <div class="actions">
-    <button id="checkBtn" type="button">Check Answer</button>
-    <button id="resetBtn" type="button">Reset</button>
-    <button id="showBtn" type="button">Show Answer</button>
-    <span id="result" role="status" aria-live="polite"></span>
+    <button id="home-wlan-director-checkBtn" type="button">Check Answer</button>
+    <button id="home-wlan-director-resetBtn" type="button">Reset</button>
+    <button id="home-wlan-director-showBtn" type="button">Show Answer</button>
+    <span id="home-wlan-director-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="home-wlan-director-config.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-infection-log-analysis/malware-infection-log-analysis.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
+        </div>
+      </nav>
+      </div>
+    </main>
   </div>
-</article>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "home-wlan-director"; window.PBQ_DEEP_DIVE_KEY = "home-wlan-director-config.html";</script>
+  <!-- home-wlan-director -->
 <script>
 (function () {
   var CORRECT_SSID = "No Illegal Downloads";
@@ -138,7 +189,7 @@
   var CORRECT_ADMIN = "BCT_1234";
   var CORRECT_MAC = "28-ED-57-FD-A0-FE";
   var PASS_MSG =
-    "Correct. WPA2 with auto channel, visible SSID, strong passphrase, admin login password, and MAC filtering for the Director's phone meet the secure home WLAN policy.";
+    "Correct. WPA2 with auto channel, visible SSID, strong passphrase, admin login password, and MAC filtering for the Director's phone meet the Administrator department WLAN policy.";
 
   var root = document.getElementById("home-wlan-director");
   if (!root) return;
@@ -303,3 +354,8 @@
   });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
+</body>
+</html>

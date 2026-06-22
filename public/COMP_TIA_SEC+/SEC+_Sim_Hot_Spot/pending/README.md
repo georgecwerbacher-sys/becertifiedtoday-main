@@ -10,7 +10,6 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect to `PBQ_Production/` 
 
 | Folder | Description | Preview |
 |--------|-------------|---------|
-| [`home-wlan-director-config/`](home-wlan-director-config/) | Director home router — WPA2, MAC filter, admin password | [Open](home-wlan-director-config/home-wlan-director-config.html) |
 | [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username | [Open](public-wlan-guest-config/public-wlan-guest-config.html) |
 | [`mdm-enrollment-config/`](mdm-enrollment-config/) | Acme MDM — iOS compliance, app restrictions, ADE | [Open](mdm-enrollment-config/mdm-enrollment-config.html) |
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
@@ -20,7 +19,7 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect to `PBQ_Production/` 
 
 Pending chain: … → site-to-site VPN → **web app subnet zoning**.
 
-Production PBQ chain (25 labs) ends at [`../PBQ_Production/malware-infection-log-analysis/`](../PBQ_Production/malware-infection-log-analysis/malware-infection-log-analysis.html).
+Production PBQ chain (26 labs) ends at [`../PBQ_Production/home-wlan-director-config/`](../PBQ_Production/home-wlan-director-config/home-wlan-director-config.html).
 
 ## BCT standalone sims (on portal → `PBQ_Production/`)
 

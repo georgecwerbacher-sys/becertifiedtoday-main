@@ -5,7 +5,7 @@ scenario: home-wlan-director-config
 last_updated: 2026-06-22
 ---
 
-# Home WLAN — Director router configuration
+# Sec+ Director and Administrator WLAN Setup
 
 BCT engineer configures a home router for the Director. Three-tab UI mirrors common SY0-701 consumer-router PBQs (wireless + admin password + MAC filter).
 

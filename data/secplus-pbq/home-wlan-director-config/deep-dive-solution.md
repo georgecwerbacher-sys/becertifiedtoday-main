@@ -5,7 +5,7 @@ scenario: home-wlan-director-config
 last_updated: 2026-06-22
 ---
 
-# Home WLAN — Director router — deep dive solution
+# Sec+ Director and Administrator WLAN Setup — deep dive solution
 
 > Consumer home-router PBQ. Original BCT scenario; verify against CompTIA SY0-701 wireless objectives — not exam dumps.
 
