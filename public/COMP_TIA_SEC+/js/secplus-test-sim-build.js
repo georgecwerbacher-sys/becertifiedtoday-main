@@ -33,7 +33,7 @@
     { kind: "question", url: "/COMP_TIA_SEC+/SEC+_Questions/aup-integrity-ethical-behavior-expectations.html" },
     {
       kind: "sim",
-      url: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html",
+      url: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/dark-web-account-protection/dark-web-account-protection.html",
     },
   ];
   var SIM_BASE = "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/";

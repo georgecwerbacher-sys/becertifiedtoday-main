@@ -6,16 +6,7 @@ Answer keys were verified against CompTIA-aligned objectives and primary sources
 
 **Adding a new scenario:** follow **[ADD-PBQ.md](ADD-PBQ.md)**.
 
-## Published simulations (`index, follow`)
-
-Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here. Same folder convention as PBQ labs: `{slug}/{slug}.html`.
-
-| Slug | Page |
-|------|------|
-| `dark-web-account-protection` | [Dark Web IR](dark-web-account-protection/dark-web-account-protection.html) |
-| `malware-outbreak-classification` | [Malware outbreak](malware-outbreak-classification/malware-outbreak-classification.html) |
-| `secure-web-architecture-openssl` | [Secure web & OpenSSL](secure-web-architecture-openssl/secure-web-architecture-openssl.html) |
-| `vpc-payment-architecture` | [VPC payment network](vpc-payment-architecture/vpc-payment-architecture.html) |
+Only scenarios registered in `scripts/build-pbq-production-suite.py` live here (21 labs). Staged sims and PBQs not yet in the build chain are in [`../pending/`](../pending/).
 
 ## Entry points
 
@@ -86,6 +77,9 @@ npm run build:pbq-suite
 | [`malware-ioc-analysis/`](malware-ioc-analysis/) | Endpoint IOC console + malware classification MCQ |
 | [`data-protection/`](data-protection/) | Classification exhibit + PCI tokenization MCQ |
 | [`governance/`](governance/) | Frameworks, policies, breach notification MCQ |
+
+_WLAN router PBQs (home + public guest) live in [`../pending/`](../pending/) until registered in the build script._
+
 
 ## Preview
 

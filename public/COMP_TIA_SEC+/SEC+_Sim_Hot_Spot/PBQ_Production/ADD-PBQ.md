@@ -80,7 +80,7 @@ Copy interaction patterns from:
 
 ### 4b. BCT simulation pattern (visual consistency)
 
-Production pages match published sims under **`PBQ_Production/dark-web-account-protection/`** (and the other three published folders):
+Production pages match BCT standalone sims under **`pending/dark-web-account-protection/`** (and the other three pending BCT sim folders):
 
 | Element | Pattern |
 |---------|---------|

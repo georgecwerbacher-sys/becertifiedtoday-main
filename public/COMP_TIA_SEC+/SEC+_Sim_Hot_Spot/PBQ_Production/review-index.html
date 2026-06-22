@@ -156,16 +156,16 @@
 
     <header class="review-header">
       <h1>PBQ Production — scenario review</h1>
-      <p>24 labs total: 20 PBQ suite scenarios (chain order) plus 4 published simulations. Use <strong>Deep dive</strong> on any card to open the step-by-step explanation in a popup, or open the full lab.</p>
+      <p>21 PBQ suite scenarios (chain order) in production. Six additional labs in <code>../pending/</code> (4 BCT sims + 2 WLAN PBQs). Use <strong>Deep dive</strong> on any card to open the step-by-step explanation in a popup, or open the full lab.</p>
     </header>
 
     <section class="review-section" id="pbq-chain">
-      <h2>PBQ suite chain (20)</h2>
+      <h2>PBQ suite chain (21)</h2>
       <div class="review-grid" id="pbqChainGrid"></div>
     </section>
 
     <section class="review-section" id="published-sims">
-      <h2>Published simulations (4)</h2>
+      <h2>Pending simulations (4)</h2>
       <div class="review-grid" id="publishedSimsGrid"></div>
     </section>
   </div>
@@ -216,14 +216,15 @@
       }
 
       function cardHtml(item, opts) {
-        var base = item.slug + "/" + item.slug + ".html";
+        var prefix = opts.hrefPrefix || "";
+        var base = prefix + item.slug + "/" + item.slug + ".html";
         var meta = [];
         if (opts.chain) {
           meta.push("<span>#" + item.n + "</span>");
           meta.push("<span>" + item.sections + " section" + (item.sections === 1 ? "" : "s") + "</span>");
           meta.push("<span>Deep dive: " + stepCount(item.slug) + " steps</span>");
         } else {
-          meta.push("<span>Published sim</span>");
+          meta.push("<span>Pending sim</span>");
           meta.push("<span>Deep dive: sim modal</span>");
         }
         return (
@@ -248,7 +249,7 @@
       }).join("");
 
       document.getElementById("publishedSimsGrid").innerHTML = PUBLISHED.map(function (s) {
-        return cardHtml(s, { chain: false });
+        return cardHtml(s, { chain: false, hrefPrefix: "../pending/" });
       }).join("");
 
       document.querySelectorAll(".review-deep-dive-btn").forEach(function (btn) {

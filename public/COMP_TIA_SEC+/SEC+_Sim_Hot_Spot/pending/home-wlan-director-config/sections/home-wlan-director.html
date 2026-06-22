@@ -1,0 +1,305 @@
+<meta name="robots" content="noindex, nofollow" />
+<article class="pbq-section-fragment" data-id="home-wlan-director">
+  <h1>Home WLAN — Director Router Configuration</h1>
+  <p class="pbq-sub">
+    You are an engineer at <strong>BeCertifiedToday</strong> setting up a new wireless network for the Director.
+    Configure the home router using the interface to the right so the WLAN is as secure as the device allows.
+  </p>
+
+  <div class="sim-frame pbq-home-router-sim">
+    <div class="layout layout--two-col pbq-home-router-layout">
+      <section class="panel pbq-home-router-reqs" aria-labelledby="home-wlan-reqs-heading">
+        <h2 id="home-wlan-reqs-heading">Requirements</h2>
+        <ul class="pbq-home-router-reqs__list">
+          <li>Wi‑Fi enabled with the <strong>best possible security</strong> offered on this router</li>
+          <li>Wi‑Fi passphrase: <code>becertified2day_2026</code></li>
+          <li>Password required to log in to the router: <code>BCT_1234</code></li>
+          <li>Only the Director's smartphone may join: MAC <code>28-ED-57-FD-A0-FE</code></li>
+          <li>SSID must <strong>not allow illegal downloads</strong> and be <strong>visible</strong> to devices</li>
+          <li>Channel chosen by the router (<strong>auto</strong>) — not manually set</li>
+        </ul>
+        <p class="panel-note">
+          Use all three tabs: <strong>Wireless Settings</strong>, <strong>Router Security</strong>, and
+          <strong>Network Security</strong>.
+        </p>
+      </section>
+
+      <section class="panel pbq-home-router-console" aria-labelledby="home-wlan-console-heading">
+        <h2 id="home-wlan-console-heading" class="visually-hidden">Router configuration</h2>
+        <div class="pbq-home-router-console-wrap">
+          <div class="pbq-home-router-tabs" role="tablist" aria-label="Router settings">
+            <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="wireless">Wireless Settings</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="router">Router Security</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="network">Network Security</button>
+          </div>
+
+          <div class="pbq-home-router-box">
+            <div class="pbq-home-router-pane" data-pane="wireless" role="tabpanel">
+              <p class="pbq-home-router-pane__title">Wireless Settings</p>
+              <div class="pbq-home-router-field">
+                <label for="wirelessStatus">Wireless Status</label>
+                <select class="pbq-home-router-select" id="wirelessStatus" data-field="wireless-status">
+                  <option value="">- Choose Option -</option>
+                  <option value="enable">Enable</option>
+                  <option value="disable">Disable</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="wifiSsid">Wifi Network Name</label>
+                <input class="pbq-home-router-input" id="wifiSsid" data-field="ssid" type="text" maxlength="32" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="ssidBroadcast">SSID Broadcast</label>
+                <select class="pbq-home-router-select" id="ssidBroadcast" data-field="ssid-broadcast">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="wifiChannel">Channel</label>
+                <select class="pbq-home-router-select" id="wifiChannel" data-field="channel">
+                  <option value="">- Choose Option -</option>
+                  <option value="auto">auto</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="wifiSecurity">WiFi Security</label>
+                <select class="pbq-home-router-select" id="wifiSecurity" data-field="wifi-security">
+                  <option value="">- Choose Option -</option>
+                  <option value="disable">Disable</option>
+                  <option value="wep">WEP</option>
+                  <option value="wpa">WPA</option>
+                  <option value="wpa2">WPA2</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="wifiPassphrase">WiFi Passphrase</label>
+                <input class="pbq-home-router-input" id="wifiPassphrase" data-field="passphrase" type="text" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="router" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Router Security</p>
+              <div class="pbq-home-router-field">
+                <label for="adminPassword">Admin Password</label>
+                <input class="pbq-home-router-input" id="adminPassword" data-field="admin-pass" type="text" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="adminPasswordVerify">Verify Admin Password</label>
+                <input class="pbq-home-router-input" id="adminPasswordVerify" data-field="admin-pass-verify" type="text" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="network" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Network Security</p>
+              <div class="pbq-home-router-field">
+                <label for="macFilter">Enable Hardware Address Filtering</label>
+                <select class="pbq-home-router-select" id="macFilter" data-field="mac-filter">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="macAddress">MAC Address</label>
+                <input class="pbq-home-router-input pbq-home-router-input--mono" id="macAddress" data-field="mac-address" type="text" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT_SSID = "No Illegal Downloads";
+  var CORRECT_PASS = "becertified2day_2026";
+  var CORRECT_ADMIN = "BCT_1234";
+  var CORRECT_MAC = "28-ED-57-FD-A0-FE";
+  var PASS_MSG =
+    "Correct. WPA2 with auto channel, visible SSID, strong passphrase, admin login password, and MAC filtering for the Director's phone meet the secure home WLAN policy.";
+
+  var root = document.getElementById("home-wlan-director");
+  if (!root) return;
+
+  var fields = {
+    wirelessStatus: root.querySelector('[data-field="wireless-status"]'),
+    ssid: root.querySelector('[data-field="ssid"]'),
+    ssidBroadcast: root.querySelector('[data-field="ssid-broadcast"]'),
+    channel: root.querySelector('[data-field="channel"]'),
+    wifiSecurity: root.querySelector('[data-field="wifi-security"]'),
+    passphrase: root.querySelector('[data-field="passphrase"]'),
+    adminPass: root.querySelector('[data-field="admin-pass"]'),
+    adminPassVerify: root.querySelector('[data-field="admin-pass-verify"]'),
+    macFilter: root.querySelector('[data-field="mac-filter"]'),
+    macAddress: root.querySelector('[data-field="mac-address"]')
+  };
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function normSpaces(s) {
+    return s.trim().replace(/\s+/g, " ");
+  }
+
+  function normMac(s) {
+    return s.trim().toUpperCase().replace(/[:\s]/g, "-");
+  }
+
+  function ssidOk(val) {
+    var n = normSpaces(val).toLowerCase();
+    if (n === CORRECT_SSID.toLowerCase()) return true;
+    if (n === "do not allow illegal downloads") return true;
+    return n.indexOf("illegal") !== -1 && n.indexOf("download") !== -1;
+  }
+
+  function mark(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-home-router-select--ok", ok === true);
+    el.classList.toggle("pbq-home-router-select--bad", ok === false);
+    el.classList.toggle("pbq-home-router-input--ok", ok === true);
+    el.classList.toggle("pbq-home-router-input--bad", ok === false);
+  }
+
+  function showTab(name) {
+    root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+      var active = btn.getAttribute("data-tab") === name;
+      btn.classList.toggle("pbq-home-router-tab--active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    root.querySelectorAll(".pbq-home-router-pane").forEach(function (pane) {
+      var show = pane.getAttribute("data-pane") === name;
+      pane.hidden = !show;
+    });
+  }
+
+  function allFilled() {
+    return Object.keys(fields).every(function (key) {
+      return fields[key].value.trim() !== "";
+    });
+  }
+
+  function grade(showMarks) {
+    var wirelessOk = fields.wirelessStatus.value === "enable";
+    var ssidValOk = ssidOk(fields.ssid.value);
+    var broadcastOk = fields.ssidBroadcast.value === "enabled";
+    var channelOk = fields.channel.value === "auto";
+    var securityOk = fields.wifiSecurity.value === "wpa2";
+    var passOk = fields.passphrase.value === CORRECT_PASS;
+    var adminOk = fields.adminPass.value === CORRECT_ADMIN;
+    var adminMatchOk =
+      fields.adminPass.value === CORRECT_ADMIN &&
+      fields.adminPassVerify.value === CORRECT_ADMIN;
+    var macFilterOk = fields.macFilter.value === "enabled";
+    var macOk = normMac(fields.macAddress.value) === CORRECT_MAC;
+
+    if (showMarks) {
+      mark(fields.wirelessStatus, fields.wirelessStatus.value ? wirelessOk : false);
+      mark(fields.ssid, fields.ssid.value.trim() ? ssidValOk : false);
+      mark(fields.ssidBroadcast, fields.ssidBroadcast.value ? broadcastOk : false);
+      mark(fields.channel, fields.channel.value ? channelOk : false);
+      mark(fields.wifiSecurity, fields.wifiSecurity.value ? securityOk : false);
+      mark(fields.passphrase, fields.passphrase.value ? passOk : false);
+      mark(fields.adminPass, fields.adminPass.value ? adminOk : false);
+      mark(
+        fields.adminPassVerify,
+        fields.adminPassVerify.value ? adminMatchOk : false
+      );
+      mark(fields.macFilter, fields.macFilter.value ? macFilterOk : false);
+      mark(fields.macAddress, fields.macAddress.value.trim() ? macOk : false);
+    }
+
+    return (
+      wirelessOk &&
+      ssidValOk &&
+      broadcastOk &&
+      channelOk &&
+      securityOk &&
+      passOk &&
+      adminMatchOk &&
+      macFilterOk &&
+      macOk
+    );
+  }
+
+  root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      showTab(btn.getAttribute("data-tab"));
+    });
+  });
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every field on all three tabs, then check again.";
+      grade(true);
+      return;
+    }
+    if (grade(true)) {
+      result.className = "is-pass";
+      result.textContent = PASS_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Enable Wi‑Fi with WPA2, auto channel, visible SSID about illegal downloads, the required passphrase and admin password, and MAC filtering for the Director's phone.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    fields.wirelessStatus.value = "enable";
+    fields.ssid.value = CORRECT_SSID;
+    fields.ssidBroadcast.value = "enabled";
+    fields.channel.value = "auto";
+    fields.wifiSecurity.value = "wpa2";
+    fields.passphrase.value = CORRECT_PASS;
+    fields.adminPass.value = CORRECT_ADMIN;
+    fields.adminPassVerify.value = CORRECT_ADMIN;
+    fields.macFilter.value = "enabled";
+    fields.macAddress.value = CORRECT_MAC;
+    showTab("wireless");
+    grade(true);
+    result.className = "is-pass";
+    result.textContent = PASS_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].value = "";
+    });
+    root.querySelectorAll(".pbq-home-router-select, .pbq-home-router-input").forEach(function (el) {
+      el.classList.remove(
+        "pbq-home-router-select--ok",
+        "pbq-home-router-select--bad",
+        "pbq-home-router-input--ok",
+        "pbq-home-router-input--bad"
+      );
+    });
+    showTab("wireless");
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

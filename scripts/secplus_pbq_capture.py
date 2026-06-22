@@ -34,6 +34,7 @@ USER_AGENT = (
 
 STATUS_PBq = "captured-pbq"
 STATUS_LANDING = "captured-landing"
+STATUS_LOGIN_WALL = "captured-login-wall"
 STATUS_LINK = "link-only"
 STATUS_FAILED = "failed"
 
@@ -132,7 +133,23 @@ def _entry_base(target: dict, run_id: str) -> dict:
     }
 
 
-def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_page: bool) -> str | None:
+def _page_is_login_wall(page) -> bool:
+    try:
+        low = page.inner_text("body").lower()
+    except Exception:
+        return False
+    if "sign in with email" in low and "magic code" in low:
+        return True
+    if "login or sign up" in low and "create an account or sign in" in low:
+        return True
+    if "performing security verification" in low and "verify you are human" in low:
+        return True
+    if "cloudflare" in low and "not a bot" in low:
+        return True
+    return False
+
+
+def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_page: bool) -> tuple[str | None, bool]:
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -141,7 +158,7 @@ def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_pag
             "python3 -m playwright install chromium",
             file=sys.stderr,
         )
-        return None
+        return None, False
 
     wait_ms = int(target.get("wait_ms", 3500))
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -158,7 +175,7 @@ def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_pag
         except Exception as exc:
             print(f"    goto failed: {exc}", file=sys.stderr)
             browser.close()
-            return None
+            return None, False
 
         page.wait_for_timeout(wait_ms)
 
@@ -183,19 +200,20 @@ def _playwright_shot(target: dict, out_dir: Path, label: str, url: str, full_pag
             except Exception as exc:
                 print(f"    preview click failed: {exc}", file=sys.stderr)
 
+        login_wall = _page_is_login_wall(page)
         try:
             page.screenshot(path=str(png), full_page=full_page)
         except Exception as exc:
             print(f"    screenshot failed: {exc}", file=sys.stderr)
             browser.close()
-            return None
+            return None, False
         browser.close()
 
     if png.is_file() and png.stat().st_size > 8000:
-        return str(png.relative_to(ROOT))
+        return str(png.relative_to(ROOT)), login_wall
     if png.is_file():
         png.unlink(missing_ok=True)
-    return None
+    return None, False
 
 
 def _image_markdown(sid: str, filename: str) -> str:
@@ -224,9 +242,20 @@ def capture_one_target(target: dict, run_id: str) -> dict:
     # Try PBQ preview only for BCT pages or targets with explicit preview URL/selector
     if _is_pbq_ui_target(target) and target.get("try_preview"):
         preview_url = target.get("preview_url") or target.get("url")
-        rel = _playwright_shot(target, out_dir, "pbq-preview", preview_url, full_page=False)
+        rel, login_wall = _playwright_shot(target, out_dir, "pbq-preview", preview_url, full_page=False)
         if rel:
             entry["screenshot_path"] = rel
+            if login_wall:
+                entry["login_required"] = True
+                entry["capture_status"] = STATUS_LOGIN_WALL
+                entry["image_markdown"] = _image_markdown(sid, "pbq-preview.png")
+                entry["status_note"] = (
+                    "Login / bot wall — open link in browser for read-only PBQ preview; "
+                    "manual screenshot via secplus:pbq-capture register"
+                )
+                write_json(out_dir / "meta.json", entry)
+                print(f"  [{STATUS_LOGIN_WALL}] {sid} -> {rel}")
+                return entry
             entry["capture_status"] = STATUS_PBq
             entry["image_markdown"] = _image_markdown(sid, "pbq-preview.png")
             entry["status_note"] = "PBQ / sim UI screenshot — paraphrase for BCT; verify Tier A"
@@ -236,7 +265,7 @@ def capture_one_target(target: dict, run_id: str) -> dict:
 
     # Landing / catalog fallback (still save reachable link)
     if target.get("try_landing") and target.get("url"):
-        rel = _playwright_shot(
+        rel, login_wall = _playwright_shot(
             target,
             out_dir,
             "landing",
@@ -246,6 +275,16 @@ def capture_one_target(target: dict, run_id: str) -> dict:
         if rel:
             entry["landing_screenshot_path"] = rel
             entry["screenshot_path"] = rel
+            if login_wall:
+                entry["login_required"] = True
+                entry["capture_status"] = STATUS_LOGIN_WALL
+                entry["image_markdown"] = _image_markdown(sid, "landing.png")
+                entry["status_note"] = (
+                    "Login wall on landing — open link in browser; manual screenshot if needed"
+                )
+                write_json(out_dir / "meta.json", entry)
+                print(f"  [{STATUS_LOGIN_WALL}] {sid} -> {rel}")
+                return entry
             entry["capture_status"] = STATUS_LANDING
             entry["image_markdown"] = _image_markdown(sid, "landing.png")
             entry["status_note"] = (
@@ -286,7 +325,13 @@ def build_capture_index(run_id: str, entries: list[dict]) -> Path:
         "",
     ]
 
-    by_status = {STATUS_PBq: [], STATUS_LANDING: [], STATUS_LINK: [], STATUS_FAILED: []}
+    by_status = {
+        STATUS_PBq: [],
+        STATUS_LANDING: [],
+        STATUS_LOGIN_WALL: [],
+        STATUS_LINK: [],
+        STATUS_FAILED: [],
+    }
     for e in entries:
         by_status.setdefault(e.get("capture_status", STATUS_LINK), []).append(e)
 
@@ -322,6 +367,7 @@ def build_capture_index(run_id: str, entries: list[dict]) -> Path:
             lines.append("")
 
     section("PBQ / sim UI captured", by_status[STATUS_PBq])
+    section("Login wall / bot check (open in browser — manual screenshot)", by_status[STATUS_LOGIN_WALL])
     section("Landing fallback (open link for preview)", by_status[STATUS_LANDING])
     section("Link only (manual screenshot or recall)", by_status[STATUS_LINK] + by_status[STATUS_FAILED])
 
@@ -330,11 +376,18 @@ def build_capture_index(run_id: str, entries: list[dict]) -> Path:
     return path
 
 
+def _filter_targets(targets: list[dict], args: argparse.Namespace) -> list[dict]:
+    if args.source_id:
+        return [t for t in targets if t.get("id") == args.source_id]
+    prefix = getattr(args, "source_prefix", None)
+    if prefix:
+        return [t for t in targets if str(t.get("id", "")).startswith(prefix)]
+    return targets
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     run_id = args.date or date.today().isoformat()
-    targets = load_all_targets()
-    if args.source_id:
-        targets = [t for t in targets if t.get("id") == args.source_id]
+    targets = _filter_targets(load_all_targets(), args)
     if not targets:
         print("[capture] no targets — enable pbq_poll or add config/secplus-pbq-capture-targets.json", file=sys.stderr)
         return 1
@@ -343,7 +396,8 @@ def cmd_run(args: argparse.Namespace) -> int:
     print(f"[capture] run {run_id} · {len(targets)} source(s)")
     manifest_path = CAPTURES / run_id / "manifest.json"
     entries_by_id: dict[str, dict] = {}
-    if args.source_id and manifest_path.is_file():
+    partial = bool(args.source_id or getattr(args, "source_prefix", None))
+    if partial and manifest_path.is_file():
         for e in json.loads(manifest_path.read_text(encoding="utf-8")).get("entries", []):
             sid = e.get("source_id")
             if sid:
@@ -362,6 +416,9 @@ def cmd_run(args: argparse.Namespace) -> int:
             "run_id": run_id,
             "count": len(entries),
             "captured_pbq": sum(1 for e in entries if e.get("capture_status") == STATUS_PBq),
+            "captured_login_wall": sum(
+                1 for e in entries if e.get("capture_status") == STATUS_LOGIN_WALL
+            ),
             "captured_landing": sum(1 for e in entries if e.get("capture_status") == STATUS_LANDING),
             "link_only": sum(
                 1 for e in entries if e.get("capture_status") in (STATUS_LINK, STATUS_FAILED)
@@ -437,6 +494,7 @@ def main() -> int:
     p_run = sub.add_parser("run", help="Capture all targets → PNG or link + INDEX.md")
     p_run.add_argument("--date", help="Run folder YYYY-MM-DD")
     p_run.add_argument("--source-id", help="One source only")
+    p_run.add_argument("--source-prefix", help="Sources whose id starts with this prefix")
     p_run.set_defaults(func=cmd_run)
 
     p_list = sub.add_parser("list", help="List capture targets")
@@ -446,6 +504,7 @@ def main() -> int:
         p = sub.add_parser(alias, help="Alias for run")
         p.add_argument("--date", help="Run folder YYYY-MM-DD")
         p.add_argument("--source-id", help="One source only")
+        p.add_argument("--source-prefix", help="Sources whose id starts with this prefix")
         p.set_defaults(func=cmd_run)
 
     p_reg = sub.add_parser("register", help="Manual pbq-preview PNG")

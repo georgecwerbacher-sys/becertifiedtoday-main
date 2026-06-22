@@ -1,41 +1,37 @@
-# Security+ PBQ — pending (reference only)
+# Security+ PBQ — pending
 
-**New work** goes in **`../PBQ_Production/`**. Publish to **`../../SEC+_PBQ/`** when ready.
+Staged scenarios **not** in the `PBQ_Production` build chain (`scripts/build-pbq-production-suite.py`). Ship to production when ready; vault notes stay in `data/secplus-pbq/{slug}/`.
 
-As of 2026-06-05, unique staged scenarios were **ported to production** (#13–#21). Duplicates were **removed** (see below). This folder keeps the drag-and-drop skeleton only.
+Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT standalone sims below.
 
-## Removed (duplicates — covered in production)
+## BCT standalone simulations
 
-| Removed pending file | Production replacement |
-|----------------------|------------------------|
-| `security-control-map.html` | `security-control-placement/` (three-zone control map) |
-| `siem-security-alerts-dashboard.html` | `siem-ransomware-mitre/` (full SIEM + MITRE + containment) |
-| `zero-trust.html` *(earlier)* | `zero-trust-zta-migration/` |
+| Folder | Description | Preview |
+|--------|-------------|---------|
+| [`dark-web-account-protection/`](dark-web-account-protection/) | Dark web credential exposure IR | [Open](dark-web-account-protection/dark-web-account-protection.html) |
+| [`malware-outbreak-classification/`](malware-outbreak-classification/) | AV log timeline — outbreak type | [Open](malware-outbreak-classification/malware-outbreak-classification.html) |
+| [`secure-web-architecture-openssl/`](secure-web-architecture-openssl/) | TLS, ciphers, OpenSSL practices | [Open](secure-web-architecture-openssl/secure-web-architecture-openssl.html) |
+| [`vpc-payment-architecture/`](vpc-payment-architecture/) | PCI VPC segmentation diagram | [Open](vpc-payment-architecture/vpc-payment-architecture.html) |
 
-## Ported to production (#13–#21)
+## WLAN router PBQs (2026-06-22)
 
-| Former pending file | Production folder |
-|---------------------|-------------------|
-| `log-timeline-forensics.html` | `log-timeline-forensics/` |
-| `pki-certificate-chain-browser-error.html` | `pki-certificate-chain-browser-error/` |
-| `phishing-email-analysis.html` | `phishing-email-analysis/` |
-| `vulnerability-management.html` | `vulnerability-management/` |
-| `incident-response.html` | `incident-response/` |
-| `quantitative-risk-ale.html` | `quantitative-risk-ale/` |
-| `malware-ioc-analysis.html` | `malware-ioc-analysis/` |
-| `data-protection.html` | `data-protection/` |
-| `governance.html` | `governance/` |
+| Folder | Description | Preview |
+|--------|-------------|---------|
+| [`home-wlan-director-config/`](home-wlan-director-config/) | Director home router — WPA2, MAC filter, admin password | [Open](home-wlan-director-config/home-wlan-director-config.html) |
+| [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username | [Open](public-wlan-guest-config/public-wlan-guest-config.html) |
 
-PBQ notes: `data/secplus-pbq/{slug}/`
+WLAN pair chain: home WLAN → public WLAN.
 
-## Remaining in this folder
+Production PBQ chain (21 labs) ends at [`../PBQ_Production/governance/`](../PBQ_Production/governance/governance.html).
+
+## Reference only
 
 | File | Role |
 |------|------|
-| `TEMPLATE-dragdrop.html` | Copy skeleton for new drag-and-drop PBQs (not in nav) |
+| `TEMPLATE-dragdrop.html` | Copy skeleton for new drag-and-drop PBQs |
 
-## Preview (production)
+## Production preview
 
 ```text
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/acme-rag-hr-ai/acme-rag-hr-ai.html
+http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/governance/governance.html
 ```
