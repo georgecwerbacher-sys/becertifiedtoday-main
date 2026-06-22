@@ -1,0 +1,254 @@
+<meta name="robots" content="noindex, nofollow" />
+<article class="pbq-section-fragment" data-id="siem-alert-settings-config">
+  <h1>SIEM Alert Settings</h1>
+  <p class="pbq-sub">
+    Configure the SIEM alert settings based on the ticket from your manager.
+  </p>
+
+  <div class="sim-frame pbq-home-router-sim pbq-siem-alert-sim">
+    <div class="layout layout--two-col pbq-home-router-layout">
+      <section class="panel pbq-home-router-reqs" aria-labelledby="siem-alert-reqs-heading">
+        <h2 id="siem-alert-reqs-heading">Ticket #983981</h2>
+        <p class="pbq-waf-ticket__text">
+          Suspicious repeated login attempts have been observed. Corporate policy allows
+          <strong>no more than five invalid login attempts within a 15-minute window</strong>.
+          Use any <strong>recommended</strong> settings offered by the console.
+        </p>
+        <p class="pbq-waf-ticket__text">
+          When the threshold is exceeded, <strong>trigger an alert</strong> and email the security team at
+          <code>security@example.com</code>.
+        </p>
+        <p class="pbq-waf-ticket__text">
+          The new SIEM is not yet integrated with source firewalls — configure
+          <strong>alert/notify only</strong>, not blocking.
+        </p>
+        <p class="panel-note">
+          Use both tabs: <strong>Rule Settings</strong> and <strong>Action Preferences</strong>.
+        </p>
+      </section>
+
+      <section class="panel pbq-home-router-console" aria-labelledby="siem-alert-console-heading">
+        <h2 id="siem-alert-console-heading" class="visually-hidden">SIEM alert console</h2>
+        <div class="pbq-home-router-console-wrap">
+          <div class="pbq-home-router-tabs pbq-siem-alert-tabs" role="tablist" aria-label="SIEM alert settings">
+            <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="rules">Rule Settings</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="actions">Action Preferences</button>
+          </div>
+
+          <div class="pbq-home-router-box">
+            <div class="pbq-home-router-pane" data-pane="rules" role="tabpanel">
+              <p class="pbq-home-router-pane__title">Rule Settings</p>
+              <div class="pbq-home-router-field">
+                <label for="siemMaxAttempts">Maximum Failed Login Attempts</label>
+                <input class="pbq-home-router-input" id="siemMaxAttempts" data-field="max-attempts" type="text" inputmode="numeric" maxlength="3" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemTimeframe">Timeframe (minutes)</label>
+                <input class="pbq-home-router-input" id="siemTimeframe" data-field="timeframe" type="text" inputmode="numeric" maxlength="4" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemWindowType">Window Type</label>
+                <select class="pbq-home-router-select" id="siemWindowType" data-field="window-type">
+                  <option value="">- Choose Option -</option>
+                  <option value="static">Static</option>
+                  <option value="repeated">Repeated Interval</option>
+                  <option value="sliding">Sliding</option>
+                </select>
+              </div>
+              <div class="pbq-siem-help" role="note">
+                <p class="pbq-siem-help__title">Window Types</p>
+                <p class="pbq-siem-help__lead">Choose how login failures are tracked over time:</p>
+                <ul class="pbq-siem-help__list">
+                  <li><strong>Static:</strong> Count resets every fixed interval (e.g., every 15 minutes on the clock).</li>
+                  <li><strong>Repeated Interval:</strong> A new window starts after each detection.</li>
+                  <li><strong>Sliding (Recommended):</strong> Continuously checks the most recent X minutes — most accurate for burst detection.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="actions" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Action Preferences</p>
+              <div class="pbq-home-router-field">
+                <label for="siemAction">Action</label>
+                <select class="pbq-home-router-select" id="siemAction" data-field="action">
+                  <option value="">- Choose Option -</option>
+                  <option value="none">None</option>
+                  <option value="block">Block</option>
+                  <option value="block-notify">Block and Notify</option>
+                  <option value="notify">Notify</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemNotifyMethod">Notification Method</label>
+                <select class="pbq-home-router-select" id="siemNotifyMethod" data-field="notify-method">
+                  <option value="">- Choose Option -</option>
+                  <option value="email">Email</option>
+                  <option value="sms">SMS</option>
+                  <option value="dashboard">Dashboard Alert</option>
+                  <option value="push">Push notification</option>
+                  <option value="teams">Microsoft Teams</option>
+                  <option value="slack">Slack Channel</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemNotifyAddress">Notification Address</label>
+                <input class="pbq-home-router-input" id="siemNotifyAddress" data-field="notify-address" type="text" autocomplete="off" />
+              </div>
+              <div class="pbq-siem-help" role="note">
+                <p class="pbq-siem-help__title">Notification Options</p>
+                <p class="pbq-siem-help__lead">Choose how you want to be notified when the threshold is reached:</p>
+                <ul class="pbq-siem-help__list">
+                  <li><strong>Email:</strong> Sends an alert to the specified email address.</li>
+                  <li><strong>SMS:</strong> Sends a text message to a mobile number with country code.</li>
+                  <li><strong>Dashboard Alert:</strong> Displays an alert in the admin dashboard (no address required).</li>
+                  <li><strong>Push notification:</strong> Sends to a mobile app or browser.</li>
+                  <li><strong>Microsoft Teams / Slack Channel:</strong> Posts via webhook URL.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var CORRECT_MAX = "5";
+  var CORRECT_TIMEFRAME = "15";
+  var CORRECT_EMAIL = "security@example.com";
+  var PASS_MSG =
+    "Correct. Five failed logins in a 15-minute sliding window triggers a notify-only email alert to security@example.com, matching policy until firewall integration is ready.";
+
+  var root = document.getElementById("siem-alert-settings-config");
+  if (!root) return;
+
+  var fields = {
+    maxAttempts: root.querySelector('[data-field="max-attempts"]'),
+    timeframe: root.querySelector('[data-field="timeframe"]'),
+    windowType: root.querySelector('[data-field="window-type"]'),
+    action: root.querySelector('[data-field="action"]'),
+    notifyMethod: root.querySelector('[data-field="notify-method"]'),
+    notifyAddress: root.querySelector('[data-field="notify-address"]')
+  };
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function normEmail(s) {
+    return s.trim().toLowerCase();
+  }
+
+  function mark(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-home-router-select--ok", ok === true);
+    el.classList.toggle("pbq-home-router-select--bad", ok === false);
+    el.classList.toggle("pbq-home-router-input--ok", ok === true);
+    el.classList.toggle("pbq-home-router-input--bad", ok === false);
+  }
+
+  function showTab(name) {
+    root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+      var active = btn.getAttribute("data-tab") === name;
+      btn.classList.toggle("pbq-home-router-tab--active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    root.querySelectorAll(".pbq-home-router-pane").forEach(function (pane) {
+      pane.hidden = pane.getAttribute("data-pane") !== name;
+    });
+  }
+
+  function allFilled() {
+    return (
+      fields.maxAttempts.value.trim() &&
+      fields.timeframe.value.trim() &&
+      fields.windowType.value &&
+      fields.action.value &&
+      fields.notifyMethod.value &&
+      fields.notifyAddress.value.trim()
+    );
+  }
+
+  function grade(showMarks) {
+    var maxOk = fields.maxAttempts.value.trim() === CORRECT_MAX;
+    var timeOk = fields.timeframe.value.trim() === CORRECT_TIMEFRAME;
+    var windowOk = fields.windowType.value === "sliding";
+    var actionOk = fields.action.value === "notify";
+    var methodOk = fields.notifyMethod.value === "email";
+    var emailOk = normEmail(fields.notifyAddress.value) === CORRECT_EMAIL;
+
+    if (showMarks) {
+      mark(fields.maxAttempts, fields.maxAttempts.value.trim() ? maxOk : false);
+      mark(fields.timeframe, fields.timeframe.value.trim() ? timeOk : false);
+      mark(fields.windowType, fields.windowType.value ? windowOk : false);
+      mark(fields.action, fields.action.value ? actionOk : false);
+      mark(fields.notifyMethod, fields.notifyMethod.value ? methodOk : false);
+      mark(fields.notifyAddress, fields.notifyAddress.value.trim() ? emailOk : false);
+    }
+
+    return maxOk && timeOk && windowOk && actionOk && methodOk && emailOk;
+  }
+
+  root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      showTab(btn.getAttribute("data-tab"));
+    });
+  });
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every field on both tabs, then check again.";
+      grade(true);
+      return;
+    }
+    if (grade(true)) {
+      result.className = "is-pass";
+      result.textContent = PASS_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Policy is 5 failures in 15 minutes with the recommended sliding window; notify by email at security@example.com — no blocking until firewall integration.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    fields.maxAttempts.value = CORRECT_MAX;
+    fields.timeframe.value = CORRECT_TIMEFRAME;
+    fields.windowType.value = "sliding";
+    fields.action.value = "notify";
+    fields.notifyMethod.value = "email";
+    fields.notifyAddress.value = CORRECT_EMAIL;
+    showTab("rules");
+    grade(true);
+    result.className = "is-pass";
+    result.textContent = PASS_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].value = "";
+    });
+    root.querySelectorAll(".pbq-home-router-select, .pbq-home-router-input").forEach(function (el) {
+      el.classList.remove(
+        "pbq-home-router-select--ok",
+        "pbq-home-router-select--bad",
+        "pbq-home-router-input--ok",
+        "pbq-home-router-input--bad"
+      );
+    });
+    showTab("rules");
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure SIEM alert settings from ticket #983981: failed-login threshold, sliding window, and email notification without firewall blocking." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/siem-alert-settings-config/siem-alert-settings-config.html" />
+  <title>Security+ Simulation: SIEM Alert Settings | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+</head>
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-siem-alert-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 4.2 · 4.8 · 5.6</p>
+        <h1>Simulation: SIEM Alert Settings</h1>
+        <p class="lead pbq-sub">Configure SIEM alert settings from ticket #983981: failed-login threshold, sliding window, and email notification without firewall blocking.</p>
+        <p class="instructions pbq-instructions">
+          Review <strong>Ticket #983981</strong>, then configure both SIEM tabs — rule settings and action preferences.
+        </p>
+      </header>
+
+      
+      
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <meta name="robots" content="noindex, nofollow" />
+<article class="pbq-suite-section" id="siem-alert-settings-config" data-scenario="siem-alert-settings-config" hidden><div class="pbq-suite-section__inner">
+  <h1>SIEM Alert Settings</h1>
+  <p class="pbq-sub">
+    Configure the SIEM alert settings based on the ticket from your manager.
+  </p>
+
+  <div class="sim-frame pbq-home-router-sim pbq-siem-alert-sim">
+    <div class="layout layout--two-col pbq-home-router-layout">
+      <section class="panel pbq-home-router-reqs" aria-labelledby="siem-alert-settings-config-siem-alert-reqs-heading">
+        <h2 id="siem-alert-settings-config-siem-alert-reqs-heading">Ticket #983981</h2>
+        <p class="pbq-waf-ticket__text">
+          Suspicious repeated login attempts have been observed. Corporate policy allows
+          <strong>no more than five invalid login attempts within a 15-minute window</strong>.
+          Use any <strong>recommended</strong> settings offered by the console.
+        </p>
+        <p class="pbq-waf-ticket__text">
+          When the threshold is exceeded, <strong>trigger an alert</strong> and email the security team at
+          <code>security@example.com</code>.
+        </p>
+        <p class="pbq-waf-ticket__text">
+          The new SIEM is not yet integrated with source firewalls — configure
+          <strong>alert/notify only</strong>, not blocking.
+        </p>
+        <p class="panel-note">
+          Use both tabs: <strong>Rule Settings</strong> and <strong>Action Preferences</strong>.
+        </p>
+      </section>
+
+      <section class="panel pbq-home-router-console" aria-labelledby="siem-alert-settings-config-siem-alert-console-heading">
+        <h2 id="siem-alert-settings-config-siem-alert-console-heading" class="visually-hidden">SIEM alert console</h2>
+        <div class="pbq-home-router-console-wrap">
+          <div class="pbq-home-router-tabs pbq-siem-alert-tabs" role="tablist" aria-label="SIEM alert settings">
+            <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="rules">Rule Settings</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="actions">Action Preferences</button>
+          </div>
+
+          <div class="pbq-home-router-box">
+            <div class="pbq-home-router-pane" data-pane="rules" role="tabpanel">
+              <p class="pbq-home-router-pane__title">Rule Settings</p>
+              <div class="pbq-home-router-field">
+                <label for="siemMaxAttempts">Maximum Failed Login Attempts</label>
+                <input class="pbq-home-router-input" id="siemMaxAttempts" data-field="max-attempts" type="text" inputmode="numeric" maxlength="3" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemTimeframe">Timeframe (minutes)</label>
+                <input class="pbq-home-router-input" id="siemTimeframe" data-field="timeframe" type="text" inputmode="numeric" maxlength="4" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemWindowType">Window Type</label>
+                <select class="pbq-home-router-select" id="siemWindowType" data-field="window-type">
+                  <option value="">- Choose Option -</option>
+                  <option value="static">Static</option>
+                  <option value="repeated">Repeated Interval</option>
+                  <option value="sliding">Sliding</option>
+                </select>
+              </div>
+              <div class="pbq-siem-help" role="note">
+                <p class="pbq-siem-help__title">Window Types</p>
+                <p class="pbq-siem-help__lead">Choose how login failures are tracked over time:</p>
+                <ul class="pbq-siem-help__list">
+                  <li><strong>Static:</strong> Count resets every fixed interval (e.g., every 15 minutes on the clock).</li>
+                  <li><strong>Repeated Interval:</strong> A new window starts after each detection.</li>
+                  <li><strong>Sliding (Recommended):</strong> Continuously checks the most recent X minutes — most accurate for burst detection.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="actions" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Action Preferences</p>
+              <div class="pbq-home-router-field">
+                <label for="siemAction">Action</label>
+                <select class="pbq-home-router-select" id="siemAction" data-field="action">
+                  <option value="">- Choose Option -</option>
+                  <option value="none">None</option>
+                  <option value="block">Block</option>
+                  <option value="block-notify">Block and Notify</option>
+                  <option value="notify">Notify</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemNotifyMethod">Notification Method</label>
+                <select class="pbq-home-router-select" id="siemNotifyMethod" data-field="notify-method">
+                  <option value="">- Choose Option -</option>
+                  <option value="email">Email</option>
+                  <option value="sms">SMS</option>
+                  <option value="dashboard">Dashboard Alert</option>
+                  <option value="push">Push notification</option>
+                  <option value="teams">Microsoft Teams</option>
+                  <option value="slack">Slack Channel</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="siemNotifyAddress">Notification Address</label>
+                <input class="pbq-home-router-input" id="siemNotifyAddress" data-field="notify-address" type="text" autocomplete="off" />
+              </div>
+              <div class="pbq-siem-help" role="note">
+                <p class="pbq-siem-help__title">Notification Options</p>
+                <p class="pbq-siem-help__lead">Choose how you want to be notified when the threshold is reached:</p>
+                <ul class="pbq-siem-help__list">
+                  <li><strong>Email:</strong> Sends an alert to the specified email address.</li>
+                  <li><strong>SMS:</strong> Sends a text message to a mobile number with country code.</li>
+                  <li><strong>Dashboard Alert:</strong> Displays an alert in the admin dashboard (no address required).</li>
+                  <li><strong>Push notification:</strong> Sends to a mobile app or browser.</li>
+                  <li><strong>Microsoft Teams / Slack Channel:</strong> Posts via webhook URL.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="siem-alert-checkBtn" type="button">Check Answer</button>
+    <button id="siem-alert-resetBtn" type="button">Reset</button>
+    <button id="siem-alert-showBtn" type="button">Show Answer</button>
+    <span id="siem-alert-result" role="status" aria-live="polite"></span>
+  </div>
+</div></article>
+
+        </div>
+      </div>
+
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="siem-alert-settings-config.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/mdm-enrollment-config/mdm-enrollment-config.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/network-protocols-matching/network-protocols-matching.html">Next</a>
+        </div>
+      </nav>
+      </div>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "siem-alert-settings-config"; window.PBQ_DEEP_DIVE_KEY = "siem-alert-settings-config.html";</script>
+  <!-- siem-alert-settings-config -->
+<script>
+(function () {
+  var CORRECT_MAX = "5";
+  var CORRECT_TIMEFRAME = "15";
+  var CORRECT_EMAIL = "security@example.com";
+  var PASS_MSG =
+    "Correct. Five failed logins in a 15-minute sliding window triggers a notify-only email alert to security@example.com, matching policy until firewall integration is ready.";
+
+  var root = document.getElementById("siem-alert-settings-config");
+  if (!root) return;
+
+  var fields = {
+    maxAttempts: root.querySelector('[data-field="max-attempts"]'),
+    timeframe: root.querySelector('[data-field="timeframe"]'),
+    windowType: root.querySelector('[data-field="window-type"]'),
+    action: root.querySelector('[data-field="action"]'),
+    notifyMethod: root.querySelector('[data-field="notify-method"]'),
+    notifyAddress: root.querySelector('[data-field="notify-address"]')
+  };
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function normEmail(s) {
+    return s.trim().toLowerCase();
+  }
+
+  function mark(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-home-router-select--ok", ok === true);
+    el.classList.toggle("pbq-home-router-select--bad", ok === false);
+    el.classList.toggle("pbq-home-router-input--ok", ok === true);
+    el.classList.toggle("pbq-home-router-input--bad", ok === false);
+  }
+
+  function showTab(name) {
+    root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+      var active = btn.getAttribute("data-tab") === name;
+      btn.classList.toggle("pbq-home-router-tab--active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    root.querySelectorAll(".pbq-home-router-pane").forEach(function (pane) {
+      pane.hidden = pane.getAttribute("data-pane") !== name;
+    });
+  }
+
+  function allFilled() {
+    return (
+      fields.maxAttempts.value.trim() &&
+      fields.timeframe.value.trim() &&
+      fields.windowType.value &&
+      fields.action.value &&
+      fields.notifyMethod.value &&
+      fields.notifyAddress.value.trim()
+    );
+  }
+
+  function grade(showMarks) {
+    var maxOk = fields.maxAttempts.value.trim() === CORRECT_MAX;
+    var timeOk = fields.timeframe.value.trim() === CORRECT_TIMEFRAME;
+    var windowOk = fields.windowType.value === "sliding";
+    var actionOk = fields.action.value === "notify";
+    var methodOk = fields.notifyMethod.value === "email";
+    var emailOk = normEmail(fields.notifyAddress.value) === CORRECT_EMAIL;
+
+    if (showMarks) {
+      mark(fields.maxAttempts, fields.maxAttempts.value.trim() ? maxOk : false);
+      mark(fields.timeframe, fields.timeframe.value.trim() ? timeOk : false);
+      mark(fields.windowType, fields.windowType.value ? windowOk : false);
+      mark(fields.action, fields.action.value ? actionOk : false);
+      mark(fields.notifyMethod, fields.notifyMethod.value ? methodOk : false);
+      mark(fields.notifyAddress, fields.notifyAddress.value.trim() ? emailOk : false);
+    }
+
+    return maxOk && timeOk && windowOk && actionOk && methodOk && emailOk;
+  }
+
+  root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      showTab(btn.getAttribute("data-tab"));
+    });
+  });
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every field on both tabs, then check again.";
+      grade(true);
+      return;
+    }
+    if (grade(true)) {
+      result.className = "is-pass";
+      result.textContent = PASS_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Policy is 5 failures in 15 minutes with the recommended sliding window; notify by email at security@example.com — no blocking until firewall integration.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    fields.maxAttempts.value = CORRECT_MAX;
+    fields.timeframe.value = CORRECT_TIMEFRAME;
+    fields.windowType.value = "sliding";
+    fields.action.value = "notify";
+    fields.notifyMethod.value = "email";
+    fields.notifyAddress.value = CORRECT_EMAIL;
+    showTab("rules");
+    grade(true);
+    result.className = "is-pass";
+    result.textContent = PASS_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].value = "";
+    });
+    root.querySelectorAll(".pbq-home-router-select, .pbq-home-router-input").forEach(function (el) {
+      el.classList.remove(
+        "pbq-home-router-select--ok",
+        "pbq-home-router-select--bad",
+        "pbq-home-router-input--ok",
+        "pbq-home-router-input--bad"
+      );
+    });
+    showTab("rules");
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
+</body>
+</html>

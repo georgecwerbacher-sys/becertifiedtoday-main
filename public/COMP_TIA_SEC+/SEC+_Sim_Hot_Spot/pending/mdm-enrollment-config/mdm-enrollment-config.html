@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure Acme Corporation MDM enrollment: TLS for mdm.acmecorp.com, iOS compliance, application restrictions, and Apple ADE with strict supervision." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/mdm-enrollment-config/mdm-enrollment-config.html" />
+  <title>Security+ Simulation: Mobile Device Management Enrollment | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+</head>
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-mdm-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.1 · 3.3 · 4.6</p>
+        <h1>Simulation: Mobile Device Management Enrollment</h1>
+        <p class="lead pbq-sub">Configure Acme Corporation MDM enrollment: TLS for mdm.acmecorp.com, iOS compliance, application restrictions, and Apple ADE with strict supervision.</p>
+        <p class="instructions pbq-instructions">
+          Review the <strong>requirements</strong>, then configure all four MDM console tabs for corporate iOS enrollment.
+        </p>
+      </header>
+
+      
+      
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <meta name="robots" content="noindex, nofollow" />
+<article class="pbq-suite-section" id="mdm-enrollment-config" data-scenario="mdm-enrollment-config" hidden><div class="pbq-suite-section__inner">
+  <h1>Mobile Device Management Enrollment</h1>
+  <p class="pbq-sub">
+    As the IT administrator for <strong>Acme Corporation</strong>, configure an MDM enrollment profile
+    for a new batch of corporate-owned iOS devices. Follow the security specifications so every device
+    meets corporate policy and industry compliance requirements.
+  </p>
+
+  <div class="sim-frame pbq-home-router-sim pbq-mdm-sim">
+    <div class="layout layout--two-col pbq-home-router-layout">
+      <section class="panel pbq-home-router-reqs" aria-labelledby="mdm-enrollment-config-mdm-reqs-heading">
+        <h2 id="mdm-enrollment-config-mdm-reqs-heading">Requirements</h2>
+        <h3 class="pbq-waf-ticket__section">SSL/TLS</h3>
+        <ul class="pbq-home-router-reqs__list">
+          <li>Company domain: <code>acmecorp.com</code>; MDM host: <code>mdm</code> subdomain</li>
+          <li>Certificate: <code>/mnt/certs/AcmeMDMCertificate.pfx</code></li>
+        </ul>
+        <h3 class="pbq-waf-ticket__section">iOS compliance</h3>
+        <ul class="pbq-home-router-reqs__list">
+          <li>Current corporate iOS release: <strong>18</strong> — devices may be at most <strong>one major version behind</strong></li>
+          <li>Password/passcode required; minimum length <strong>6</strong>; reuse <strong>never</strong></li>
+          <li>Auto-lock after <strong>1 minute</strong> (60 seconds) of inactivity</li>
+          <li>Jailbreak/root alerts to <code>alerts@</code> the MDM hostname above</li>
+        </ul>
+        <h3 class="pbq-waf-ticket__section">Applications</h3>
+        <p class="pbq-waf-ticket__text">
+          Only official ACME applications — block public App Store and unmanaged installs; force automatic updates.
+        </p>
+        <h3 class="pbq-waf-ticket__section">Enrollment</h3>
+        <ul class="pbq-home-router-reqs__list">
+          <li>Apple automatic enrollment (ADE) — token <code>/mnt/certs/AdeServerToken.p7m</code></li>
+          <li>Strictest supervision and profile-removal settings available</li>
+        </ul>
+        <p class="panel-note">
+          Configure all four tabs: <strong>HTTPS Certificate Settings</strong>,
+          <strong>iOS Compliance Policies</strong>, <strong>Application Restrictions</strong>,
+          and <strong>Enrollment Settings</strong>.
+        </p>
+      </section>
+
+      <section class="panel pbq-home-router-console" aria-labelledby="mdm-enrollment-config-mdm-console-heading">
+        <h2 id="mdm-enrollment-config-mdm-console-heading" class="visually-hidden">MDM console</h2>
+        <div class="pbq-home-router-console-wrap">
+          <div class="pbq-home-router-tabs pbq-waf-tabs" role="tablist" aria-label="MDM profile settings">
+            <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="https">HTTPS Certificate Settings</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="ios">iOS Compliance Policies</button>
+            <button type="button" class="pbq-home-router-tab" role="tab" aria-selected="false" data-tab="apps">Application Restrictions</button>
+            <button type="button" class="pbq-home-router-tab pbq-waf-tab--logging" role="tab" aria-selected="false" data-tab="enrollment">Enrollment Settings</button>
+          </div>
+
+          <div class="pbq-home-router-box">
+            <div class="pbq-home-router-pane" data-pane="https" role="tabpanel">
+              <p class="pbq-home-router-pane__title">HTTPS Certificate Settings</p>
+              <div class="pbq-home-router-field">
+                <label for="mdmHttps">HTTPS Certificate</label>
+                <select class="pbq-home-router-select" id="mdmHttps" data-field="https-cert">
+                  <option value="">-- Choose Option --</option>
+                  <option value="disabled">Disabled</option>
+                  <option value="enabled">Enabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmHostname">Domain/Hostname</label>
+                <input class="pbq-home-router-input" id="mdmHostname" data-field="hostname" type="text" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmCertFile">Certificate File</label>
+                <input class="pbq-home-router-input pbq-home-router-input--mono" id="mdmCertFile" data-field="cert-file" type="text" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="ios" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">iOS Compliance Policies</p>
+              <div class="pbq-home-router-field">
+                <label for="mdmMinIos">Minimum iOS Version</label>
+                <input class="pbq-home-router-input" id="mdmMinIos" data-field="min-ios" type="text" inputmode="numeric" maxlength="2" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmPassReq">Password Requirement</label>
+                <select class="pbq-home-router-select" id="mdmPassReq" data-field="pass-req">
+                  <option value="">-- Choose Option --</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmPassLen">Minimum Password Length</label>
+                <input class="pbq-home-router-input" id="mdmPassLen" data-field="pass-len" type="text" inputmode="numeric" maxlength="2" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmPassReuse">Password Reuse</label>
+                <select class="pbq-home-router-select" id="mdmPassReuse" data-field="pass-reuse">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmAutolock">Auto-lock</label>
+                <select class="pbq-home-router-select" id="mdmAutolock" data-field="autolock">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmAutolockSec">Auto-lock Timeout (seconds)</label>
+                <input class="pbq-home-router-input" id="mdmAutolockSec" data-field="autolock-sec" type="text" inputmode="numeric" maxlength="4" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmJailbreak">Jailbreak and Rooting Alerts</label>
+                <select class="pbq-home-router-select" id="mdmJailbreak" data-field="jailbreak">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmJailEmail">Jailbreak Alert Email</label>
+                <input class="pbq-home-router-input" id="mdmJailEmail" data-field="jail-email" type="text" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="apps" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Application Restrictions</p>
+              <div class="pbq-home-router-field">
+                <label for="mdmAppRestrict">Application Restrictions</label>
+                <select class="pbq-home-router-select" id="mdmAppRestrict" data-field="app-restrict">
+                  <option value="">-- Choose Option --</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmAppStore">Allow App Store</label>
+                <select class="pbq-home-router-select" id="mdmAppStore" data-field="app-store">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmUnmanaged">Allow Installing Unmanaged Apps</label>
+                <select class="pbq-home-router-select" id="mdmUnmanaged" data-field="unmanaged-apps">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmAutoUpdate">Force Automatic App Updates</label>
+                <select class="pbq-home-router-select" id="mdmAutoUpdate" data-field="auto-update">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="pbq-home-router-pane" data-pane="enrollment" role="tabpanel" hidden>
+              <p class="pbq-home-router-pane__title">Enrollment Settings</p>
+              <div class="pbq-home-router-field">
+                <label for="mdmEnrollMethod">Enrollment Method</label>
+                <select class="pbq-home-router-select" id="mdmEnrollMethod" data-field="enroll-method">
+                  <option value="">- Choose Option -</option>
+                  <option value="manual">Manual Enrollment</option>
+                  <option value="ade">Automated Device Enrollment (ADE)</option>
+                  <option value="user">User-Initiated Enrollment</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmAdeToken">ADE Server Token File</label>
+                <input class="pbq-home-router-input pbq-home-router-input--mono" id="mdmAdeToken" data-field="ade-token" type="text" autocomplete="off" />
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmSupervision">Device Supervision</label>
+                <select class="pbq-home-router-select" id="mdmSupervision" data-field="supervision">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+              <div class="pbq-home-router-field">
+                <label for="mdmProfileRemoval">Allow Profile Removal</label>
+                <select class="pbq-home-router-select" id="mdmProfileRemoval" data-field="profile-removal">
+                  <option value="">- Choose Option -</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="mdm-enrollment-checkBtn" type="button">Check Answer</button>
+    <button id="mdm-enrollment-resetBtn" type="button">Reset</button>
+    <button id="mdm-enrollment-showBtn" type="button">Show Answer</button>
+    <span id="mdm-enrollment-result" role="status" aria-live="polite"></span>
+  </div>
+</div></article>
+
+        </div>
+      </div>
+
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="mdm-enrollment-config.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/cloud-waf-setup/cloud-waf-setup.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/siem-alert-settings-config/siem-alert-settings-config.html">Next</a>
+        </div>
+      </nav>
+      </div>
+    </main>
+  </div>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "mdm-enrollment-config"; window.PBQ_DEEP_DIVE_KEY = "mdm-enrollment-config.html";</script>
+  <!-- mdm-enrollment-config -->
+<script>
+(function () {
+  var CORRECT_HOST = "mdm.acmecorp.com";
+  var CORRECT_CERT = "/mnt/certs/AcmeMDMCertificate.pfx";
+  var CORRECT_MIN_IOS = "17";
+  var CORRECT_PASS_LEN = "6";
+  var CORRECT_AUTOLOCK_SEC = "60";
+  var CORRECT_JAIL_EMAIL = "alerts@mdm.acmecorp.com";
+  var CORRECT_ADE_TOKEN = "/mnt/certs/AdeServerToken.p7m";
+  var PASS_MSG =
+    "Correct. TLS for mdm.acmecorp.com, iOS 17+ compliance, locked-down apps, ADE with supervision and no profile removal meet Acme's MDM policy.";
+
+  var root = document.getElementById("mdm-enrollment-config");
+  if (!root) return;
+
+  var fields = {
+    httpsCert: root.querySelector('[data-field="https-cert"]'),
+    hostname: root.querySelector('[data-field="hostname"]'),
+    certFile: root.querySelector('[data-field="cert-file"]'),
+    minIos: root.querySelector('[data-field="min-ios"]'),
+    passReq: root.querySelector('[data-field="pass-req"]'),
+    passLen: root.querySelector('[data-field="pass-len"]'),
+    passReuse: root.querySelector('[data-field="pass-reuse"]'),
+    autolock: root.querySelector('[data-field="autolock"]'),
+    autolockSec: root.querySelector('[data-field="autolock-sec"]'),
+    jailbreak: root.querySelector('[data-field="jailbreak"]'),
+    jailEmail: root.querySelector('[data-field="jail-email"]'),
+    appRestrict: root.querySelector('[data-field="app-restrict"]'),
+    appStore: root.querySelector('[data-field="app-store"]'),
+    unmanagedApps: root.querySelector('[data-field="unmanaged-apps"]'),
+    autoUpdate: root.querySelector('[data-field="auto-update"]'),
+    enrollMethod: root.querySelector('[data-field="enroll-method"]'),
+    adeToken: root.querySelector('[data-field="ade-token"]'),
+    supervision: root.querySelector('[data-field="supervision"]'),
+    profileRemoval: root.querySelector('[data-field="profile-removal"]')
+  };
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+
+  function normHost(s) {
+    return s.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+  }
+
+  function normEmail(s) {
+    return s.trim().toLowerCase();
+  }
+
+  function normPath(s) {
+    return s.trim().replace(/\\/g, "/");
+  }
+
+  function mark(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-home-router-select--ok", ok === true);
+    el.classList.toggle("pbq-home-router-select--bad", ok === false);
+    el.classList.toggle("pbq-home-router-input--ok", ok === true);
+    el.classList.toggle("pbq-home-router-input--bad", ok === false);
+  }
+
+  function showTab(name) {
+    root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+      var active = btn.getAttribute("data-tab") === name;
+      btn.classList.toggle("pbq-home-router-tab--active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    root.querySelectorAll(".pbq-home-router-pane").forEach(function (pane) {
+      pane.hidden = pane.getAttribute("data-pane") !== name;
+    });
+  }
+
+  function allFilled() {
+    return Object.keys(fields).every(function (key) {
+      return fields[key].value.trim() !== "";
+    });
+  }
+
+  function grade(showMarks) {
+    var httpsOk = fields.httpsCert.value === "enabled";
+    var hostOk = normHost(fields.hostname.value) === CORRECT_HOST;
+    var certOk = normPath(fields.certFile.value) === CORRECT_CERT;
+    var iosOk = fields.minIos.value.trim() === CORRECT_MIN_IOS;
+    var passReqOk = fields.passReq.value === "enabled";
+    var passLenOk = fields.passLen.value.trim() === CORRECT_PASS_LEN;
+    var passReuseOk = fields.passReuse.value === "disabled";
+    var autolockOk = fields.autolock.value === "enabled";
+    var autolockSecOk = fields.autolockSec.value.trim() === CORRECT_AUTOLOCK_SEC;
+    var jailOk = fields.jailbreak.value === "enabled";
+    var jailEmailOk = normEmail(fields.jailEmail.value) === CORRECT_JAIL_EMAIL;
+    var appRestrictOk = fields.appRestrict.value === "enabled";
+    var appStoreOk = fields.appStore.value === "disabled";
+    var unmanagedOk = fields.unmanagedApps.value === "disabled";
+    var autoUpdateOk = fields.autoUpdate.value === "enabled";
+    var enrollOk = fields.enrollMethod.value === "ade";
+    var adeOk = normPath(fields.adeToken.value) === CORRECT_ADE_TOKEN;
+    var supervisionOk = fields.supervision.value === "enabled";
+    var removalOk = fields.profileRemoval.value === "disabled";
+
+    if (showMarks) {
+      mark(fields.httpsCert, fields.httpsCert.value ? httpsOk : false);
+      mark(fields.hostname, fields.hostname.value.trim() ? hostOk : false);
+      mark(fields.certFile, fields.certFile.value.trim() ? certOk : false);
+      mark(fields.minIos, fields.minIos.value.trim() ? iosOk : false);
+      mark(fields.passReq, fields.passReq.value ? passReqOk : false);
+      mark(fields.passLen, fields.passLen.value.trim() ? passLenOk : false);
+      mark(fields.passReuse, fields.passReuse.value ? passReuseOk : false);
+      mark(fields.autolock, fields.autolock.value ? autolockOk : false);
+      mark(fields.autolockSec, fields.autolockSec.value.trim() ? autolockSecOk : false);
+      mark(fields.jailbreak, fields.jailbreak.value ? jailOk : false);
+      mark(fields.jailEmail, fields.jailEmail.value.trim() ? jailEmailOk : false);
+      mark(fields.appRestrict, fields.appRestrict.value ? appRestrictOk : false);
+      mark(fields.appStore, fields.appStore.value ? appStoreOk : false);
+      mark(fields.unmanagedApps, fields.unmanagedApps.value ? unmanagedOk : false);
+      mark(fields.autoUpdate, fields.autoUpdate.value ? autoUpdateOk : false);
+      mark(fields.enrollMethod, fields.enrollMethod.value ? enrollOk : false);
+      mark(fields.adeToken, fields.adeToken.value.trim() ? adeOk : false);
+      mark(fields.supervision, fields.supervision.value ? supervisionOk : false);
+      mark(fields.profileRemoval, fields.profileRemoval.value ? removalOk : false);
+    }
+
+    return (
+      httpsOk &&
+      hostOk &&
+      certOk &&
+      iosOk &&
+      passReqOk &&
+      passLenOk &&
+      passReuseOk &&
+      autolockOk &&
+      autolockSecOk &&
+      jailOk &&
+      jailEmailOk &&
+      appRestrictOk &&
+      appStoreOk &&
+      unmanagedOk &&
+      autoUpdateOk &&
+      enrollOk &&
+      adeOk &&
+      supervisionOk &&
+      removalOk
+    );
+  }
+
+  root.querySelectorAll(".pbq-home-router-tab").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      showTab(btn.getAttribute("data-tab"));
+    });
+  });
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Complete every field on all four tabs, then check again.";
+      grade(true);
+      return;
+    }
+    if (grade(true)) {
+      result.className = "is-pass";
+      result.textContent = PASS_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. Enable HTTPS for mdm.acmecorp.com, set iOS 17 minimum with passcode and auto-lock rules, restrict apps to ACME-only, and enroll via ADE with strict supervision.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    fields.httpsCert.value = "enabled";
+    fields.hostname.value = CORRECT_HOST;
+    fields.certFile.value = CORRECT_CERT;
+    fields.minIos.value = CORRECT_MIN_IOS;
+    fields.passReq.value = "enabled";
+    fields.passLen.value = CORRECT_PASS_LEN;
+    fields.passReuse.value = "disabled";
+    fields.autolock.value = "enabled";
+    fields.autolockSec.value = CORRECT_AUTOLOCK_SEC;
+    fields.jailbreak.value = "enabled";
+    fields.jailEmail.value = CORRECT_JAIL_EMAIL;
+    fields.appRestrict.value = "enabled";
+    fields.appStore.value = "disabled";
+    fields.unmanagedApps.value = "disabled";
+    fields.autoUpdate.value = "enabled";
+    fields.enrollMethod.value = "ade";
+    fields.adeToken.value = CORRECT_ADE_TOKEN;
+    fields.supervision.value = "enabled";
+    fields.profileRemoval.value = "disabled";
+    showTab("https");
+    grade(true);
+    result.className = "is-pass";
+    result.textContent = PASS_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    Object.keys(fields).forEach(function (key) {
+      fields[key].value = "";
+    });
+    root.querySelectorAll(".pbq-home-router-select, .pbq-home-router-input").forEach(function (el) {
+      el.classList.remove(
+        "pbq-home-router-select--ok",
+        "pbq-home-router-select--bad",
+        "pbq-home-router-input--ok",
+        "pbq-home-router-input--bad"
+      );
+    });
+    showTab("https");
+    result.className = "";
+    result.textContent = "";
+  });
+})();
+</script>
+
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
+</body>
+</html>

@@ -23,7 +23,7 @@ Open guest WLAN for BeCertifiedToday lobby visitors. Same three-tab router UI as
 ## Pending chain
 
 - **Previous:** `../home-wlan-director-config/`
-- **Next:** *(none)*
+- **Next:** [`../cloud-waf-setup/`](../cloud-waf-setup/)
 
 ## Preview
 

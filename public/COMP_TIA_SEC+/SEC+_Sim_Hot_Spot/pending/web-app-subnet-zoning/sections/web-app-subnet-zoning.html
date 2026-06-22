@@ -1,0 +1,321 @@
+<article class="pbq-section-fragment" data-id="web-app-subnet-zoning">
+  <h1>Subnet Zoning — Web Application Deployment</h1>
+  <p class="pbq-sub">
+    Place cloud components in the correct subnet zones for a secure three-tier web application deployment.
+  </p>
+  <p class="pbq-instructions">
+    Drag each component into the matching zone slot (or tap a token, then tap a slot). Set the
+    <strong>middle tier subnet type</strong> to Public or Private. Follow the natural flow:
+    user → front end → application logic → database.
+  </p>
+
+  <div class="sim-frame">
+    <div class="layout layout--two-col layout--subnet-zoning">
+      <section class="panel panel--subnet-bank" aria-labelledby="subnet-bank-heading">
+        <h2 id="subnet-bank-heading">Components</h2>
+        <div id="bank" class="bank bank--subnet-components">
+          <div class="token" draggable="true" data-value="static-instances">Static instances</div>
+          <div class="token" draggable="true" data-value="dynamic-instances">Dynamic instances</div>
+          <div class="token" draggable="true" data-value="load-balancers">Load balancers</div>
+          <div class="token" draggable="true" data-value="database">Database</div>
+          <div class="token" draggable="true" data-value="waf">WAF</div>
+        </div>
+      </section>
+
+      <section class="panel panel--subnet-zones" aria-labelledby="subnet-zones-heading">
+        <h2 id="subnet-zones-heading">Cloud architecture</h2>
+        <div class="pbq-subnet-stack">
+          <article class="pbq-subnet-zone pbq-subnet-zone--public">
+            <header class="pbq-subnet-zone__head">
+              <h3 class="pbq-subnet-zone__title">Public Subnet</h3>
+              <p class="pbq-subnet-zone__hint">Internet-facing edge tier</p>
+            </header>
+            <div class="pbq-subnet-zone__slots">
+              <div class="pbq-subnet-slot">
+                <p class="pbq-subnet-slot__label">Before public web tier — filter inbound HTTP(S)</p>
+                <div class="drop-slot drop-slot--subnet" data-slot="public-waf" aria-label="WAF placement"></div>
+              </div>
+              <div class="pbq-subnet-slot">
+                <p class="pbq-subnet-slot__label">Front-end / static content servers</p>
+                <div class="drop-slot drop-slot--subnet" data-slot="public-static" aria-label="Static instances placement"></div>
+              </div>
+              <div class="pbq-subnet-slot">
+                <p class="pbq-subnet-slot__label">Between edge and application tier — distribute traffic</p>
+                <div class="drop-slot drop-slot--subnet" data-slot="public-lb" aria-label="Load balancer placement"></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="pbq-subnet-flow-arrow" aria-hidden="true">↓</div>
+
+          <article class="pbq-subnet-zone pbq-subnet-zone--middle">
+            <header class="pbq-subnet-zone__head">
+              <h3 class="pbq-subnet-zone__title">Middle Subnet</h3>
+              <label class="pbq-subnet-zone__type">
+                Subnet type
+                <select class="pbq-home-router-select" data-field="middle-subnet-type">
+                  <option value="">— Select —</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </label>
+            </header>
+            <div class="pbq-subnet-zone__slots">
+              <div class="pbq-subnet-slot">
+                <p class="pbq-subnet-slot__label">Application / business logic tier</p>
+                <div class="drop-slot drop-slot--subnet" data-slot="middle-dynamic" aria-label="Dynamic instances placement"></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="pbq-subnet-flow-arrow" aria-hidden="true">↓</div>
+
+          <article class="pbq-subnet-zone pbq-subnet-zone--private">
+            <header class="pbq-subnet-zone__head">
+              <h3 class="pbq-subnet-zone__title">Private Subnet</h3>
+              <p class="pbq-subnet-zone__hint">No direct internet route</p>
+            </header>
+            <div class="pbq-subnet-zone__slots">
+              <div class="pbq-subnet-slot">
+                <p class="pbq-subnet-slot__label">Persistent data store</p>
+                <div class="drop-slot drop-slot--subnet" data-slot="private-db" aria-label="Database placement"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <span id="result" role="status" aria-live="polite"></span>
+  </div>
+</article>
+<script>
+(function () {
+  var SLOT_ANSWERS = {
+    "public-waf": "waf",
+    "public-static": "static-instances",
+    "public-lb": "load-balancers",
+    "middle-dynamic": "dynamic-instances",
+    "private-db": "database"
+  };
+  var MIDDLE_SUBNET = "private";
+  var PASS_MSG =
+    "Correct. WAF and static front-end sit in the public tier with a load balancer bridging to a private middle tier for dynamic app logic; the database stays in the deepest private subnet.";
+
+  var root = document.getElementById("web-app-subnet-zoning");
+  if (!root) return;
+
+  var bank = root.querySelector(".bank");
+  var middleType = root.querySelector('[data-field="middle-subnet-type"]');
+  var actionBtns = root.querySelectorAll(".actions button");
+  var checkBtn = actionBtns[0];
+  var resetBtn = actionBtns[1];
+  var showBtn = actionBtns[2];
+  var result = root.querySelector(".actions [role='status']");
+  var dragged = null;
+  var picked = null;
+
+  function allSlots() {
+    return root.querySelectorAll(".drop-slot[data-slot]");
+  }
+
+  function slotAnswer(slot) {
+    return SLOT_ANSWERS[slot.getAttribute("data-slot")];
+  }
+
+  function clearPick() {
+    root.querySelectorAll(".token.is-picked").forEach(function (node) {
+      node.classList.remove("is-picked");
+    });
+    picked = null;
+  }
+
+  function setPick(token) {
+    clearPick();
+    picked = token;
+    if (picked) picked.classList.add("is-picked");
+  }
+
+  function moveTokenToSlot(slot, token) {
+    if (!token || !slot) return;
+    var existing = slot.querySelector(".token");
+    if (existing && existing !== token) bank.appendChild(existing);
+    slot.appendChild(token);
+  }
+
+  function shuffleBank() {
+    var nodes = [].slice.call(bank.querySelectorAll(".token"));
+    while (nodes.length) {
+      bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+    }
+  }
+
+  shuffleBank();
+
+  root.addEventListener("click", function (event) {
+    var token = event.target.closest(".token");
+    if (token && root.contains(token)) {
+      if (picked === token) {
+        clearPick();
+        return;
+      }
+      var parentSlot =
+        token.parentNode &&
+        token.parentNode.classList &&
+        token.parentNode.classList.contains("drop-slot")
+          ? token.parentNode
+          : null;
+      if (picked && parentSlot) {
+        moveTokenToSlot(parentSlot, picked);
+        clearPick();
+        return;
+      }
+      setPick(token);
+      return;
+    }
+
+    var slot = event.target.closest(".drop-slot");
+    if (slot && root.contains(slot) && picked) {
+      moveTokenToSlot(slot, picked);
+      clearPick();
+      return;
+    }
+
+    if (bank.contains(event.target) && picked && !bank.contains(picked)) {
+      bank.appendChild(picked);
+      clearPick();
+    }
+  });
+
+  root.querySelectorAll(".token").forEach(function (token) {
+    token.addEventListener("dragstart", function () {
+      clearPick();
+      dragged = token;
+    });
+  });
+
+  allSlots().forEach(function (slot) {
+    slot.addEventListener("dragover", function (event) {
+      event.preventDefault();
+      slot.classList.add("over");
+    });
+    slot.addEventListener("dragleave", function () {
+      slot.classList.remove("over");
+    });
+    slot.addEventListener("drop", function (event) {
+      event.preventDefault();
+      slot.classList.remove("over");
+      if (!dragged) return;
+      moveTokenToSlot(slot, dragged);
+      dragged = null;
+    });
+  });
+
+  bank.addEventListener("dragover", function (event) {
+    event.preventDefault();
+  });
+  bank.addEventListener("drop", function (event) {
+    event.preventDefault();
+    if (dragged) bank.appendChild(dragged);
+    dragged = null;
+  });
+
+  function takeFromBank(value) {
+    return [].slice.call(bank.querySelectorAll(".token")).find(function (token) {
+      return token.getAttribute("data-value") === value;
+    });
+  }
+
+  function markSelect(el, ok) {
+    if (!el) return;
+    el.classList.toggle("pbq-home-router-select--ok", ok === true);
+    el.classList.toggle("pbq-home-router-select--bad", ok === false);
+  }
+
+  function allFilled() {
+    var slotsOk = true;
+    allSlots().forEach(function (slot) {
+      if (!slot.querySelector(".token")) slotsOk = false;
+    });
+    return slotsOk && middleType.value;
+  }
+
+  function gradeSlots(showMarks) {
+    var allOk = true;
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var want = slotAnswer(slot);
+      var token = slot.querySelector(".token");
+      if (!token) {
+        slot.classList.add("incorrect");
+        allOk = false;
+        return;
+      }
+      var ok = token.getAttribute("data-value") === want;
+      slot.classList.add(ok ? "correct" : "incorrect");
+      if (!ok) allOk = false;
+    });
+    var middleOk = middleType.value === MIDDLE_SUBNET;
+    if (showMarks) {
+      markSelect(middleType, middleType.value ? middleOk : false);
+    }
+    return allOk && middleOk;
+  }
+
+  checkBtn.addEventListener("click", function () {
+    if (!allFilled()) {
+      result.className = "is-fail";
+      result.textContent = "Place every component and choose the middle subnet type, then check again.";
+      gradeSlots(true);
+      return;
+    }
+    if (gradeSlots(true)) {
+      result.className = "is-pass";
+      result.textContent = PASS_MSG;
+    } else {
+      result.className = "is-fail";
+      result.textContent =
+        "Not quite. WAF and static servers belong in public; load balancers bridge tiers; dynamic app servers need a private middle subnet; database stays in the bottom private zone.";
+    }
+  });
+
+  showBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    allSlots().forEach(function (slot) {
+      var token = takeFromBank(slotAnswer(slot));
+      if (token) {
+        slot.appendChild(token);
+        slot.classList.add("correct");
+      }
+    });
+    middleType.value = MIDDLE_SUBNET;
+    markSelect(middleType, true);
+    result.className = "is-pass";
+    result.textContent = PASS_MSG;
+  });
+
+  resetBtn.addEventListener("click", function () {
+    clearPick();
+    allSlots().forEach(function (slot) {
+      slot.classList.remove("correct", "incorrect", "over");
+      var token = slot.querySelector(".token");
+      if (token) bank.appendChild(token);
+    });
+    middleType.value = "";
+    markSelect(middleType, null);
+    result.className = "";
+    result.textContent = "";
+    shuffleBank();
+  });
+})();
+</script>

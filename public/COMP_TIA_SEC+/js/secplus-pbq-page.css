@@ -3845,6 +3845,518 @@ body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tab:hover {
   filter: brightness(0.98);
 }
 
+/* Cloud WAF — four-tab console (logging tab wraps to second row) */
+body.secplus-pbq-ui.pbq-waf-config .pbq-waf-tabs .pbq-home-router-tab {
+  flex: 0 0 calc(33.333% - 4px);
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-waf-tab--logging {
+  margin-top: 2px;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-waf-ticket__section {
+  margin: 14px 0 6px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-waf-ticket__section:first-of-type {
+  margin-top: 0;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-waf-ticket__text {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-mdm-config .pbq-home-router-pane[data-pane="ios"] .pbq-home-router-field label {
+  font-size: 0.86rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-alert-tabs .pbq-home-router-tab {
+  flex: 1 1 0;
+  min-width: 140px;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-help {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-help__title {
+  margin: 0 0 4px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-help__lead {
+  margin: 0 0 8px;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-help__list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+body.secplus-pbq-ui.pbq-siem-alert-config .pbq-siem-help__list li {
+  margin-bottom: 6px;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .layout--protocol-match {
+  align-items: start;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .bank--protocols {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .bank--protocols .token {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .layer-row--protocol {
+  grid-template-columns: minmax(108px, 0.34fr) minmax(0, 1fr);
+  align-items: center;
+  background: #fff;
+  border-color: #e2e8f0;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .layer-list-box--protocol {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.secplus-pbq-ui.pbq-protocol-match .drop-slot--protocol {
+  min-height: 44px;
+}
+
+body.secplus-pbq-ui.pbq-bct-sim.pbq-protocol-match .bank--protocols .token {
+  border-color: #005ecb;
+  background: rgba(0, 100, 230, 0.08);
+}
+
+body.secplus-pbq-ui.pbq-ir-match .bank--ir-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .token--ir-action {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .ir-phase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .ir-phase-bucket {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px 12px;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .ir-phase-bucket__title {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .drop-slot--ir-bucket {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 88px;
+  padding: 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .drop-slot--ir-bucket .token {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+body.secplus-pbq-ui.pbq-ir-match .token.token--ok {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-ir-match .token.token--bad {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-bct-sim.pbq-ir-match .bank--ir-actions .token {
+  border-color: #005ecb;
+  background: rgba(0, 100, 230, 0.08);
+}
+
+/* Site-to-site VPN configuration PBQ */
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-sim {
+  display: grid;
+  gap: 16px;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 18px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__site {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 9rem;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__hq {
+  padding: 8px 14px;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__lan {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__gw {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid #94a3b8;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.76rem;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__gw-label {
+  font-weight: 700;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__gw-ip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-topology__cloud {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-gateways {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 960px) {
+  body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-gateways {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-gateway h2 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-gateway__meta {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-phases {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-phases {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-phase {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fafbfc;
+}
+
+body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-phase__title {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1e40af;
+}
+
+/* Malware infection log analysis PBQ */
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-sim {
+  display: grid;
+  gap: 16px;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-hosts {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-hosts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__head h3 {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__ip {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 600;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__label select {
+  min-width: 8.5rem;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__log {
+  margin: 0;
+  max-height: 11rem;
+  overflow: auto;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  border-radius: 0;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__wrap {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table thead th {
+  padding: 10px 8px;
+  text-align: left;
+  background: #1e3a5f;
+  color: #fff;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tbody td {
+  padding: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+/* Web app subnet zoning PBQ */
+body.secplus-pbq-ui.pbq-subnet-zoning .layout--subnet-zoning {
+  align-items: start;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .bank--subnet-components {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .bank--subnet-components .token {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone {
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone--public {
+  border-color: #60a5fa;
+  background: #eff6ff;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone--middle {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone--private {
+  border-color: #34d399;
+  background: #ecfdf5;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone__title {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone__hint {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone__type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-zone__slots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-slot__label {
+  margin: 0 0 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.35;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .drop-slot--subnet {
+  min-height: 44px;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .drop-slot--subnet .token {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+body.secplus-pbq-ui.pbq-subnet-zoning .pbq-subnet-flow-arrow {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #64748b;
+  line-height: 1;
+}
+
+body.secplus-pbq-ui.pbq-bct-sim.pbq-subnet-zoning .bank--subnet-components .token {
+  border-color: #005ecb;
+  background: rgba(0, 100, 230, 0.08);
+}
+
 /* Security control placement — three-zone network diagram */
 body.secplus-pbq-ui.pbq-sec-control-map .layout--sec-control-map {
   display: grid;
