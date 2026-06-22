@@ -3,7 +3,7 @@
 
   var KEY = "ccnaDnd25";
   var BASE = "/CCNA-Study/CCNA_D_D/";
-  var finishHref = "/CCNA-Study/CCNA_Training_Portal.html";
+  var finishHref = "/ccna-home.html";
 
   function examSimEmbed() {
     try {

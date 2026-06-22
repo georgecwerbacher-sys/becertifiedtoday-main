@@ -2,9 +2,14 @@
   "use strict";
 
   var KEY = "secplusHomeSample";
+  var INDEX_KEY = "secplusHomeSampleIndex";
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
   var HASH_RE = /^#secplusHS=(\d+)$/;
   var FINISH_HOME = "/comptia-sec+-home.html";
+  var PBQ_LIBRARY_TOTAL = 34;
+  var SCORES_KEY = "pbqScores";
+  var suppressHashNav = false;
+  var navBooted = false;
 
   function readSession() {
     try {
@@ -34,14 +39,114 @@
     return session.order.length > 0;
   }
 
+  function writeSession(session) {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(session));
+    } catch (e) {}
+  }
+
+  function isMultiPbqSample(session) {
+    return isSimOnlySample(session) && session.order.length > 1;
+  }
+
   function isDarkWebSampleSim(session) {
     if (!isSimOnlySample(session) || !session.order.length) return false;
+    if (isMultiPbqSample(session)) return false;
     var item = session.order[0];
     return !!(
       item &&
       item.type === "sim" &&
       normalizePath(item.path).indexOf("dark-web-account-protection") !== -1
     );
+  }
+
+  function pbqMetaFromPage(session, index) {
+    var item = session.order[index] || {};
+    var titleEl = document.querySelector(".pbq-suite-header h1");
+    var objEl = document.querySelector(".pbq-suite-objectives");
+    var title = (item.shortTitle || item.title || (titleEl && titleEl.textContent) || "PBQ scenario").trim();
+    var objectives = (item.objectives || "").trim();
+    if (!objectives && objEl) {
+      objectives = (objEl.textContent || "")
+        .replace(/^covers sy0-701 objectives:\s*/i, "")
+        .trim();
+    }
+    return { title: title, objectives: objectives };
+  }
+
+  function readPbqResultFromDom() {
+    var passEl = document.querySelector(".result.pass, .result.is-pass, .is-pass[id$='result'], .actions .is-pass");
+    var failEl = document.querySelector(".result.fail, .result.is-fail, .is-fail[id$='result'], .actions .is-fail");
+    if (passEl) return { checked: true, passed: true };
+    if (failEl) return { checked: true, passed: false };
+    return { checked: false, passed: null };
+  }
+
+  function ensurePbqTimer(session, index) {
+    var now = Date.now();
+    if (!session.sampleStartedAt) session.sampleStartedAt = now;
+    if (session.currentPbqIndex !== index || !session.currentPbqStartedAt) {
+      session.currentPbqIndex = index;
+      session.currentPbqStartedAt = now;
+      writeSession(session);
+    }
+  }
+
+  function capturePbqScore(session, index) {
+    if (!isMultiPbqSample(session) || index < 0 || index >= session.order.length) return;
+    ensurePbqTimer(session, index);
+    var meta = pbqMetaFromPage(session, index);
+    var result = readPbqResultFromDom();
+    var elapsed = Math.max(0, Date.now() - (session.currentPbqStartedAt || Date.now()));
+    if (!Array.isArray(session[SCORES_KEY])) session[SCORES_KEY] = [];
+    session[SCORES_KEY][index] = {
+      index: index,
+      title: meta.title,
+      objectives: meta.objectives,
+      checked: result.checked,
+      passed: result.passed,
+      ms: elapsed,
+    };
+    writeSession(session);
+  }
+
+  function formatDuration(ms) {
+    var totalSec = Math.max(0, Math.round(ms / 1000));
+    var min = Math.floor(totalSec / 60);
+    var sec = totalSec % 60;
+    if (min <= 0) return sec + "s";
+    return min + "m " + sec + "s";
+  }
+
+  function pbqScoreRows(session) {
+    var rows = [];
+    var scores = session[SCORES_KEY] || [];
+    for (var i = 0; i < session.order.length; i++) {
+      var stored = scores[i];
+      var item = session.order[i] || {};
+      rows.push(
+        stored || {
+          index: i,
+          title: item.shortTitle || item.title || "PBQ " + (i + 1),
+          objectives: item.objectives || "",
+          checked: false,
+          passed: null,
+          ms: 0,
+        }
+      );
+    }
+    return rows;
+  }
+
+  function pbqNeedsWorkRows(rows) {
+    return rows.filter(function (row) {
+      return !row.checked || row.passed !== true;
+    });
+  }
+
+  function remainingPbqCount(session) {
+    var tried = session.order.length;
+    return Math.max(0, PBQ_LIBRARY_TOTAL - tried);
   }
 
   function usesMaskedNav(session) {
@@ -67,6 +172,24 @@
     return path;
   }
 
+  function isSampleContentPage() {
+    return document.body.classList.contains("secplus-sample-pbq");
+  }
+
+  function rememberRealPathForItem(item) {
+    if (!item) return;
+    try {
+      var path = item.type === "sim" ? item.path : MCQ_BASE + item.slug + ".html";
+      sessionStorage.setItem("ccnaLastRealPath", path);
+    } catch (e) {}
+  }
+
+  function indexFromHashOrStored(session) {
+    var hashIdx = hashIndex();
+    if (hashIdx >= 0 && hashIdx < session.order.length) return hashIdx;
+    return readStoredSampleIndex(session);
+  }
+
   function realItemHref(item, index) {
     var hash = "#secplusHS=" + index;
     if (item.type === "sim") return item.path + hash;
@@ -86,17 +209,39 @@
       el.href = navItemHref(session, item, index);
       el.onclick = function (ev) {
         ev.preventDefault();
+        persistSampleIndex(index);
         location.assign(realItemHref(item, index));
       };
     } else {
       el.href = realItemHref(item, index);
-      el.onclick = null;
+      el.onclick = function () {
+        persistSampleIndex(index);
+      };
     }
   }
 
   function hashIndex() {
     var m = HASH_RE.exec(location.hash || "");
-    return m ? parseInt(m[1], 10) : 0;
+    return m ? parseInt(m[1], 10) : -1;
+  }
+
+  function persistSampleIndex(index) {
+    if (typeof index !== "number" || index < 0) return;
+    try {
+      sessionStorage.setItem(INDEX_KEY, String(index));
+    } catch (e) {}
+  }
+
+  function readStoredSampleIndex(session) {
+    try {
+      var raw = sessionStorage.getItem(INDEX_KEY);
+      if (raw == null || raw === "") return -1;
+      var n = parseInt(raw, 10);
+      if (isNaN(n) || n < 0 || !session || n >= session.order.length) return -1;
+      return n;
+    } catch (e) {
+      return -1;
+    }
   }
 
   function normalizePath(path) {
@@ -116,26 +261,51 @@
   }
 
   function itemMatchesPath(item, path) {
-    if (item.type === "sim") return path === normalizePath(item.path);
+    if (item.type === "sim") {
+      var itemPath = normalizePath(item.path);
+      if (path === itemPath) return true;
+      var slug = itemPath.split("/").pop();
+      return !!(slug && path.endsWith("/" + slug));
+    }
     return !!(item.slug && path.endsWith("/" + item.slug.toLowerCase() + ".html"));
   }
 
-  function currentItemIndex(session) {
+  function indexForPath(session) {
     var path = pathnameForMatch();
     for (var i = 0; i < session.order.length; i++) {
       if (itemMatchesPath(session.order[i], path)) return i;
     }
-    var iHint = hashIndex();
-    if (iHint >= 0 && iHint < session.order.length && itemMatchesPath(session.order[iHint], path)) {
-      return iHint;
-    }
-    if (iHint >= 0 && iHint < session.order.length) return iHint;
     return -1;
+  }
+
+  function currentItemIndex(session) {
+    var pathIndex = indexForPath(session);
+    if (pathIndex >= 0) return pathIndex;
+
+    var hashIdx = hashIndex();
+    if (hashIdx >= 0 && hashIdx < session.order.length) return hashIdx;
+
+    return readStoredSampleIndex(session);
+  }
+
+  function syncSampleHash(index) {
+    if (typeof index !== "number" || index < 0) return;
+    if (hashIndex() === index) return;
+    try {
+      var url = sampleMaskBase() + "#secplusHS=" + index;
+      suppressHashNav = true;
+      history.replaceState(null, "", url);
+    } catch (e) {
+      // ignore
+    } finally {
+      suppressHashNav = false;
+    }
   }
 
   function clearSampleSession() {
     try {
       sessionStorage.removeItem(KEY);
+      sessionStorage.removeItem(INDEX_KEY);
       sessionStorage.removeItem("secplusUrlMaskPath");
       sessionStorage.removeItem("secplusSampleKind");
     } catch (e) {}
@@ -161,20 +331,147 @@
 
   function portalUpsellLead(session) {
     var kind = sampleKindLabel();
+    var access =
+      "Get <strong>10-day full access</strong> for <strong>$9.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review—all in your browser.";
+    if (isMultiPbqSample(session)) {
+      var remaining = remainingPbqCount(session);
+      return (
+        "You tried <strong>" +
+        session.order.length +
+        "</strong> of our <strong>" +
+        PBQ_LIBRARY_TOTAL +
+        " PBQ scenarios</strong>. <strong>" +
+        remaining +
+        " more are waiting for you to give them a try</strong>—plus <strong>1000+ SY0-701 questions</strong>. " +
+        access
+      );
+    }
+    var readiness =
+      "<strong>1000+ SY0-701 questions</strong> and <strong>34 PBQ scenarios</strong> are waiting to see if you&rsquo;re ready.";
     if (kind === "simulation" && isDarkWebSampleSim(session)) {
       return (
-        "You finished the <strong>BeCertifiedToday.com</strong> dark web IR preview (case IR-2024-0847)—the same simulation in the paid library. " +
-        "Unlock <strong>1000+ questions</strong>, <strong>34 PBQ scenarios</strong>, and a <strong>90-minute timed exam</strong> with detailed domain scorecard review."
+        "You finished the dark web IR preview (case IR-2024-0847). " +
+        readiness +
+        " " +
+        access
       );
     }
     if (kind === "simulation") {
-      return (
-        "You finished the performance-based preview. Unlock the full library: <strong>1000+ SY0-701 questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed simulation</strong> with scorecard review."
-      );
+      return "You finished the performance-based preview. " + readiness + " " + access;
     }
-    return (
-      "You finished the sample questions. Unlock full access: <strong>1000+ questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed exam</strong> with domain scorecard review."
-    );
+    return "You finished the sample questions. " + readiness + " " + access;
+  }
+
+  function showSampleScorecard(session, finishHome) {
+    if (document.getElementById("secplusSamplePbqScorecard")) return;
+
+    ensureSampleLeadAnalytics();
+    logSecplusSampleEvent("sample_scorecard_shown");
+
+    var rows = pbqScoreRows(session);
+    var needsWork = pbqNeedsWorkRows(rows);
+    var totalMs = rows.reduce(function (sum, row) {
+      return sum + (row.ms || 0);
+    }, 0);
+    if (session.sampleStartedAt) {
+      totalMs = Math.max(totalMs, Date.now() - session.sampleStartedAt);
+    }
+
+    var summaryHtml = rows
+      .map(function (row) {
+        var status;
+        if (!row.checked) status = "Not checked";
+        else if (row.passed) status = "Correct";
+        else status = "Review needed";
+        var statusClass = row.passed ? "secplus-sample-scorecard__status--pass" : "secplus-sample-scorecard__status--review";
+        if (!row.checked) statusClass = "secplus-sample-scorecard__status--pending";
+        return (
+          "<li><span class=\"secplus-sample-scorecard__item-title\">" +
+          row.title +
+          "</span><span class=\"secplus-sample-scorecard__item-meta\">" +
+          formatDuration(row.ms || 0) +
+          " · SY0-701 " +
+          (row.objectives || "objectives") +
+          "</span><span class=\"secplus-sample-scorecard__status " +
+          statusClass +
+          "\">" +
+          status +
+          "</span></li>"
+        );
+      })
+      .join("");
+
+    var focusHtml;
+    if (!needsWork.length) {
+      focusHtml =
+        "<p class=\"secplus-sample-scorecard-focus__lead\">Strong work on all three preview scenarios. Keep rehearsing under time pressure before exam day.</p>";
+    } else {
+      focusHtml =
+        "<p class=\"secplus-sample-scorecard-focus__lead\">Focus next on these preview scenarios and objectives:</p><ul class=\"secplus-sample-scorecard-focus__list\">" +
+        needsWork
+          .map(function (row) {
+            return (
+              "<li><strong>" +
+              row.title +
+              "</strong>" +
+              (row.objectives ? " — objectives " + row.objectives : "") +
+              (!row.checked ? " · use Check Answer before moving on" : "") +
+              "</li>"
+            );
+          })
+          .join("") +
+        "</ul>";
+    }
+
+    var root = document.createElement("div");
+    root.id = "secplusSamplePbqScorecard";
+    root.className = "secplus-sample-scorecard-root";
+    root.setAttribute("role", "presentation");
+    root.innerHTML =
+      '<div class="secplus-sample-scorecard-backdrop" tabindex="-1"></div>' +
+      '<div class="secplus-sample-scorecard-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSamplePbqScorecardTitle" tabindex="-1">' +
+      '<p class="secplus-sample-scorecard-eyebrow">PBQ preview · 3 of ' +
+      PBQ_LIBRARY_TOTAL +
+      "</p>" +
+      '<h2 id="secplusSamplePbqScorecardTitle">Your sample scorecard</h2>' +
+      '<p class="secplus-sample-scorecard-lead">Total time: <strong>' +
+      formatDuration(totalMs) +
+      "</strong></p>" +
+      '<ul class="secplus-sample-scorecard-list">' +
+      summaryHtml +
+      "</ul>" +
+      '<section class="secplus-sample-scorecard-focus" aria-label="Where to focus">' +
+      "<h3>Where to focus</h3>" +
+      focusHtml +
+      "</section>" +
+      '<button type="button" class="secplus-sample-scorecard-close">Close scorecard</button>' +
+      "</div>";
+
+    document.body.appendChild(root);
+    document.body.classList.add("secplus-sample-scorecard-open");
+
+    var panel = root.querySelector(".secplus-sample-scorecard-panel");
+    var prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function closeScorecard() {
+      root.remove();
+      document.body.classList.remove("secplus-sample-scorecard-open");
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", onKey);
+      showPortalUpsellModal(finishHome);
+    }
+
+    function onKey(ev) {
+      if (ev.key === "Escape") {
+        ev.preventDefault();
+        closeScorecard();
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    root.querySelector(".secplus-sample-scorecard-close").addEventListener("click", closeScorecard);
+    if (panel) panel.focus();
   }
 
   function showPortalUpsellModal(finishHome) {
@@ -195,8 +492,8 @@
       '<div class="secplus-sample-upsell-backdrop" data-secplus-upsell-dismiss tabindex="-1"></div>' +
       '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSamplePortalUpsellTitle" tabindex="-1">' +
       '<button type="button" class="secplus-sample-upsell-close" data-secplus-upsell-dismiss aria-label="Close dialog">×</button>' +
-      '<p class="secplus-sample-upsell-eyebrow">SY0-701 exam prep</p>' +
-      '<h2 id="secplusSamplePortalUpsellTitle">Ready for the full library?</h2>' +
+      '<p class="secplus-sample-upsell-eyebrow">10-day full access · $9.99</p>' +
+      '<h2 id="secplusSamplePortalUpsellTitle">Are you ready?</h2>' +
       '<p class="secplus-sample-upsell-lead">' +
       lead +
       "</p>" +
@@ -246,6 +543,13 @@
   }
 
   function completeSample(session, finishHome) {
+    if (isMultiPbqSample(session)) {
+      var index = currentItemIndex(session);
+      if (index < 0) index = session.order.length - 1;
+      capturePbqScore(session, index);
+      showSampleScorecard(session, finishHome);
+      return;
+    }
     if (shouldOfferPortalUpsell(session)) {
       showPortalUpsellModal(finishHome);
       return;
@@ -279,13 +583,36 @@
   }
 
   function reconcileLocation(session) {
-    var index = currentItemIndex(session);
-    if (index >= 0) return index;
-    var hint = hashIndex();
-    if (hint >= 0 && hint < session.order.length) {
-      location.replace(realItemHref(session.order[hint], hint));
+    var pathIndex = indexForPath(session);
+    if (pathIndex >= 0) {
+      persistSampleIndex(pathIndex);
+      rememberRealPathForItem(session.order[pathIndex]);
+      return pathIndex;
+    }
+
+    if (isSampleContentPage()) {
+      var onPage = indexFromHashOrStored(session);
+      if (onPage >= 0) {
+        persistSampleIndex(onPage);
+        rememberRealPathForItem(session.order[onPage]);
+        return onPage;
+      }
+    }
+
+    var hashIdx = hashIndex();
+    if (hashIdx >= 0 && hashIdx < session.order.length) {
+      persistSampleIndex(hashIdx);
+      location.replace(realItemHref(session.order[hashIdx], hashIdx));
       return -2;
     }
+
+    var stored = readStoredSampleIndex(session);
+    if (stored >= 0) {
+      persistSampleIndex(stored);
+      location.replace(realItemHref(session.order[stored], stored));
+      return -2;
+    }
+
     location.replace(realItemHref(session.order[0], 0));
     return -2;
   }
@@ -294,27 +621,52 @@
     return realItemHref(item, index);
   }
 
+  function navigateToSampleItem(session, item, index) {
+    if (isMultiPbqSample(session)) {
+      var current = currentItemIndex(session);
+      if (current >= 0) capturePbqScore(session, current);
+    }
+    persistSampleIndex(index);
+    session.currentPbqIndex = index;
+    writeSession(session);
+    rememberRealPathForItem(item);
+    location.assign(realItemHref(item, index));
+  }
+
   function ensureSimNav(session, index) {
     var item = session.order[index];
     if (!item || item.type !== "sim") return null;
 
+    var multiPbq = isMultiPbqSample(session);
     var nav = document.querySelector("nav.secplus-sample-sim-nav");
     if (!nav) {
       nav = document.createElement("nav");
       nav.className = "secplus-sample-sim-nav";
       nav.setAttribute("aria-label", "Sample navigation");
-      var backLink = isDarkWebSampleSim(session)
-        ? ""
-        : '<a class="secplus-sample-sim-nav__prev" href="#">Back</a>';
+      var backLink =
+        isDarkWebSampleSim(session) && !multiPbq
+          ? ""
+          : '<a class="secplus-sample-sim-nav__prev" href="#">Back</a>';
       nav.innerHTML =
         '<a class="secplus-sample-sim-nav__home" href="#">Home</a>' +
         backLink +
         '<span class="secplus-sample-sim-nav__progress" aria-live="polite"></span>' +
         '<a class="secplus-sample-sim-nav__next" href="#">Next</a>';
       document.body.appendChild(nav);
-    } else if (isDarkWebSampleSim(session)) {
+    } else if (isDarkWebSampleSim(session) && !multiPbq) {
       var staleBack = nav.querySelector(".secplus-sample-sim-nav__prev");
       if (staleBack) staleBack.remove();
+    } else if (multiPbq && !nav.querySelector(".secplus-sample-sim-nav__prev")) {
+      var homeEl = nav.querySelector(".secplus-sample-sim-nav__home");
+      var progressEl = nav.querySelector(".secplus-sample-sim-nav__progress");
+      var nextEl = nav.querySelector(".secplus-sample-sim-nav__next");
+      var back = document.createElement("a");
+      back.className = "secplus-sample-sim-nav__prev";
+      back.href = "#";
+      back.textContent = "Back";
+      if (progressEl) nav.insertBefore(back, progressEl);
+      else if (nextEl) nav.insertBefore(back, nextEl);
+      else nav.appendChild(back);
     }
 
     var finishHome = session.finishHome || FINISH_HOME;
@@ -343,6 +695,17 @@
     if (usesMaskedNav(session)) {
       document.body.classList.add("secplus-home-sample-sim");
     }
+
+    document.querySelectorAll(".site-logo-corner").forEach(function (logo) {
+      logo.href = finishHome;
+      logo.setAttribute("aria-label", "Return to Security+ home");
+      logo.onclick = function () {
+        clearSampleSession();
+      };
+    });
+
+    var portalFooter = document.getElementById("pbqPortalFooter");
+    if (portalFooter) portalFooter.hidden = true;
 
     var homeBar = nav.querySelector(".secplus-sample-sim-nav__home");
     if (homeBar) {
@@ -394,7 +757,10 @@
     if (els.progressEl) {
       var item = order[index];
       if (item && item.type === "sim") {
-        if (isDarkWebSampleSim(session)) {
+        if (isMultiPbqSample(session)) {
+          var label = item.shortTitle || item.title || "PBQ scenario";
+          els.progressEl.textContent = "PBQ " + (index + 1) + " of " + order.length + " · " + label;
+        } else if (isDarkWebSampleSim(session)) {
           els.progressEl.textContent = "BeCertifiedToday.com IR · guest sample";
         } else {
           els.progressEl.textContent = "Simulation — item " + (index + 1) + " of " + order.length;
@@ -415,22 +781,33 @@
       }
     }
 
-    if (index !== hashIndex()) {
-      try {
-        var url =
-          usesMaskedNav(session)
-            ? sampleMaskBase() + "#secplusHS=" + index
-            : location.pathname + location.search + "#secplusHS=" + index;
-        history.replaceState(null, "", url);
-      } catch (e) {}
+    persistSampleIndex(index);
+
+    if (usesMaskedNav(session)) {
+      syncSampleHash(index);
+    } else {
+      var hashNow = hashIndex();
+      if (hashNow !== index) {
+        try {
+          history.replaceState(null, "", location.pathname + location.search + "#secplusHS=" + index);
+        } catch (e) {}
+      }
     }
 
     var finishHome = session.finishHome || FINISH_HOME;
     var maskedNav = usesMaskedNav(session);
 
-    if (els.prevEl && !isDarkWebSampleSim(session)) {
+    if (els.prevEl && !(isDarkWebSampleSim(session) && !isMultiPbqSample(session))) {
       if (index > 0) {
-        wireNavLink(els.prevEl, session, order[index - 1], index - 1);
+        if (isMultiPbqSample(session)) {
+          els.prevEl.href = navItemHref(session, order[index - 1], index - 1);
+          els.prevEl.onclick = function (ev) {
+            ev.preventDefault();
+            navigateToSampleItem(session, order[index - 1], index - 1);
+          };
+        } else {
+          wireNavLink(els.prevEl, session, order[index - 1], index - 1);
+        }
         els.prevEl.textContent = "Back";
         els.prevEl.classList.remove("nav-link--disabled");
         els.prevEl.removeAttribute("aria-hidden");
@@ -453,13 +830,21 @@
 
     if (els.nextEl) {
       if (index + 1 < order.length) {
-        wireNavLink(els.nextEl, session, order[index + 1], index + 1);
+        if (isMultiPbqSample(session)) {
+          els.nextEl.href = navItemHref(session, order[index + 1], index + 1);
+          els.nextEl.onclick = function (ev) {
+            ev.preventDefault();
+            navigateToSampleItem(session, order[index + 1], index + 1);
+          };
+        } else {
+          wireNavLink(els.nextEl, session, order[index + 1], index + 1);
+        }
         els.nextEl.textContent = "Next";
         els.nextEl.classList.remove("nav-link--disabled");
         els.nextEl.removeAttribute("aria-hidden");
       } else {
         els.nextEl.href = finishHome;
-        els.nextEl.textContent = "Finish sample";
+        els.nextEl.textContent = isMultiPbqSample(session) ? "View scorecard" : "Finish sample";
         els.nextEl.onclick = function (ev) {
           ev.preventDefault();
           completeSample(session, finishHome);
@@ -467,14 +852,22 @@
       }
     }
 
-    var home = document.querySelector("a.nav-home");
-    if (home) {
-      home.href = finishHome;
-      home.textContent = "Home";
-      home.onclick = function () {
+    var home = document.querySelectorAll("a.nav-home");
+    home.forEach(function (link) {
+      link.href = finishHome;
+      link.textContent = "Home";
+      link.onclick = function () {
         clearSampleSession();
       };
-    }
+    });
+
+    document.querySelectorAll(".pbq-portal-footer__home").forEach(function (link) {
+      link.href = finishHome;
+      link.textContent = "Exit sample";
+      link.onclick = function () {
+        clearSampleSession();
+      };
+    });
 
     if (els.homeEl) {
       els.homeEl.href = finishHome;
@@ -495,6 +888,9 @@
       ".secplus-sample-sim-nav a:hover{filter:brightness(1.08)}" +
       ".secplus-sample-sim-nav__progress{font-size:.85rem;font-weight:700;color:#b8c3d6}" +
       "body:has(.secplus-sample-sim-nav){padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))!important}" +
+      "body.secplus-home-sample-sim .pbq-suite-footer .question-nav--footer," +
+      "body.secplus-home-sample-sim #pbqPortalFooter," +
+      "body.secplus-sample-pbq .pbq-suite-footer .question-nav--footer{display:none!important}" +
       "a.home-link.secplus-sample-exit{right:auto;left:14px}" +
       ".secplus-sample-upsell-root{position:fixed;inset:0;z-index:20002;display:flex;align-items:center;justify-content:center;padding:16px}" +
       ".secplus-sample-upsell-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.72);backdrop-filter:blur(4px)}" +
@@ -507,40 +903,114 @@
       ".secplus-sample-upsell-primary{display:inline-flex;justify-content:center;align-items:center;text-decoration:none;background:#5b21b6;border:1px solid #7c3aed;color:#f3e8ff;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;text-align:center;cursor:pointer;width:100%;box-sizing:border-box}" +
       ".secplus-sample-upsell-primary:hover{filter:brightness(1.08)}" +
       ".secplus-sample-upsell-secondary{border:1px solid rgba(159,176,204,.45);background:transparent;color:#e6edf3;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}" +
-      ".secplus-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}";
+      ".secplus-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}" +
+      ".secplus-sample-scorecard-root{position:fixed;inset:0;z-index:20001;display:flex;align-items:center;justify-content:center;padding:16px}" +
+      ".secplus-sample-scorecard-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.78);backdrop-filter:blur(4px)}" +
+      ".secplus-sample-scorecard-panel{position:relative;z-index:1;width:min(560px,100%);max-height:min(92vh,720px);overflow:auto;margin:0;padding:clamp(20px,4vw,28px) clamp(18px,3.5vw,26px) 22px;border-radius:16px;border:1px solid #7c3aed;background:linear-gradient(165deg,rgba(22,32,52,.98) 0%,rgba(14,20,36,.99) 100%);color:#e6edf3;box-shadow:0 24px 64px rgba(0,0,0,.45)}" +
+      ".secplus-sample-scorecard-eyebrow{margin:0 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#c4b5fd}" +
+      ".secplus-sample-scorecard-panel h2{margin:0 0 10px;font-size:clamp(1.15rem,3vw,1.45rem);line-height:1.25;color:#fff}" +
+      ".secplus-sample-scorecard-lead{margin:0 0 14px;font-size:.95rem;color:#cbd5e1}" +
+      ".secplus-sample-scorecard-list{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}" +
+      ".secplus-sample-scorecard-list li{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 14px;border:1px solid rgba(124,58,237,.35);border-radius:12px;background:rgba(255,255,255,.03)}" +
+      ".secplus-sample-scorecard__item-title{grid-column:1;font-weight:800;color:#fff}" +
+      ".secplus-sample-scorecard__item-meta{grid-column:1;font-size:.82rem;color:#9fb0cc}" +
+      ".secplus-sample-scorecard__status{grid-column:2;grid-row:1 / span 2;align-self:center;font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}" +
+      ".secplus-sample-scorecard__status--pass{color:#86efac}" +
+      ".secplus-sample-scorecard__status--review{color:#fcd34d}" +
+      ".secplus-sample-scorecard__status--pending{color:#9fb0cc}" +
+      ".secplus-sample-scorecard-focus{margin:0 0 18px;padding-top:4px;border-top:1px solid rgba(124,58,237,.25)}" +
+      ".secplus-sample-scorecard-focus h3{margin:0 0 8px;font-size:1rem;color:#fff}" +
+      ".secplus-sample-scorecard-focus__lead{margin:0;font-size:.9rem;line-height:1.5;color:#cbd5e1}" +
+      ".secplus-sample-scorecard-focus__list{margin:8px 0 0;padding-left:1.1rem;color:#cbd5e1;font-size:.9rem;line-height:1.45}" +
+      ".secplus-sample-scorecard-close{display:inline-flex;justify-content:center;align-items:center;width:100%;border:0;background:#5b21b6;border:1px solid #7c3aed;color:#f3e8ff;border-radius:10px;padding:12px 18px;font:inherit;font-weight:800;cursor:pointer;box-sizing:border-box}" +
+      ".secplus-sample-scorecard-close:hover{filter:brightness(1.08)}";
     document.head.appendChild(s);
   }
 
+  function isPbqSampleBundleSession(session) {
+    if (!isSimOnlySample(session) || !session.order.length) return false;
+    for (var i = 0; i < session.order.length; i++) {
+      var item = session.order[i];
+      if (!item || item.type !== "sim") return false;
+      if (normalizePath(item.path).indexOf("/sec+_samples/pbq/") === -1) return false;
+    }
+    return true;
+  }
+
+  function stalePbqBundleSession(session) {
+    if (!session || !Array.isArray(session.order)) return false;
+    var expected = session.samplePbqBundleCount;
+    if (typeof expected !== "number" || expected < 2) expected = 3;
+
+    if (isPbqSampleBundleSession(session)) {
+      return session.order.length < expected;
+    }
+
+    try {
+      if (sessionStorage.getItem("secplusSampleKind") === "sim-dark-web") {
+        return session.order.length < expected;
+      }
+    } catch (e) {}
+
+    return false;
+  }
+
   function run() {
+    if (navBooted) return;
     if (isSecplusSimStagingPath(pathnameForMatch())) return;
     var session = readSession();
     if (!session) return;
+    if (stalePbqBundleSession(session)) {
+      clearSampleSession();
+      location.replace("/secplus-sample?track=sim-dark-web");
+      return;
+    }
     injectStyles();
     var index = reconcileLocation(session);
     if (index < 0) return;
+    navBooted = true;
+    if (isMultiPbqSample(session)) ensurePbqTimer(session, index);
     applyNav(session, index);
   }
 
   function onHashChange() {
+    if (suppressHashNav) return;
+    if (!/^#secplusHS=\d+$/i.test(location.hash || "")) return;
     var session = readSession();
     if (!session || !usesMaskedNav(session)) return;
+
+    var pathIndex = indexForPath(session);
+    if (pathIndex >= 0) {
+      persistSampleIndex(pathIndex);
+      if (isMultiPbqSample(session)) ensurePbqTimer(session, pathIndex);
+      applyNav(session, pathIndex);
+      return;
+    }
+
+    if (isSampleContentPage()) {
+      var onPage = indexFromHashOrStored(session);
+      if (onPage >= 0) {
+        persistSampleIndex(onPage);
+        rememberRealPathForItem(session.order[onPage]);
+        if (isMultiPbqSample(session)) ensurePbqTimer(session, onPage);
+        applyNav(session, onPage);
+      }
+      return;
+    }
+
     var hint = hashIndex();
     if (hint < 0 || hint >= session.order.length) return;
-    var item = session.order[hint];
-    if (!itemMatchesPath(item, pathnameForMatch())) {
-      location.replace(realItemHref(item, hint));
-    }
+    persistSampleIndex(hint);
+    location.replace(realItemHref(session.order[hint], hint));
   }
 
   function scheduleRuns() {
     run();
-    setTimeout(run, 0);
-    window.addEventListener("load", run);
     window.addEventListener("hashchange", onHashChange);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", scheduleRuns);
+    document.addEventListener("DOMContentLoaded", scheduleRuns, { once: true });
   } else {
     scheduleRuns();
   }

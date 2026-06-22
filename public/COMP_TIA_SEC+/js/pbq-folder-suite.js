@@ -109,6 +109,16 @@
     });
   }
 
+  function isSamplePbqPage() {
+    return document.body.classList.contains("secplus-sample-pbq");
+  }
+
+  function sectionHashId() {
+    var raw = (location.hash || "").replace(/^#/, "");
+    if (!raw || /^secplusHS=\d+$/i.test(raw)) return "";
+    return raw;
+  }
+
   function setActiveSection(sectionId) {
     document.querySelectorAll(".pbq-suite-section").forEach(function (panel) {
       var on = panel.id === sectionId;
@@ -120,7 +130,7 @@
       btn.classList.toggle("is-active", on);
       btn.setAttribute("aria-current", on ? "true" : "false");
     });
-    if (sectionId && history.replaceState) {
+    if (sectionId && history.replaceState && !isSamplePbqPage()) {
       history.replaceState(null, "", "#" + sectionId);
     }
     var panel = document.getElementById(sectionId);
@@ -162,7 +172,7 @@
         setActiveSection(btn.getAttribute("data-section"));
       });
     });
-    var hash = (location.hash || "").replace(/^#/, "");
+    var hash = sectionHashId();
     var defaultId = window.PBQ_SUITE_DEFAULT_SECTION || "";
     var first =
       document.querySelector('.pbq-suite-folder__item[data-section="' + hash + '"]') ||
@@ -171,10 +181,16 @@
     if (first) {
       setActiveSection(first.getAttribute("data-section"));
     } else if (defaultId && document.getElementById(defaultId)) {
-      setActiveSection(defaultId);
+      var defaultPanel = document.getElementById(defaultId);
+      if (isSamplePbqPage() && defaultPanel.classList.contains("is-active")) {
+        bindModalTriggers(defaultPanel);
+      } else {
+        setActiveSection(defaultId);
+      }
     }
     window.addEventListener("hashchange", function () {
-      var id = (location.hash || "").replace(/^#/, "");
+      if (isSamplePbqPage()) return;
+      var id = sectionHashId();
       if (id && document.getElementById(id)) setActiveSection(id);
     });
     bindModalTriggers(document);

@@ -49,7 +49,7 @@
       headline: "Security+ PBQ Practice in Your Browser — Chain Labs & IR Scenarios",
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
-        "Try a <strong>free dark web IR simulation</strong>, then unlock 28 PBQ scenarios + 1000+ questions for <strong>$9.99 / 10 days</strong>.",
+        "Try a <strong>free dark web IR simulation</strong>, then unlock 34 PBQ scenarios + 1000+ questions for <strong>$9.99 / 10 days</strong>.",
       ctaPrimary: "Try free dark web PBQ sample",
       ctaHref: SAMPLE_PBQ,
       stickyPrimary: "Free PBQ sample",
@@ -71,7 +71,7 @@
       eyebrow: "SY0-701 · federal & contractor roles",
       headline: "Security+ SY0-701 Prep — Browser Practice for DoD & Contractor Requirements",
       lead:
-        "Many federal and defense-contractor roles expect Security+ before you start work. Practice <strong>1000+ SY0-701 questions</strong> and <strong>28 PBQ scenarios</strong> in your browser on duty laptop, CONUS, or TDY—no install. " +
+        "Many federal and defense-contractor roles expect Security+ before you start work. Practice <strong>1000+ SY0-701 questions</strong> and <strong>34 PBQ scenarios</strong> in your browser on duty laptop, CONUS, or TDY—no install. " +
         "Confirm your requirement with your manager. Try <strong>free samples</strong> first.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",

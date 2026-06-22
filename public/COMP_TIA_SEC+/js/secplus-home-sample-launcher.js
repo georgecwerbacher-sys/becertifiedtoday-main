@@ -73,6 +73,17 @@
   }
 
   function buildSimOrder(blueprint, simKey) {
+    if (simKey === "dark-web" && Array.isArray(blueprint.samplePbqBundle) && blueprint.samplePbqBundle.length) {
+      return blueprint.samplePbqBundle.map(function (entry) {
+        return {
+          type: "sim",
+          path: entry.path,
+          title: entry.title || "Performance-based simulation",
+          shortTitle: entry.shortTitle || entry.title || "PBQ scenario",
+          objectives: entry.objectives || "",
+        };
+      });
+    }
     var sims = blueprint.simulationsByKey || {};
     var sim = sims[simKey];
     if (!sim || !sim.path) return [];
@@ -81,6 +92,8 @@
         type: "sim",
         path: sim.path,
         title: sim.title || "Performance-based simulation",
+        shortTitle: sim.title || "PBQ scenario",
+        objectives: sim.objectives || "",
       },
     ];
   }
@@ -113,23 +126,31 @@
       finishHome: finishHome || blueprint.finishHome || "/comptia-sec+-home.html",
       title: blueprint.title || "Security+ sample",
     };
+    if (
+      Array.isArray(blueprint.samplePbqBundle) &&
+      blueprint.samplePbqBundle.length &&
+      order.length === blueprint.samplePbqBundle.length &&
+      order.every(function (item, i) {
+        return item && item.type === "sim" && item.path === blueprint.samplePbqBundle[i].path;
+      })
+    ) {
+      session.samplePbqBundleVersion = blueprint.schemaVersion || 1;
+      session.samplePbqBundleCount = order.length;
+      try {
+        sessionStorage.setItem("secplusSampleKind", "sim-dark-web");
+      } catch (e) {}
+    }
     try {
       sessionStorage.setItem(KEY, JSON.stringify(session));
       sessionStorage.setItem("secplusUrlMaskPath", "/secplus-sample");
+      sessionStorage.setItem("secplusHomeSampleIndex", "0");
+      sessionStorage.setItem(
+        "ccnaLastRealPath",
+        order[0].type === "sim" ? order[0].path : MCQ_BASE + order[0].slug + ".html"
+      );
       sessionStorage.removeItem("secplusPractice");
       sessionStorage.removeItem("ccnpHomeSecplusSimSample");
     } catch (e) {}
-    var singleTrackSample =
-      order.every(function (item) {
-        return item && item.type === "mcq";
-      }) ||
-      order.every(function (item) {
-        return item && item.type === "sim";
-      });
-    if (singleTrackSample) {
-      location.replace("/secplus-sample#secplusHS=0");
-      return;
-    }
     location.replace(itemHref(order[0], 0));
   }
 

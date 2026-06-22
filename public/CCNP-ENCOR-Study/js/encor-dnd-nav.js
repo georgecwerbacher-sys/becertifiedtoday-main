@@ -7,7 +7,7 @@
   var REVIEW_QUEUE_KEY = "ccnpReviewQueue";
   var DND_BASE = "/CCNP-ENCOR-Study/CCNP-ENCOR-Drag-Drop/";
   var MCQ_BASE = "/CCNP-ENCOR-Study/ENCOR_Questions/";
-  var finishHref = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+  var finishHref = "/ccnp-home.html";
   var STUDY_CFG_URL = "/CCNP-ENCOR-Study/js/study-config.json";
 
   var cfgPromise = null;

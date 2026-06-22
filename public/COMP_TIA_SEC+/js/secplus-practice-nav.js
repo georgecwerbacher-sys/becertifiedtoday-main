@@ -5,6 +5,7 @@
   var REVIEW_MARKS_KEY = "secplusMarkForReview";
   var SECPLUS_HOME_SAMPLE_KEY = "secplusHomeSample";
   var BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
+  var PUBLIC_HOME = "/comptia-sec+-home.html";
   var PORTAL = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
   var TOPIC_MAP_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-map.json";
   var SECPLUS_STATIC_SAMPLE_TOTAL = 3;
@@ -91,8 +92,15 @@
     }
   }
 
+  function isSamplePbqPage() {
+    return /\/sec\+_samples\/pbq\//i.test(location.pathname || "");
+  }
+
   function finishHrefForSession() {
-    return guestSampleActive() ? "/comptia-sec+-home.html" : PORTAL;
+    if (guestSampleActive() || isStaticSecplusSamplePage() || isSamplePbqPage()) {
+      return PUBLIC_HOME;
+    }
+    return PORTAL;
   }
 
   function staticSampleQuestionIndex() {
@@ -535,7 +543,7 @@
         els.nextEl.classList.remove("nav-link--disabled");
         els.nextEl.removeAttribute("aria-hidden");
       } else {
-        els.nextEl.href = PORTAL;
+        els.nextEl.href = guestSampleActive() || isSamplePbqPage() ? PUBLIC_HOME : PORTAL;
         els.nextEl.textContent = "Finish";
       }
     }

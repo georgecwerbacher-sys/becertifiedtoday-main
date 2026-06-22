@@ -122,7 +122,7 @@
   }
 
   function activeHomeHref() {
-    return isSampleMode() ? GUEST_HOME : PORTAL;
+    return GUEST_HOME;
   }
 
   function getSubjects() {

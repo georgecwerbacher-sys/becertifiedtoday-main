@@ -1,24 +1,11 @@
 /**
- * Registered ENCOR practice pages: Home / logo links → ENCOR_Training_Portal.html
- * (guest sample mode keeps ccnp-home.html).
+ * Registered ENCOR practice pages: Home / logo links → ccnp-home.html only.
+ * Portal entry is the top-right link on public/ccnp-home.html (not content pages).
  */
 (function () {
   "use strict";
 
-  var PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
-  var GUEST_HOME = "/ccnp-home.html";
-
-  function isGuestSample() {
-    if (typeof window.isCcnpGuestSample === "function") {
-      return window.isCcnpGuestSample();
-    }
-    try {
-      if (new URLSearchParams(location.search).get("sample") === "1") return true;
-      return sessionStorage.getItem("ccnpUrlMaskPath") === "/sample";
-    } catch (e) {
-      return false;
-    }
-  }
+  var PUBLIC_HOME = "/ccnp-home.html";
 
   function isRegisteredEncorPath() {
     var p = (location.pathname || "").toLowerCase();
@@ -32,21 +19,14 @@
 
   function wireEncorPortalHomeLinks() {
     if (!isRegisteredEncorPath()) return;
-    var target = isGuestSample() ? GUEST_HOME : PORTAL;
-    document.querySelectorAll("a.home-key, a.sim-nav-home").forEach(function (a) {
-      a.setAttribute("href", target);
+    document.querySelectorAll("a.home-key, a.sim-nav-home, a.site-logo-corner").forEach(function (a) {
+      a.setAttribute("href", PUBLIC_HOME);
     });
-    if (!isGuestSample()) {
-      document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
-        a.setAttribute("href", PORTAL);
-        a.setAttribute("aria-label", "Go to ENCOR training portal");
-      });
-      document.querySelectorAll("#ccnpQToolbar a").forEach(function (a) {
-        if ((a.textContent || "").trim() === "Home") {
-          a.setAttribute("href", PORTAL);
-        }
-      });
-    }
+    document.querySelectorAll("#ccnpQToolbar a").forEach(function (a) {
+      if ((a.textContent || "").trim() === "Home") {
+        a.setAttribute("href", PUBLIC_HOME);
+      }
+    });
   }
 
   window.bccWireEncorPortalHomeLinks = wireEncorPortalHomeLinks;

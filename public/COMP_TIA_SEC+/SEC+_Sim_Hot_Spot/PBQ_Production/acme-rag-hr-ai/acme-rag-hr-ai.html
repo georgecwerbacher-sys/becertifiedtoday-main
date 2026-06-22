@@ -21,7 +21,7 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell question-shell--suite">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+    <a class="site-logo-corner" href="/comptia-sec+-home.html" aria-label="Return to Security+ home">
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">
@@ -53,13 +53,13 @@
           <p id="acme-exhibits-arch-heading" class="pbq-ai-arch__banner">BeCertifiedToday HR RAG — Architecture (as deployed)</p>
           <div class="pbq-ai-arch__body">
             <div class="pbq-ai-arch__flow">
-              <a class="pbq-ai-node" href="#exhibit-chat-log">Employee browser</a>
+              <a class="pbq-ai-node" href="#acme-exhibits-exhibit-chat-log">Employee browser</a>
               <span aria-hidden="true">→</span>
-              <a class="pbq-ai-node" href="#exhibit-chat-log">HR chat API</a>
+              <a class="pbq-ai-node" href="#acme-exhibits-exhibit-chat-log">HR chat API</a>
               <span aria-hidden="true">→</span>
-              <a class="pbq-ai-node" href="#exhibit-retrieved-chunk">Orchestrator / LLM</a>
+              <a class="pbq-ai-node" href="#acme-exhibits-exhibit-retrieved-chunk">Orchestrator / LLM</a>
               <span aria-hidden="true">↔</span>
-              <a class="pbq-ai-node pbq-ai-node--risk" href="#exhibit-corpus">Vector DB (policy embeddings)</a>
+              <a class="pbq-ai-node pbq-ai-node--risk" href="#acme-exhibits-exhibit-corpus">Vector DB (policy embeddings)</a>
             </div>
             <p class="pbq-ai-arch__note">
               <strong>Risk notes:</strong> Retrieved chunks are concatenated into the model prompt. Treat ingested
@@ -69,10 +69,10 @@
         <section class="pbq-ai-section" aria-labelledby="docs-heading">
           <h2 id="acme-exhibits-docs-heading">Policy corpus and retrieval exhibits</h2>
           <ul class="pbq-exhibit-launchers">
-  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-corpus">Exhibit A — Policy corpus index</button></li>
-  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-chat-log">Exhibit B — HR chat API log</button></li>
-  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-retrieved-chunk">Exhibit C — Retrieved chunk</button></li>
-  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-poisoned-pdf">Exhibit D — Quarantined upload</button></li>
+  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-exhibits-exhibit-corpus">Exhibit A — Policy corpus index</button></li>
+  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-exhibits-exhibit-chat-log">Exhibit B — HR chat API log</button></li>
+  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-exhibits-exhibit-retrieved-chunk">Exhibit C — Retrieved chunk</button></li>
+  <li><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-exhibits-exhibit-poisoned-pdf">Exhibit D — Quarantined upload</button></li>
 </ul>
           <div class="pbq-exhibit-store" hidden aria-hidden="true"><div class="pbq-ai-exhibit-grid"><div class="pbq-ai-exhibit-grid">
             <figure class="pbq-ai-exhibit pbq-ai-exhibit--wide" id="acme-exhibits-exhibit-corpus">
@@ -394,7 +394,7 @@ pro-rated limits in section 3.2. Requests must be submitted in the HR portal bef
 <article class="pbq-suite-section" id="acme-p2" data-scenario="acme-rag-hr-ai" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-ai-sim">
         <p class="pbq-ai-part-banner">Part 2 — Identify the correct mitigation for each AI attack</p>
 
-        <p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p>
+        <p><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-p2-exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p>
 
         <section class="pbq-ai-attack-mcq" aria-labelledby="pi-heading">
           <h2 id="acme-p2-pi-heading">Prompt injection</h2>
@@ -510,8 +510,8 @@ Top responses include partial redacted strings — rate limit not enforced on re
 
         <span id="acme-p2-result" role="status" aria-live="polite"></span>
       </div>
-<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
-<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-p2-exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
+<div class="pbq-exhibit-store" hidden aria-hidden="true"><p><button type="button" class="btn btn-secondary" data-pbq-modal="#acme-p2-exhibit-part2-chat">Open exhibit — prompt injection chat log</button></p></div>
 <div class="pbq-exhibit-store" hidden aria-hidden="true"><figure class="pbq-ai-exhibit pbq-ai-exhibit--wide" id="acme-p2-exhibit-part2-chat">
           <p class="pbq-ai-exhibit__banner">Exhibit — HR chat API (prompt injection attempt)</p>
           <div class="pbq-ai-exhibit__body">
@@ -534,7 +534,7 @@ Top responses include partial redacted strings — rate limit not enforced on re
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
           <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-home" href="/comptia-sec+-home.html">Home</a>
           <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/zero-trust-zta-migration/zero-trust-zta-migration.html">Next</a>
         </div>
       </nav>

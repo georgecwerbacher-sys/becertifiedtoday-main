@@ -51,8 +51,8 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 [sy0-701 pbq]
 [security+ performance based questions]
 [comptia security+ pbq]
-"security+ pbq like real exam"
-"security+ pbq test day practice"
+"security+ pbq realistic scenarios"
+"security+ pbq timed prep"
 "security+ how to pass pbq"
 "security+ pbq practice"
 "security+ pbq practice online"
@@ -122,8 +122,8 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 | 2 | sy0-701 pbq | Exact |
 | 3 | security+ performance based questions | Exact |
 | 4 | comptia security+ pbq | Exact |
-| 5 | security+ pbq like real exam | Phrase |
-| 6 | security+ pbq test day practice | Phrase |
+| 5 | security+ pbq realistic scenarios | Phrase |
+| 6 | security+ pbq timed prep | Phrase |
 | 7 | security+ how to pass pbq | Phrase |
 | 8 | security+ pbq practice | Phrase |
 | 9 | security+ pbq practice online | Phrase |

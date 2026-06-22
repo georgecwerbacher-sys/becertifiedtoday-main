@@ -12,18 +12,22 @@ tags:
 
 **Single Google Ads campaign, single ad group** — Security+ SY0-701 PBQ practice. All setup copy lives in this folder.
 
-**Import:** [[secplus-keywords.csv]] (67 positives, ranked 1–67) · full paste list: [[Sec+ Keywords#All positive keywords (67)]]
+**AdWords checklist:** [[secplus-campaign-checklist.csv]] — paste 67 keywords + negatives + RSA into Google Ads (Numbers). Regenerate: `npm run sync:secplus-checklist`
+
+**Keyword source:** [[secplus-keywords.csv]] · strategy notes: [[Sec+ Keywords#All positive keywords (67)]]
 
 | Note | Purpose |
 |------|---------|
 | [[Sec+ Notes\|Sec+ Notes]] | **Start here** — step-by-step build checklist |
 | [[Security+ Campaign\|Campaign shell]] | Campaign settings, budget, conversions, products |
 | [[Sec+ Keywords\|Sec+ Keywords]] | PBQ keywords + negatives |
-| [[secplus-keywords.csv\|secplus-keywords.csv]] | Import-ready keywords (Campaign + Match type columns) |
 | [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Headlines & descriptions — `Security+ PBQ Practice` |
 | [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
 | [[Extensions\|Extensions]] | Sitelinks · display paths · UTM map |
-| [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | Row-by-row Google Ads setup CSV |
+| [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | **AdWords checklist** — keywords, negatives, RSA (paste into Google Ads) |
+| [[secplus-campaign-checklist-README.txt\|checklist README]] | Numbers column guide |
+| [[secplus-keywords.csv\|secplus-keywords.csv]] | Keyword source CSV — edit then `npm run sync:secplus-checklist` |
+| [[../Tools/Sec+ Campaign Keywords\|Tools · keyword workflow]] | Numbers filter steps for pasting keywords |
 
 **Registry:** `server-lib/campaign-marketing-registry.js` → id `secplus_portal`
 

@@ -771,6 +771,11 @@ def apply_id_prefix(html: str, prefix: str, ids: set[str]) -> str:
             f'querySelectorAll("#{new_id}")',
             out,
         )
+        out = re.sub(
+            rf"#{re.escape(old_id)}(?=[\s'\"\\)\]\[,.:]|$)",
+            f"#{new_id}",
+            out,
+        )
     return out
 
 
@@ -808,9 +813,11 @@ def load_section_content(sec: dict) -> tuple[str, str]:
     scripts = ""
     for sm in script_re.finditer(html):
         scripts += sm.group(0) + "\n"
-    m = re.search(r"<article[^>]*>(.*)</article>", html, re.DOTALL)
-    inner = m.group(1).strip() if m else html.strip()
-    inner = script_re.sub("", inner).strip()
+    # Strip inline scripts before extracting <article> inner HTML — section scripts often
+    # contain HTML string literals with </article> tags that break a greedy article match.
+    html_without_scripts = script_re.sub("", html)
+    m = re.search(r"<article[^>]*>(.*)</article>", html_without_scripts, re.DOTALL)
+    inner = m.group(1).strip() if m else html_without_scripts.strip()
     return inner, scripts.strip()
 
 
@@ -914,7 +921,7 @@ def build_question_nav(scenario: dict, *, footer: bool = False) -> str:
     return f"""      <nav class="question-nav{modifier}" aria-label="{label}">
         <div class="question-nav-links">
           {nav_link(scenario, "prev")}
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-home" href="/comptia-sec+-home.html">Home</a>
           {nav_link(scenario, "next")}
         </div>
       </nav>"""
@@ -966,7 +973,7 @@ def build_scenario_page(scenario: dict) -> str:
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell question-shell--suite">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+    <a class="site-logo-corner" href="/comptia-sec+-home.html" aria-label="Return to Security+ home">
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">

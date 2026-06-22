@@ -35,12 +35,12 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 
 ## Ad group — Security+ PBQ Practice
 
-| Setting | Value |
-|---------|--------|
+| Setting       | Value                        |
+| ------------- | ---------------------------- |
 | Ad group name | **`Security+ PBQ Practice`** |
-| Display path | `Security+` / `PBQ-Practice` |
-| Pin H1 | `Security+ PBQ Practice` |
-| Pin H2 | `$9.99 · 10-Day Access` |
+| Display path  | `Security+` / `PBQ-Practice` |
+| Pin H1        | `Security+ PBQ Practice`     |
+| Pin H2        | `$9.99 · 10-Day Access`      |
 
 **Final URL:**
 

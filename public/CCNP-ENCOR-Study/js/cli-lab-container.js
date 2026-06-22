@@ -69,7 +69,7 @@
     }
   }
 
-  var CCNA_TRAINING_PORTAL_HREF = "/CCNA-Study/CCNA_Training_Portal.html";
+  var CCNA_PUBLIC_HOME_HREF = "/ccna-home.html";
   /** Order matches CCNA_Training_Portal.html Lab Simulations grid. */
   var CCNA_LAB_CHAIN = [
     "/CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
@@ -615,8 +615,8 @@
       anchor.innerHTML = logo.innerHTML;
       logo.parentNode.replaceChild(anchor, logo);
     }
-    anchor.href = CCNA_TRAINING_PORTAL_HREF;
-    anchor.setAttribute("aria-label", "CCNA training portal");
+    anchor.href = CCNA_PUBLIC_HOME_HREF;
+    anchor.setAttribute("aria-label", "Return to CCNA home");
     anchor.removeAttribute("aria-hidden");
     anchor.style.background = "transparent";
     anchor.style.border = "none";
@@ -636,7 +636,7 @@
     var nextHref =
       chainIdx < CCNA_LAB_CHAIN.length - 1
         ? CCNA_LAB_CHAIN[chainIdx + 1]
-        : CCNA_TRAINING_PORTAL_HREF;
+        : CCNA_PUBLIC_HOME_HREF;
     var label = chainIdx < CCNA_LAB_CHAIN.length - 1 ? "Next lab" : "Training portal";
     var btn = document.createElement("a");
     btn.className = "lab-top-next";
@@ -5844,7 +5844,7 @@
     NGTE_PRODUCT_LINE: NGTE_PRODUCT_LINE,
     BCT_COPYRIGHT_LINE: BCT_COPYRIGHT_LINE,
     appendLabShowVersion: appendLabShowVersion,
-    CCNA_TRAINING_PORTAL_HREF: CCNA_TRAINING_PORTAL_HREF,
+    CCNA_PUBLIC_HOME_HREF: CCNA_PUBLIC_HOME_HREF,
     CCNA_LAB_CHAIN: CCNA_LAB_CHAIN,
     initCcnaLabTopChrome: initCcnaLabTopChrome,
     wireCliLabModal: function (dialogEl, overlayEl) {

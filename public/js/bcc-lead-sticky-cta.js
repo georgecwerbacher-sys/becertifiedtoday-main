@@ -91,7 +91,25 @@
   }
 
   function canShowOffer() {
+    if (forcePreviewOffer()) return true;
     return !!(cfg && !cfg.hasAccess());
+  }
+
+  function forcePreviewOffer() {
+    try {
+      return new URLSearchParams(location.search || "").get("bcc_preview_10d_offer") === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function resetOfferIfRequested() {
+    if (!cfg) return;
+    try {
+      if (new URLSearchParams(location.search || "").get("bcc_reset_10d_offer") === "1") {
+        localStorage.removeItem(cfg.dismissedKey);
+      }
+    } catch (_) {}
   }
 
   function offerModalOpen() {
@@ -195,6 +213,7 @@
   function init() {
     cfg = detectConfig();
     if (!cfg || wired) return;
+    resetOfferIfRequested();
     sticky = document.getElementById(cfg.stickyId);
     btn = document.getElementById(cfg.btnId);
     if (!sticky || !btn) return;

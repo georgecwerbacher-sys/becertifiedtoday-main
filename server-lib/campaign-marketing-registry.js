@@ -108,7 +108,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
     primaryOffer: "10-day $9.99 · 30-day $19.99 — Security+ PBQ Practice · $20/day",
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
-    setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Notes.md",
+    setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
   },
 ];

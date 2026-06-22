@@ -1,8 +1,8 @@
 ---
 type: ad-copy
 product: secplus
-campaign: SEC+_Wedge_PBQ
-ad_group: SEC+_Wedge_PBQ
+campaign: secplus_portal
+ad_group: Security+ PBQ Practice
 tags:
   - marketing
   - google-ads
@@ -10,7 +10,9 @@ tags:
   - rsa
 ---
 
-# RSA copy — SEC+_Wedge_PBQ
+# RSA copy — Security+ PBQ Practice
+
+**Canonical source:** [[../../Sec+ Campaign/Sec+ RSA Copy|Sec+ RSA Copy]] (live $20/day campaign).
 
 Paste into Google Ads responsive search ad. **Pin H1 and H2** as marked.
 
@@ -27,46 +29,18 @@ Paste into Google Ads responsive search ad. **Pin H1 and H2** as marked.
 
 ---
 
-## All 15 headlines (≤30 chars)
+## All 15 headlines
 
-```
-Security+ PBQ Practice          ← Pin H1
-$9.99 · 10-Day Access           ← Pin H2
-SY0-701 PBQ in Browser
-34 PBQ Scenarios
-Chain Labs & Hot Spots
-No Download · Browser PBQ
-Performance-Based Prep
-Phone Tablet Desktop
-Verified SY0-701 Answers
-Timed 90-Min Exam Sim
-1000+ MCQ Included
-Adaptive Review Modes
-Be Certified Today
-Detailed Scorecard Review
-```
+See full list with char counts: [[../../Sec+ Campaign/Sec+ RSA Copy#All 15 headlines (readiness-first)|Sec+ RSA Copy → headlines]]
 
 ---
 
-## Descriptions (≤90 chars)
+## Descriptions
 
-```
-Practice SY0-701 PBQs in your browser—chain labs drag-and-drop and IR scenarios.
-
-$9.99/10d unlocks 34 PBQ scenarios + 1000+ questions. One payment—no subscription.
-
-No PDF dumps. Interactive performance-based prep on phone tablet or desktop.
-
-Same browser UI as test day. One-time payment—no subscription.
-```
+See [[../../Sec+ Campaign/Sec+ RSA Copy#Descriptions (≤90 chars)|Sec+ RSA Copy → descriptions]]
 
 ---
 
 ## Message match checklist
 
-RSA must align with wedge landing:
-
-- [ ] Browser / no download — not desktop sim
-- [ ] $9.99 / 10-day pricing on landing
-- [ ] No “free” in RSA headlines or descriptions (negate `free` in Search)
-- [ ] Not generic “question bank” or “practice test” headline war
+See [[../../Sec+ Campaign/Sec+ RSA Copy#Message match checklist|Sec+ RSA Copy → message match]]

@@ -15,7 +15,7 @@ PORTAL_HTML = ROOT / "public/COMP_TIA_SEC+/SEC+_Training_Portal.html"
 PRACTICE_BANK_SIZE = 100
 TOPIC_MAP = ROOT / "public/COMP_TIA_SEC+/data/secplus-question-topic-map.json"
 OBJECTIVES_JSON = ROOT / "public/COMP_TIA_SEC+/data/secplus-exam-objectives-sy0-701.json"
-PORTAL_HOME = "/COMP_TIA_SEC+/SEC+_Training_Portal.html"
+PORTAL_HOME = "/comptia-sec+-home.html"
 QUESTIONS_BASE = "/COMP_TIA_SEC+/SEC+_Questions/"
 SECPLUS_BANK_VERSION_LABEL = "Version: 1.1 2026"
 

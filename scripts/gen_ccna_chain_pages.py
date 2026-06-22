@@ -322,7 +322,7 @@ def build_question_nav(
         parts.append(
             '      <span class="nav-link nav-prev nav-link--disabled" aria-hidden="true">Back</span>'
         )
-    parts.append('      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>')
+    parts.append('      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>')
     if next_slug:
         parts.append(
             f'      <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/{html.escape(next_slug)}.html">Next</a>'
@@ -416,7 +416,7 @@ def page(
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
@@ -568,7 +568,7 @@ def page_checkbox(
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">

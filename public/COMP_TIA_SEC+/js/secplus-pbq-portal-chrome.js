@@ -4,7 +4,17 @@
   if (/\/sections\//.test(path)) return;
   if (/\/review-index\.html$/.test(path)) return;
 
-  var portal = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
+  function homeSampleActive() {
+    try {
+      return !!sessionStorage.getItem("secplusHomeSample");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  if (homeSampleActive()) return;
+
+  var publicHome = "/comptia-sec+-home.html";
   var logo = "/images/logo/becertifiedtoday_logo_trans.png";
 
   function initPbqPortalChrome() {
@@ -22,8 +32,8 @@
     if (!document.querySelector(".site-logo-corner")) {
       var logoLink = document.createElement("a");
       logoLink.className = "site-logo-corner site-logo-corner--pbq";
-      logoLink.href = portal;
-      logoLink.setAttribute("aria-label", "Security+ practice portal");
+      logoLink.href = publicHome;
+      logoLink.setAttribute("aria-label", "Return to Security+ home");
       logoLink.innerHTML =
         '<img src="' + logo + '" width="52" height="52" alt="Be Certified Today" />';
       var contentRoot =
@@ -38,13 +48,14 @@
       }
     } else {
       var existingLogo = document.querySelector(".site-logo-corner");
-      if (existingLogo.getAttribute("href") !== portal) {
-        existingLogo.setAttribute("href", portal);
+      if (existingLogo.getAttribute("href") !== publicHome) {
+        existingLogo.setAttribute("href", publicHome);
+        existingLogo.setAttribute("aria-label", "Return to Security+ home");
       }
     }
 
     document.querySelectorAll(".home-link, .nav-home").forEach(function (link) {
-      link.setAttribute("href", portal);
+      link.setAttribute("href", publicHome);
     });
 
     var hasFooterNav =
@@ -59,7 +70,7 @@
       footer.className = "pbq-portal-footer";
       footer.setAttribute("aria-label", "Portal navigation");
       footer.innerHTML =
-        '<a class="pbq-portal-footer__home" href="' + portal + '">SEC+ Home</a>';
+        '<a class="pbq-portal-footer__home" href="' + publicHome + '">Security+ home</a>';
       document.body.appendChild(footer);
     }
   }

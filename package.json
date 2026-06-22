@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes vercel dev",
-    "serve": "python3 scripts/sync-public-encor-assets.py && npx --yes serve public -l 3000 --no-port-switching",
+    "serve": "python3 scripts/sync-public-encor-assets.py && python3 scripts/sync-secplus-sample-pbqs.py && npx --yes serve public -l 3000 --no-port-switching",
     "sync:encor-assets": "python3 scripts/sync-public-encor-assets.py",
+    "sync:secplus-sample-pbqs": "python3 scripts/sync-secplus-sample-pbqs.py",
     "sync:sitemap": "python3 scripts/sync-public-crawl-access.py",
     "lint:question-urls": "python3 scripts/lint-practice-question-urls.py",
     "lint:ccna-urls": "python3 scripts/lint-practice-question-urls.py",
@@ -46,7 +47,9 @@
     "secplus:pbq-capture-list": "python3 scripts/secplus_pbq_capture.py list",
     "secplus:pbq-screenshot": "python3 scripts/secplus_pbq_capture.py run",
     "secplus:pbq-screenshot-list": "python3 scripts/secplus_pbq_capture.py list",
-    "secplus:pbq-screenshot-landing": "python3 scripts/secplus_pbq_capture.py run"
+    "secplus:pbq-screenshot-landing": "python3 scripts/secplus_pbq_capture.py run",
+    "build:secplus-keywords": "python3 scripts/build-secplus-campaign-keywords-json.py",
+    "sync:secplus-checklist": "python3 scripts/sync-secplus-campaign-checklist.py"
   },
   "dependencies": {
     "@google-analytics/data": "^5.1.0",

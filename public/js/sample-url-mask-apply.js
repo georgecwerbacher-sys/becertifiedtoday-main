@@ -19,7 +19,23 @@
     }
     if (!mask) return;
     var hash = location.hash || "";
-    history.replaceState(null, "", mask + hash);
+    if (
+      !hash &&
+      sessionStorage.getItem("secplusHomeSample") &&
+      /\/comp_tia_sec+\/sec\+_samples\/pbq\//i.test(originalPath)
+    ) {
+      var sampleIdx = sessionStorage.getItem("secplusHomeSampleIndex");
+      if (sampleIdx != null && sampleIdx !== "") hash = "#secplusHS=" + sampleIdx;
+    }
+    if (/^#secplusHS=\d+$/i.test(hash)) {
+      try {
+        sessionStorage.setItem("secplusHomeSampleIndex", hash.replace(/^#secplusHS=/i, ""));
+      } catch (e) {}
+    }
+    var target = mask + hash;
+    if (location.pathname + location.search + location.hash !== target) {
+      history.replaceState(null, "", target);
+    }
   } catch (e) {}
 })();
 
@@ -146,8 +162,10 @@
     var onSecplusPage =
       path.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
       path.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
+      path.indexOf("/comp_tia_sec+/sec+_samples/pbq/") !== -1 ||
       remembered.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
-      remembered.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1;
+      remembered.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
+      remembered.indexOf("/comp_tia_sec+/sec+_samples/pbq/") !== -1;
     if (!onSecplusPage) return;
     if (!document.head.querySelector('script[src*="sample-lead-analytics.js"]')) {
       var analytics = document.createElement("script");
@@ -156,11 +174,11 @@
       (document.head || document.body).appendChild(analytics);
     }
 
-    if (document.head.querySelector('script[src*="secplus-sample-nav.js"]')) return;
+    if (document.querySelector('script[src*="secplus-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/COMP_TIA_SEC+/js/secplus-sample-nav.js";
-    s.defer = true;
-    (document.body || document.head).appendChild(s);
+    s.async = false;
+    (document.head || document.documentElement).appendChild(s);
   } catch (e) {}
 })();
 
@@ -847,6 +865,9 @@
       return "/CCNA-Study/CCNA_Training_Portal.html";
     }
     try {
+      if (sessionStorage.getItem("secplusHomeSample")) {
+        return readSampleSessionHome("secplusHomeSample", "/comptia-sec+-home.html");
+      }
       if (sessionStorage.getItem("ccnaHomeSample")) {
         return readSampleSessionHome("ccnaHomeSample", "/ccna-home.html");
       }
@@ -864,6 +885,7 @@
     if (href === "/CCNA-Study/CCNA_Training_Portal.html") return "CCNA training portal";
     if (href === "/ccna-home.html") return "Back to CCNA home";
     if (href === "/ccnp-home.html") return "Back to ENCOR home";
+    if (href === "/comptia-sec+-home.html") return "Back to Security+ home";
     return "Back to home";
   }
 

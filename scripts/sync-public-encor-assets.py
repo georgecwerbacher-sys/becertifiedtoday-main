@@ -18,6 +18,7 @@ PAIRS = (
     ("js/practice-questions.js", "CCNP-ENCOR-Study/js/practice-questions.js"),
     ("css/cli-lab-container.css", "CCNP-ENCOR-Study/css/cli-lab-container.css"),
     ("css/lab-router-spoiler.css", "CCNP-ENCOR-Study/css/lab-router-spoiler.css"),
+    ("secplus-sample.html", "COMP_TIA_SEC+/SEC+_Samples/sample.html"),
 )
 
 

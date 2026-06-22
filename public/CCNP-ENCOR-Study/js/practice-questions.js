@@ -57,11 +57,10 @@
   }
 })();
 
-/** Registered ENCOR content: Home anchors → ENCOR_Training_Portal (samples → ccnp-home). */
+/** Registered ENCOR content: Home anchors → ccnp-home.html (portal entry is public/ccnp-home.html top-right). */
 (function () {
   "use strict";
-  var PORTAL = "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
-  var GUEST_HOME = "/ccnp-home.html";
+  var PUBLIC_HOME = "/ccnp-home.html";
 
   function isRegisteredEncorPath() {
     var p = (location.pathname || "").toLowerCase();
@@ -75,22 +74,14 @@
 
   function wireEncorPortalHomeLinks() {
     if (!isRegisteredEncorPath()) return;
-    var guest = typeof window.isCcnpGuestSample === "function" && window.isCcnpGuestSample();
-    var target = guest ? GUEST_HOME : PORTAL;
-    document.querySelectorAll("a.home-key, a.sim-nav-home").forEach(function (a) {
-      a.setAttribute("href", target);
+    document.querySelectorAll("a.home-key, a.sim-nav-home, a.site-logo-corner").forEach(function (a) {
+      a.setAttribute("href", PUBLIC_HOME);
     });
-    if (!guest) {
-      document.querySelectorAll("a.site-logo-corner").forEach(function (a) {
-        a.setAttribute("href", PORTAL);
-        a.setAttribute("aria-label", "Go to ENCOR training portal");
-      });
-      document.querySelectorAll("#ccnpQToolbar a").forEach(function (a) {
-        if ((a.textContent || "").trim() === "Home") {
-          a.setAttribute("href", PORTAL);
-        }
-      });
-    }
+    document.querySelectorAll("#ccnpQToolbar a").forEach(function (a) {
+      if ((a.textContent || "").trim() === "Home") {
+        a.setAttribute("href", PUBLIC_HOME);
+      }
+    });
   }
 
   window.bccWireEncorPortalHomeLinks = wireEncorPortalHomeLinks;
@@ -191,8 +182,7 @@
   }
 
   function activePortalHome() {
-    if (isSampleMode()) return "/ccnp-home.html";
-    return LOCAL_ENCOR_PORTAL;
+    return "/ccnp-home.html";
   }
 
   function isPortalLauncherHref(href) {

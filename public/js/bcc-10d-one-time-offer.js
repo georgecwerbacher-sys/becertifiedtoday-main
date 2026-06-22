@@ -45,6 +45,9 @@
       homeMatch: "comptia-sec+-home",
       checkoutAttr: "data-secplus-portal-10d-checkout",
       samplesHref: "#home-secplus-samples-title",
+      /** Pricing is above the fold — show last-chance bar after visitor scrolls past #purchase. */
+      lastChanceScrollId: "purchase",
+      lastChanceWhenExitsView: true,
       hasAccess: function () {
         return (
           typeof window.bccSecplusPortalAccessActive === "function" &&
@@ -68,6 +71,20 @@
   var purchasePopupDelayId = null;
   var lastChanceDelayId = null;
   var wired = false;
+  var forcePreview = false;
+
+  function readOfferQueryParams() {
+    try {
+      var qs = new URLSearchParams(location.search || "");
+      if (qs.get("bcc_reset_10d_offer") === "1" && cfg) {
+        localStorage.removeItem(cfg.dismissedKey);
+      }
+      if (qs.get("bcc_preview_10d_offer") === "1") {
+        forcePreview = true;
+        if (cfg) localStorage.removeItem(cfg.dismissedKey);
+      }
+    } catch (_) {}
+  }
 
   function offerProductKey() {
     if (!cfg) return "";
@@ -136,9 +153,11 @@
   }
 
   function canOffer() {
-    if (!cfg || wasDismissed()) return false;
-    if (cfg.hasAccess()) return false;
+    if (!cfg) return false;
     if (portalGateOpen()) return false;
+    if (forcePreview) return true;
+    if (wasDismissed()) return false;
+    if (cfg.hasAccess()) return false;
     return true;
   }
 
@@ -216,14 +235,22 @@
     }
   }
 
-  function isFaqInView() {
-    var faq = document.getElementById(FAQ_ID);
-    if (!faq) return false;
-    var rect = faq.getBoundingClientRect();
+  function isLastChanceTriggerReady() {
+    var scrollId = (cfg && cfg.lastChanceScrollId) || FAQ_ID;
+    var target = document.getElementById(scrollId);
+    if (!target) return false;
+    var rect = target.getBoundingClientRect();
     var vh = window.innerHeight || document.documentElement.clientHeight || 0;
     if (vh <= 0 || rect.height <= 0) return false;
     var visiblePx = Math.min(rect.bottom, vh) - Math.max(rect.top, 0);
+    if (cfg && cfg.lastChanceWhenExitsView) {
+      return visiblePx < 48;
+    }
     return visiblePx >= 48;
+  }
+
+  function isFaqInView() {
+    return isLastChanceTriggerReady();
   }
 
   function scheduleLastChanceDelay() {
@@ -362,21 +389,27 @@
     }
   }
 
-  function wireFaqScrollTrigger() {
-    var faq = document.getElementById(FAQ_ID);
-    if (!faq) return;
+  function wireLastChanceScrollTrigger() {
+    var scrollId = (cfg && cfg.lastChanceScrollId) || FAQ_ID;
+    var target = document.getElementById(scrollId);
+    if (!target) return;
 
     if (typeof IntersectionObserver !== "undefined") {
       faqObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
+            if (cfg && cfg.lastChanceWhenExitsView) {
+              if (!entry.isIntersecting) checkFaqInView();
+              else clearLastChanceDelay();
+              return;
+            }
             if (entry.isIntersecting) checkFaqInView();
             else clearLastChanceDelay();
           });
         },
         { root: null, rootMargin: "0px", threshold: [0, 0.1, 0.25] }
       );
-      faqObserver.observe(faq);
+      faqObserver.observe(target);
     }
 
     window.addEventListener("scroll", checkFaqInView, { passive: true });
@@ -388,15 +421,20 @@
     window.setTimeout(checkFaqInView, 800);
   }
 
+  function wireFaqScrollTrigger() {
+    wireLastChanceScrollTrigger();
+  }
+
   function init() {
     cfg = detectConfig();
     if (!cfg || wired) return;
+    readOfferQueryParams();
     wired = true;
     syncOfferUi();
     wirePopup();
     wireLastChanceBar();
     wirePageLoadPopupTrigger();
-    wireFaqScrollTrigger();
+    wireLastChanceScrollTrigger();
   }
 
   if (document.readyState === "loading") {
@@ -407,6 +445,18 @@
 
   window.bcc10dOneTimeOfferActive = function () {
     return !!(cfg && canOffer());
+  };
+
+  window.bccForce10dOfferPreview = function () {
+    forcePreview = true;
+    if (cfg) {
+      try {
+        localStorage.removeItem(cfg.dismissedKey);
+      } catch (_) {}
+    }
+    syncOfferUi();
+    if (!popupShown && canOffer()) wirePageLoadPopupTrigger();
+    checkFaqInView();
   };
 
   window.bccMark10dOneTimeOfferDismissed = function () {

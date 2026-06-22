@@ -23,7 +23,7 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell question-shell--suite">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+    <a class="site-logo-corner" href="/comptia-sec+-home.html" aria-label="Return to Security+ home">
       <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="pbq-card pbq-card--suite">
@@ -119,73 +119,7 @@
       <div class="doc-modal__body" id="dark-web-account-protection-docModalBody"></div>
       <div class="doc-modal__resize" id="dark-web-account-protection-docModalResize" title="Resize document" aria-hidden="true"></div>
     </div>
-  </div>
-</article>
-<script>
-(function () {
-  var weakCorrect = ["Age", "Reuse", "Length", "Complexity"];
-  var containmentCorrect = "FIDO security key";
-
-  var WEAK_EXPLAIN = {
-    Age: "Passwords left unchanged for a long time become easier to compromise over time.",
-    Reuse: "The same password across multiple accounts means one leak puts every account at risk.",
-    Length: "Short passwords are weak; the evidence shows many accounts at the minimum length only.",
-    Complexity: "Passwords lack required numbers, symbols, or mixed character types.",
-    Expiration:
-      "Not selected here. Forced expiration can encourage weak patterns, but the leaked audit shows 90-day rotation is active — the main weaknesses are age, reuse, length, and complexity."
-  };
-
-  var CONTAINMENT_EXPLAIN = {
-    "FIDO security key":
-      "Hardware-based and phishing-resistant. Authentication happens on the key, not by typing codes on a potentially compromised host, so disk evidence can be preserved for forensics.",
-    "PIN code": "Too weak on its own and may be stored or entered on the same compromised workstation.",
-    "SMS authentication": "Codes can be intercepted (SIM swap) and SMS messages may remain as traces on the host.",
-    "OTP token":
-      "Better than SMS in some cases, but one-time codes are still entered on the host and some implementations log secrets locally."
-  };
-
-  var SOLUTION_RECAP_HTML =
-    "<h3>Solution recap</h3>" +
-    "<ul>" +
-    "<li><strong>Weak password practices:</strong> Age, Reuse, Length, and Complexity — passwords were reused, too short, insufficiently complex, and kept too long.</li>" +
-    "<li><strong>Best containment:</strong> Deploy FIDO security keys — the most secure listed option, resistant to phishing and interception, and it does not require wiping or altering host evidence on potentially compromised kiosks.</li>" +
-    "</ul>";
-
-  var DOC_CONTENT = {
-    directory: {
-      title: "Directory contents",
-      html:
-        '<p>Dark-web listing recovered by BeCertifiedToday.com IR. Three data sets match case IR-2024-0847.</p>' +
-        '<ul class="doc-tree">' +
-        '<li class="folder">/leak/becertifiedtoday-com/</li>' +
-        '<li class="file">├── directory/</li>' +
-        '<li class="file">│   ├── ad_password_policy.txt</li>' +
-        '<li class="file">│   └── shared_drive_index.csv</li>' +
-        '<li class="file">├── compensation/</li>' +
-        '<li class="file">│   └── compensation_report_Q3.pdf</li>' +
-        '<li class="file">└── user_data/</li>' +
-        '<li class="file">    └── employee_credential_audit.csv</li>' +
-        "</ul>" +
-        '<p class="doc-exhibit-label">ad_password_policy.txt</p>' +
-        '<article class="doc-sop" aria-label="Password policy standard operating procedure">' +
-        '<div class="doc-sop-head">' +
-        '<img src="/images/logo/becertifiedtoday_logo_trans.png" width="40" height="40" alt="" />' +
-        "<div>" +
-        '<p class="doc-sop-title">Standard Operating Procedure — Active Directory Password Policy</p>' +
-        '<p class="doc-sop-meta">BeCertifiedToday.com · SOP-ID: IAM-PWD-001 · Rev. 2024-03 · Workforce accounts</p>' +
-        "</div></div>" +
-        '<div class="doc-sop-body">' +
-        "<h4>1.0 Purpose</h4>" +
-        '<p style="margin:0 0 8px">Define minimum password requirements for BeCertifiedToday.com employees, contractors, and service accounts synced to corporate Active Directory.</p>' +
-        "<h4>2.0 Scope</h4><ul>" +
-        "<li>All @becertifiedtoday.com user principals and privileged admin tiers</li>" +
-        "<li>VPN, Microsoft 365, timekeeping, and internal finance shares authenticated via AD</li>" +
-        "</ul>" +
-        "<h4>3.0 Policy requirements (effective settings)</h4>" +
-        '<div class="doc-sop-kv">Minimum password length .......... 8 characters\nComplexity requirement ............. Letters OR numbers (symbols not required)\nPassword history ................... Last 3 passwords remembered\nMaximum password age ............... 90 days (expiration enforced)</div>' +
-        "<h4>4.0 Owner</h4>" +
-        '<p style="margin:0">Identity &amp; Access Management · Total Rewards (policy) · IT Security (enforcement)</p>' +
-        "</div></div></article>
+  </div></div></article>
         </div>
       </div>
 
@@ -196,7 +130,7 @@
       <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
         <div class="question-nav-links">
           <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/web-app-subnet-zoning/web-app-subnet-zoning.html">Back</a>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-home" href="/comptia-sec+-home.html">Home</a>
           <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html">Next</a>
         </div>
       </nav>
@@ -313,7 +247,7 @@
   }
 
   function selectedWeak() {
-    return Array.from(root.querySelectorAll("#weak-practices input[type='checkbox']:checked"))
+    return Array.from(root.querySelectorAll("#dark-web-account-protection-weak-practices input[type='checkbox']:checked"))
       .map(function (el) {
         return el.value;
       })
@@ -387,7 +321,7 @@
   }
 
   function resetAnswers() {
-    root.querySelectorAll("#weak-practices input[type='checkbox']").forEach(function (el) {
+    root.querySelectorAll("#dark-web-account-protection-weak-practices input[type='checkbox']").forEach(function (el) {
       el.checked = false;
     });
     root.querySelectorAll("input[name='containment']").forEach(function (el) {
@@ -403,7 +337,7 @@
   }
 
   function showAnswers() {
-    root.querySelectorAll("#weak-practices input[type='checkbox']").forEach(function (el) {
+    root.querySelectorAll("#dark-web-account-protection-weak-practices input[type='checkbox']").forEach(function (el) {
       el.checked = weakCorrect.indexOf(el.value) !== -1;
     });
     root.querySelectorAll("input[name='containment']").forEach(function (el) {

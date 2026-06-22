@@ -114,7 +114,8 @@ See full lists: [[Sec+ Keywords]]
 ## Do not say in paid search
 
 - “Biggest question bank” / “7,000+ questions” (you lose that arms race)
-- “Guaranteed pass” / “actual exam questions” (policy + trust risk)
+- “Guaranteed pass” / “actual exam questions” / “real exam” (policy + trust risk)
+- “Walk in ready” / “like test day” / “same as test day” (policy — unauthorized exam content tone)
 - Generic “free practice test” without interactive / sim proof
 - Competing head-term-only against Messer, Dion, Udemy course funnels
 

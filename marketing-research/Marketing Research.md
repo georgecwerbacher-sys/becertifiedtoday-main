@@ -18,6 +18,7 @@ Hub for competitor intel, ad campaigns, and weekly analytics.
 - [[Site Mission]] — why the site exists; reference for all marketing work
 - [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — positioning, wedge keywords, content, 30-day checklist
 
+- [[Tools/README|Tools]] — campaign helpers (Sec+ keyword list · copy for Google Ads)
 - [[Sec+ Campaign/README|Sec+ Campaign]] — **Security+ Google Ads** (one campaign, one ad group, $20/day, keywords CSV, checklist)
 - [[Reddit/README|Reddit]] — paid ads + organic posting (voice guide, checklists, post log)
 - [[Competitors]] — SEC+, CCNA, ENCOR prep sites

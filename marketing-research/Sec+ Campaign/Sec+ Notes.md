@@ -15,7 +15,7 @@ tags:
 **Ad group:** **`Security+ PBQ Practice`** (only)  
 **Budget:** **$20.00/day** · max CPC **$2.75** · **utm_campaign:** `secplus_portal`
 
-**Checklist CSV:** [[secplus-campaign-checklist.csv]] · **Keywords CSV:** [[secplus-keywords.csv]]
+**Checklist CSV:** [[secplus-campaign-checklist.csv]] (AdWords paste rows) · **Keyword source:** [[secplus-keywords.csv]] · regenerate: `npm run sync:secplus-checklist`
 
 ---
 
@@ -46,7 +46,7 @@ Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 4. Geo: US, CA, UK, AU · **Presence** only
 5. utm_campaign: **`secplus_portal`** on all ads
 6. AI Max / URL expansion: **Off**
-7. Paste **6 sitelinks** — [[Extensions]]
+7. Paste **6 sitelinks** — checklist **Extensions** rows or [[Extensions]]
 
 ---
 
@@ -60,7 +60,7 @@ Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 ```
 
-4. Keywords: exact + phrase from [[Sec+ Keywords#Ad group — Security+ PBQ Practice]] (or import [[secplus-keywords.csv]])
+4. Keywords: paste **Ad group** rows from [[secplus-campaign-checklist.csv]] (rank 1–67) — or regenerate from [[secplus-keywords.csv]] with `npm run sync:secplus-checklist`
 5. RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]]
 6. Pin H1 `Security+ PBQ Practice` · H2 `$9.99 · 10-Day Access`
 
@@ -76,7 +76,7 @@ https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google
 ## Phase 4 — Launch check
 
 - [ ] One ad group enabled: **`Security+ PBQ Practice`**
-- [ ] 6 sitelinks pasted — [[Extensions]]
+- [ ] 6 sitelinks pasted — checklist **Extensions** rows or [[Extensions]]
 - [ ] Final URL opens PBQ landing with correct UTMs
 - [ ] GA4 `begin_checkout` on test purchase click
 - [ ] Mobile checkout on PBQ landing

@@ -13,7 +13,7 @@
   }
 
   function finishHrefForSession() {
-    return guestSampleActive() ? "/ccna-home.html" : "/CCNA-Study/CCNA_Training_Portal.html";
+    return "/ccna-home.html";
   }
   var TOPIC_MAP_URL = "/CCNA-Study/data/ccna-question-topic-map.json";
   var MANIFEST_URL = "/CCNA-Study/data/ccna-practice-questions-manifest.json";
