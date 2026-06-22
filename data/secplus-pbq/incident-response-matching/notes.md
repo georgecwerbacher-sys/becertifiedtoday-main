@@ -5,7 +5,7 @@ scenario: incident-response-matching
 last_updated: 2026-06-22
 ---
 
-# Incident response phase matching
+# SEC+ Incident Response and Phase Matching
 
 Twelve actions sorted into six NIST SP 800-61 IR phases (two per bucket).
 

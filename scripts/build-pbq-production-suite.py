@@ -381,12 +381,29 @@ SCENARIOS = [
         "suite_instructions": "Review sample ticket <strong>#bct2026</strong> — work through each task note on the four WAF tabs.",
         "description": "Configure a cloud WAF from ticket #bct2026: HTTPS policy for BeCertifiedToday.com, OWASP Top 10 baseline, custom XSS block rule, and verbose logging.",
         "prev": "governance",
-        "next": None,
+        "next": "incident-response-matching",
         "sections": [
             {
                 "id": "cloud-waf-setup",
                 "label": "WAF console",
                 "path": "cloud-waf-setup/sections/cloud-waf-setup.html",
+            },
+        ],
+    },
+    {
+        "slug": "incident-response-matching",
+        "title": "SEC+ Incident Response and Phase Matching",
+        "body_class": "pbq-ir-match dragdrop-exercise",
+        "objectives": "4.1 · 4.2 · 5.5",
+        "suite_instructions": "Drag each action into the correct incident response phase bucket. Every action is used once.",
+        "description": "Match twelve incident response actions to the correct NIST IR phase — two actions per phase.",
+        "prev": "cloud-waf-setup",
+        "next": None,
+        "sections": [
+            {
+                "id": "incident-response-matching",
+                "label": "Phase matching",
+                "path": "incident-response-matching/sections/incident-response-matching.html",
             },
         ],
     },

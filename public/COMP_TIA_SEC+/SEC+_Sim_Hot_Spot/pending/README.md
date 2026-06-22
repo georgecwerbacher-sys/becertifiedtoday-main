@@ -23,7 +23,7 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT
 | [`mdm-enrollment-config/`](mdm-enrollment-config/) | Acme MDM — iOS compliance, app restrictions, ADE | [Open](mdm-enrollment-config/mdm-enrollment-config.html) |
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
 | [`network-protocols-matching/`](network-protocols-matching/) | Match protocols to security functions (drag-and-drop) | [Open](network-protocols-matching/network-protocols-matching.html) |
-| [`incident-response-matching/`](incident-response-matching/) | Match IR phases to actions (drag-and-drop) | [Open](incident-response-matching/incident-response-matching.html) |
+| [`incident-response-matching/`](incident-response-matching/) | *(shipped — see [production](../PBQ_Production/incident-response-matching/))* | [Production](../PBQ_Production/incident-response-matching/incident-response-matching.html) |
 | [`cryptographic-algorithms-matching/`](cryptographic-algorithms-matching/) | Match crypto algorithms to use cases (drag-and-drop) | [Open](cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) |
 | [`site-to-site-vpn-config/`](site-to-site-vpn-config/) | Site-to-site VPN Phase 1 &amp; 2 dual-gateway config | [Open](site-to-site-vpn-config/site-to-site-vpn-config.html) |
 | [`malware-infection-log-analysis/`](malware-infection-log-analysis/) | Malware log triage — source / infected / clean | [Open](malware-infection-log-analysis/malware-infection-log-analysis.html) |
@@ -31,7 +31,7 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT
 
 Pending chain: … → site-to-site VPN → malware log analysis → **web app subnet zoning**.
 
-Production PBQ chain (22 labs) ends at [`../PBQ_Production/cloud-waf-setup/`](../PBQ_Production/cloud-waf-setup/cloud-waf-setup.html).
+Production PBQ chain (23 labs) ends at [`../PBQ_Production/incident-response-matching/`](../PBQ_Production/incident-response-matching/incident-response-matching.html).
 
 ## Reference only
 

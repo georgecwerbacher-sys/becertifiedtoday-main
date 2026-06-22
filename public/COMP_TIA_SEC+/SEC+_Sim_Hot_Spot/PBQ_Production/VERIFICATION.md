@@ -302,6 +302,21 @@
 
 ---
 
+## 23. SEC+ Incident Response and Phase Matching (`incident-response-matching/`)
+
+| Phase | Actions | Verdict | Primary sources |
+|-------|---------|---------|-----------------|
+| Preparation | Develop incident response plan · Establish and train response team roles and responsibilities | **Pass** | NIST SP 800-61 Rev. 2 — Preparation |
+| Identification | Analyze logs and alerts to detect anomalies · Validate and categorize security incidents | **Pass** | NIST SP 800-61 — Detection and Analysis |
+| Containment | Apply short-term fixes or network segmentation · Isolate affected systems to prevent spread | **Pass** | NIST SP 800-61 — Containment |
+| Eradication | Remove malware and malicious artifacts · Disable compromised user accounts and credentials | **Pass** | NIST SP 800-61 — Eradication |
+| Recovery | Restore systems and data from clean backups · Monitor systems and validate normal operations | **Pass** | NIST SP 800-61 — Recovery |
+| Lessons Learned | Update incident response plan and security controls · Conduct post-incident review and root cause analysis | **Pass** | NIST SP 800-61 — Post-Incident Activity |
+
+**CompTIA SY0-701 fit:** **4.1** incident response; **4.2** forensics; **5.5** policies and procedures.
+
+---
+
 ## References (quick list)
 
 | Topic | Reference |
