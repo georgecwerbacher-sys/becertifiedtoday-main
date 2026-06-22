@@ -18,3 +18,5 @@ Dual-gateway IPsec sim for **BeCertifiedToday.com**: IKE Phase 1 + IPsec Phase 2
 ## Section
 
 Single section with topology diagram and mirrored gateway consoles.
+
+**Status:** Production — chain #30, linked on `SEC+_Training_Portal.html` (Network & Zero Trust).

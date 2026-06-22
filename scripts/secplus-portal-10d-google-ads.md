@@ -48,9 +48,9 @@ https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&u
 |---|------------------------|-----------------------------------------------|
 | 1 | Security+ 10-Day Exam Prep Access | 10 days of SY0-701 v5.0 exam prep in your browser: 1000+ practice questions, 28 PBQ scenarios, adaptive review, portal modes, and 90-min timed exam. Interactive prep with original study material. $9.99 one-time. |
 | 2 | Security+ 30-Day Exam Prep Access | 30 days of the same SY0-701 library: 1000+ questions, 28 PBQ scenarios (21 chain labs, 4 standalone, 1 hot spot, 2 exhibits), adaptive review, progress tracking, and timed exam. $19.99 one-time. |
-| 3 | Free Security+ Practice Questions | Preview current SY0-701 practice questions—shuffled each run, instant feedback, same style as the full bank. Free on comptia-sec+-home.html; no checkout. |
-| 4 | Free Security+ PBQ Simulation | Dark-web IR simulation sample aligned to current SY0-701 PBQ style. Hands-on in browser. Free preview; no checkout. |
-| 5 | Free Security+ Sample Pack | Three free previews from the question bank and PBQ set. Same verified explanations as full access. No checkout. |
+| 3 | Security+ Practice Questions | 1000+ SY0-701 MCQ bank with verified explanations, adaptive review, and timed exam. Browser-only. |
+| 4 | Security+ PBQ Scenarios | 34 performance-based scenarios—chain labs, drag-drop, hot spots, IR exhibits—in browser. |
+| 5 | Security+ Timed Exam Simulation | 90-minute mixed MCQ + PBQ run with domain scorecard review. Included with portal access. |
 
 ---
 
@@ -86,7 +86,7 @@ Be Certified Today
 SY0-701 practice test bank: 1000+ questions, v5.0 aligned. 28 PBQ scenarios included.
 $9.99 for 10-day access. Security+ exam prep—not a course. No PDFs or third-party apps.
 Security+ practice questions with verified explanations. Timed exam + adaptive review.
-Try free Security+ samples first. Unlock 10-day full library access at checkout.
+Unlock 10-day full library access at checkout. 1000+ questions and 34 PBQ scenarios.
 ```
 
 ---
@@ -96,8 +96,8 @@ Try free Security+ samples first. Unlock 10-day full library access at checkout.
 | # | Link text | Description 1 | Description 2 | Full URL |
 |---|-----------|---------------|---------------|----------|
 | 1 | 10-Day Access · $9.99 | Full v5.0 question bank | $9.99 one-time, no sub | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d` |
-| 2 | Free Practice Questions | Current SY0-701 MCQ preview | Instant feedback, free | `https://becertifiedtoday.com/secplus-sample?track=questions&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sample` |
-| 3 | Free PBQ Simulation | Dark web IR scenario | Hands-on in browser | `https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq` |
+| 2 | 1000+ Practice Questions | SY0-701 v5.0 MCQ bank | Verified explanations | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples` |
+| 3 | 34 PBQ Scenarios | Chain labs & hot spots | Browser performance prep | `https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list` |
 | 4 | 28 PBQ Scenarios | Chain labs & hot spots | With 10-day access | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list` |
 | 5 | 1000+ Questions | v5.0 objectives aligned | Original study material | `https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples` |
 | 6 | Timed Exam Included | 90-min exam-style run | With 10-day portal access | `https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d` |
@@ -128,12 +128,17 @@ Try free Security+ samples first. Unlock 10-day full library access at checkout.
 **Ad group negatives (Phrase)**
 
 ```
-"free"
-"bootcamp"
-"course"
-"dump"
-"pdf"
-"jobs"
+free
+"free course"
+"free practice"
+"free practice test"
+"free questions"
+"free pbq"
+bootcamp
+course
+dump
+pdf
+jobs
 ```
 
 ---
@@ -141,7 +146,19 @@ Try free Security+ samples first. Unlock 10-day full library access at checkout.
 ## Campaign-level negatives (Phrase)
 
 ```
+free
 "free course"
+"free practice"
+"free practice test"
+"free questions"
+"free pbq"
+"free dump"
+"free download"
+"free timed"
+"free timed simulation"
+"free timed sample"
+"free simulation"
+"35 minute free"
 "training course"
 "bootcamp"
 "instructor led"

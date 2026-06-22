@@ -2,7 +2,7 @@
 
 Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.cursor/rules/secplus-pbq-dragdrop-pages.mdc`.
 
-**Current tail of chain:** `network-protocols-matching` (`next: None` in `scripts/build-pbq-production-suite.py`).
+**Current tail of chain:** `malware-outbreak-classification` (`next: None` in `scripts/build-pbq-production-suite.py`).
 
 ---
 

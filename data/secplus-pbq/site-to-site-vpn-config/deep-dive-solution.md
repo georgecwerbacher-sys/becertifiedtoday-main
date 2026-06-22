@@ -7,7 +7,7 @@ last_updated: 2026-06-22
 
 # Site-to-site VPN — solution walkthrough
 
-**BeCertifiedToday.com** operates two headquarters connected over the internet — configure matching IKE Phase 1 and IPsec Phase 2 on both VPN gateways.
+**BeCertifiedToday.com** operates two headquarters connected over the internet — configure matching IKE Phase 1 and IPsec Phase 2 on both VPN gateways. Local and remote subnets are mirrored on each gateway; peer IP is the **public address** of the opposite site.
 
 ## Phase 1 (IKE) — secure the management channel
 

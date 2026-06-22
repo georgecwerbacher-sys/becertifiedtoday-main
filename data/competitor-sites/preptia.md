@@ -40,7 +40,7 @@ pbq_poll:
 
 ## BCT angle
 
-**700+** questions in one browser product; **free timed sim** + PBQ sample without dump SEO.
+**700+** questions in one browser product; PBQ sample + paid timed sim without dump SEO.
 
 **Tracker row:** id **2** in [[../competitors-practice-samples-tracker.csv]]
 

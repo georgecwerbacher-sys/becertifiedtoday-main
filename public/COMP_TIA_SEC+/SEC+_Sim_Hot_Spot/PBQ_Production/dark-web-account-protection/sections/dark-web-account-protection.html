@@ -1,0 +1,299 @@
+<meta name="robots" content="noindex, nofollow" />
+<article class="pbq-section-fragment" data-id="dark-web-account-protection">
+
+  <div class="sim-frame pbq-dark-web-sim">
+    <section class="layout pbq-dark-web-layout" aria-label="Dark web IR simulation">
+      <article class="panel" aria-label="Observed data">
+        <h2>BeCertifiedToday.com — leaked bundle (IR-2024-0847)</h2>
+        <p class="artifact-hint">Review each artifact from the dark-web listing before you submit containment recommendations.</p>
+        <div class="artifact-grid">
+          <button type="button" class="artifact" data-doc="directory" aria-haspopup="dialog">
+            <svg class="artifact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+              <path d="M3 10h18" />
+            </svg>
+            <span class="artifact-label">Directory contents</span>
+          </button>
+          <button type="button" class="artifact" data-doc="compensation" aria-haspopup="dialog">
+            <svg class="artifact-icon artifact-icon--report" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+              <path d="M14 2v6h6" />
+              <path d="M8 13h8" />
+              <path d="M8 17h5" />
+              <path d="M16 17v-4" />
+              <path d="M14 15h4" />
+            </svg>
+            <span class="artifact-label">Compensation report</span>
+          </button>
+          <button type="button" class="artifact" data-doc="userdata" aria-haspopup="dialog">
+            <svg class="artifact-icon artifact-icon--users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span class="artifact-label">User data</span>
+          </button>
+        </div>
+      </article>
+
+      <article class="panel panel-solution" aria-label="Response tasks">
+        <fieldset>
+          <legend>Step 2: Identify weak password practices (select all that apply)</legend>
+          <div class="choices" id="weak-practices">
+            <label class="choice"><input type="checkbox" value="Age" /> Age</label>
+            <label class="choice"><input type="checkbox" value="Reuse" /> Reuse</label>
+            <label class="choice"><input type="checkbox" value="Length" /> Length</label>
+            <label class="choice"><input type="checkbox" value="Expiration" /> Expiration</label>
+            <label class="choice"><input type="checkbox" value="Complexity" /> Complexity</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Step 3: Select the containment step that leaves host evidence uncompromised</legend>
+          <div class="choices" id="containment-step">
+            <label class="choice"><input type="radio" name="containment" value="PIN code" /> PIN code</label>
+            <label class="choice"><input type="radio" name="containment" value="FIDO security key" /> FIDO security key</label>
+            <label class="choice"><input type="radio" name="containment" value="SMS authentication" /> SMS authentication</label>
+            <label class="choice"><input type="radio" name="containment" value="OTP token" /> OTP token</label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button id="checkBtn" type="button">Check Answers</button>
+          <button id="resetBtn" class="secondary" type="button">Reset</button>
+          <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+        </div>
+        <div id="resultBox" class="result" aria-live="polite"></div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+        <div id="solutionRecap" class="solution-recap" aria-live="polite"></div>
+      </article>
+    </section>
+  </div>
+
+  <div id="docModal" class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle" hidden>
+    <div class="doc-modal__panel" id="docModalPanel">
+      <div class="doc-modal__head" id="docModalHead">
+        <h2 class="doc-modal__title" id="docModalTitle">Document</h2>
+        <button type="button" class="doc-modal__close" id="docModalClose">Close</button>
+      </div>
+      <div class="doc-modal__body" id="docModalBody"></div>
+      <div class="doc-modal__resize" id="docModalResize" title="Resize document" aria-hidden="true"></div>
+    </div>
+  </div>
+</article>
+<script>
+(function () {
+  var weakCorrect = ["Age", "Reuse", "Length", "Complexity"];
+  var containmentCorrect = "FIDO security key";
+
+  var WEAK_EXPLAIN = {
+    Age: "Passwords left unchanged for a long time become easier to compromise over time.",
+    Reuse: "The same password across multiple accounts means one leak puts every account at risk.",
+    Length: "Short passwords are weak; the evidence shows many accounts at the minimum length only.",
+    Complexity: "Passwords lack required numbers, symbols, or mixed character types.",
+    Expiration:
+      "Not selected here. Forced expiration can encourage weak patterns, but the leaked audit shows 90-day rotation is active — the main weaknesses are age, reuse, length, and complexity."
+  };
+
+  var CONTAINMENT_EXPLAIN = {
+    "FIDO security key":
+      "Hardware-based and phishing-resistant. Authentication happens on the key, not by typing codes on a potentially compromised host, so disk evidence can be preserved for forensics.",
+    "PIN code": "Too weak on its own and may be stored or entered on the same compromised workstation.",
+    "SMS authentication": "Codes can be intercepted (SIM swap) and SMS messages may remain as traces on the host.",
+    "OTP token":
+      "Better than SMS in some cases, but one-time codes are still entered on the host and some implementations log secrets locally."
+  };
+
+  var SOLUTION_RECAP_HTML =
+    "<h3>Solution recap</h3>" +
+    "<ul>" +
+    "<li><strong>Weak password practices:</strong> Age, Reuse, Length, and Complexity — passwords were reused, too short, insufficiently complex, and kept too long.</li>" +
+    "<li><strong>Best containment:</strong> Deploy FIDO security keys — the most secure listed option, resistant to phishing and interception, and it does not require wiping or altering host evidence on potentially compromised kiosks.</li>" +
+    "</ul>";
+
+  var DOC_CONTENT = {
+    directory: {
+      title: "Directory contents",
+      html:
+        '<p>Dark-web listing recovered by BeCertifiedToday.com IR. Three data sets match case IR-2024-0847.</p>' +
+        '<ul class="doc-tree">' +
+        '<li class="folder">/leak/becertifiedtoday-com/</li>' +
+        '<li class="file">├── directory/</li>' +
+        '<li class="file">│   ├── ad_password_policy.txt</li>' +
+        '<li class="file">│   └── shared_drive_index.csv</li>' +
+        '<li class="file">├── compensation/</li>' +
+        '<li class="file">│   └── compensation_report_Q3.pdf</li>' +
+        '<li class="file">└── user_data/</li>' +
+        '<li class="file">    └── employee_credential_audit.csv</li>' +
+        "</ul>" +
+        '<p class="doc-exhibit-label">ad_password_policy.txt</p>' +
+        '<article class="doc-sop" aria-label="Password policy standard operating procedure">' +
+        '<div class="doc-sop-head">' +
+        '<img src="/images/logo/becertifiedtoday_logo_trans.png" width="40" height="40" alt="" />' +
+        "<div>" +
+        '<p class="doc-sop-title">Standard Operating Procedure — Active Directory Password Policy</p>' +
+        '<p class="doc-sop-meta">BeCertifiedToday.com · SOP-ID: IAM-PWD-001 · Rev. 2024-03 · Workforce accounts</p>' +
+        "</div></div>" +
+        '<div class="doc-sop-body">' +
+        "<h4>1.0 Purpose</h4>" +
+        '<p style="margin:0 0 8px">Define minimum password requirements for BeCertifiedToday.com employees, contractors, and service accounts synced to corporate Active Directory.</p>' +
+        "<h4>2.0 Scope</h4><ul>" +
+        "<li>All @becertifiedtoday.com user principals and privileged admin tiers</li>" +
+        "<li>VPN, Microsoft 365, timekeeping, and internal finance shares authenticated via AD</li>" +
+        "</ul>" +
+        "<h4>3.0 Policy requirements (effective settings)</h4>" +
+        '<div class="doc-sop-kv">Minimum password length .......... 8 characters\nComplexity requirement ............. Letters OR numbers (symbols not required)\nPassword history ................... Last 3 passwords remembered\nMaximum password age ............... 90 days (expiration enforced)</div>' +
+        "<h4>4.0 Owner</h4>" +
+        '<p style="margin:0">Identity &amp; Access Management · Total Rewards (policy) · IT Security (enforcement)</p>' +
+        "</div></article>" +
+        '<p class="doc-exhibit-label">shared_drive_index.csv (partial export)</p>' +
+        '<div class="doc-csv-wrap" aria-label="Partial CSV file listing">' +
+        '<div class="doc-csv-bar">shared_drive_index.csv — rows 1–3 of 847 · UTF-8 · exported 2024-10-01</div>' +
+        '<table class="doc-csv-table"><thead><tr><th>path</th><th>size_kb</th><th>modified</th><th>owner</th></tr></thead><tbody>' +
+        "<tr><td>HR/Policies/password-guidelines.docx</td><td>128</td><td>2024-08-12</td><td>hr-admin</td></tr>" +
+        "<tr><td>Finance/compensation_report_Q3.pdf</td><td>2048</td><td>2024-09-28</td><td>finance-payroll</td></tr>" +
+        "<tr><td>IT/Forensics/kiosk_disk_image_hold-list.txt</td><td>4</td><td>2024-10-01</td><td>sec-ops</td></tr>" +
+        "</tbody></table>" +
+        '<p class="doc-csv-trunc">… 844 additional rows not shown</p></div>'
+    },
+    compensation: {
+      title: "Compensation report — Q3 FY2024",
+      report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/compensation-report-q3-ir-addendum.html",
+      reportRoot: "compensationReportSample",
+      reportLinkLabel: "compensation report"
+    },
+    userdata: {
+      title: "User data — employee_credential_audit.csv",
+      report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/employee-credential-audit.html",
+      reportRoot: "credentialAuditSample",
+      reportLinkLabel: "credential audit export"
+    }
+  };
+
+  var root = document.getElementById("dark-web-account-protection");
+  if (!root) return;
+
+  var checkBtn = root.querySelector("#checkBtn");
+  var resetBtn = root.querySelector("#resetBtn");
+  var showAnswerBtn = root.querySelector("#showAnswerBtn");
+  var resultBox = root.querySelector("#resultBox");
+  var feedback = root.querySelector("#feedback");
+  var solutionRecap = root.querySelector("#solutionRecap");
+
+  if (typeof window.initSecplusSimDocModal === "function") {
+    window.initSecplusSimDocModal({ docContent: DOC_CONTENT, root: root });
+  }
+
+  function selectedWeak() {
+    return Array.from(root.querySelectorAll("#weak-practices input[type='checkbox']:checked"))
+      .map(function (el) {
+        return el.value;
+      })
+      .sort();
+  }
+
+  function selectedContainment() {
+    var chosen = root.querySelector("input[name='containment']:checked");
+    return chosen ? chosen.value : "";
+  }
+
+  function arraysEqual(a, b) {
+    if (a.length !== b.length) return false;
+    return a.every(function (v, i) {
+      return v === b[i];
+    });
+  }
+
+  function weakFeedback(weak, weakOk) {
+    if (weakOk) {
+      return "<strong>Step 2 — Weak password practices:</strong> Correct. Select Age, Reuse, Length, and Complexity.";
+    }
+    var lines = ["<strong>Step 2 — Weak password practices:</strong> Expected Age, Reuse, Length, and Complexity."];
+    ["Age", "Reuse", "Length", "Complexity", "Expiration"].forEach(function (key) {
+      var selected = weak.indexOf(key) !== -1;
+      var should = weakCorrect.indexOf(key) !== -1;
+      if (selected !== should) {
+        lines.push("• <strong>" + key + ":</strong> " + WEAK_EXPLAIN[key]);
+      }
+    });
+    return lines.join("<br>");
+  }
+
+  function containmentFeedback(containment, containmentOk) {
+    if (containmentOk) {
+      return "<strong>Step 3 — Containment:</strong> Correct. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+    }
+    if (!containment) {
+      return "<strong>Step 3 — Containment:</strong> Choose one option. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+    }
+    return (
+      "<strong>Step 3 — Containment:</strong> Expected FIDO security key. " +
+      CONTAINMENT_EXPLAIN[containmentCorrect] +
+      " Your choice (" +
+      containment +
+      "): " +
+      CONTAINMENT_EXPLAIN[containment]
+    );
+  }
+
+  function showRecap(visible) {
+    solutionRecap.innerHTML = SOLUTION_RECAP_HTML;
+    solutionRecap.classList.toggle("visible", visible);
+  }
+
+  function checkAnswers() {
+    var weak = selectedWeak();
+    var weakExpected = weakCorrect.slice().sort();
+    var containment = selectedContainment();
+    var weakOk = arraysEqual(weak, weakExpected);
+    var containmentOk = containment === containmentCorrect;
+    var passed = weakOk && containmentOk;
+
+    resultBox.className = "result " + (passed ? "pass" : "fail");
+    resultBox.textContent = passed
+      ? "Correct. You identified the weak password practices and selected the best containment step."
+      : "Not quite. Re-read the leaked documents, then adjust your selections.";
+
+    feedback.innerHTML = weakFeedback(weak, weakOk) + "<br><br>" + containmentFeedback(containment, containmentOk);
+    showRecap(passed);
+  }
+
+  function resetAnswers() {
+    root.querySelectorAll("#weak-practices input[type='checkbox']").forEach(function (el) {
+      el.checked = false;
+    });
+    root.querySelectorAll("input[name='containment']").forEach(function (el) {
+      el.checked = false;
+    });
+    root.querySelectorAll(".artifact.reviewed").forEach(function (el) {
+      el.classList.remove("reviewed");
+    });
+    resultBox.className = "result";
+    resultBox.textContent = "";
+    feedback.textContent = "";
+    showRecap(false);
+  }
+
+  function showAnswers() {
+    root.querySelectorAll("#weak-practices input[type='checkbox']").forEach(function (el) {
+      el.checked = weakCorrect.indexOf(el.value) !== -1;
+    });
+    root.querySelectorAll("input[name='containment']").forEach(function (el) {
+      el.checked = el.value === containmentCorrect;
+    });
+    resultBox.className = "result pass";
+    resultBox.textContent = "Answers shown. Review the recap below, then Reset to practice again.";
+    feedback.innerHTML =
+      "<strong>Step 2:</strong> Age — passwords kept too long. Reuse — same password on multiple accounts. " +
+      "Length — too short. Complexity — missing numbers/symbols.<br><br>" +
+      "<strong>Step 3:</strong> " +
+      CONTAINMENT_EXPLAIN[containmentCorrect];
+    showRecap(true);
+  }
+
+  checkBtn.addEventListener("click", checkAnswers);
+  resetBtn.addEventListener("click", resetAnswers);
+  showAnswerBtn.addEventListener("click", showAnswers);
+})();
+</script>

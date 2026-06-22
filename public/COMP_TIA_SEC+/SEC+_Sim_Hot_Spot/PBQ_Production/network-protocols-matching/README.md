@@ -25,7 +25,7 @@ Match eleven protocols to security function descriptions. Paraphrased from commo
 ## Chain
 
 - **Previous:** [`../mdm-enrollment-config/`](../mdm-enrollment-config/mdm-enrollment-config.html)
-- **Next:** *(end of chain)*
+- **Next:** [`../site-to-site-vpn-config/`](../site-to-site-vpn-config/site-to-site-vpn-config.html)
 
 ## Preview
 

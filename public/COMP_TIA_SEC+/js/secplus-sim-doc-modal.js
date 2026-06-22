@@ -57,14 +57,15 @@
     config = config || {};
     var docContent = config.docContent || {};
     var artifactSelector = config.artifactSelector || ".artifact[data-doc]";
+    var scope = config.root || document;
 
-    var docModal = document.getElementById("docModal");
-    var docModalTitle = document.getElementById("docModalTitle");
-    var docModalBody = document.getElementById("docModalBody");
-    var docModalClose = document.getElementById("docModalClose");
-    var docModalPanel = document.getElementById("docModalPanel");
-    var docModalHead = document.getElementById("docModalHead");
-    var docModalResize = document.getElementById("docModalResize");
+    var docModal = scope.querySelector(".doc-modal") || document.getElementById("docModal");
+    var docModalTitle = docModal ? docModal.querySelector(".doc-modal__title") : document.getElementById("docModalTitle");
+    var docModalBody = docModal ? docModal.querySelector(".doc-modal__body") : document.getElementById("docModalBody");
+    var docModalClose = docModal ? docModal.querySelector(".doc-modal__close") : document.getElementById("docModalClose");
+    var docModalPanel = docModal ? docModal.querySelector(".doc-modal__panel") : document.getElementById("docModalPanel");
+    var docModalHead = docModal ? docModal.querySelector(".doc-modal__head") : document.getElementById("docModalHead");
+    var docModalResize = docModal ? docModal.querySelector(".doc-modal__resize") : document.getElementById("docModalResize");
 
     if (!docModal || !docModalPanel || !docModalBody) return null;
     if (docModal.dataset.docModalReady === "1") {
@@ -355,7 +356,7 @@
       });
     }
 
-    document.querySelectorAll(artifactSelector).forEach(function (btn) {
+    scope.querySelectorAll(artifactSelector).forEach(function (btn) {
       btn.addEventListener("click", function () {
         openDoc(btn.getAttribute("data-doc"), btn);
       });

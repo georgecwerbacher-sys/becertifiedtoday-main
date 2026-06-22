@@ -1,8 +1,7 @@
 /**
  * Launch-deal popup on comptia-sec+-home.html.
- * Opens ~5s after #purchase (pricing) is in view so list price is visible first, or after the free
- * 35-minute simulation
- * (via ?launch_deal=1 / session flag). ONETIMEDEAL ($17.99 on $24.99 list) while the offer is
+ * Opens ~5s after #purchase (pricing) is in view so list price is visible first, or via
+ * ?launch_deal=1 / session flag. ONETIMEDEAL ($17.99 on $24.99 list) while the offer is
  * active. Dismiss and "no thanks" return to /comptia-sec+-home.html.
  */
 (function () {

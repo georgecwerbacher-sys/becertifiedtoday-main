@@ -2,318 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security+ Simulation — VPC Payment Application Architecture</title>
-  <style>
-    :root {
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      padding: 20px 16px 90px;
-    }
-    .wrap {
-      width: min(1140px, 100%);
-      margin: 0 auto;
-      border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      padding: 22px;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.1rem, 2.3vw, 1.5rem);
-      line-height: 1.35;
-    }
-    .lead, .instructions {
-      margin: 0 0 14px;
-      line-height: 1.5;
-    }
-    .instructions {
-      padding: 12px 14px;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-    }
-    .sim-frame {
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      overflow: hidden;
-      background: #fff;
-      padding: 8px;
-    }
-    .vpc-diagram {
-      position: relative;
-      width: 100%;
-      max-width: 980px;
-      margin: 0 auto;
-      line-height: 0;
-    }
-    .vpc-diagram-img {
-      display: block;
-      width: 100%;
-      height: auto;
-      user-select: none;
-      pointer-events: none;
-    }
-    .vpc-node {
-      position: absolute;
-      z-index: 2;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
-    }
-    .vpc-slot {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: stretch;
-    }
-    .vpc-slot-btn {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      width: 100%;
-      height: 100%;
-      min-height: 22px;
-      padding: 1px 4px;
-      border: 1px solid #005ecb;
-      border-radius: 1px;
-      background: rgba(0, 100, 230, 0.92);
-      color: #fff;
-      font: inherit;
-      font-size: clamp(0.55rem, 1.05vw, 0.68rem);
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-      line-height: 1.1;
-    }
-    .vpc-slot-btn:hover,
-    .vpc-slot-btn[aria-expanded="true"] {
-      background: rgba(0, 82, 200, 0.98);
-      border-color: #004799;
-    }
-    .vpc-slot-btn:focus-visible {
-      outline: 2px solid #1d4ed8;
-      outline-offset: 1px;
-    }
-    .vpc-slot-icon {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      display: none;
-    }
-    .vpc-slot.has-value .vpc-slot-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .vpc-slot-icon img,
-    .vpc-slot-icon svg {
-      width: 12px;
-      height: 12px;
-      display: block;
-    }
-    .vpc-slot-label {
-      flex: 1;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .vpc-slot-menu {
-      position: absolute;
-      top: calc(100% + 2px);
-      left: 50%;
-      transform: translateX(-50%);
-      min-width: 148px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      border: 1px solid #cbd5e1;
-      border-radius: 2px;
-      background: #fff;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
-      z-index: 20;
-      max-height: 220px;
-      overflow: auto;
-    }
-    .vpc-slot-menu[hidden] {
-      display: none;
-    }
-    .vpc-slot-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-      padding: 7px 8px;
-      border: 0;
-      background: #fff;
-      color: #0f172a;
-      font: inherit;
-      font-size: 0.78rem;
-      text-align: left;
-      cursor: pointer;
-    }
-    .vpc-slot-option:hover,
-    .vpc-slot-option:focus-visible {
-      background: #eff6ff;
-      outline: none;
-    }
-    .vpc-select-native {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
-    }
-    .subnet-picker {
-      position: absolute;
-      z-index: 2;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: center;
-      padding: 0;
-    }
-    .subnet-picker label {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-    }
-    .subnet-picker select {
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      padding: 1px 3px;
-      border: 1px solid #005ecb;
-      border-radius: 1px;
-      background: rgba(0, 100, 230, 0.92);
-      color: #fff;
-      font: inherit;
-      font-size: clamp(0.5rem, 0.9vw, 0.62rem);
-      font-weight: 600;
-      text-align: center;
-      cursor: pointer;
-      line-height: 1.1;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .subnet-picker select option {
-      background: #fff;
-      color: #0f172a;
-    }
-    /* Drop slots aligned to dark blue boxes on diagram image (314×170) */
-    .vpc-node.n2 { top: 8.2%; left: 58.6%; width: 8.6%; height: 4.1%; }
-    .vpc-node.n1 { top: 27.6%; left: 42.2%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n3 { top: 27.6%; left: 73.7%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n4 { top: 47.1%; left: 58.4%; width: 8.9%; height: 4.1%; }
-    /* Subnet select — blue box below tall left tier, slightly right (314×170 image) */
-    .subnet-picker { top: 62.4%; left: 17.0%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n5 { top: 65.9%; left: 42.2%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n8 { top: 65.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n6 { top: 65.9%; left: 73.7%; width: 8.9%; height: 4.1%; }
-    .vpc-node.n7 { top: 85.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
-    @media (max-width: 640px) {
-      .vpc-slot-btn,
-      .subnet-picker select {
-        font-size: 0.52rem;
-        min-height: 18px;
-      }
-    }
-    .actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    button {
-      border: 1px solid #7c3aed;
-      background: #5b21b6;
-      color: #f3e8ff;
-      font-weight: 700;
-      border-radius: 10px;
-      padding: 10px 14px;
-      cursor: pointer;
-      font: inherit;
-    }
-    button.secondary {
-      border-color: #cbd5e1;
-      background: #ffffff;
-      color: #334155;
-    }
-    .result {
-      margin-top: 14px;
-      border-radius: 10px;
-      padding: 12px 14px;
-      border: 1px solid #e5e7eb;
-      display: none;
-      line-height: 1.45;
-      font-weight: 700;
-    }
-    .result.pass {
-      display: block;
-      border-color: #86efac;
-      background: #ecfdf5;
-      color: #166534;
-    }
-    .result.fail {
-      display: block;
-      border-color: #fca5a5;
-      background: #fef2f2;
-      color: #991b1b;
-    }
-    .feedback {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      line-height: 1.45;
-      min-height: 1.3em;
-    }
-    .home-link {
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 20;
-      text-decoration: none;
-      color: #f3e8ff;
-      background: #5b21b6;
-      border: 1px solid #7c3aed;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-weight: 700;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
-    }
-  </style>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Place WAF, load balancers, autoscaling instances, and database on a cloud VPC payment diagram and label the middle tier as public or private subnet." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html" />
+  <title>Security+: SEC+ VPC Payment Architecture | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-vpc-payment.css" />
 </head>
-<body class="secplus-sim-page">
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-vpc-payment">
+  <script src="/js/sample-url-mask-apply.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
   <div class="page-logo-watermark" aria-hidden="true">
-    <img src="../../../images/logo/becertifiedtoday_logo_trans.png" alt="" width="720" height="720" decoding="async" />
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
-  <main class="wrap">
-    <h1>Simulation: VPC Payment Application Network Diagram</h1>
-    <p class="lead">
-      A security analyst is creating the first draft of a network diagram for the company's new
-      customer-facing payment application that will be hosted by a third-party cloud service provider.
-    </p>
-    <p class="instructions">
-      <strong>Instructions:</strong> Place each component in the correct location on the diagram. Select the
-      appropriate subnet type for the middle tier. Not every option is used at every node.
-    </p>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.1 · 3.2</p>
+        <h1>SEC+ VPC Payment Architecture</h1>
+        <p class="lead pbq-sub">A security analyst is drafting a network diagram for the company's new customer-facing payment application hosted by a third-party cloud provider.</p>
+        <p class="instructions pbq-instructions">
+          Place each component in the correct location on the diagram. Select the appropriate subnet type for the middle tier. Not every option is used at every node.
+        </p>
+      </header>
 
-    <div class="sim-frame">
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="vpc-payment-architecture" data-scenario="vpc-payment-architecture" hidden><div class="pbq-suite-section__inner"><div class="pbq-vpc-payment-wrap">
+<div class="sim-frame">
       <div
         class="vpc-diagram"
         role="group"
@@ -321,7 +48,7 @@
       >
         <img
           class="vpc-diagram-img"
-          src="../../images/vpc-payment-architecture.png"
+          src="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/images/vpc-payment-architecture.png"
           width="314"
           height="170"
           alt="VPC diagram with public subnet, private subnet, Internet Gateway, and placement boxes for payment application components"
@@ -329,7 +56,7 @@
         />
         <div class="vpc-node n2">
           <div class="vpc-slot" data-for="vpc-2"></div>
-          <select class="vpc-select-native" id="vpc-2" aria-label="Diagram node 2 — top tier" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-2" aria-label="Diagram node 2 — top tier" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -340,7 +67,7 @@
         </div>
         <div class="vpc-node n1">
           <div class="vpc-slot" data-for="vpc-1"></div>
-          <select class="vpc-select-native" id="vpc-1" aria-label="Diagram node 1 — public subnet left" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-1" aria-label="Diagram node 1 — public subnet left" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -351,7 +78,7 @@
         </div>
         <div class="vpc-node n3">
           <div class="vpc-slot" data-for="vpc-3"></div>
-          <select class="vpc-select-native" id="vpc-3" aria-label="Diagram node 3 — public subnet right" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-3" aria-label="Diagram node 3 — public subnet right" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -362,7 +89,7 @@
         </div>
         <div class="vpc-node n4">
           <div class="vpc-slot" data-for="vpc-4"></div>
-          <select class="vpc-select-native" id="vpc-4" aria-label="Diagram node 4 — middle tier" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-4" aria-label="Diagram node 4 — middle tier" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -372,8 +99,8 @@
           </select>
         </div>
         <div class="subnet-picker">
-          <label for="vpc-subnet">Middle tier subnet type</label>
-          <select id="vpc-subnet" aria-label="Middle tier subnet type">
+          <label>Middle tier subnet type</label>
+          <select id="vpc-payment-architecture-vpc-subnet" aria-label="Middle tier subnet type">
             <option value="">Select</option>
             <option>Public subnet</option>
             <option>Private subnet</option>
@@ -381,7 +108,7 @@
         </div>
         <div class="vpc-node n5">
           <div class="vpc-slot" data-for="vpc-5"></div>
-          <select class="vpc-select-native" id="vpc-5" aria-label="Diagram node 5 — private tier left" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-5" aria-label="Diagram node 5 — private tier left" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -392,7 +119,7 @@
         </div>
         <div class="vpc-node n8">
           <div class="vpc-slot" data-for="vpc-8"></div>
-          <select class="vpc-select-native" id="vpc-8" aria-label="Diagram node 8 — private tier center" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-8" aria-label="Diagram node 8 — private tier center" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -403,7 +130,7 @@
         </div>
         <div class="vpc-node n6">
           <div class="vpc-slot" data-for="vpc-6"></div>
-          <select class="vpc-select-native" id="vpc-6" aria-label="Diagram node 6 — private tier right" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-6" aria-label="Diagram node 6 — private tier right" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -414,7 +141,7 @@
         </div>
         <div class="vpc-node n7">
           <div class="vpc-slot" data-for="vpc-7"></div>
-          <select class="vpc-select-native" id="vpc-7" aria-label="Diagram node 7 — database tier" tabindex="-1">
+          <select class="vpc-select-native" id="vpc-payment-architecture-vpc-7" aria-label="Diagram node 7 — database tier" tabindex="-1">
             <option value="">Select</option>
             <option>Autoscaling Instance</option>
             <option>Database</option>
@@ -427,18 +154,45 @@
     </div>
 
     <div class="actions">
-      <button id="checkBtn" type="button">Check Answers</button>
-      <button id="resetBtn" class="secondary" type="button">Reset</button>
-      <button id="showAnswerBtn" class="secondary" type="button">Show Answer</button>
+      <button id="vpc-payment-architecture-checkBtn" type="button">Check Answers</button>
+      <button id="vpc-payment-architecture-resetBtn" class="secondary" type="button">Reset</button>
+      <button id="vpc-payment-architecture-showAnswerBtn" class="secondary" type="button">Show Answer</button>
     </div>
-    <div id="resultBox" class="result" aria-live="polite"></div>
-    <div id="feedback" class="feedback" aria-live="polite"></div>
-  </main>
+    <div id="vpc-payment-architecture-resultBox" class="result" aria-live="polite"></div>
+    <div id="vpc-payment-architecture-feedback" class="feedback" aria-live="polite"></div>
+  </div></div></article>
+        </div>
+      </div>
 
-  <a class="home-link" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">SEC+ Home</a>
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="vpc-payment-architecture.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
+        </div>
+      </nav>
+      </div>
+    </main>
+  </div>
 
-  <script>
-    const NODE_ANSWERS = {
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "vpc-payment-architecture"; window.PBQ_DEEP_DIVE_KEY = "vpc-payment-architecture.html";</script>
+  
+  <!-- vpc-payment-architecture -->
+<script>
+(function () {
+  var root = document.getElementById("vpc-payment-architecture");
+  if (!root) return;
+
+  function field(shortId) {
+    return root.querySelector('[id$="-' + shortId + '"]');
+  }
+
+var NODE_ANSWERS = {
       "vpc-1": "Load Balancer",
       "vpc-2": "WAF",
       "vpc-3": "Load Balancer",
@@ -448,28 +202,28 @@
       "vpc-7": "Database"
     };
 
-    const SUBNET_ANSWER = "Private subnet";
+    var SUBNET_ANSWER = "Private subnet";
 
     function checkDiagram() {
-      const missing = [];
-      const wrong = [];
+      var missing = [];
+      var wrong = [];
       Object.keys(NODE_ANSWERS).forEach((id) => {
-        const el = document.getElementById(id);
-        const val = el.value;
-        const label = id.replace("vpc-", "node ");
+        var el = field(id);
+        var val = el.value;
+        var label = id.replace("vpc-", "node ");
         if (!val) missing.push(label);
         else if (val !== NODE_ANSWERS[id]) wrong.push(label + " (expected " + NODE_ANSWERS[id] + ")");
       });
-      const subnet = document.getElementById("vpc-subnet");
+      var subnet = field("vpc-subnet");
       if (!subnet.value) missing.push("middle subnet");
       else if (subnet.value !== SUBNET_ANSWER) wrong.push("middle subnet (expected " + SUBNET_ANSWER + ")");
       return { missing, wrong };
     }
 
     function checkAnswers() {
-      const { missing, wrong } = checkDiagram();
-      const resultBox = document.getElementById("resultBox");
-      const feedback = document.getElementById("feedback");
+      var { missing, wrong } = checkDiagram();
+      var resultBox = root.querySelector("#vpc-payment-architecture-resultBox");
+      var feedback = root.querySelector("#vpc-payment-architecture-feedback");
 
       if (missing.length) {
         resultBox.className = "result fail";
@@ -478,7 +232,7 @@
         return;
       }
 
-      const passed = wrong.length === 0;
+      var passed = wrong.length === 0;
       resultBox.className = "result " + (passed ? "pass" : "fail");
       resultBox.textContent = passed
         ? "Correct. The diagram places edge protection, redundant load balancing, scalable app tiers, and an isolated database."
@@ -494,29 +248,29 @@
     }
 
     function resetAnswers() {
-      document.querySelectorAll(".vpc-select-native, #vpc-subnet").forEach((el) => {
+      root.querySelectorAll(".vpc-select-native, [id$=\"-vpc-subnet\"]").forEach((el) => {
         el.selectedIndex = 0;
         el.dispatchEvent(new Event("change", { bubbles: true }));
       });
-      document.getElementById("resultBox").className = "result";
-      document.getElementById("resultBox").textContent = "";
-      document.getElementById("feedback").textContent = "";
+      root.querySelector("#vpc-payment-architecture-resultBox").className = "result";
+      root.querySelector("#vpc-payment-architecture-resultBox").textContent = "";
+      root.querySelector("#vpc-payment-architecture-feedback").textContent = "";
     }
 
     function showAnswers() {
       Object.keys(NODE_ANSWERS).forEach((id) => {
-        const el = document.getElementById(id);
+        var el = field(id);
         el.value = NODE_ANSWERS[id];
         el.dispatchEvent(new Event("change", { bubbles: true }));
       });
-      document.getElementById("vpc-subnet").value = SUBNET_ANSWER;
-      document.getElementById("resultBox").className = "result pass";
-      document.getElementById("resultBox").textContent = "Answers shown. Review the architecture, then Reset to practice again.";
-      document.getElementById("feedback").textContent =
+      field("vpc-subnet").value = SUBNET_ANSWER;
+      root.querySelector("#vpc-payment-architecture-resultBox").className = "result pass";
+      root.querySelector("#vpc-payment-architecture-resultBox").textContent = "Answers shown. Review the architecture, then Reset to practice again.";
+      root.querySelector("#vpc-payment-architecture-feedback").textContent =
         "Node 2: WAF | Nodes 1 & 3: Load Balancer | Node 4: Autoscaling Instance | Nodes 5 & 6: Instance | Node 7: Database | Middle tier: Private subnet.";
     }
 
-    const COMPONENT_ICONS = {
+    var COMPONENT_ICONS = {
       "Autoscaling Instance":
         '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#f97316" stroke-width="2"/><path d="M8 8l8 8M16 8l-8 8" stroke="#f97316" stroke-width="2"/></svg>',
       Database:
@@ -526,7 +280,7 @@
       "Load Balancer":
         '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="#f97316" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="#f97316" stroke-width="2"/></svg>',
       WAF:
-        '<img src="../../images/firewall-brick.png" alt="" width="20" height="20" />',
+        '<img src="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/images/firewall-brick.png" alt="" width="20" height="20" />',
     };
 
     function iconHtml(value) {
@@ -534,34 +288,34 @@
     }
 
     function closeAllVpcMenus(except) {
-      document.querySelectorAll(".vpc-slot-menu").forEach((menu) => {
+      root.querySelectorAll(".vpc-slot-menu").forEach((menu) => {
         if (menu !== except) {
           menu.hidden = true;
-          const btn = menu.previousElementSibling;
+          var btn = menu.previousElementSibling;
           if (btn) btn.setAttribute("aria-expanded", "false");
         }
       });
     }
 
     function syncVpcSlot(select) {
-      const slot = select.parentElement.querySelector(".vpc-slot");
+      var slot = select.parentElement.querySelector(".vpc-slot");
       if (!slot) return;
-      const btn = slot.querySelector(".vpc-slot-btn");
-      const icon = slot.querySelector(".vpc-slot-icon");
-      const label = slot.querySelector(".vpc-slot-label");
-      const value = select.value;
+      var btn = slot.querySelector(".vpc-slot-btn");
+      var icon = slot.querySelector(".vpc-slot-icon");
+      var label = slot.querySelector(".vpc-slot-label");
+      var value = select.value;
       slot.classList.toggle("has-value", !!value);
       if (icon) icon.innerHTML = value ? iconHtml(value) : "";
       if (label) label.textContent = value || "Select";
     }
 
     function initVpcSlots() {
-      document.querySelectorAll(".vpc-slot").forEach((slot) => {
-        const selectId = slot.getAttribute("data-for");
-        const select = document.getElementById(selectId);
+      root.querySelectorAll(".vpc-slot").forEach((slot) => {
+        var selectId = slot.getAttribute("data-for");
+        var select = field(selectId);
         if (!select) return;
 
-        const btn = document.createElement("button");
+        var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "vpc-slot-btn";
         btn.setAttribute("aria-haspopup", "listbox");
@@ -569,15 +323,15 @@
         btn.innerHTML =
           '<span class="vpc-slot-icon"></span><span class="vpc-slot-label">Select</span>';
 
-        const menu = document.createElement("ul");
+        var menu = document.createElement("ul");
         menu.className = "vpc-slot-menu";
         menu.setAttribute("role", "listbox");
         menu.hidden = true;
 
         Array.from(select.options).forEach((opt) => {
           if (!opt.value) return;
-          const li = document.createElement("li");
-          const item = document.createElement("button");
+          var li = document.createElement("li");
+          var item = document.createElement("button");
           item.type = "button";
           item.className = "vpc-slot-option";
           item.setAttribute("role", "option");
@@ -603,7 +357,7 @@
         slot.appendChild(menu);
 
         btn.addEventListener("click", () => {
-          const open = menu.hidden;
+          var open = menu.hidden;
           closeAllVpcMenus(open ? menu : null);
           menu.hidden = !open;
           btn.setAttribute("aria-expanded", open ? "true" : "false");
@@ -613,7 +367,7 @@
         syncVpcSlot(select);
       });
 
-      document.addEventListener("click", (ev) => {
+      root.addEventListener("click", function (ev) {
         if (!ev.target.closest(".vpc-slot")) closeAllVpcMenus(null);
       });
       document.addEventListener("keydown", (ev) => {
@@ -623,12 +377,13 @@
 
     initVpcSlots();
 
-    document.getElementById("checkBtn").addEventListener("click", checkAnswers);
-    document.getElementById("resetBtn").addEventListener("click", resetAnswers);
-    document.getElementById("showAnswerBtn").addEventListener("click", showAnswers);
-  </script>
+    root.querySelector("#vpc-payment-architecture-checkBtn").addEventListener("click", checkAnswers);
+    root.querySelector("#vpc-payment-architecture-resetBtn").addEventListener("click", resetAnswers);
+    root.querySelector("#vpc-payment-architecture-showAnswerBtn").addEventListener("click", showAnswers);
+})();
+</script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.js" defer></script>
-  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
 </body>
 </html>

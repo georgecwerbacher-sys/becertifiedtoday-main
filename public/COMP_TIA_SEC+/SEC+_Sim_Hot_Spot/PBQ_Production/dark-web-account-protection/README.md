@@ -1,6 +1,6 @@
-# BeCertifiedToday.com — Dark Web Incident Response
+# SEC+ Dark Web Incident Response
 
-**SY0-701 BCT standalone simulation**
+**SY0-701 PBQ · BeCertifiedToday.com IR case IR-2024-0847**
 
 Review leaked directory, compensation, and credential audit exhibits; identify weak password practices and select FIDO containment that preserves kiosk forensic images.
 
@@ -18,10 +18,15 @@ Review leaked directory, compensation, and credential audit exhibits; identify w
 - `../reports/compensation-report-q3-ir-addendum.html`
 - `../reports/employee-credential-audit.html`
 
+## Chain position
+
+- **Previous:** [`../web-app-subnet-zoning/`](../web-app-subnet-zoning/web-app-subnet-zoning.html)
+- **Next:** [`../malware-outbreak-classification/`](../malware-outbreak-classification/malware-outbreak-classification.html)
+
 ## Preview
 
-```text
 http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html
-```
 
-Standalone page (not in `build-pbq-production-suite.py` chain). Deep dive: `secplus-sim-deep-dive.js`.
+Rebuild after section edits: `npm run build:pbq-suite`
+
+Legacy redirect: `../simulation-dark-web-account-protection.html`

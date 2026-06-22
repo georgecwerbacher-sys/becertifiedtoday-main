@@ -19,6 +19,10 @@ Organized by **search intent** and **ad group** — not generic “question bank
 
 **Promote rule:** search term with ≥3 clicks + `begin_checkout` → add as `[exact]`.
 
+**No free-intent keywords:** Do not bid on any keyword or phrase containing *free* (samples, dumps, courses, PBQs, etc.). Negate **`free`** at **campaign and ad group** level. Paid search targets people ready to buy exam prep—not free-only shoppers.
+
+**Timed simulation = paid feature, not a free CTA:** We **do** sell a **90-minute timed Security+ exam simulation with detailed scorecard review**—it is **included with portal access** ($9.99/10d · $19.99/30d). Do **not** use a *free* timed sim as an ad CTA, sitelink, or sample upsell. Negate `free timed`, `free timed simulation`, and similar. **Do** bid on timed/mock/simulation intent paired with paid-offer copy (`SEC+_Realistic_Sim`).
+
 ---
 
 ## Keyword strategy (from positioning)
@@ -228,7 +232,19 @@ When live, test federal page: `utm_content=federal-us` → `/secplus/federal-814
 Block courses, dumps, job listings (salary/jobs), and **unmodified head terms** this campaign should not own alone:
 
 ```
+free
 "free course"
+"free practice"
+"free practice test"
+"free questions"
+"free pbq"
+"free dump"
+"free download"
+"free timed"
+"free timed simulation"
+"free timed sample"
+"free simulation"
+"35 minute free"
 "training course"
 bootcamp
 "instructor led"
@@ -260,6 +276,7 @@ ceh
 ## Ad group negatives (all three ad groups)
 
 ```
+free
 dump
 braindump
 pdf download

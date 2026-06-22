@@ -18,3 +18,5 @@ Three-tier cloud drag-and-drop: WAF, static/dynamic tiers, load balancers, datab
 ## Section
 
 Component bank + stacked public / middle / private zones with middle subnet type select.
+
+**Status:** Production — chain #31, linked on `SEC+_Training_Portal.html` (Network & Zero Trust).

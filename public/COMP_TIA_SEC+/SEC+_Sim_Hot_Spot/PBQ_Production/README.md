@@ -51,6 +51,11 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 27. [SEC+ Public WLAN Guest Configuration](public-wlan-guest-config/public-wlan-guest-config.html)
 28. [SEC+ MDM Enrollment Configuration](mdm-enrollment-config/mdm-enrollment-config.html)
 29. [SEC+ Network Protocols Matching](network-protocols-matching/network-protocols-matching.html)
+30. [SEC+ Site-to-Site VPN Configuration](site-to-site-vpn-config/site-to-site-vpn-config.html)
+31. [SEC+ Web App Subnet Zoning](web-app-subnet-zoning/web-app-subnet-zoning.html)
+32. [SEC+ Dark Web Incident Response](dark-web-account-protection/dark-web-account-protection.html)
+33. [SEC+ Malware Outbreak Classification](malware-outbreak-classification/malware-outbreak-classification.html)
+34. [SEC+ VPC Payment Architecture](vpc-payment-architecture/vpc-payment-architecture.html)
 
 ## Section source files
 
@@ -93,15 +98,17 @@ npm run build:pbq-suite
 | [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username |
 | [`mdm-enrollment-config/`](mdm-enrollment-config/) | BeCertifiedToday MDM — iOS compliance, app restrictions, ADE |
 | [`network-protocols-matching/`](network-protocols-matching/) | Eleven protocols matched to security functions |
+| [`site-to-site-vpn-config/`](site-to-site-vpn-config/) | Dual-gateway IKE Phase 1 + IPsec Phase 2 for BCT_HQ1/BCT_HQ2 |
+| [`web-app-subnet-zoning/`](web-app-subnet-zoning/) | Three-tier cloud drag-and-drop — WAF, tiers, LB, database |
+| [`dark-web-account-protection/`](dark-web-account-protection/) | Dark web credential exposure IR — exhibits + FIDO containment |
+| [`malware-outbreak-classification/`](malware-outbreak-classification/) | AV log triage — origin / infected / clean on five hosts |
+| [`vpc-payment-architecture/`](vpc-payment-architecture/) | PCI VPC diagram — WAF, LB, app tier, database placement |
 
 ## BCT standalone sims (portal, not in build chain)
 
 | Folder | Description |
 |--------|-------------|
-| [`dark-web-account-protection/`](dark-web-account-protection/) | Dark web credential exposure IR |
-| [`malware-outbreak-classification/`](malware-outbreak-classification/) | AV log timeline — outbreak type |
 | [`secure-web-architecture-openssl/`](secure-web-architecture-openssl/) | TLS, ciphers, OpenSSL practices |
-| [`vpc-payment-architecture/`](vpc-payment-architecture/) | PCI VPC segmentation diagram |
 
 _WLAN / config PBQs not yet on the portal live in [`../pending/`](../pending/) for review._
 

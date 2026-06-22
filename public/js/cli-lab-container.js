@@ -5674,41 +5674,6 @@
       }
     }
 
-    if (
-      gl.indexOf("ip access-list ") === 0 ||
-      gl.indexOf("permit ") === 0 ||
-      gl.indexOf("deny ") === 0 ||
-      gl.indexOf("remark ") === 0
-    ) {
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase() === "line con 0") return i;
-      }
-    }
-
-    if (gl.indexOf("ip dhcp snooping") === 0 || gl.indexOf("no ip dhcp snooping") === 0) {
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase().indexOf("interface ") === 0) return i;
-      }
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase() === "line con 0") return i;
-      }
-    }
-
-    if (gl.indexOf("ip route ") === 0 || gl.indexOf("ipv6 route ") === 0) {
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase() === "line con 0") return i;
-      }
-    }
-
-    if (/^vlan \d+$/i.test(gl)) {
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase().indexOf("interface ") === 0) return i;
-      }
-      for (i = 0; i < lines.length; i++) {
-        if (lines[i].trim().toLowerCase() === "line con 0") return i;
-      }
-    }
-
     for (i = 0; i < lines.length; i++) {
       if (lines[i].trim() === "end") return i;
     }

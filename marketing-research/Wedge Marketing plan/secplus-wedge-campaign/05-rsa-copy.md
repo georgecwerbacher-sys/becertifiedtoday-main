@@ -33,9 +33,8 @@ Paste into Google Ads responsive search ad. **Pin H1 and H2** as marked.
 Security+ PBQ Practice          ← Pin H1
 $9.99 · 10-Day Access           ← Pin H2
 SY0-701 PBQ in Browser
-28 PBQ Scenarios
+34 PBQ Scenarios
 Chain Labs & Hot Spots
-Free Dark Web PBQ Sample
 No Download · Browser PBQ
 Performance-Based Prep
 Phone Tablet Desktop
@@ -44,7 +43,7 @@ Timed 90-Min Exam Sim
 1000+ MCQ Included
 Adaptive Review Modes
 Be Certified Today
-Try Free PBQ First
+Detailed Scorecard Review
 ```
 
 ---
@@ -54,7 +53,7 @@ Try Free PBQ First
 ```
 Practice SY0-701 PBQs in your browser—chain labs drag-and-drop and IR scenarios.
 
-Try a free dark web IR simulation. Unlock 28 PBQ scenarios + 1000+ questions for $9.99/10d.
+$9.99/10d unlocks 34 PBQ scenarios + 1000+ questions. One payment—no subscription.
 
 No PDF dumps. Interactive performance-based prep on phone tablet or desktop.
 
@@ -67,7 +66,7 @@ Same browser UI as test day. One-time payment—no subscription.
 
 RSA must align with wedge landing:
 
-- [ ] Free dark web PBQ sample CTA on page
 - [ ] Browser / no download — not desktop sim
 - [ ] $9.99 / 10-day pricing on landing
+- [ ] No “free” in RSA headlines or descriptions (negate `free` in Search)
 - [ ] Not generic “question bank” or “practice test” headline war

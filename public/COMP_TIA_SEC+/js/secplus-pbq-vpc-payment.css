@@ -1,0 +1,242 @@
+.sim-frame {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  padding: 8px;
+}
+.vpc-diagram {
+  position: relative;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  line-height: 0;
+}
+.vpc-diagram-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+.vpc-node {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.vpc-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+.vpc-slot-btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  min-height: 22px;
+  padding: 1px 4px;
+  border: 1px solid #005ecb;
+  border-radius: 1px;
+  background: rgba(0, 100, 230, 0.92);
+  color: #fff;
+  font: inherit;
+  font-size: clamp(0.55rem, 1.05vw, 0.68rem);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.1;
+}
+.vpc-slot-btn:hover,
+.vpc-slot-btn[aria-expanded="true"] {
+  background: rgba(0, 82, 200, 0.98);
+  border-color: #004799;
+}
+.vpc-slot-btn:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 1px;
+}
+.vpc-slot-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: none;
+}
+.vpc-slot.has-value .vpc-slot-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vpc-slot-icon img,
+.vpc-slot-icon svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+.vpc-slot-label {
+  flex: 1;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vpc-slot-menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 148px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #cbd5e1;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+  z-index: 20;
+  max-height: 220px;
+  overflow: auto;
+}
+.vpc-slot-menu[hidden] {
+  display: none;
+}
+.vpc-slot-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  border: 0;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+}
+.vpc-slot-option:hover,
+.vpc-slot-option:focus-visible {
+  background: #eff6ff;
+  outline: none;
+}
+.vpc-select-native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.subnet-picker {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+}
+.subnet-picker label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+.subnet-picker select {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 1px 3px;
+  border: 1px solid #005ecb;
+  border-radius: 1px;
+  background: rgba(0, 100, 230, 0.92);
+  color: #fff;
+  font: inherit;
+  font-size: clamp(0.5rem, 0.9vw, 0.62rem);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  line-height: 1.1;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.subnet-picker select option {
+  background: #fff;
+  color: #0f172a;
+}
+/* Drop slots aligned to dark blue boxes on diagram image (314×170) */
+.vpc-node.n2 { top: 8.2%; left: 58.6%; width: 8.6%; height: 4.1%; }
+.vpc-node.n1 { top: 27.6%; left: 42.2%; width: 8.9%; height: 4.1%; }
+.vpc-node.n3 { top: 27.6%; left: 73.7%; width: 8.9%; height: 4.1%; }
+.vpc-node.n4 { top: 47.1%; left: 58.4%; width: 8.9%; height: 4.1%; }
+/* Subnet select — blue box below tall left tier, slightly right (314×170 image) */
+.subnet-picker { top: 62.4%; left: 17.0%; width: 8.9%; height: 4.1%; }
+.vpc-node.n5 { top: 65.9%; left: 42.2%; width: 8.9%; height: 4.1%; }
+.vpc-node.n8 { top: 65.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
+.vpc-node.n6 { top: 65.9%; left: 73.7%; width: 8.9%; height: 4.1%; }
+.vpc-node.n7 { top: 85.9%; left: 58.4%; width: 8.9%; height: 4.1%; }
+@media (max-width: 640px) {
+  .vpc-slot-btn,
+  .subnet-picker select {
+    font-size: 0.52rem;
+    min-height: 18px;
+  }
+}
+.actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+button {
+  border: 1px solid #7c3aed;
+  background: #5b21b6;
+  color: #f3e8ff;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font: inherit;
+}
+button.secondary {
+  border-color: #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+}
+.result {
+  margin-top: 14px;
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  display: none;
+  line-height: 1.45;
+  font-weight: 700;
+}
+.result.pass {
+  display: block;
+  border-color: #86efac;
+  background: #ecfdf5;
+  color: #166534;
+}
+.result.fail {
+  display: block;
+  border-color: #fca5a5;
+  background: #fef2f2;
+  color: #991b1b;
+}
+.feedback {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  min-height: 1.3em;
+}

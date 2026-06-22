@@ -543,12 +543,170 @@ SCENARIOS = [
             "(or tap a protocol, then tap a slot). Every protocol is used <strong>once</strong>."
         ),
         "prev": "mdm-enrollment-config",
-        "next": None,
+        "next": "site-to-site-vpn-config",
         "sections": [
             {
                 "id": "network-protocols-matching",
                 "label": "Protocol matching",
                 "path": "network-protocols-matching/sections/network-protocols-matching.html",
+            },
+        ],
+    },
+    {
+        "slug": "site-to-site-vpn-config",
+        "title": "SEC+ Site-to-Site VPN Configuration",
+        "heading": "SEC+ Site-to-Site VPN Configuration",
+        "page_title": "Security+: SEC+ Site-to-Site VPN Configuration",
+        "meta_description": (
+            "Configure BeCertifiedToday dual-gateway IPsec — IKE Phase 1 and IPsec Phase 2 "
+            "for BCT_HQ1 and BCT_HQ2 site-to-site VPN tunnels."
+        ),
+        "description": "",
+        "body_class": "pbq-home-router pbq-site-to-site-vpn",
+        "objectives": "1.4 · 2.4 · 3.2",
+        "suite_instructions": (
+            "Configure Phase 1 (IKE) and Phase 2 (IPsec) on <strong>both VPN gateways</strong> "
+            "to establish the most secure site-to-site connection between BCT_HQ1 and BCT_HQ2."
+        ),
+        "prev": "network-protocols-matching",
+        "next": "web-app-subnet-zoning",
+        "sections": [
+            {
+                "id": "site-to-site-vpn-config",
+                "label": "Site-to-site VPN",
+                "path": "site-to-site-vpn-config/sections/site-to-site-vpn-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "web-app-subnet-zoning",
+        "title": "SEC+ Web App Subnet Zoning",
+        "heading": "SEC+ Web App Subnet Zoning",
+        "page_title": "Security+: SEC+ Web App Subnet Zoning",
+        "meta_description": (
+            "Drag cloud components into public, middle, and private subnet zones for a "
+            "three-tier web application — WAF, static and dynamic tiers, load balancers, and database."
+        ),
+        "description": "",
+        "body_class": "pbq-subnet-zoning dragdrop-exercise",
+        "objectives": "3.2 · 3.3 · 4.1",
+        "suite_instructions": (
+            "Drag each component into the matching zone slot (or tap a token, then tap a slot). Set the "
+            "<strong>middle tier subnet type</strong> to Public or Private. Follow the natural flow: "
+            "user → front end → application logic → database."
+        ),
+        "prev": "site-to-site-vpn-config",
+        "next": "dark-web-account-protection",
+        "sections": [
+            {
+                "id": "web-app-subnet-zoning",
+                "label": "Subnet zoning",
+                "path": "web-app-subnet-zoning/sections/web-app-subnet-zoning.html",
+            },
+        ],
+    },
+    {
+        "slug": "dark-web-account-protection",
+        "title": "SEC+ Dark Web Incident Response",
+        "heading": "SEC+ Dark Web Incident Response",
+        "page_title": "Security+: SEC+ Dark Web Incident Response",
+        "meta_description": (
+            "BeCertifiedToday.com case IR-2024-0847 — review dark-web leak artifacts, identify weak password "
+            "practices, and select FIDO containment that preserves kiosk forensic evidence."
+        ),
+        "description": (
+            "<strong>Priority: ASAP.</strong> Security Operations assigned you case <strong>IR-2024-0847</strong> for "
+            "<strong>BeCertifiedToday.com</strong>: directory listings, a Q3 compensation report, and workforce credential "
+            "exports were posted on the dark web. Contain account risk and recommend the strongest employee protection without "
+            "destroying kiosk forensic images the IR team is preserving."
+        ),
+        "body_class": "pbq-dark-web-ir",
+        "objectives": "2.4",
+        "stylesheets": [
+            "/COMP_TIA_SEC+/js/secplus-sim-doc-modal.css",
+            "/COMP_TIA_SEC+/js/secplus-pbq-dark-web.css",
+        ],
+        "pre_inline_scripts": [
+            "/COMP_TIA_SEC+/js/secplus-sim-doc-modal.js",
+        ],
+        "suite_instructions": (
+            "<strong>Your IR tasks:</strong> (1) Open each exposed artifact from the BeCertifiedToday.com leak bundle and "
+            "review the documents. (2) Select all weak password practices supported by the evidence. (3) Choose the "
+            "containment control that protects accounts while leaving potential evidence on affected hosts uncompromised."
+        ),
+        "prev": "web-app-subnet-zoning",
+        "next": "malware-outbreak-classification",
+        "sections": [
+            {
+                "id": "dark-web-account-protection",
+                "label": "Dark web IR",
+                "path": "dark-web-account-protection/sections/dark-web-account-protection.html",
+            },
+        ],
+    },
+    {
+        "slug": "malware-outbreak-classification",
+        "title": "SEC+ Malware Outbreak Classification",
+        "heading": "SEC+ Malware Outbreak Classification",
+        "page_title": "Security+: SEC+ Malware Outbreak Classification",
+        "meta_description": (
+            "Classify five hosts as outbreak origin, infected, or clean using AV endpoint logs, "
+            "firewall traffic, and typosquatted process names across R&D and Engineering networks."
+        ),
+        "description": (
+            "A security analyst is investigating a malware outbreak across the R&amp;D and Engineering networks. "
+            "Review endpoint antivirus logs and firewall traffic, then classify each host."
+        ),
+        "body_class": "pbq-malware-outbreak",
+        "objectives": "2.3 · 4.5",
+        "stylesheets": [
+            "/COMP_TIA_SEC+/js/secplus-pbq-malware-outbreak.css",
+        ],
+        "suite_instructions": (
+            "Open each device log (six total) and the firewall log. Use typosquatted process names, quarantine "
+            "results, update failures, and traffic patterns to decide whether each host is the <strong>Origin</strong> "
+            "of the outbreak, still <strong>Infected</strong>, or <strong>Clean</strong>. Select exactly one "
+            "classification per host, then check your answers."
+        ),
+        "prev": "dark-web-account-protection",
+        "next": "vpc-payment-architecture",
+        "sections": [
+            {
+                "id": "malware-outbreak-classification",
+                "label": "Outbreak classification",
+                "path": "malware-outbreak-classification/sections/malware-outbreak-classification.html",
+            },
+        ],
+    },
+    {
+        "slug": "vpc-payment-architecture",
+        "title": "SEC+ VPC Payment Architecture",
+        "heading": "SEC+ VPC Payment Architecture",
+        "page_title": "Security+: SEC+ VPC Payment Architecture",
+        "meta_description": (
+            "Place WAF, load balancers, autoscaling instances, and database on a cloud VPC payment "
+            "diagram and label the middle tier as public or private subnet."
+        ),
+        "description": (
+            "A security analyst is drafting a network diagram for the company's new customer-facing "
+            "payment application hosted by a third-party cloud provider."
+        ),
+        "body_class": "pbq-vpc-payment",
+        "objectives": "3.1 · 3.2",
+        "stylesheets": [
+            "/COMP_TIA_SEC+/js/secplus-pbq-vpc-payment.css",
+        ],
+        "suite_instructions": (
+            "Place each component in the correct location on the diagram. Select the appropriate "
+            "subnet type for the middle tier. Not every option is used at every node."
+        ),
+        "prev": "malware-outbreak-classification",
+        "next": None,
+        "sections": [
+            {
+                "id": "vpc-payment-architecture",
+                "label": "VPC diagram",
+                "path": "vpc-payment-architecture/sections/vpc-payment-architecture.html",
             },
         ],
     },
@@ -762,6 +920,20 @@ def build_question_nav(scenario: dict, *, footer: bool = False) -> str:
       </nav>"""
 
 
+def build_extra_stylesheets(scenario: dict) -> str:
+    links = scenario.get("stylesheets") or []
+    if not links:
+        return ""
+    return "".join(f'\n  <link rel="stylesheet" href="{href}" />' for href in links)
+
+
+def build_pre_inline_scripts(scenario: dict) -> str:
+    scripts = scenario.get("pre_inline_scripts") or []
+    if not scripts:
+        return ""
+    return "".join(f'\n  <script src="{src}"></script>' for src in scripts)
+
+
 def build_scenario_page(scenario: dict) -> str:
     slug = scenario["slug"]
     page_url = f"{BASE_URL}/{slug}/{slug}.html"
@@ -785,7 +957,7 @@ def build_scenario_page(scenario: dict) -> str:
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />{build_extra_stylesheets(scenario)}
 </head>
 <body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite {scenario['body_class']}">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -824,6 +996,7 @@ def build_scenario_page(scenario: dict) -> str:
 
   <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
   <script>window.PBQ_SUITE_DEFAULT_SECTION = "{first_section}"; window.PBQ_DEEP_DIVE_KEY = "{slug}.html";</script>
+  {build_pre_inline_scripts(scenario)}
   {scripts}
   <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
   <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>

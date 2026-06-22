@@ -1,19 +1,49 @@
-<article class="pbq-section-fragment" data-id="site-to-site-vpn-config">
-  <h1>Site-to-Site VPN Tunnel Configuration</h1>
-  <p class="pbq-sub">
-    Configure site-to-site VPN tunnels between two <strong>BeCertifiedToday.com</strong> headquarters so they can communicate securely over the internet.
-  </p>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure BeCertifiedToday dual-gateway IPsec — IKE Phase 1 and IPsec Phase 2 for BCT_HQ1 and BCT_HQ2 site-to-site VPN tunnels." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/site-to-site-vpn-config/site-to-site-vpn-config.html" />
+  <title>Security+: SEC+ Site-to-Site VPN Configuration | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+</head>
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-site-to-site-vpn">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.4 · 2.4 · 3.2</p>
+        <h1>SEC+ Site-to-Site VPN Configuration</h1>
+        <p class="instructions pbq-instructions">
+          Configure Phase 1 (IKE) and Phase 2 (IPsec) on <strong>both VPN gateways</strong> to establish the most secure site-to-site connection between BCT_HQ1 and BCT_HQ2.
+        </p>
+      </header>
 
-  <div class="sim-frame pbq-vpn-sim">
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="site-to-site-vpn-config" data-scenario="site-to-site-vpn-config" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-vpn-sim">
     <section class="panel pbq-vpn-brief" aria-labelledby="vpn-brief-heading">
-      <h2 id="vpn-brief-heading">Scenario</h2>
+      <h2 id="site-to-site-vpn-config-vpn-brief-heading">Scenario</h2>
       <p class="pbq-waf-ticket__text">
         <strong>BeCertifiedToday.com</strong> has two headquarters that must securely communicate over the internet.
         Configure <strong>both VPN gateways</strong> — Phase 1 (IKE) and Phase 2 (IPsec) — to establish the
         <strong>most secure</strong> site-to-site connection between the offices.
-      </p>
-      <p class="panel-note">
-        Local and remote subnets are mirrored on each gateway. Peer IP is the <strong>public address</strong> of the opposite site.
       </p>
     </section>
 
@@ -39,7 +69,7 @@
 
     <div class="pbq-vpn-gateways">
       <section class="panel pbq-vpn-gateway" aria-labelledby="vpn-hq1-heading">
-        <h2 id="vpn-hq1-heading">BCT_HQ1 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.41</span></h2>
+        <h2 id="site-to-site-vpn-config-vpn-hq1-heading">BCT_HQ1 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.41</span></h2>
         <div class="pbq-vpn-phases">
           <div class="pbq-vpn-phase" data-phase-col="1">
             <h3 class="pbq-vpn-phase__title">Phase 1</h3>
@@ -127,7 +157,7 @@
       </section>
 
       <section class="panel pbq-vpn-gateway" aria-labelledby="vpn-hq2-heading">
-        <h2 id="vpn-hq2-heading">BCT_HQ2 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.52</span></h2>
+        <h2 id="site-to-site-vpn-config-vpn-hq2-heading">BCT_HQ2 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.52</span></h2>
         <div class="pbq-vpn-phases">
           <div class="pbq-vpn-phase" data-phase-col="1">
             <h3 class="pbq-vpn-phase__title">Phase 1</h3>
@@ -217,12 +247,33 @@
   </div>
 
   <div class="actions">
-    <button id="checkBtn" type="button">Check Answer</button>
-    <button id="resetBtn" type="button">Reset</button>
-    <button id="showBtn" type="button">Show Answer</button>
-    <span id="result" role="status" aria-live="polite"></span>
+    <button id="site-to-site-vpn-config-checkBtn" type="button">Check Answer</button>
+    <button id="site-to-site-vpn-config-resetBtn" type="button">Reset</button>
+    <button id="site-to-site-vpn-config-showBtn" type="button">Show Answer</button>
+    <span id="site-to-site-vpn-config-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="site-to-site-vpn-config.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/network-protocols-matching/network-protocols-matching.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/web-app-subnet-zoning/web-app-subnet-zoning.html">Next</a>
+        </div>
+      </nav>
+      </div>
+    </main>
   </div>
-</article>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "site-to-site-vpn-config"; window.PBQ_DEEP_DIVE_KEY = "site-to-site-vpn-config.html";</script>
+  
+  <!-- site-to-site-vpn-config -->
 <script>
 (function () {
   var ANSWERS = {
@@ -372,3 +423,8 @@
   });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
+</body>
+</html>

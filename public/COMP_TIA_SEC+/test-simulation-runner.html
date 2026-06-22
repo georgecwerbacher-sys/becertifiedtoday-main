@@ -663,9 +663,8 @@
     <div class="summary-card">
       <h2 id="freeSimUpsellTitle" class="summary-title">Ready for the full SY0-701 library?</h2>
       <p class="summary-text">
-        This free sample covers 20 questions across all five SY0-701 domains plus one performance-based simulation.
-        <strong>30-day access ($24.99 list · $17.99 launch deal)</strong> unlocks the full question bank, adaptive review, progress tracking, and the
-        <strong>90-minute timed simulation</strong>—all in your browser.
+        Unlock <strong>30-day access ($24.99 list · $17.99 launch deal)</strong> for the full question bank, adaptive review, progress tracking, and the
+        <strong>90-minute timed simulation</strong> with domain scorecard review—all in your browser.
       </p>
       <ul class="summary-list">
         <li>Full library + 90-minute exam-style sim</li>
@@ -974,6 +973,10 @@
 
       function initGate() {
         var params = new URLSearchParams(location.search || "");
+        if (detectFreeMode(params)) {
+          location.replace("/comptia-sec+-home.html#purchase");
+          return;
+        }
         var sessionIdFromUrl = params.get("session_id");
         var fromPortal = params.get("portal") === "1";
         bypassMode = params.get("bypass") === "1" || params.get("demo") === "1";

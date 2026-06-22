@@ -11,21 +11,14 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect to `PBQ_Production/` 
 | Folder | Description | Preview |
 |--------|-------------|---------|
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
-| [`site-to-site-vpn-config/`](site-to-site-vpn-config/) | Site-to-site VPN Phase 1 &amp; 2 dual-gateway config | [Open](site-to-site-vpn-config/site-to-site-vpn-config.html) |
-| [`web-app-subnet-zoning/`](web-app-subnet-zoning/) | Web app subnet zoning — drag-and-drop tiers | [Open](web-app-subnet-zoning/web-app-subnet-zoning.html) |
 
-Pending chain: … → site-to-site VPN → **web app subnet zoning**.
-
-Production PBQ chain (29 labs) ends at [`../PBQ_Production/network-protocols-matching/`](../PBQ_Production/network-protocols-matching/network-protocols-matching.html).
+Production PBQ chain (34 labs) ends at [`../PBQ_Production/vpc-payment-architecture/`](../PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html).
 
 ## BCT standalone sims (on portal → `PBQ_Production/`)
 
 | Folder | Preview |
 |--------|---------|
-| [`../PBQ_Production/dark-web-account-protection/`](../PBQ_Production/dark-web-account-protection/dark-web-account-protection.html) | Dark web credential IR |
-| [`../PBQ_Production/malware-outbreak-classification/`](../PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html) | Malware outbreak classification |
 | [`../PBQ_Production/secure-web-architecture-openssl/`](../PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html) | Secure web & OpenSSL |
-| [`../PBQ_Production/vpc-payment-architecture/`](../PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html) | VPC payment network |
 
 ## Reference only
 

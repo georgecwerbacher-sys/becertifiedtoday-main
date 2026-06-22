@@ -26,9 +26,9 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 
 **Adaptive testing that pushes what needs work.** Review modes do not treat every domain equally. Weak areas get priority. Miss a question in review mode and it **shuffles to the end of the queue** so you try again before you walk in. You can run **random full-bank sessions** or **focused review**—your choice, same engine.
 
-**Timed online simulation.** A 90-minute exam-style run under time pressure, mixed item types, the pace of the real SY0-701—not flipping through a PDF and guessing whether you are ready.
+**Timed online simulation.** A **90-minute** exam-style run under time pressure—mixed MCQ and PBQ/hot-spot items—with a **detailed domain scorecard** when you finish (scaled score, weakest domains, objective-level review). That is how you answer *Am I ready?*—not by flipping through a PDF.
 
-**Price that matches a sprint, not a dump.** Instead of buying a stale PDF for $99.99, you get **10 days of full access for $9.99** or **30 days for $19.99**—one payment, no subscription game. That includes **1,000+ current-version SY0-701 questions**, verified explanations, PBQ scenarios, timed sim, and adaptive review in one portal.
+**Price that matches a sprint, not a dump.** Instead of buying a stale PDF for $99.99, you get **10 days of full access for $9.99** or **30 days for $19.99**—one payment, no subscription game. That includes **1,000+ current-version SY0-701 questions**, verified explanations, **34 PBQ scenarios**, the **90-minute timed simulation + scorecard**, and adaptive review in one portal.
 
 **Mobile-friendly testing and scenario practice.** The people who need this cert often study on a phone between work and home. The product is built for that—not desktop-only legacy sims.
 
@@ -37,6 +37,18 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 **Who we are not for:** shoppers optimizing for “most questions per dollar” on a PDF, or people starting from zero who need a video bootcamp.
 
 **Campaign implication:** Bid on intent that matches **realistic practice environment** and **work-required certification**—interactive, simulation, timed, adaptive, PBQ, DoD/8140/contractor—not naked `practice test` or `question bank` alone.
+
+---
+
+## Free vs paid (CTA rules)
+
+| Tier | What | CTA in ads / landing |
+|------|------|----------------------|
+| **Free proof** | MCQ sample questions · dark web PBQ preview | Yes — “try sample” / `#home-secplus-samples-title` |
+| **Paid library** | 1000+ Qs · 34 PBQs · adaptive review · **90-min timed sim + scorecard** | Yes — `$9.99/10d` · `#purchase` · `SEC+_Realistic_Sim` keywords |
+| **Not offered** | Free timed simulation / guest 35-min exam | **No CTA** — negate `free timed*` in Search |
+
+The **timed simulation is a core sell**—always mention it with **paid access**, scorecard, and test-day pacing. Never lead with “free timed exam.”
 
 ---
 
@@ -66,12 +78,12 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 ## Product proof (checklist for landing + RSA)
 
 1. **Exam-realistic environment** — interactive scenarios online, not a PDF or flat quiz
-2. **Timed online simulation** — 90-minute exam-style run under time pressure
+2. **Timed online simulation + scorecard** — 90-minute mixed MCQ/PBQ run; domain breakdown and scaled score at finish (**included with portal access**)
 3. **Adaptive prep** — review modes loop missed answers; focus what still needs work
 4. **Random or review** — full random order, or missed questions reshuffled to the end
 5. **1000+ SY0-701 (v5.0) questions** — current blueprint, verified explanations
-6. **28 PBQ scenarios** — chain labs, hot spots, exhibits in browser
-7. **Try before pay** — free MCQ + dark web PBQ sample; same UI as full access
+6. **34 PBQ scenarios** — chain labs, hot spots, exhibits in browser
+7. **Try before pay (samples only)** — free MCQ + dark web PBQ preview on the home page; **not** a free timed sim CTA
 8. **Work-required cert** — DoD 8140 / contractor / job-mandated Security+
 
 ---

@@ -49,9 +49,7 @@ function renderScorecardEmailHtml(payload, siteUrl) {
     })
     .join("");
 
-  var sampleNote = p.isFreeSample
-    ? "<p style=\"font-size:14px;color:#475569;\">This was a <strong>free sample simulation</strong> (shorter than the full 90-minute SY0-701 timed test on Be Certified Today).</p>"
-    : "";
+  var sampleNote = "";
 
   var practiceUrl = siteUrl + "/comptia-sec+-home.html#purchase";
 

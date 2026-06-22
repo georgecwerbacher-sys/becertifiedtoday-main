@@ -45,10 +45,15 @@ Study and authoring notes for each scenario under `public/COMP_TIA_SEC+/SEC+_Sim
 | 27 | `public-wlan-guest-config` | [Guest WLAN](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/public-wlan-guest-config/public-wlan-guest-config.html) | [[public-wlan-guest-config/notes|Guest WLAN]] |
 | 28 | `mdm-enrollment-config` | [MDM enrollment](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/mdm-enrollment-config/mdm-enrollment-config.html) | [[mdm-enrollment-config/notes|MDM enrollment]] |
 | 29 | `network-protocols-matching` | [Protocol matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/network-protocols-matching/network-protocols-matching.html) | [[network-protocols-matching/notes|Protocol matching]] |
+| 30 | `site-to-site-vpn-config` | [Site-to-site VPN](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/site-to-site-vpn-config/site-to-site-vpn-config.html) | [[site-to-site-vpn-config/notes|Site-to-site VPN]] |
+| 31 | `web-app-subnet-zoning` | [Web app subnet zoning](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/web-app-subnet-zoning/web-app-subnet-zoning.html) | [[web-app-subnet-zoning/notes|Web app subnet zoning]] |
+| 32 | `dark-web-account-protection` | [Dark web IR](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/dark-web-account-protection/dark-web-account-protection.html) | [[dark-web-account-protection/notes|Dark web IR]] |
+| 33 | `malware-outbreak-classification` | [Malware outbreak](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html) | [[malware-outbreak-classification/notes|Malware outbreak]] |
+| 34 | `vpc-payment-architecture` | [VPC payment](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html) | [[vpc-payment-architecture/notes|VPC payment]] |
 
-**Pending (not on portal):** configuration PBQs `siem-alert-settings-config`, `site-to-site-vpn-config`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
+**Pending (not on portal):** configuration PBQ `siem-alert-settings-config` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
 
-**BCT standalone (production, on portal, not in chain):** `dark-web-account-protection`, `malware-outbreak-classification`, `secure-web-architecture-openssl`, `vpc-payment-architecture` → `PBQ_Production/`
+**BCT standalone (production, on portal, not in chain):** `secure-web-architecture-openssl` → `PBQ_Production/`
 
 Each scenario folder contains:
 

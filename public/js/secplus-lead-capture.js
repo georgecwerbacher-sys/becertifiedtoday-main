@@ -1,12 +1,11 @@
 /**
- * Security+ free timed simulation — guest access (no email gate on the landing page).
+ * Security+ sample completion upsell — routes to paid portal access (no free timed simulation).
  */
 (function () {
   "use strict";
 
-  var RUNNER_PATH = "/COMP_TIA_SEC+/test-simulation-runner.html?free=1";
   var HOME_PATH = "/comptia-sec+-home.html";
-  var HOME_ASSESSMENT_HASH = "#secplus-lead-capture";
+  var PURCHASE_HASH = "#purchase";
 
   function persistFreeSimSessionFlags() {
     try {
@@ -57,24 +56,7 @@
 
   function startSecplusFreeSimulation(options) {
     options = options || {};
-    if (freeSimWasConsumed()) {
-      if (typeof options.onConsumed === "function") {
-        options.onConsumed();
-        return;
-      }
-      window.location.href = options.finishHome || HOME_PATH + "#purchase";
-      return;
-    }
-    if (!ensureGuestFreeSimAccess()) {
-      window.location.href = options.finishHome || HOME_PATH;
-      return;
-    }
-    persistFreeSimSessionFlags();
-    trackFreeSimStart({ method: options.method || "secplus_free_sim_guest" });
-    if (typeof options.onBeforeNavigate === "function") {
-      options.onBeforeNavigate();
-    }
-    window.location.href = options.runnerUrl || RUNNER_PATH;
+    window.location.href = options.finishHome || HOME_PATH + PURCHASE_HASH;
   }
 
   function updateLandingAssessmentCta(section) {
@@ -148,7 +130,7 @@
               }
             }, 450);
           }
-          if (history.replaceState && location.hash === HOME_ASSESSMENT_HASH) {
+          if (history.replaceState && location.hash === "#secplus-lead-capture") {
             history.replaceState(null, "", location.pathname + location.search);
           }
         });
@@ -184,10 +166,10 @@
       }
       return;
     }
-    link.textContent = "Start free 35-min simulation";
-    link.setAttribute("href", "/COMP_TIA_SEC+/test-simulation-runner.html?free=1");
-    link.setAttribute("data-secplus-start-free-sim", "");
-    link.setAttribute("data-secplus-start-method", "secplus_free_sim_sticky");
+    link.textContent = "Get 10-day access · $9.99";
+    link.setAttribute("href", HOME_PATH + PURCHASE_HASH);
+    link.removeAttribute("data-secplus-start-free-sim");
+    link.removeAttribute("data-secplus-start-method");
     link.removeAttribute("data-secplus-portal-30d-checkout");
     link.removeAttribute("data-secplus-sticky-upgrade-wired");
   }

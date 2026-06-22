@@ -6,9 +6,9 @@ const LEAD_MAGNETS = {
   "secplus-free-simulation": {
     logTag: "secplus-lead",
     subjectEnv: "RESEND_SECPLUS_FREE_SIM_SUBJECT",
-    defaultSubject: "Your free Security+ simulation is ready",
-    path: "/COMP_TIA_SEC+/test-simulation-runner.html?free=1",
-    title: "free Security+ timed simulation",
+    defaultSubject: "Continue your Security+ SY0-701 exam prep",
+    path: "/comptia-sec+-home.html#purchase",
+    title: "Security+ exam prep access",
     audienceEnv: "RESEND_SECPLUS_MARKETING_AUDIENCE_ID",
   },
   "ccna-free-simulation": {
@@ -94,11 +94,11 @@ export async function sendLeadMagnetEmail({ to, magnet, resourceUrl }) {
       from,
       to: [to],
       subject,
-      html: `<p>Thanks for signing up for the <strong>${escapeHtml(magnet.title)}</strong> on Be Certified Today.</p>
-<p>Start your free timed sample now:</p>
-<p><a href="${escapeAttr(resourceUrl)}"><strong>Start free Security+ simulation</strong></a></p>
+      html: `<p>Thanks for your interest in <strong>${escapeHtml(magnet.title)}</strong> on Be Certified Today.</p>
+<p>Continue SY0-701 exam prep with the full library, PBQ scenarios, and 90-minute timed simulation:</p>
+<p><a href="${escapeAttr(resourceUrl)}"><strong>View Security+ access options</strong></a></p>
 <p style="word-break:break-all;font-size:13px;color:#444">${plainUrl}</p>
-<p>The sample includes multiple-choice items plus a performance-based simulation, with a <strong>study scorecard</strong> at the end. Email the scorecard to yourself from the results screen.</p>
+<p>The paid library includes 1000+ questions, 34 PBQ scenarios, adaptive review, and a <strong>90-minute timed exam</strong> with domain scorecard review.</p>
 <p style="font-size:13px;color:#666">Exam prep only — not affiliated with CompTIA. You received this because you opted in on our Security+ landing page.</p>`,
     }),
   });

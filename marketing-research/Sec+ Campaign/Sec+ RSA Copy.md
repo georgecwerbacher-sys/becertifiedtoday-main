@@ -29,13 +29,12 @@ SY0-701 PBQ in Browser
 Like Test Day · Interactive
 28 PBQ Scenarios Online
 Chain Labs & Hot Spots
-Free Dark Web PBQ Sample
 No Download · Browser PBQ
 Exam-Style Scenarios
 Phone Tablet Desktop
 Verified SY0-701 Answers
 Not a PDF · Live Scenarios
-Try Free PBQ First
+34 PBQ Scenarios Prep
 1000+ MCQ Included
 Be Certified Today
 ```
@@ -45,7 +44,7 @@ Be Certified Today
 ```
 SY0-701 PBQs in your browser—chain labs, drag-drop, and IR scenarios like test day.
 
-Try a free dark web simulation. $9.99/10d unlocks 28 PBQ scenarios + 1000+ questions.
+$9.99/10d unlocks 34 PBQ scenarios + 1000+ questions. One payment—no subscription.
 
 Interactive performance-based prep—not a $99 PDF. Same UI on phone, tablet, or desktop.
 
@@ -125,7 +124,7 @@ DoD / contractor prep without a $300 course. $9.99/10d or $19.99/30d one-time ac
 
 1000+ SY0-701 questions, adaptive review, and exam-style PBQs—not a PDF question dump.
 
-Try free samples first. Same testing engine as full access. Phone and desktop ready.
+Same browser UI as test day. Phone, tablet, and desktop. One-time $9.99 or $19.99/30d.
 ```
 
 [[Sec+ Notes|Setup steps]] · [[README|← Sec+ Campaign]]

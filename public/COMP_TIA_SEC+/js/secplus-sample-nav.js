@@ -5,8 +5,6 @@
   var MCQ_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
   var HASH_RE = /^#secplusHS=(\d+)$/;
   var FINISH_HOME = "/comptia-sec+-home.html";
-  var FREE_SIM_RUNNER = "/COMP_TIA_SEC+/test-simulation-runner.html?free=1";
-  var LEAD_CAPTURE_FALLBACK = FREE_SIM_RUNNER;
 
   function readSession() {
     try {
@@ -157,134 +155,53 @@
     location.href = url;
   }
 
-  function shouldOfferFreeSimUpsell(session) {
+  function shouldOfferPortalUpsell(session) {
     return usesMaskedNav(session) && (isQuestionsOnlySample(session) || isSimOnlySample(session));
   }
 
-  function loadSecplusFreeSimLauncher(callback) {
-    if (typeof window.startSecplusFreeSimulation === "function") {
-      callback();
-      return;
+  function portalUpsellLead(session) {
+    var kind = sampleKindLabel();
+    if (kind === "simulation" && isDarkWebSampleSim(session)) {
+      return (
+        "You finished the <strong>BeCertifiedToday.com</strong> dark web IR preview (case IR-2024-0847)—the same simulation in the paid library. " +
+        "Unlock <strong>1000+ questions</strong>, <strong>34 PBQ scenarios</strong>, and a <strong>90-minute timed exam</strong> with detailed domain scorecard review."
+      );
     }
-    var chain = [];
-    if (typeof window.grantSecplusGuestFreeSimAccess !== "function") {
-      chain.push(function (next) {
-        var existing = document.querySelector('script[src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js"]');
-        if (existing) {
-          existing.addEventListener("load", next);
-          existing.addEventListener("error", next);
-          return;
-        }
-        var s = document.createElement("script");
-        s.src = "/COMP_TIA_SEC+/js/secplus-test-sim-storage.js";
-        s.onload = next;
-        s.onerror = next;
-        (document.body || document.head).appendChild(s);
-      });
+    if (kind === "simulation") {
+      return (
+        "You finished the performance-based preview. Unlock the full library: <strong>1000+ SY0-701 questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed simulation</strong> with scorecard review."
+      );
     }
-    chain.push(function (next) {
-      var existing = document.querySelector('script[src="/js/secplus-lead-capture.js"]');
-      if (existing) {
-        existing.addEventListener("load", next);
-        existing.addEventListener("error", next);
-        return;
-      }
-      var s = document.createElement("script");
-      s.src = "/js/secplus-lead-capture.js";
-      s.onload = next;
-      s.onerror = next;
-      (document.body || document.head).appendChild(s);
-    });
-    var i = 0;
-    function step() {
-      if (i >= chain.length) {
-        callback();
-        return;
-      }
-      chain[i++](step);
-    }
-    step();
+    return (
+      "You finished the sample questions. Unlock full access: <strong>1000+ questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed exam</strong> with domain scorecard review."
+    );
   }
 
-  function openFreeSimLeadModal(finishHome) {
-    logSecplusSampleEvent("free_sim_start_click");
-    loadSecplusFreeSimLauncher(function () {
-      if (typeof window.startSecplusFreeSimulation === "function") {
-        window.startSecplusFreeSimulation({
-          finishHome: finishHome || FINISH_HOME,
-          method: "secplus_free_sim_sample_popup",
-          onBeforeNavigate: clearSampleSession,
-          onConsumed: function () {
-            navigateAfterSample((finishHome || FINISH_HOME) + "#purchase");
-          },
-        });
-        return;
-      }
-      navigateAfterSample(FREE_SIM_RUNNER);
-    });
-  }
-
-  function logSecplusSampleEvent(event, extra) {
-    if (typeof window.bccLogSampleLeadEvent !== "function") return;
-    var payload = {
-      event: event,
-      product: "secplus",
-      sampleKind: sampleKindLabel(),
-      source: "secplusHomeSample",
-    };
-    if (extra) {
-      for (var k in extra) {
-        if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
-      }
-    }
-    window.bccLogSampleLeadEvent(payload);
-  }
-
-  function ensureSampleLeadAnalytics() {
-    if (typeof window.bccLogSampleLeadEvent === "function") return;
-    if (document.querySelector('script[src="/js/sample-lead-analytics.js"]')) return;
-    var s = document.createElement("script");
-    s.src = "/js/sample-lead-analytics.js";
-    s.async = true;
-    (document.head || document.body).appendChild(s);
-  }
-
-  function showFreeSimUpsellModal(finishHome) {
-    if (document.getElementById("secplusSampleFreeSimUpsell")) return;
+  function showPortalUpsellModal(finishHome) {
+    if (document.getElementById("secplusSamplePortalUpsell")) return;
 
     ensureSampleLeadAnalytics();
     logSecplusSampleEvent("sample_finished");
 
     var session = readSession();
-    var kind = sampleKindLabel();
-    var lead;
-    if (kind === "simulation" && isDarkWebSampleSim(session)) {
-      lead =
-        "You finished the <strong>BeCertifiedToday.com</strong> dark web IR preview (case IR-2024-0847)—the same simulation in the paid library. " +
-        "Unlock the full <strong>35-minute timed exam</strong>: 20 multiple-choice questions plus this PBQ-style item, with Back, mark-for-review, and a domain scorecard.";
-    } else if (kind === "simulation") {
-      lead =
-        "You finished the performance-based preview. Unlock the full <strong>35-minute timed simulation</strong>—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
-    } else {
-      lead =
-        "You finished the sample questions. Try the free <strong>35-minute timed simulation</strong> next—20 multiple-choice questions plus a PBQ-style item, with Back and mark-for-review and a domain scorecard when you finish.";
-    }
+    var purchaseUrl = (finishHome || FINISH_HOME).split("#")[0] + "#purchase";
+    var lead = portalUpsellLead(session);
 
     var root = document.createElement("div");
-    root.id = "secplusSampleFreeSimUpsell";
+    root.id = "secplusSamplePortalUpsell";
     root.className = "secplus-sample-upsell-root";
     root.setAttribute("role", "presentation");
     root.innerHTML =
       '<div class="secplus-sample-upsell-backdrop" data-secplus-upsell-dismiss tabindex="-1"></div>' +
-      '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSampleFreeSimUpsellTitle" tabindex="-1">' +
+      '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSamplePortalUpsellTitle" tabindex="-1">' +
       '<button type="button" class="secplus-sample-upsell-close" data-secplus-upsell-dismiss aria-label="Close dialog">×</button>' +
-      '<p class="secplus-sample-upsell-eyebrow">Free SY0-701 timed simulation</p>' +
-      '<h2 id="secplusSampleFreeSimUpsellTitle">Ready for a full timed dry run?</h2>' +
+      '<p class="secplus-sample-upsell-eyebrow">SY0-701 exam prep</p>' +
+      '<h2 id="secplusSamplePortalUpsellTitle">Ready for the full library?</h2>' +
       '<p class="secplus-sample-upsell-lead">' +
       lead +
       "</p>" +
       '<div class="secplus-sample-upsell-actions">' +
-      '<button type="button" class="secplus-sample-upsell-primary">Start free timed simulation</button>' +
+      '<button type="button" class="secplus-sample-upsell-primary">Get 10-day access · $9.99</button>' +
       '<button type="button" class="secplus-sample-upsell-secondary" data-secplus-upsell-home>Return to Security+ home</button>' +
       "</div>" +
       "</div>";
@@ -322,18 +239,43 @@
 
     root.querySelector(".secplus-sample-upsell-primary").addEventListener("click", function () {
       closeModal();
-      openFreeSimLeadModal(finishHome);
+      navigateAfterSample(purchaseUrl);
     });
 
     if (panel) panel.focus();
   }
 
   function completeSample(session, finishHome) {
-    if (shouldOfferFreeSimUpsell(session)) {
-      showFreeSimUpsellModal(finishHome);
+    if (shouldOfferPortalUpsell(session)) {
+      showPortalUpsellModal(finishHome);
       return;
     }
     navigateAfterSample(finishHome || FINISH_HOME);
+  }
+
+  function logSecplusSampleEvent(event, extra) {
+    if (typeof window.bccLogSampleLeadEvent !== "function") return;
+    var payload = {
+      event: event,
+      product: "secplus",
+      sampleKind: sampleKindLabel(),
+      source: "secplusHomeSample",
+    };
+    if (extra) {
+      for (var k in extra) {
+        if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k];
+      }
+    }
+    window.bccLogSampleLeadEvent(payload);
+  }
+
+  function ensureSampleLeadAnalytics() {
+    if (typeof window.bccLogSampleLeadEvent === "function") return;
+    if (document.querySelector('script[src="/js/sample-lead-analytics.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "/js/sample-lead-analytics.js";
+    s.async = true;
+    (document.head || document.body).appendChild(s);
   }
 
   function reconcileLocation(session) {

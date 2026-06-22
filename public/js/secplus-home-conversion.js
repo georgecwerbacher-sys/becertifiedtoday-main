@@ -16,8 +16,8 @@
   var WEDGE_LANDING = "/secplus/pbq-practice-browser.html";
 
   var WEDGE_LEAD =
-    "Build Security+ readiness with <strong>28 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation</strong> in your browser. " +
-    "<strong>Try the free samples below</strong>, then unlock a <strong>10-day sprint for $9.99</strong> when you want the full library.";
+    "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
+    "<strong>Try the free MCQ or PBQ samples below</strong>, then unlock a <strong>10-day sprint for $9.99</strong> when you want the library and timed exam.";
 
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. <strong>No PDFs.</strong> " +
@@ -28,7 +28,7 @@
       id: "wedge-default",
       adHeadline: "Security+ Practice Test",
       eyebrow: "CompTIA Security+ SY0-701 · PBQ · timed simulation",
-      headline: "Security+ Exam Prep — 1000+ Questions, 28 PBQs & Timed Sim in Browser",
+      headline: "Security+ Exam Prep — 1000+ Questions, 34 PBQs & Timed Sim with Scorecard",
       lead: WEDGE_LEAD,
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
@@ -58,10 +58,10 @@
       id: "timed-sim",
       adHeadline: "Security+ Timed Practice Test",
       eyebrow: "SY0-701 timed simulation · 90 minutes",
-      headline: "90-Minute Security+ Timed Simulation — MCQ + PBQ Mixed",
+      headline: "90-Minute Security+ Timed Simulation — MCQ + PBQ + Scorecard Review",
       lead:
-        "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session. " +
-        "Preview free samples first, then unlock full access for <strong>$9.99 / 10 days</strong>.",
+        "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
+        "Included with full library access—unlock for <strong>$9.99 / 10 days</strong>.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
     },

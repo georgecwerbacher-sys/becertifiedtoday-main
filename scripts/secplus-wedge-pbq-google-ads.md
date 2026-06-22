@@ -129,7 +129,16 @@ Add exact only when Planner shows usable volume or a search term converts.
 Block course vendors, unauthorized-content intent, cross-cert junk, and head terms this campaign should not own:
 
 ```
+free
 "free course"
+"free practice"
+"free practice test"
+"free questions"
+"free pbq"
+"free timed"
+"free timed simulation"
+"free timed sample"
+"free simulation"
 "training course"
 bootcamp
 "instructor led"
@@ -153,7 +162,7 @@ ccna
 cissp
 ```
 
-**Ad group negatives:** `course`, `unauthorized`, `pdf`, `jobs`, `training`
+**Ad group negatives:** `free`, `course`, `unauthorized`, `pdf`, `jobs`, `training`
 
 ---
 
@@ -161,8 +170,8 @@ cissp
 
 | Label | URL utm_content |
 |-------|-----------------|
-| Free Dark Web PBQ | `sitelink-pbq` |
-| Free Practice Questions | `sitelink-sample` |
+| 34 PBQ Scenarios | `sitelink-pbq-list` |
+| 1000+ Questions | `sitelink-samples` |
 | 28 PBQ Scenarios | `sitelink-pbq-list` |
 | 10-Day Access · $9.99 | `portal-10d` |
 | 90-Min Timed Exam Sim | `sitelink-sim` |

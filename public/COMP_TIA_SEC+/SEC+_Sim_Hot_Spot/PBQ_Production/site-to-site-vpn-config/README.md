@@ -1,4 +1,4 @@
-# Site-to-Site VPN Tunnel Configuration
+# SEC+ Site-to-Site VPN Configuration
 
 **SY0-701 PBQ · dual-gateway IPsec configuration**
 
@@ -7,7 +7,7 @@ Configure Phase 1 (IKE) and Phase 2 (IPsec) on both VPN gateways for **BeCertifi
 ## Answer key (both gateways)
 
 | Setting | BCT_HQ1 | BCT_HQ2 |
-|---------|------|------|
+|---------|---------|---------|
 | **Phase 1 — Auth** | Pre-Shared Key | Pre-Shared Key |
 | **Phase 1 — Encryption** | AES | AES |
 | **Phase 1 — Hash** | SHA-256 | SHA-256 |
@@ -19,13 +19,11 @@ Configure Phase 1 (IKE) and Phase 2 (IPsec) on both VPN gateways for **BeCertifi
 | **Phase 2 — Encryption** | AES | AES |
 | **Phase 2 — Hash** | SHA-256 | SHA-256 |
 
-**Status:** Pending — not in `PBQ_Production` build chain.
+## Chain position
 
-## Pending chain
-
-- **Previous:** [`../../PBQ_Production/cryptographic-algorithms-matching/`](../../PBQ_Production/cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) *(production)*
-- **Next:** [`../web-app-subnet-zoning/`](../web-app-subnet-zoning/)
+- **Previous:** [`../network-protocols-matching/`](../network-protocols-matching/network-protocols-matching.html)
+- **Next:** [`../web-app-subnet-zoning/`](../web-app-subnet-zoning/web-app-subnet-zoning.html)
 
 ## Preview
 
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/site-to-site-vpn-config/site-to-site-vpn-config.html
+http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/site-to-site-vpn-config/site-to-site-vpn-config.html
