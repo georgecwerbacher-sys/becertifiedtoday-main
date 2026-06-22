@@ -5,7 +5,7 @@ scenario: cryptographic-algorithms-matching
 last_updated: 2026-06-22
 ---
 
-# Cryptographic algorithms matching
+# SEC+ Cryptographic Algorithms Matching
 
 Ten algorithms matched to use-case descriptions (symmetric, asymmetric, hashing, KDF, signatures).
 
@@ -17,4 +17,4 @@ Ten algorithms matched to use-case descriptions (symmetric, asymmetric, hashing,
 
 ## Section
 
-Single section: `cryptographic-algorithms-matching.html` — algorithm bank + description drop slots.
+Single section: `cryptographic-algorithms-matching.html` — dark-blue algorithm bank + description drop slots.

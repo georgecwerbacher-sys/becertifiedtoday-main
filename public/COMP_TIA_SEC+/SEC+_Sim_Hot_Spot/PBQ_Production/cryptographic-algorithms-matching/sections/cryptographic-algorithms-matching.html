@@ -1,33 +1,25 @@
 <article class="pbq-section-fragment" data-id="cryptographic-algorithms-matching">
-  <h1>Cryptographic Algorithms — Matching</h1>
-  <p class="pbq-sub">
-    Match cryptographic algorithms and methods with their appropriate applications and security strengths.
-  </p>
-  <p class="pbq-instructions">
-    Drag each algorithm from the bank into the slot beside the matching description (or tap an algorithm, then tap a slot).
-    Every algorithm is used exactly once.
-  </p>
-
   <div class="sim-frame">
     <div class="layout layout--two-col layout--protocol-match">
       <section class="panel panel--protocol-bank" aria-labelledby="crypto-bank-heading">
         <h2 id="crypto-bank-heading">Cryptographic Algorithms and Methods</h2>
-        <div id="bank" class="bank bank--protocols">
-          <div class="token" draggable="true" data-value="aes">AES</div>
-          <div class="token" draggable="true" data-value="sha256">SHA-256</div>
-          <div class="token" draggable="true" data-value="ecc">ECC</div>
-          <div class="token" draggable="true" data-value="diffie-hellman">Diffie-Hellman</div>
-          <div class="token" draggable="true" data-value="3des">3DES</div>
-          <div class="token" draggable="true" data-value="hmac">HMAC</div>
-          <div class="token" draggable="true" data-value="rsa">RSA</div>
-          <div class="token" draggable="true" data-value="md5">MD5</div>
-          <div class="token" draggable="true" data-value="pbkdf2">PBKDF2</div>
-          <div class="token" draggable="true" data-value="dsa">DSA</div>
+        <div id="bank" class="bank bank--crypto-algorithms">
+          <div class="token token--crypto-algorithm" draggable="true" data-value="aes">AES</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="sha256">SHA-256</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="ecc">ECC</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="diffie-hellman">Diffie-Hellman</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="3des">3DES</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="hmac">HMAC</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="rsa">RSA</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="md5">MD5</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="pbkdf2">PBKDF2</div>
+          <div class="token token--crypto-algorithm" draggable="true" data-value="dsa">DSA</div>
         </div>
       </section>
 
       <section class="panel panel--protocol-targets" aria-labelledby="crypto-targets-heading">
         <h2 id="crypto-targets-heading">Applications and Security Strengths</h2>
+        <p class="pbq-crypto-match__hint">Match each algorithm to its primary role — symmetric vs asymmetric, hashing, key exchange, signatures, and password storage.</p>
         <div class="layer-list-box layer-list-box--protocol">
           <div class="layer-list">
             <article class="layer-row layer-row--protocol">
@@ -114,6 +106,10 @@
 
   function allSlots() {
     return root.querySelectorAll(".drop-slot[data-slot]");
+  }
+
+  function allTokens() {
+    return root.querySelectorAll(".token[data-value]");
   }
 
   function slotAnswer(slot) {
@@ -225,6 +221,9 @@
 
   checkBtn.addEventListener("click", function () {
     var allOk = true;
+    allTokens().forEach(function (token) {
+      token.classList.remove("token--ok", "token--bad");
+    });
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
       var want = slotAnswer(slot);
@@ -235,6 +234,7 @@
         return;
       }
       var ok = token.getAttribute("data-value") === want;
+      token.classList.add(ok ? "token--ok" : "token--bad");
       slot.classList.add(ok ? "correct" : "incorrect");
       if (!ok) allOk = false;
     });
@@ -247,6 +247,9 @@
 
   showBtn.addEventListener("click", function () {
     clearPick();
+    allTokens().forEach(function (token) {
+      token.classList.remove("token--ok", "token--bad");
+    });
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
       var token = slot.querySelector(".token");
@@ -257,6 +260,7 @@
       if (token) {
         slot.appendChild(token);
         slot.classList.add("correct");
+        token.classList.add("token--ok");
       }
     });
     result.className = "is-pass";
@@ -265,6 +269,9 @@
 
   resetBtn.addEventListener("click", function () {
     clearPick();
+    allTokens().forEach(function (token) {
+      token.classList.remove("token--ok", "token--bad");
+    });
     allSlots().forEach(function (slot) {
       slot.classList.remove("correct", "incorrect", "over");
       var token = slot.querySelector(".token");

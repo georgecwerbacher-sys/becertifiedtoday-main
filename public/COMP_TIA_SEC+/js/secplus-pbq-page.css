@@ -4218,6 +4218,60 @@ body.secplus-pbq-ui.pbq-bct-sim.pbq-ir-match .bank--ir-actions .token {
   color: #fff;
 }
 
+body.secplus-pbq-ui.pbq-crypto-match .bank--crypto-algorithms {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .token--crypto-algorithm {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 700;
+  border-color: #1e3a5f;
+  background: #1e3a5f;
+  color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .bank--crypto-algorithms .token--crypto-algorithm:hover {
+  background: #274d78;
+  border-color: #274d78;
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .bank--crypto-algorithms .token.is-picked {
+  border-color: #2563eb;
+  background: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .drop-slot--protocol .token--crypto-algorithm {
+  border-color: #1e3a5f;
+  background: #1e3a5f;
+  color: #fff;
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .token.token--ok {
+  border-color: #16a34a;
+  background: #166534;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .token.token--bad {
+  border-color: #dc2626;
+  background: #991b1b;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.35);
+}
+
+body.secplus-pbq-ui.pbq-crypto-match .pbq-crypto-match__hint {
+  margin: 0 0 12px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
 /* Site-to-site VPN configuration PBQ */
 body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-sim {
   display: grid;
@@ -4346,6 +4400,22 @@ body.secplus-pbq-ui.pbq-site-to-site-vpn .pbq-vpn-phase__title {
 }
 
 /* Malware infection log analysis PBQ */
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-suite-header .pbq-instructions {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #152a45;
+  border-radius: 10px;
+  background: #1e3a5f;
+  color: #fff;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-suite-header .pbq-instructions strong {
+  color: #fff;
+  font-weight: 700;
+}
+
 body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-sim {
   display: grid;
   gap: 16px;
@@ -4412,6 +4482,33 @@ body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__log {
   border-radius: 0;
 }
 
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host__log .pbq-malware-log-line {
+  display: block;
+  padding: 1px 8px;
+  margin: 0 -8px;
+  border-left: 3px solid transparent;
+  border-radius: 2px;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-line--evidence {
+  background: rgba(251, 191, 36, 0.22);
+  border-left-color: #fbbf24;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-line--evidence-clean {
+  background: rgba(74, 222, 128, 0.18);
+  border-left-color: #4ade80;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tr.pbq-malware-log-fw__row--evidence td {
+  background: rgba(251, 191, 36, 0.2);
+  box-shadow: inset 3px 0 0 #f59e0b;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tr.pbq-malware-log-fw__row--evidence:nth-child(even) td {
+  background: rgba(251, 191, 36, 0.28);
+}
+
 body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__wrap {
   overflow-x: auto;
   border: 1px solid #e2e8f0;
@@ -4443,6 +4540,45 @@ body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tbody td
 
 body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-fw__table tbody tr:nth-child(even) {
   background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log__hint {
+  margin: 0 0 10px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-select {
+  border-color: #1e3a5f;
+  background: #1e3a5f;
+  color: #fff;
+  font-weight: 600;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-select option {
+  background: #fff;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host--ok {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.25);
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-malware-log-host--bad {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.25);
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-home-router-select--ok.pbq-malware-log-select {
+  border-color: #16a34a;
+  background: #166534;
+}
+
+body.secplus-pbq-ui.pbq-malware-log-analysis .pbq-home-router-select--bad.pbq-malware-log-select {
+  border-color: #dc2626;
+  background: #991b1b;
 }
 
 /* Web app subnet zoning PBQ */

@@ -1,37 +1,35 @@
 # Security+ PBQ — pending
 
-Staged scenarios **not** in the `PBQ_Production` build chain (`scripts/build-pbq-production-suite.py`). Ship to production when ready; vault notes stay in `data/secplus-pbq/{slug}/`.
+Staged scenarios **not** on [`SEC+_Training_Portal.html`](../../SEC+_Training_Portal.html) yet — review here before portal + production promotion.
 
-Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT standalone sims below.
+Registered chain labs live under [`../PBQ_Production/`](../PBQ_Production/) (`scripts/build-pbq-production-suite.py`). BCT standalone sims on the portal also live in `PBQ_Production/` as single-page HTML (not in the build chain).
 
-## BCT standalone simulations
+Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect to `PBQ_Production/` for shipped BCT sims.
 
-| Folder | Description | Preview |
-|--------|-------------|---------|
-| [`dark-web-account-protection/`](dark-web-account-protection/) | Dark web credential exposure IR | [Open](dark-web-account-protection/dark-web-account-protection.html) |
-| [`malware-outbreak-classification/`](malware-outbreak-classification/) | AV log timeline — outbreak type | [Open](malware-outbreak-classification/malware-outbreak-classification.html) |
-| [`secure-web-architecture-openssl/`](secure-web-architecture-openssl/) | TLS, ciphers, OpenSSL practices | [Open](secure-web-architecture-openssl/secure-web-architecture-openssl.html) |
-| [`vpc-payment-architecture/`](vpc-payment-architecture/) | PCI VPC segmentation diagram | [Open](vpc-payment-architecture/vpc-payment-architecture.html) |
-
-## WLAN router PBQs (2026-06-22)
+## Review queue (not on portal)
 
 | Folder | Description | Preview |
 |--------|-------------|---------|
 | [`home-wlan-director-config/`](home-wlan-director-config/) | Director home router — WPA2, MAC filter, admin password | [Open](home-wlan-director-config/home-wlan-director-config.html) |
 | [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username | [Open](public-wlan-guest-config/public-wlan-guest-config.html) |
-| [`cloud-waf-setup/`](cloud-waf-setup/) | *(shipped — see [production](../PBQ_Production/cloud-waf-setup/))* | [Production](../PBQ_Production/cloud-waf-setup/cloud-waf-setup.html) |
 | [`mdm-enrollment-config/`](mdm-enrollment-config/) | Acme MDM — iOS compliance, app restrictions, ADE | [Open](mdm-enrollment-config/mdm-enrollment-config.html) |
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
 | [`network-protocols-matching/`](network-protocols-matching/) | Match protocols to security functions (drag-and-drop) | [Open](network-protocols-matching/network-protocols-matching.html) |
-| [`incident-response-matching/`](incident-response-matching/) | *(shipped — see [production](../PBQ_Production/incident-response-matching/))* | [Production](../PBQ_Production/incident-response-matching/incident-response-matching.html) |
-| [`cryptographic-algorithms-matching/`](cryptographic-algorithms-matching/) | Match crypto algorithms to use cases (drag-and-drop) | [Open](cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) |
 | [`site-to-site-vpn-config/`](site-to-site-vpn-config/) | Site-to-site VPN Phase 1 &amp; 2 dual-gateway config | [Open](site-to-site-vpn-config/site-to-site-vpn-config.html) |
-| [`malware-infection-log-analysis/`](malware-infection-log-analysis/) | Malware log triage — source / infected / clean | [Open](malware-infection-log-analysis/malware-infection-log-analysis.html) |
 | [`web-app-subnet-zoning/`](web-app-subnet-zoning/) | Web app subnet zoning — drag-and-drop tiers | [Open](web-app-subnet-zoning/web-app-subnet-zoning.html) |
 
-Pending chain: … → site-to-site VPN → malware log analysis → **web app subnet zoning**.
+Pending chain: … → site-to-site VPN → **web app subnet zoning**.
 
-Production PBQ chain (23 labs) ends at [`../PBQ_Production/incident-response-matching/`](../PBQ_Production/incident-response-matching/incident-response-matching.html).
+Production PBQ chain (25 labs) ends at [`../PBQ_Production/malware-infection-log-analysis/`](../PBQ_Production/malware-infection-log-analysis/malware-infection-log-analysis.html).
+
+## BCT standalone sims (on portal → `PBQ_Production/`)
+
+| Folder | Preview |
+|--------|---------|
+| [`../PBQ_Production/dark-web-account-protection/`](../PBQ_Production/dark-web-account-protection/dark-web-account-protection.html) | Dark web credential IR |
+| [`../PBQ_Production/malware-outbreak-classification/`](../PBQ_Production/malware-outbreak-classification/malware-outbreak-classification.html) | Malware outbreak classification |
+| [`../PBQ_Production/secure-web-architecture-openssl/`](../PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html) | Secure web & OpenSSL |
+| [`../PBQ_Production/vpc-payment-architecture/`](../PBQ_Production/vpc-payment-architecture/vpc-payment-architecture.html) | VPC payment network |
 
 ## Reference only
 

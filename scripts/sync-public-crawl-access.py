@@ -51,7 +51,7 @@ Disallow: /CCNP-ENCOR-Study/CCNP-ENCOR-Labs/
 Disallow: /COMP_TIA_SEC+/SEC+_Questions/
 Disallow: /COMP_TIA_SEC+/SEC+_D_D/
 Disallow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/
-Allow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/secure-web-architecture-openssl/secure-web-architecture-openssl.html
+Allow: /COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html
 
 Sitemap: https://becertifiedtoday.com/sitemap.xml
 """
@@ -90,7 +90,7 @@ NOCRAWL_PREFIX_EXCEPTIONS = frozenset(
     {
         "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
         "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
-        "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
+        "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
     }
 )
 
@@ -106,7 +106,7 @@ SITEMAP_EXACT = {
     "CCNP-ENCOR-Study/test-simulation.html",
     "CCNA-Study/CCNA_labs/cli-lab-trunk_lacp.html",
     "CCNA-Study/CCNA_labs/cli-lab-vlan-sim.html",
-    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
+    "COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/secure-web-architecture-openssl/secure-web-architecture-openssl.html",
 }
 
 SITEMAP_PREFIXES = (

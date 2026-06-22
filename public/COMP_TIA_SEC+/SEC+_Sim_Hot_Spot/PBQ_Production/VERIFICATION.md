@@ -317,6 +317,25 @@
 
 ---
 
+## 24. SEC+ Cryptographic Algorithms Matching (`cryptographic-algorithms-matching/`)
+
+| Slot / description | Algorithm | Verdict | Primary sources |
+|--------------------|-----------|---------|-----------------|
+| Key stretching with salts for password storage | **PBKDF2** | **Pass** | NIST SP 800-132 key derivation |
+| Asymmetric encryption, smaller keys, high security | **ECC** | **Pass** | NIST elliptic curve cryptography |
+| Robust hashing for data integrity | **SHA-256** | **Pass** | FIPS 180-4 secure hash |
+| Keyed hashing for data authenticity | **HMAC** | **Pass** | RFC 2104 HMAC |
+| Legacy symmetric stronger than DES | **3DES** | **Pass** | Deprecated symmetric block cipher |
+| Key exchange without transmitting keys | **Diffie-Hellman** | **Pass** | RFC 2631 / TLS key exchange |
+| Fast symmetric encryption for bulk data | **AES** | **Pass** | FIPS 197 AES |
+| Asymmetric encryption for secure key exchange | **RSA** | **Pass** | PKCS #1 RSA |
+| Legacy hash prone to collisions | **MD5** | **Pass** | RFC 6151 MD5 security considerations |
+| Digital signature creation and verification | **DSA** | **Pass** | FIPS 186 digital signature standard |
+
+**CompTIA SY0-701 fit:** **1.4** cryptographic concepts; **1.5** cryptographic attacks; **2.4** PKI and digital signatures.
+
+---
+
 ## References (quick list)
 
 | Topic | Reference |

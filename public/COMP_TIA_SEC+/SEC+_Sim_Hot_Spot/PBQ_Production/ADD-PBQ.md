@@ -2,7 +2,7 @@
 
 Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.cursor/rules/secplus-pbq-dragdrop-pages.mdc`.
 
-**Current tail of chain:** `incident-response-matching` (`next: None` in `scripts/build-pbq-production-suite.py`).
+**Current tail of chain:** `malware-infection-log-analysis` (`next: None` in `scripts/build-pbq-production-suite.py`).
 
 ---
 
@@ -80,7 +80,7 @@ Copy interaction patterns from:
 
 ### 4b. BCT simulation pattern (visual consistency)
 
-Production pages match BCT standalone sims under **`pending/dark-web-account-protection/`** (and the other three pending BCT sim folders):
+Production pages match BCT standalone sims under **`PBQ_Production/`** (e.g. `dark-web-account-protection/`, `malware-outbreak-classification/`, `secure-web-architecture-openssl/`, `vpc-payment-architecture/`):
 
 | Element | Pattern |
 |---------|---------|
@@ -92,7 +92,7 @@ Production pages match BCT standalone sims under **`pending/dark-web-account-pro
 | Actions | Check / Show / Reset = BCT blue buttons (not CCNP `#254b8a`) |
 | Nav | Back / Home / Next use same BCT blue as simulation pages |
 
-Reference neighbor: `dark-web-account-protection/dark-web-account-protection.html`. CSS block: `secplus-pbq-page.css` → **BCT simulation pattern**.
+Reference neighbor: `PBQ_Production/dark-web-account-protection/dark-web-account-protection.html`. CSS block: `secplus-pbq-page.css` → **BCT simulation pattern**.
 
 ### 4c. Deep dive walkthrough
 
@@ -130,7 +130,7 @@ Create `{scenario-slug}/README.md` with:
     "title": "Display title",
     "body_class": "pbq-your-hook dragdrop-exercise",  # optional CSS hooks
     "description": "One-line meta description (page meta tag)",
-    "prev": "incident-response-matching",  # current tail when appending
+    "prev": "cryptographic-algorithms-matching",  # current tail when appending
     "next": None,
     "sections": [
         {
@@ -144,8 +144,8 @@ Create `{scenario-slug}/README.md` with:
 
 **Chain wiring when appending:**
 
-1. Set **current tail** (`incident-response-matching`) `"next"` → `"your-new-slug"`
-2. Set new entry `"prev"` → `"incident-response-matching"`, `"next"` → `None`
+1. Set **current tail** (`cryptographic-algorithms-matching`) `"next"` → `"your-new-slug"`
+2. Set new entry `"prev"` → `"cryptographic-algorithms-matching"`, `"next"` → `None`
 
 ### 8. Rebuild
 

@@ -6,7 +6,7 @@ Answer keys were verified against CompTIA-aligned objectives and primary sources
 
 **Adding a new scenario:** follow **[ADD-PBQ.md](ADD-PBQ.md)**.
 
-Only scenarios registered in `scripts/build-pbq-production-suite.py` live here (23 labs). Staged sims and PBQs not yet in the build chain are in [`../pending/`](../pending/).
+The **25-lab chain** is registered in `scripts/build-pbq-production-suite.py`. **BCT standalone sims** on the portal also live here as single-page HTML. Scenarios **not** on [`SEC+_Training_Portal.html`](../../SEC+_Training_Portal.html) stay in [`../pending/`](../pending/) for review.
 
 ## Entry points
 
@@ -45,6 +45,8 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 21. [Governance](governance/governance.html)
 22. [Sec+ Cloud Web Application Firewall Setup](cloud-waf-setup/cloud-waf-setup.html)
 23. [SEC+ Incident Response and Phase Matching](incident-response-matching/incident-response-matching.html)
+24. [SEC+ Cryptographic Algorithms Matching](cryptographic-algorithms-matching/cryptographic-algorithms-matching.html)
+25. [SEC+ Malware Infection Log Analysis](malware-infection-log-analysis/malware-infection-log-analysis.html)
 
 ## Section source files
 
@@ -81,8 +83,19 @@ npm run build:pbq-suite
 | [`governance/`](governance/) | Frameworks, policies, breach notification MCQ |
 | [`cloud-waf-setup/`](cloud-waf-setup/) | Sample ticket + four-tab cloud WAF console |
 | [`incident-response-matching/`](incident-response-matching/) | NIST IR phase buckets — twelve action tokens |
+| [`cryptographic-algorithms-matching/`](cryptographic-algorithms-matching/) | Ten crypto algorithms matched to use-case descriptions |
+| [`malware-infection-log-analysis/`](malware-infection-log-analysis/) | Six-host AV + firewall log triage — source / infected / clean |
 
-_WLAN router PBQs (home + public guest) live in [`../pending/`](../pending/) until registered in the build script._
+## BCT standalone sims (portal, not in build chain)
+
+| Folder | Description |
+|--------|-------------|
+| [`dark-web-account-protection/`](dark-web-account-protection/) | Dark web credential exposure IR |
+| [`malware-outbreak-classification/`](malware-outbreak-classification/) | AV log timeline — outbreak type |
+| [`secure-web-architecture-openssl/`](secure-web-architecture-openssl/) | TLS, ciphers, OpenSSL practices |
+| [`vpc-payment-architecture/`](vpc-payment-architecture/) | PCI VPC segmentation diagram |
+
+_WLAN / config PBQs not yet on the portal live in [`../pending/`](../pending/) for review._
 
 
 ## Preview

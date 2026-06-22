@@ -32,7 +32,7 @@ Four-tab MDM console (HTTPS Certificate, iOS Compliance, Application Restriction
 
 ## Pending chain
 
-- **Previous:** `../cloud-waf-setup/`
+- **Previous:** [`../PBQ_Production/cloud-waf-setup/`](../PBQ_Production/cloud-waf-setup/cloud-waf-setup.html) *(production)*
 - **Next:** [`../siem-alert-settings-config/`](../siem-alert-settings-config/)
 
 ## Preview

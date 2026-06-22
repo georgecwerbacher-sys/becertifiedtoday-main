@@ -23,8 +23,8 @@ Configure Phase 1 (IKE) and Phase 2 (IPsec) on both VPN gateways for HQ1 (`192.1
 
 ## Pending chain
 
-- **Previous:** `../cryptographic-algorithms-matching/`
-- **Next:** [`../malware-infection-log-analysis/`](../malware-infection-log-analysis/)
+- **Previous:** [`../../PBQ_Production/cryptographic-algorithms-matching/`](../../PBQ_Production/cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) *(production)*
+- **Next:** [`../web-app-subnet-zoning/`](../web-app-subnet-zoning/)
 
 ## Preview
 

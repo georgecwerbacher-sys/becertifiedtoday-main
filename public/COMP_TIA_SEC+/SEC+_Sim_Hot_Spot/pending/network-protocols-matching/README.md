@@ -25,7 +25,7 @@ Match eleven protocols to security function descriptions. Paraphrased from commo
 ## Pending chain
 
 - **Previous:** `../siem-alert-settings-config/`
-- **Next:** [`../incident-response-matching/`](../incident-response-matching/)
+- **Next:** [`../../PBQ_Production/incident-response-matching/`](../../PBQ_Production/incident-response-matching/incident-response-matching.html) *(production)*
 
 ## Preview
 

@@ -68,7 +68,13 @@ def md_to_deep_dive_html(md: str) -> tuple[str, str]:
 
     lines = md.splitlines()
     i = 0
-    while i < len(lines) and not lines[i].startswith("## "):
+    intro_lines: list[str] = []
+    while i < len(lines):
+        stripped = lines[i].strip()
+        if stripped.startswith("## "):
+            break
+        if stripped and not stripped.startswith("# "):
+            intro_lines.append(lines[i])
         i += 1
 
     steps: list[str] = []
@@ -90,7 +96,10 @@ def md_to_deep_dive_html(md: str) -> tuple[str, str]:
         body_html = _chunk_to_html(lines)
         return title, f'<div class="deep-dive-body">{body_html}</div>'
 
-    return title, '<ol class="deep-dive-steps">' + "".join(steps) + "</ol>"
+    intro_html = _chunk_to_html(intro_lines)
+    if intro_html:
+        intro_html = f'<div class="deep-dive-intro">{intro_html}</div>'
+    return title, intro_html + '<ol class="deep-dive-steps">' + "".join(steps) + "</ol>"
 
 
 def _chunk_to_html(chunk: list[str]) -> str:

@@ -398,12 +398,53 @@ SCENARIOS = [
         "suite_instructions": "Drag each action into the correct incident response phase bucket. Every action is used once.",
         "description": "Match twelve incident response actions to the correct NIST IR phase — two actions per phase.",
         "prev": "cloud-waf-setup",
-        "next": None,
+        "next": "cryptographic-algorithms-matching",
         "sections": [
             {
                 "id": "incident-response-matching",
                 "label": "Phase matching",
                 "path": "incident-response-matching/sections/incident-response-matching.html",
+            },
+        ],
+    },
+    {
+        "slug": "cryptographic-algorithms-matching",
+        "title": "SEC+ Cryptographic Algorithms Matching",
+        "body_class": "pbq-crypto-match pbq-protocol-match dragdrop-exercise",
+        "objectives": "1.4 · 1.5 · 2.4",
+        "suite_instructions": "Drag each algorithm into the slot beside the matching application. Every algorithm is used once.",
+        "description": "Match ten cryptographic algorithms to their applications and security strengths.",
+        "prev": "incident-response-matching",
+        "next": "malware-infection-log-analysis",
+        "sections": [
+            {
+                "id": "cryptographic-algorithms-matching",
+                "label": "Algorithm matching",
+                "path": "cryptographic-algorithms-matching/sections/cryptographic-algorithms-matching.html",
+            },
+        ],
+    },
+    {
+        "slug": "malware-infection-log-analysis",
+        "title": "SEC+ Malware Infection Log Analysis",
+        "heading": "SEC+ Malware Infection Log Analysis",
+        "page_title": "Security+: SEC+ Malware Infection Log Analysis",
+        "meta_description": "Classify six endpoints as Clean, Infected, or Source using endpoint AV logs and central firewall flows.",
+        "description": "",
+        "body_class": "pbq-malware-log-analysis",
+        "objectives": "2.4 · 4.2 · 4.5",
+        "suite_instructions": (
+            "Review endpoint and firewall logs — label each host "
+            "<strong>Clean</strong>, <strong>Infected</strong>, or <strong>Source</strong> "
+            "(exactly one source)."
+        ),
+        "prev": "cryptographic-algorithms-matching",
+        "next": None,
+        "sections": [
+            {
+                "id": "malware-infection-log-analysis",
+                "label": "Log analysis",
+                "path": "malware-infection-log-analysis/sections/malware-infection-log-analysis.html",
             },
         ],
     },
@@ -511,6 +552,29 @@ def load_section_content(sec: dict) -> tuple[str, str]:
     return inner, scripts.strip()
 
 
+def build_suite_heading(scenario: dict) -> str:
+    if scenario.get("heading"):
+        return scenario["heading"]
+    return f"Simulation: {scenario['title']}"
+
+
+def build_suite_sub(scenario: dict) -> str:
+    desc = scenario.get("description", "")
+    if not desc:
+        return ""
+    return f'        <p class="lead pbq-sub">{desc}</p>\n'
+
+
+def build_page_title(scenario: dict) -> str:
+    if scenario.get("page_title"):
+        return scenario["page_title"]
+    return f"Security+ Simulation: {scenario['title']}"
+
+
+def build_meta_description(scenario: dict) -> str:
+    return scenario.get("meta_description") or scenario.get("description") or scenario["title"]
+
+
 def build_folder_nav(scenario: dict) -> str:
     if len(scenario["sections"]) <= 1:
         return ""
@@ -609,9 +673,9 @@ def build_scenario_page(scenario: dict) -> str:
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: {scenario['description']}" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: {build_meta_description(scenario)}" />
   <link rel="canonical" href="https://becertifiedtoday.com{page_url}" />
-  <title>Security+ Simulation: {scenario['title']} | Be Certified Today</title>
+  <title>{build_page_title(scenario)} | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
@@ -632,9 +696,8 @@ def build_scenario_page(scenario: dict) -> str:
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
-{build_objectives_block(scenario)}        <h1>Simulation: {scenario['title']}</h1>
-        <p class="lead pbq-sub">{scenario['description']}</p>
-        <p class="instructions pbq-instructions">
+{build_objectives_block(scenario)}        <h1>{build_suite_heading(scenario)}</h1>
+{build_suite_sub(scenario)}        <p class="instructions pbq-instructions">
           {build_suite_instructions(scenario)}
         </p>
       </header>

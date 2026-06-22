@@ -19,7 +19,7 @@ Place five components across three subnet zones and set the middle tier type.
 
 ## Pending chain
 
-- **Previous:** `../malware-infection-log-analysis/`
+- **Previous:** `../site-to-site-vpn-config/`
 - **Next:** *(none)*
 
 ## Preview
