@@ -7,6 +7,8 @@ last_updated: 2026-06-22
 
 # Network protocols matching — solution walkthrough
 
+Drag each protocol from the bank into the slot beside its security function. Every protocol is used once.
+
 | Protocol | Role |
 |----------|------|
 | **WPA2** | Wi‑Fi Protected Access 2 — AES-based wireless encryption |

@@ -1,62 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure Acme Corporation MDM enrollment: TLS for mdm.acmecorp.com, iOS compliance, application restrictions, and Apple ADE with strict supervision." />
-  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/mdm-enrollment-config/mdm-enrollment-config.html" />
-  <title>Security+ Simulation: Mobile Device Management Enrollment | Be Certified Today</title>
-  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
-  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
-</head>
-<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-mdm-config">
-  <script src="/js/sample-url-mask-apply.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
-  <div class="page-logo-watermark" aria-hidden="true">
-    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
-  </div>
-  <div class="question-shell question-shell--suite">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
-      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
-    </a>
-    <main class="pbq-card pbq-card--suite">
-      <header class="pbq-suite-header">
-        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
-        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.1 · 3.3 · 4.6</p>
-        <h1>Simulation: Mobile Device Management Enrollment</h1>
-        <p class="lead pbq-sub">Configure Acme Corporation MDM enrollment: TLS for mdm.acmecorp.com, iOS compliance, application restrictions, and Apple ADE with strict supervision.</p>
-        <p class="instructions pbq-instructions">
-          Review the <strong>requirements</strong>, then configure all four MDM console tabs for corporate iOS enrollment.
-        </p>
-      </header>
-
-      
-      
-      <div class="pbq-suite-layout pbq-suite-layout--single">
-        
-        <div class="pbq-suite-main" id="pbqSuiteMain">
-          <meta name="robots" content="noindex, nofollow" />
-<article class="pbq-suite-section" id="mdm-enrollment-config" data-scenario="mdm-enrollment-config" hidden><div class="pbq-suite-section__inner">
-  <h1>Mobile Device Management Enrollment</h1>
-  <p class="pbq-sub">
-    As the IT administrator for <strong>Acme Corporation</strong>, configure an MDM enrollment profile
-    for a new batch of corporate-owned iOS devices. Follow the security specifications so every device
-    meets corporate policy and industry compliance requirements.
-  </p>
+<meta name="robots" content="noindex, nofollow" />
+<article class="pbq-section-fragment" data-id="mdm-enrollment-config">
 
   <div class="sim-frame pbq-home-router-sim pbq-mdm-sim">
     <div class="layout layout--two-col pbq-home-router-layout">
-      <section class="panel pbq-home-router-reqs" aria-labelledby="mdm-enrollment-config-mdm-reqs-heading">
-        <h2 id="mdm-enrollment-config-mdm-reqs-heading">Requirements</h2>
+      <section class="panel pbq-home-router-reqs" aria-labelledby="mdm-reqs-heading">
+        <h2 id="mdm-reqs-heading">Requirements</h2>
         <h3 class="pbq-waf-ticket__section">SSL/TLS</h3>
         <ul class="pbq-home-router-reqs__list">
-          <li>Company domain: <code>acmecorp.com</code>; MDM host: <code>mdm</code> subdomain</li>
-          <li>Certificate: <code>/mnt/certs/AcmeMDMCertificate.pfx</code></li>
+          <li>Company domain: <code>BeCertifiedToday.com</code>; MDM host: <code>mdm</code> subdomain</li>
+          <li>Certificate: <code>/mnt/certs/BCTMDMCertificate.pfx</code></li>
         </ul>
         <h3 class="pbq-waf-ticket__section">iOS compliance</h3>
         <ul class="pbq-home-router-reqs__list">
@@ -67,22 +19,17 @@
         </ul>
         <h3 class="pbq-waf-ticket__section">Applications</h3>
         <p class="pbq-waf-ticket__text">
-          Only official ACME applications — block public App Store and unmanaged installs; force automatic updates.
+          Only official BeCertifiedToday applications — block public App Store and unmanaged installs; force automatic updates.
         </p>
         <h3 class="pbq-waf-ticket__section">Enrollment</h3>
         <ul class="pbq-home-router-reqs__list">
           <li>Apple automatic enrollment (ADE) — token <code>/mnt/certs/AdeServerToken.p7m</code></li>
           <li>Strictest supervision and profile-removal settings available</li>
         </ul>
-        <p class="panel-note">
-          Configure all four tabs: <strong>HTTPS Certificate Settings</strong>,
-          <strong>iOS Compliance Policies</strong>, <strong>Application Restrictions</strong>,
-          and <strong>Enrollment Settings</strong>.
-        </p>
       </section>
 
-      <section class="panel pbq-home-router-console" aria-labelledby="mdm-enrollment-config-mdm-console-heading">
-        <h2 id="mdm-enrollment-config-mdm-console-heading" class="visually-hidden">MDM console</h2>
+      <section class="panel pbq-home-router-console" aria-labelledby="mdm-console-heading">
+        <h2 id="mdm-console-heading" class="visually-hidden">MDM console</h2>
         <div class="pbq-home-router-console-wrap">
           <div class="pbq-home-router-tabs pbq-waf-tabs" role="tablist" aria-label="MDM profile settings">
             <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="https">HTTPS Certificate Settings</button>
@@ -239,45 +186,23 @@
   </div>
 
   <div class="actions">
-    <button id="mdm-enrollment-checkBtn" type="button">Check Answer</button>
-    <button id="mdm-enrollment-resetBtn" type="button">Reset</button>
-    <button id="mdm-enrollment-showBtn" type="button">Show Answer</button>
-    <span id="mdm-enrollment-result" role="status" aria-live="polite"></span>
+    <button id="checkBtn" type="button">Check Answer</button>
+    <button id="resetBtn" type="button">Reset</button>
+    <button id="showBtn" type="button">Show Answer</button>
+    <span id="result" role="status" aria-live="polite"></span>
   </div>
-</div></article>
-
-        </div>
-      </div>
-
-      <div class="pbq-suite-footer">
-        <div class="pbq-suite-footer__deep-dive">
-          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="mdm-enrollment-config.html">Deep dive explanation</button>
-        </div>
-      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
-        <div class="question-nav-links">
-          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cloud-waf-setup/cloud-waf-setup.html">Back</a>
-          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
-          <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/siem-alert-settings-config/siem-alert-settings-config.html">Next</a>
-        </div>
-      </nav>
-      </div>
-    </main>
-  </div>
-
-  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
-  <script>window.PBQ_SUITE_DEFAULT_SECTION = "mdm-enrollment-config"; window.PBQ_DEEP_DIVE_KEY = "mdm-enrollment-config.html";</script>
-  <!-- mdm-enrollment-config -->
+</article>
 <script>
 (function () {
-  var CORRECT_HOST = "mdm.acmecorp.com";
-  var CORRECT_CERT = "/mnt/certs/AcmeMDMCertificate.pfx";
+  var CORRECT_HOST = "mdm.becertifiedtoday.com";
+  var CORRECT_CERT = "/mnt/certs/BCTMDMCertificate.pfx";
   var CORRECT_MIN_IOS = "17";
   var CORRECT_PASS_LEN = "6";
   var CORRECT_AUTOLOCK_SEC = "60";
-  var CORRECT_JAIL_EMAIL = "alerts@mdm.acmecorp.com";
+  var CORRECT_JAIL_EMAIL = "alerts@mdm.becertifiedtoday.com";
   var CORRECT_ADE_TOKEN = "/mnt/certs/AdeServerToken.p7m";
   var PASS_MSG =
-    "Correct. TLS for mdm.acmecorp.com, iOS 17+ compliance, locked-down apps, ADE with supervision and no profile removal meet Acme's MDM policy.";
+    "Correct. TLS for mdm.becertifiedtoday.com, iOS 17+ compliance, locked-down apps, ADE with supervision and no profile removal meet BeCertifiedToday's MDM policy.";
 
   var root = document.getElementById("mdm-enrollment-config");
   if (!root) return;
@@ -431,7 +356,7 @@
     } else {
       result.className = "is-fail";
       result.textContent =
-        "Not quite. Enable HTTPS for mdm.acmecorp.com, set iOS 17 minimum with passcode and auto-lock rules, restrict apps to ACME-only, and enroll via ADE with strict supervision.";
+        "Not quite. Enable HTTPS for mdm.becertifiedtoday.com, set iOS 17 minimum with passcode and auto-lock rules, restrict apps to BeCertifiedToday-only, and enroll via ADE with strict supervision.";
     }
   });
 
@@ -479,9 +404,3 @@
   });
 })();
 </script>
-
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
-  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
-</body>
-</html>

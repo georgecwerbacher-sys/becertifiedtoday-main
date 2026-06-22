@@ -19,8 +19,8 @@ Two-tab SIEM console (Rule Settings, Action Preferences). Paraphrased from commo
 
 ## Pending chain
 
-- **Previous:** `../mdm-enrollment-config/`
-- **Next:** [`../network-protocols-matching/`](../network-protocols-matching/)
+- **Previous:** [`../../PBQ_Production/mdm-enrollment-config/`](../../PBQ_Production/mdm-enrollment-config/mdm-enrollment-config.html) *(production)*
+- **Next:** [`../../PBQ_Production/network-protocols-matching/`](../../PBQ_Production/network-protocols-matching/network-protocols-matching.html) *(production)*
 
 ## Preview
 

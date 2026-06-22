@@ -465,12 +465,90 @@ SCENARIOS = [
             "<strong>Director's phone</strong>."
         ),
         "prev": "malware-infection-log-analysis",
-        "next": None,
+        "next": "public-wlan-guest-config",
         "sections": [
             {
                 "id": "home-wlan-director",
                 "label": "Router configuration",
                 "path": "home-wlan-director-config/sections/home-wlan-director.html",
+            },
+        ],
+    },
+    {
+        "slug": "public-wlan-guest-config",
+        "title": "SEC+ Public WLAN Guest Configuration",
+        "heading": "SEC+ Public WLAN Guest Configuration",
+        "page_title": "Security+: SEC+ Public WLAN Guest Configuration",
+        "meta_description": (
+            "Configure public guest Wi‑Fi at BeCertifiedToday — open SSID for lobby visitors, "
+            "non-overlapping channel, new admin credentials, and MAC filtering disabled."
+        ),
+        "description": "",
+        "body_class": "pbq-home-router pbq-wap-config",
+        "objectives": "1.2 · 3.3 · 4.6",
+        "suite_instructions": (
+            "Review the <strong>requirements</strong>, then configure all three router tabs for the "
+            "<strong>BCT lobby guest WLAN</strong>."
+        ),
+        "prev": "home-wlan-director-config",
+        "next": "mdm-enrollment-config",
+        "sections": [
+            {
+                "id": "public-wlan-guest",
+                "label": "Router configuration",
+                "path": "public-wlan-guest-config/sections/public-wlan-guest.html",
+            },
+        ],
+    },
+    {
+        "slug": "mdm-enrollment-config",
+        "title": "SEC+ MDM Enrollment Configuration",
+        "heading": "SEC+ MDM Enrollment Configuration",
+        "page_title": "Security+: SEC+ MDM Enrollment Configuration",
+        "meta_description": (
+            "Configure BeCertifiedToday MDM enrollment — TLS for mdm.becertifiedtoday.com, iOS compliance, "
+            "application restrictions, and Apple ADE with strict supervision."
+        ),
+        "description": "",
+        "body_class": "pbq-home-router pbq-mdm-config",
+        "objectives": "3.1 · 3.3 · 4.6",
+        "suite_instructions": (
+            "Review the <strong>requirements</strong>, then configure all four MDM console tabs for corporate "
+            "<strong>iOS enrollment</strong>."
+        ),
+        "prev": "public-wlan-guest-config",
+        "next": "network-protocols-matching",
+        "sections": [
+            {
+                "id": "mdm-enrollment-config",
+                "label": "MDM configuration",
+                "path": "mdm-enrollment-config/sections/mdm-enrollment-config.html",
+            },
+        ],
+    },
+    {
+        "slug": "network-protocols-matching",
+        "title": "SEC+ Network Protocols Matching",
+        "heading": "SEC+ Network Protocols Matching",
+        "page_title": "Security+: SEC+ Network Protocols Matching",
+        "meta_description": (
+            "Match eleven networking protocols to their security functions and characteristics — "
+            "wireless, web, email, AAA, VPN, and access control."
+        ),
+        "description": "",
+        "body_class": "pbq-protocol-match dragdrop-exercise",
+        "objectives": "1.2 · 2.1 · 3.2",
+        "suite_instructions": (
+            "Drag each protocol into the slot beside the matching security function "
+            "(or tap a protocol, then tap a slot). Every protocol is used <strong>once</strong>."
+        ),
+        "prev": "mdm-enrollment-config",
+        "next": None,
+        "sections": [
+            {
+                "id": "network-protocols-matching",
+                "label": "Protocol matching",
+                "path": "network-protocols-matching/sections/network-protocols-matching.html",
             },
         ],
     },

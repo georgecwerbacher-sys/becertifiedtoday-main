@@ -40,8 +40,13 @@ Study and authoring notes for each scenario under `public/COMP_TIA_SEC+/SEC+_Sim
 | 22 | `cloud-waf-setup` | [Cloud WAF](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cloud-waf-setup/cloud-waf-setup.html) | [[cloud-waf-setup/notes|Cloud WAF]] |
 | 23 | `incident-response-matching` | [IR phase matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/incident-response-matching/incident-response-matching.html) | [[incident-response-matching/notes|IR matching]] |
 | 24 | `cryptographic-algorithms-matching` | [Crypto matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cryptographic-algorithms-matching/cryptographic-algorithms-matching.html) | [[cryptographic-algorithms-matching/notes|Crypto matching]] |
+| 25 | `malware-infection-log-analysis` | [Malware log analysis](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-infection-log-analysis/malware-infection-log-analysis.html) | [[malware-infection-log-analysis/notes|Malware logs]] |
+| 26 | `home-wlan-director-config` | [Director WLAN](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/home-wlan-director-config/home-wlan-director-config.html) | [[home-wlan-director-config/notes|Director WLAN]] |
+| 27 | `public-wlan-guest-config` | [Guest WLAN](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/public-wlan-guest-config/public-wlan-guest-config.html) | [[public-wlan-guest-config/notes|Guest WLAN]] |
+| 28 | `mdm-enrollment-config` | [MDM enrollment](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/mdm-enrollment-config/mdm-enrollment-config.html) | [[mdm-enrollment-config/notes|MDM enrollment]] |
+| 29 | `network-protocols-matching` | [Protocol matching](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/network-protocols-matching/network-protocols-matching.html) | [[network-protocols-matching/notes|Protocol matching]] |
 
-**Pending (not on portal):** configuration PBQs `public-wlan-guest-config`, `mdm-enrollment-config`, `siem-alert-settings-config`, `network-protocols-matching`, `site-to-site-vpn-config`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
+**Pending (not on portal):** configuration PBQs `siem-alert-settings-config`, `site-to-site-vpn-config`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
 
 **BCT standalone (production, on portal, not in chain):** `dark-web-account-protection`, `malware-outbreak-classification`, `secure-web-architecture-openssl`, `vpc-payment-architecture` → `PBQ_Production/`
 

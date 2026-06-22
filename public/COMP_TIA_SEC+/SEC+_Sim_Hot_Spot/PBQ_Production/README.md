@@ -48,6 +48,9 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 24. [SEC+ Cryptographic Algorithms Matching](cryptographic-algorithms-matching/cryptographic-algorithms-matching.html)
 25. [SEC+ Malware Infection Log Analysis](malware-infection-log-analysis/malware-infection-log-analysis.html)
 26. [Sec+ Director and Administrator WLAN Setup](home-wlan-director-config/home-wlan-director-config.html)
+27. [SEC+ Public WLAN Guest Configuration](public-wlan-guest-config/public-wlan-guest-config.html)
+28. [SEC+ MDM Enrollment Configuration](mdm-enrollment-config/mdm-enrollment-config.html)
+29. [SEC+ Network Protocols Matching](network-protocols-matching/network-protocols-matching.html)
 
 ## Section source files
 
@@ -87,6 +90,9 @@ npm run build:pbq-suite
 | [`cryptographic-algorithms-matching/`](cryptographic-algorithms-matching/) | Ten crypto algorithms matched to use-case descriptions |
 | [`malware-infection-log-analysis/`](malware-infection-log-analysis/) | Six-host AV + firewall log triage — source / infected / clean |
 | [`home-wlan-director-config/`](home-wlan-director-config/) | Director WLAN — WPA2, MAC filter, admin password |
+| [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username |
+| [`mdm-enrollment-config/`](mdm-enrollment-config/) | BeCertifiedToday MDM — iOS compliance, app restrictions, ADE |
+| [`network-protocols-matching/`](network-protocols-matching/) | Eleven protocols matched to security functions |
 
 ## BCT standalone sims (portal, not in build chain)
 

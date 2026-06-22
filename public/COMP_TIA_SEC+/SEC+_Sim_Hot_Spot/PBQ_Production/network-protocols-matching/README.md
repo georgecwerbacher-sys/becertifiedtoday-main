@@ -1,4 +1,4 @@
-# Network Security Protocols — Matching
+# SEC+ Network Protocols Matching
 
 **SY0-701 PBQ · drag-and-drop matching**
 
@@ -20,13 +20,15 @@ Match eleven protocols to security function descriptions. Paraphrased from commo
 | Provides secure remote access and file transfer capabilities | **SSH** |
 | Implements port-based network access control through authentication protocols | **802.1X** |
 
-**Status:** Pending — not in `PBQ_Production` build chain.
+**Status:** Production — chain #29, linked on `SEC+_Training_Portal.html` (PKI, TLS & Wireless).
 
-## Pending chain
+## Chain
 
-- **Previous:** `../siem-alert-settings-config/`
-- **Next:** [`../../PBQ_Production/incident-response-matching/`](../../PBQ_Production/incident-response-matching/incident-response-matching.html) *(production)*
+- **Previous:** [`../mdm-enrollment-config/`](../mdm-enrollment-config/mdm-enrollment-config.html)
+- **Next:** *(end of chain)*
 
 ## Preview
 
-http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/network-protocols-matching/network-protocols-matching.html
+http://localhost:3000/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/network-protocols-matching/network-protocols-matching.html
+
+Rebuild after section edits: `npm run build:pbq-suite`

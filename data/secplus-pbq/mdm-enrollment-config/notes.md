@@ -5,7 +5,7 @@ scenario: mdm-enrollment-config
 last_updated: 2026-06-22
 ---
 
-# MDM enrollment — Acme Corporation
+# MDM enrollment — BeCertifiedToday
 
 IT administrator configures corporate iOS MDM profile: TLS hostname, compliance, app lockdown, Apple ADE.
 
@@ -18,3 +18,5 @@ IT administrator configures corporate iOS MDM profile: TLS hostname, compliance,
 ## Section
 
 Single section: `mdm-enrollment-config.html` — requirements panel + four-tab MDM console.
+
+**Status:** Production — chain #28, portal (Hardening & Vulnerability Mgmt).

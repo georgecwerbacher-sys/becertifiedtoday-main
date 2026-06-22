@@ -18,3 +18,5 @@ Drag-and-drop: eleven protocols to security function descriptions.
 ## Section
 
 Single section: `network-protocols-matching.html` — protocol bank + description drop slots.
+
+**Status:** Production — chain #29, portal (PKI, TLS & Wireless).

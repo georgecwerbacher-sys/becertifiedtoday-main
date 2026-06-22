@@ -10,16 +10,13 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect to `PBQ_Production/` 
 
 | Folder | Description | Preview |
 |--------|-------------|---------|
-| [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username | [Open](public-wlan-guest-config/public-wlan-guest-config.html) |
-| [`mdm-enrollment-config/`](mdm-enrollment-config/) | Acme MDM — iOS compliance, app restrictions, ADE | [Open](mdm-enrollment-config/mdm-enrollment-config.html) |
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
-| [`network-protocols-matching/`](network-protocols-matching/) | Match protocols to security functions (drag-and-drop) | [Open](network-protocols-matching/network-protocols-matching.html) |
 | [`site-to-site-vpn-config/`](site-to-site-vpn-config/) | Site-to-site VPN Phase 1 &amp; 2 dual-gateway config | [Open](site-to-site-vpn-config/site-to-site-vpn-config.html) |
 | [`web-app-subnet-zoning/`](web-app-subnet-zoning/) | Web app subnet zoning — drag-and-drop tiers | [Open](web-app-subnet-zoning/web-app-subnet-zoning.html) |
 
 Pending chain: … → site-to-site VPN → **web app subnet zoning**.
 
-Production PBQ chain (26 labs) ends at [`../PBQ_Production/home-wlan-director-config/`](../PBQ_Production/home-wlan-director-config/home-wlan-director-config.html).
+Production PBQ chain (29 labs) ends at [`../PBQ_Production/network-protocols-matching/`](../PBQ_Production/network-protocols-matching/network-protocols-matching.html).
 
 ## BCT standalone sims (on portal → `PBQ_Production/`)
 

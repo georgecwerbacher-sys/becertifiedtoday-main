@@ -23,7 +23,7 @@ Simulated router with three tabs (Wireless Settings, Router Security, Network Se
 ## Chain
 
 - **Previous:** [`../malware-infection-log-analysis/`](../malware-infection-log-analysis/malware-infection-log-analysis.html)
-- **Next:** *(end of chain)*
+- **Next:** [`../public-wlan-guest-config/`](../public-wlan-guest-config/public-wlan-guest-config.html)
 
 ## Preview
 

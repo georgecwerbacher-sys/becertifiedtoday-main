@@ -9,6 +9,8 @@ last_updated: 2026-06-22
 
 BCT adaptation of common Security+ **public/guest WLAN** PBQs (airport terminal pattern). Open SSID for visitors; admin plane hardened separately.
 
+**Status:** Production — chain #27, portal (PKI, TLS & Wireless).
+
 ## SY0-701 mapping
 
 - **1.2** — wireless security modes (open vs WPA2)

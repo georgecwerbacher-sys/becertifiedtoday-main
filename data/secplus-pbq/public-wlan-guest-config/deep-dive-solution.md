@@ -7,6 +7,8 @@ last_updated: 2026-06-22
 
 # Public WLAN guest — deep dive solution
 
+Configure all three router tabs — **Wireless Settings**, **Router Security**, and **Network Security** — for BeCertifiedToday's lobby guest network.
+
 > Original BCT scenario; verify against SY0-701 wireless objectives.
 
 ---

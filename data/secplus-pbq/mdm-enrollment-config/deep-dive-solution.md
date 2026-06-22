@@ -7,13 +7,15 @@ last_updated: 2026-06-22
 
 # MDM enrollment — solution walkthrough
 
+As IT administrator for **BeCertifiedToday**, configure all four MDM console tabs — **HTTPS Certificate Settings**, **iOS Compliance Policies**, **Application Restrictions**, and **Enrollment Settings** — for corporate-owned iOS devices.
+
 ## HTTPS Certificate Settings
 
 **HTTPS Certificate:** Enabled — MDM console and device communication must use TLS.
 
-**Domain/Hostname:** `mdm.acmecorp.com` — `mdm` subdomain on `acmecorp.com`.
+**Domain/Hostname:** `mdm.becertifiedtoday.com` — `mdm` subdomain on `BeCertifiedToday.com`.
 
-**Certificate File:** `/mnt/certs/AcmeMDMCertificate.pfx` — path given in the stem.
+**Certificate File:** `/mnt/certs/BCTMDMCertificate.pfx` — path given in the stem.
 
 ## iOS Compliance Policies
 
@@ -27,11 +29,11 @@ last_updated: 2026-06-22
 
 **Auto-lock:** Enabled with **60** seconds — one minute of inactivity.
 
-**Jailbreak alerts:** Enabled; email `alerts@mdm.acmecorp.com` — alerts@ the MDM hostname.
+**Jailbreak alerts:** Enabled; email `alerts@mdm.becertifiedtoday.com` — alerts@ the MDM hostname.
 
 ## Application Restrictions
 
-Enable restrictions; **disable** App Store and unmanaged installs so only ACME-managed apps run; **enable** forced automatic updates.
+Enable restrictions; **disable** App Store and unmanaged installs so only BeCertifiedToday-managed apps run; **enable** forced automatic updates.
 
 ## Enrollment Settings
 
