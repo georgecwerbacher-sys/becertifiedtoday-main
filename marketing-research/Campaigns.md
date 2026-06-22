@@ -72,44 +72,27 @@ Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan
 
 **Do not** use `utm_content=portal-10d` — $9.99 / 10-day is an on-page popup only.
 
-## SEC+_Wedge_PBQ (ready to build)
+## Security+ SY0-701 · Exam prep · becertifiedtoday
 
-**Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]] — [[Sec+ Campaign/Sec+ Positioning|positioning]] · [[Sec+ Campaign/Sec+ Keywords|keywords]] · [[Sec+ Campaign/Sec+ RSA Copy|RSA]]
+**Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]] — all setup copy in one folder
 
 | Item | Link |
 |------|------|
-| Setup steps | [[Sec+ Campaign/Sec+ Notes\|Sec+ Notes]] |
-| Keywords | [[Sec+ Campaign/Sec+ Keywords\|Sec+ Keywords]] |
-| Deep docs | [[Wedge Marketing plan/secplus-wedge-campaign/README\|secplus-wedge-campaign/]] |
-| Setup checklist (CSV) | `scripts/secplus-wedge-pbq-google-ads-checklist.csv` |
+| **Start here** | [[Sec+ Campaign/Sec+ Notes\|Sec+ Notes]] |
+| Campaign shell | [[Sec+ Campaign/Security+ Campaign\|Campaign shell]] |
+| Keywords | [[Sec+ Campaign/Sec+ Keywords\|Sec+ Keywords]] · [[Sec+ Campaign/secplus-keywords.csv\|keywords CSV]] |
+| RSA copy | [[Sec+ Campaign/Sec+ RSA Copy\|Sec+ RSA Copy]] |
+| Checklist CSV | [[Sec+ Campaign/secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] |
 | Landing | https://becertifiedtoday.com/secplus/pbq-practice-browser.html |
 
-| Ad group | Budget | Focus |
-|----------|--------|-------|
-| **`SEC+_PBQ_Scenarios`** | ~$3/day | Interactive PBQ / scenarios like test day |
-| **`SEC+_Realistic_Sim`** | ~$3/day | Timed sim, adaptive review, anti-PDF, mobile |
-| **`SEC+_Work_Cert`** | ~$2/day | DoD / contractor / cert required for job |
+| Setting | Value |
+|---------|--------|
+| **Ad group** | **`Security+ PBQ Practice`** (only) |
+| **Budget** | **$20/day** |
+| **Max CPC** | **$2.75** |
+| **utm_campaign** | `secplus_portal` · **utm_content** `pbq-wedge` |
 
 **Before enable:** Keyword Planner sign-off on [[Sec+ Campaign/Sec+ Keywords|Sec+ Keywords]].
-
-## Security+ SY0-701 (portal baseline)
-
-**Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]]
-
-| Item | Link |
-|------|------|
-| **Obsidian** | [[Sec+ Campaign/Sec+ Notes\|Sec+ Notes]] · [[Sec+ Campaign/Sec+ Keywords\|Keywords]] |
-| Setup checklist (CSV) | `scripts/secplus-google-ads-campaign-checklist.csv` |
-| Checklist guide | `scripts/secplus-google-ads-campaign-checklist-README.txt` |
-| Extended reference | [[campaigns/secplus-portal-10d|secplus-portal-10d-google-ads.md]] |
-| Funnel tracker | [[Wedge Marketing plan/SEC+ funnel build tracker|SEC+ funnel build tracker]] |
-| **Obsidian canvas** | [[Wedge Marketing plan/canvas/SEC+ wedge funnel.canvas|SEC+ wedge funnel.canvas]] |
-
-| Ad group | Budget | Focus |
-|----------|--------|-------|
-| `secplus_portal_10d` | ~$10/day | Practice tests, question bank — **low bid / baseline only** |
-
-**Wedge pivot:** [[Wedge Marketing plan/secplus-wedge-campaign/00-why-marketing-changed|Why SEC+ marketing changed]] · Build: [[Sec+ Campaign/README|Sec+ Campaign]] · Keywords: [[Sec+ Campaign/Sec+ Keywords|Sec+ Keywords]].
 
 ## Landing pages
 

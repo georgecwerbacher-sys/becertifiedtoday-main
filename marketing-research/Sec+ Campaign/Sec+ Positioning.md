@@ -45,7 +45,7 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 | Tier | What | CTA in ads / landing |
 |------|------|----------------------|
 | **Free proof** | MCQ sample questions · dark web PBQ preview | Yes — “try sample” / `#home-secplus-samples-title` |
-| **Paid library** | 1000+ Qs · 34 PBQs · adaptive review · **90-min timed sim + scorecard** | Yes — `$9.99/10d` · `#purchase` · `SEC+_Realistic_Sim` keywords |
+| **Paid library** | 1000+ Qs · 34 PBQs · adaptive review · **90-min timed sim + scorecard** | Yes — `$9.99/10d` · `#purchase` on landing |
 | **Not offered** | Free timed simulation / guest 35-min exam | **No CTA** — negate `free timed*` in Search |
 
 The **timed simulation is a core sell**—always mention it with **paid access**, scorecard, and test-day pacing. Never lead with “free timed exam.”
@@ -107,9 +107,7 @@ See full lists: [[Sec+ Keywords]]
 
 | Ad group | Promise | Landing |
 |----------|---------|---------|
-| **SEC+_PBQ_Scenarios** | Interactive PBQ like the real exam | `/secplus/pbq-practice-browser.html` |
-| **SEC+_Realistic_Sim** | Timed sim + adaptive review + 1000+ Qs | `/comptia-sec+-home.html#purchase` |
-| **SEC+_Work_Cert** | Cert required for work — realistic prep sprint | `/comptia-sec+-home.html#purchase` |
+| **`Security+ PBQ Practice`** | *Am I ready?* — PBQ + timed sim + scorecard in browser | `/secplus/pbq-practice-browser.html` |
 
 ---
 
@@ -126,4 +124,4 @@ See full lists: [[Sec+ Keywords]]
 
 - [[Sec+ Notes]] — Google Ads setup
 - [[Sec+ RSA Copy]] — headlines tied to this voice
-- [[Wedge Marketing plan/secplus-wedge-campaign/00-why-marketing-changed|Why SEC+ marketing changed]]
+- [[README]] — campaign folder home

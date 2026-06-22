@@ -11,113 +11,49 @@ tags:
 
 # Sec+ Keywords
 
-Organized by **search intent** and **ad group** — not generic “question bank” head terms alone.
+**Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
+**Ad group:** **`Security+ PBQ Practice`** (only)  
+**Budget:** $20.00/day · max CPC $2.75 · **utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
 
-**Positioning:** [[Sec+ Positioning]] · **Setup:** [[Sec+ Notes]]
+**Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
 
-**Verify in Keyword Planner (US)** before launch. Fill worksheet; only paste rows with **Add = yes**.
+**Import:** [[secplus-keywords.csv]] · **Paste block:** [[#All positive keywords (67)]] below.
+
+**Positioning:** [[Sec+ Positioning]] · **Setup:** [[Sec+ Notes]] · **RSA:** [[Sec+ RSA Copy]]
 
 **Promote rule:** search term with ≥3 clicks + `begin_checkout` → add as `[exact]`.
 
-**No free-intent keywords:** Do not bid on any keyword or phrase containing *free* (samples, dumps, courses, PBQs, etc.). Negate **`free`** at **campaign and ad group** level. Paid search targets people ready to buy exam prep—not free-only shoppers.
-
-**Timed simulation = paid feature, not a free CTA:** We **do** sell a **90-minute timed Security+ exam simulation with detailed scorecard review**—it is **included with portal access** ($9.99/10d · $19.99/30d). Do **not** use a *free* timed sim as an ad CTA, sitelink, or sample upsell. Negate `free timed`, `free timed simulation`, and similar. **Do** bid on timed/mock/simulation intent paired with paid-offer copy (`SEC+_Realistic_Sim`).
+**No free-intent keywords.** Negate **`free`** at campaign and ad group level.
 
 ---
 
-## Keyword strategy (from positioning)
-
-Target people searching for a **realistic practice environment** and those who need Security+ **because work requires it**—not bare head terms alone.
-
-| Intent | What they need to hear | Ad group |
-|--------|------------------------|----------|
-| Realistic / timed / interactive | Exam simulation online, not PDF | `SEC+_Realistic_Sim` |
-| PBQ / scenarios | Interactive like test day | `SEC+_PBQ_Scenarios` |
-| Work / DoD / contractor | Cert required for job | `SEC+_Work_Cert` |
-
-Voice source: [[Sec+ Positioning#Canonical reference (future use)]]
-
----
-
-| Tier | Intent | Example themes |
-|------|--------|----------------|
-| **W1 — Exam-realistic** | Interactive / simulation / timed — not PDF | exam simulation online, realistic practice, timed mock exam |
-| **W2 — PBQ / scenarios** | Performance-based like test day | pbq practice, performance based questions, chain lab |
-| **W3 — Adaptive / review** | Weak areas, missed questions loop | adaptive practice, review missed questions |
-| **W4 — Work-required cert** | Job, DoD, contractor, 8140 | dod security+, certification required, government contractor |
-| **W5 — Anti-PDF / value** | Online portal vs $99 dump | interactive practice not pdf, online practice portal |
-| **W6 — Mobile** | Phone / tablet prep | security+ practice on phone, mobile practice test |
-| **A — Head terms (portal only, low bid)** | practice test, question bank | expensive — baseline or paused |
-
----
-
-## Keyword Planner worksheet
-
-| Match | Keyword | Tier | Vol/mo | Comp | Add? | Ad group |
-|-------|---------|------|--------|------|------|----------|
-| `"phrase"` | security+ exam simulation online | W1 | | | | Realistic_Sim |
-| `"phrase"` | security+ timed practice test online | W1 | | | | Realistic_Sim |
-| `"phrase"` | security+ mock exam online | W1 | | | | Realistic_Sim |
-| `"phrase"` | security+ realistic practice test | W1 | | | | Realistic_Sim |
-| `"phrase"` | interactive security+ practice online | W1 | | | | Realistic_Sim |
-| `"phrase"` | security+ practice exam simulation | W1 | | | | Realistic_Sim |
-| `[exact]` | security+ pbq practice | W2 | | | | PBQ_Scenarios |
-| `[exact]` | sy0-701 pbq | W2 | | | | PBQ_Scenarios |
-| `"phrase"` | security+ performance based questions | W2 | | | | PBQ_Scenarios |
-| `"phrase"` | security+ pbq practice online | W2 | | | | PBQ_Scenarios |
-| `"phrase"` | security+ simulation online | W2 | | | | PBQ_Scenarios |
-| `"phrase"` | security+ interactive scenarios | W2 | | | | PBQ_Scenarios |
-| `"phrase"` | security+ adaptive practice | W3 | | | | Realistic_Sim |
-| `"phrase"` | security+ review missed questions | W3 | | | | Realistic_Sim |
-| `"phrase"` | security+ practice weak areas | W3 | | | | Realistic_Sim |
-| `"phrase"` | security+ 8140 | W4 | | | | Work_Cert |
-| `"phrase"` | dod security+ certification | W4 | | | | Work_Cert |
-| `"phrase"` | security+ required for job | W4 | | | | Work_Cert |
-| `"phrase"` | security+ government contractor exam | W4 | | | | Work_Cert |
-| `"phrase"` | security+ certification job requirement | W4 | | | | Work_Cert |
-| `"phrase"` | security+ practice not pdf | W5 | | | | Realistic_Sim |
-| `"phrase"` | security+ online practice portal | W5 | | | | Realistic_Sim |
-| `"phrase"` | security+ interactive exam prep | W5 | | | | Realistic_Sim |
-| `"phrase"` | security+ practice on phone | W6 | | | | Realistic_Sim |
-| `"phrase"` | security+ mobile practice test | W6 | | | | Realistic_Sim |
-| | | | | | | *add Planner rows* |
-
----
-
-## Campaign: SEC+_Wedge_Prep
-
-One Search campaign, **three ad groups** — each with matched landing and RSA. Budget **$8/day** launch (~40% PBQ · 35% Sim · 25% Work).
-
-utm_campaign: `secplus_wedge_pbq` (keep for attribution registry) or `secplus_wedge_prep` if you register new.
-
----
-
-### Ad group 1 — `SEC+_PBQ_Scenarios`
-
-**Intent:** Interactive PBQ / chain labs / IR — **like the real exam**, in browser.
+## Ad group — `Security+ PBQ Practice`
 
 **Landing:**
 
 ```
-https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=pbq-wedge
+https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 ```
 
-**Display path:** `Security+` / `PBQ-Practice`
+**Display path:** `Security+` / `PBQ-Practice`  
+**Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `$9.99 · 10-Day Access`
 
-**Pin H1:** `Security+ PBQ Practice` · **H2:** `$9.99 · 10-Day Access`
+**Match notation:** `[brackets]` = Exact · `"quotes"` = Phrase
 
-#### Exact match
+---
+
+## All positive keywords (67)
+
+Paste into Google Ads **in this order** (rank 1 = highest intent):
 
 ```
 [security+ pbq practice]
 [sy0-701 pbq]
 [security+ performance based questions]
 [comptia security+ pbq]
-```
-
-#### Phrase match
-
-```
+"security+ pbq like real exam"
+"security+ pbq test day practice"
+"security+ how to pass pbq"
 "security+ pbq practice"
 "security+ pbq practice online"
 "security+ performance based questions"
@@ -125,111 +61,144 @@ https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google
 "comptia security+ pbq"
 "sy0-701 performance based"
 "sy0-701 pbq practice"
-"security+ simulation online"
+"comptia sy0-701 pbq"
 "security+ pbq browser"
+"security+ pbq in browser"
+"security+ browser pbq"
+"security+ pbq no download"
 "security+ pbq chain lab"
+"security+ chain lab practice"
+"security+ drag and drop practice"
+"security+ hot spot questions"
+"security+ hot spot practice"
+"security+ incident response pbq"
 "security+ interactive scenarios"
 "security+ hands on practice"
 "security+ scenario practice online"
-"comptia sy0-701 pbq"
-```
-
----
-
-### Ad group 2 — `SEC+_Realistic_Sim`
-
-**Intent:** Timed exam simulation, adaptive review, random/review modes, 1000+ Qs — **not a PDF**.
-
-**Landing:**
-
-```
-https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=realistic-sim
-```
-
-**Display path:** `Security+` / `Exam-Simulation`
-
-**Pin H1:** `Timed Security+ Exam Sim` · **H2:** `$9.99 · Not a PDF`
-
-#### Exact match (add after Planner)
-
-```
+"security+ simulation online"
+"dark web pbq security+"
+"security+ dark web incident response pbq"
 [security+ exam simulation online]
 [security+ timed practice test]
-```
-
-#### Phrase match
-
-```
 "security+ exam simulation online"
 "security+ timed practice test online"
 "security+ mock exam online"
 "security+ realistic practice test"
 "security+ practice exam simulation"
-"interactive security+ practice online"
-"security+ interactive practice"
-"security+ online exam prep"
-"security+ adaptive practice"
-"security+ review missed questions"
-"security+ practice weak areas"
-"security+ practice not pdf"
-"security+ not pdf dump"
-"security+ online practice portal"
-"security+ practice on phone"
-"security+ mobile practice test"
-"security+ browser practice test"
-"90 minute security+ practice test"
 "security+ timed exam prep"
-```
-
----
-
-### Ad group 3 — `SEC+_Work_Cert`
-
-**Intent:** Certification **required for work** — DoD, federal, contractor, job mandate.
-
-**Landing:**
-
-```
-https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=work-cert
-```
-
-When live, test federal page: `utm_content=federal-us` → `/secplus/federal-8140-prep.html`
-
-**Display path:** `Security+` / `Work-Cert-Prep`
-
-**Pin H1:** `Security+ for Work Cert` · **H2:** `$9.99 · 10-Day Sprint`
-
-#### Phrase match
-
-```
-"security+ 8140"
-"security+ dod certification"
-"dod security+ certification"
+"90 minute security+ practice test"
+"security+ timed exam simulation"
+[security+ 8140]
+[dod security+ certification]
+"security+ before starting job"
+"security+ employer mandated cert"
 "security+ required for job"
 "security+ certification job requirement"
+"security+ work requirement"
+"security+ 8140"
+"dod security+ certification"
+"security+ dod certification"
+"8140 security+ prep"
+"security+ dod 8140 prep"
+"comptia security+ for dod"
+"sy0-701 dod requirement"
 "security+ government contractor"
 "security+ federal contractor exam"
 "security+ for government job"
 "security+ clearance certification"
-"security+ work requirement"
-"comptia security+ for dod"
-"sy0-701 dod requirement"
 "security+ contractor certification"
-"8140 security+ prep"
+"security+ exam prep online"
+"sy0-701 prep"
+"security+ study prep online"
+"security+ practice portal"
+"comptia security+ practice questions"
+"sy0-701 practice questions"
+"security+ practice questions"
 ```
 
-#### Exact match (test if Planner shows volume)
+| # | Keyword | Match |
+|---|---------|-------|
+| 1 | security+ pbq practice | Exact |
+| 2 | sy0-701 pbq | Exact |
+| 3 | security+ performance based questions | Exact |
+| 4 | comptia security+ pbq | Exact |
+| 5 | security+ pbq like real exam | Phrase |
+| 6 | security+ pbq test day practice | Phrase |
+| 7 | security+ how to pass pbq | Phrase |
+| 8 | security+ pbq practice | Phrase |
+| 9 | security+ pbq practice online | Phrase |
+| 10 | security+ performance based questions | Phrase |
+| 11 | security+ performance based question | Phrase |
+| 12 | comptia security+ pbq | Phrase |
+| 13 | sy0-701 performance based | Phrase |
+| 14 | sy0-701 pbq practice | Phrase |
+| 15 | comptia sy0-701 pbq | Phrase |
+| 16 | security+ pbq browser | Phrase |
+| 17 | security+ pbq in browser | Phrase |
+| 18 | security+ browser pbq | Phrase |
+| 19 | security+ pbq no download | Phrase |
+| 20 | security+ pbq chain lab | Phrase |
+| 21 | security+ chain lab practice | Phrase |
+| 22 | security+ drag and drop practice | Phrase |
+| 23 | security+ hot spot questions | Phrase |
+| 24 | security+ hot spot practice | Phrase |
+| 25 | security+ incident response pbq | Phrase |
+| 26 | security+ interactive scenarios | Phrase |
+| 27 | security+ hands on practice | Phrase |
+| 28 | security+ scenario practice online | Phrase |
+| 29 | security+ simulation online | Phrase |
+| 30 | dark web pbq security+ | Phrase |
+| 31 | security+ dark web incident response pbq | Phrase |
+| 32 | security+ exam simulation online | Exact |
+| 33 | security+ timed practice test | Exact |
+| 34 | security+ exam simulation online | Phrase |
+| 35 | security+ timed practice test online | Phrase |
+| 36 | security+ mock exam online | Phrase |
+| 37 | security+ realistic practice test | Phrase |
+| 38 | security+ practice exam simulation | Phrase |
+| 39 | security+ timed exam prep | Phrase |
+| 40 | 90 minute security+ practice test | Phrase |
+| 41 | security+ timed exam simulation | Phrase |
+| 42 | security+ 8140 | Exact |
+| 43 | dod security+ certification | Exact |
+| 44 | security+ before starting job | Phrase |
+| 45 | security+ employer mandated cert | Phrase |
+| 46 | security+ required for job | Phrase |
+| 47 | security+ certification job requirement | Phrase |
+| 48 | security+ work requirement | Phrase |
+| 49 | security+ 8140 | Phrase |
+| 50 | dod security+ certification | Phrase |
+| 51 | security+ dod certification | Phrase |
+| 52 | 8140 security+ prep | Phrase |
+| 53 | security+ dod 8140 prep | Phrase |
+| 54 | comptia security+ for dod | Phrase |
+| 55 | sy0-701 dod requirement | Phrase |
+| 56 | security+ government contractor | Phrase |
+| 57 | security+ federal contractor exam | Phrase |
+| 58 | security+ for government job | Phrase |
+| 59 | security+ clearance certification | Phrase |
+| 60 | security+ contractor certification | Phrase |
+| 61 | security+ exam prep online | Phrase |
+| 62 | sy0-701 prep | Phrase |
+| 63 | security+ study prep online | Phrase |
+| 64 | security+ practice portal | Phrase |
+| 65 | comptia security+ practice questions | Phrase |
+| 66 | sy0-701 practice questions | Phrase |
+| 67 | security+ practice questions | Phrase |
 
-```
-[security+ 8140]
-[dod security+ certification]
-```
+**Not on this list (keep negated):** question bank, 1000 questions, latest sy0-701 questions, `"security+ practice test"`. **Week 2:** `"security+ practice test online"` only if Search Terms convert.
 
 ---
 
-## Campaign negatives (all ad groups)
+## Keyword Planner worksheet
 
-Block courses, dumps, job listings (salary/jobs), and **unmodified head terms** this campaign should not own alone:
+Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
+
+---
+
+## All negatives
+
+**Campaign level:**
 
 ```
 free
@@ -263,17 +232,24 @@ examtopics
 "security+ jobs"
 "security+ salary"
 "security+ training"
+"security+ question bank"
+"security+ 1000 questions"
+"security+ 1000+ questions"
+"sy0-701 v5.0 question bank"
+"latest sy0-701 questions"
+"comptia security+ question bank"
 ccna
+"ccna 200-301"
+"ccnp encor"
 cissp
 ceh
 "pen test+"
+"unauthorized exam content"
+"exam content"
+"pass guarantee"
 ```
 
-**Do not negate:** `simulation`, `interactive`, `timed`, `8140`, `dod`, `contractor`, `adaptive`, `mobile` — those are your wedge.
-
----
-
-## Ad group negatives (all three ad groups)
+**Ad group level (`Security+ PBQ Practice`):**
 
 ```
 free
@@ -282,59 +258,8 @@ braindump
 pdf download
 free course
 bootcamp
-```
-
-**PBQ ad group only** — also negate pure MCQ-only junk if search terms show it:
-
-```
 "security+ flashcards"
+"security+ practice test"
 ```
 
----
-
-## secplus_portal_10d — portal baseline (low bid / optional)
-
-Head terms only — expect high CPC. Pair with differentiation in RSA, not keywords alone.
-
-### Exact
-
-```
-[security+ question bank]
-[sy0-701 question bank]
-```
-
-### Phrase
-
-```
-"security+ exam prep online"
-"security+ practice test online"
-"sy0-701 prep"
-"comptia security+ question bank"
-"security+ practice portal"
-"security+ study prep online"
-```
-
-Portal negatives: same as before — see prior campaign list in `scripts/secplus-portal-10d-google-ads.md`
-
----
-
-## Do not cross-wire
-
-| Intent | Ad group | Landing |
-|--------|----------|---------|
-| PBQ / scenarios | `SEC+_PBQ_Scenarios` | `pbq-practice-browser.html` |
-| Timed / adaptive / anti-PDF | `SEC+_Realistic_Sim` | `comptia-sec+-home.html#purchase` |
-| Work / DoD / contractor | `SEC+_Work_Cert` | home or federal page |
-| Bare head term only | Portal (low bid) | home |
-
----
-
-## Future (enable when landing live)
-
-| Theme | Keywords | Page |
-|-------|----------|------|
-| Timed sim dedicated | `"security+ timed practice test"` | `/secplus/timed-practice-test.html` |
-| Federal deep page | `"dod 8570 security+"`, `"8140 baseline"` | `/secplus/federal-8140-prep.html` |
-| Readiness | `"security+ exam readiness"`, `"final review before exam"` | `/secplus/exam-readiness.html` |
-
-[[Sec+ Positioning|Positioning]] · [[README|← Sec+ Campaign folder]]
+[[README|← Sec+ Campaign folder]]

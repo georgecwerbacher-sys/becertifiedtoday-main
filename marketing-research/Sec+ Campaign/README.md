@@ -10,58 +10,46 @@ tags:
 
 # Sec+ Campaign
 
-Obsidian home for Security+ Google Ads. Lead with **exam-realistic, adaptive, interactive prep** — not generic question-bank CPC.
+**Single Google Ads campaign, single ad group** — Security+ SY0-701 PBQ practice. All setup copy lives in this folder.
+
+**Import:** [[secplus-keywords.csv]] (67 positives, ranked 1–67) · full paste list: [[Sec+ Keywords#All positive keywords (67)]]
 
 | Note | Purpose |
 |------|---------|
-| [[Sec+ Positioning\|Sec+ Positioning]] | **What separates you from competitors** |
-| [[Sec+ Notes\|Sec+ Notes]] | Step-by-step setup (start here) |
-| [[Sec+ Keywords\|Sec+ Keywords]] | Keywords by intent + ad group |
-| [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Headlines & descriptions per ad group |
-| [[Security+ Campaign\|Security+ Campaign]] | Portal baseline (head terms — low priority) |
+| [[Sec+ Notes\|Sec+ Notes]] | **Start here** — step-by-step build checklist |
+| [[Security+ Campaign\|Campaign shell]] | Campaign settings, budget, conversions, products |
+| [[Sec+ Keywords\|Sec+ Keywords]] | PBQ keywords + negatives |
+| [[secplus-keywords.csv\|secplus-keywords.csv]] | Import-ready keywords (Campaign + Match type columns) |
+| [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Headlines & descriptions — `Security+ PBQ Practice` |
+| [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
+| [[Extensions\|Extensions]] | Sitelinks · display paths · UTM map |
+| [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | Row-by-row Google Ads setup CSV |
 
-**Strategy:** [[Wedge Marketing plan/secplus-wedge-campaign/00-why-marketing-changed|Why SEC+ marketing changed]]
-
-**Canonical voice:** [[Sec+ Positioning#Canonical reference (future use)|Sec+ Positioning — reference copy]]
-
-**Funnel canvas:** [[Wedge Marketing plan/canvas/SEC+ wedge funnel.canvas|SEC+ wedge funnel]]
-
----
-
-## Your wedge (one line)
-
-**Interactive exam-realistic practice** — timed sim, adaptive review, PBQ scenarios in browser — **$9.99/10d** not a **$99 PDF**.
-
-Full table: [[Sec+ Positioning]]
+**Registry:** `server-lib/campaign-marketing-registry.js` → id `secplus_portal`
 
 ---
 
-## Campaign — SEC+_Wedge_Prep ($8/day)
-
-Three ad groups, matched landing + message:
-
-| Ad group | Intent | Landing | Keywords |
-|----------|--------|---------|----------|
-| **`SEC+_PBQ_Scenarios`** | PBQ / chain labs like test day | `pbq-practice-browser.html` | [[Sec+ Keywords#Ad group 1 — SEC+_PBQ_Scenarios]] |
-| **`SEC+_Realistic_Sim`** | Timed sim, adaptive, anti-PDF, mobile | `comptia-sec+-home.html#purchase` | [[Sec+ Keywords#Ad group 2 — SEC+_Realistic_Sim]] |
-| **`SEC+_Work_Cert`** | Cert required for job / DoD / contractor | `comptia-sec+-home.html#purchase` | [[Sec+ Keywords#Ad group 3 — SEC+_Work_Cert]] |
-
-**RSA:** [[Sec+ RSA Copy]] · **Checklist CSV:** `scripts/secplus-wedge-pbq-google-ads-checklist.csv`
-
----
-
-## Campaign 2 — Portal baseline (optional / low bid)
+## Campaign
 
 | Setting | Value |
 |---------|--------|
-| Ad group | `secplus_portal_10d` only |
-| Budget | **$10/day** · max CPC **$2.75** |
-| Keywords | [[Sec+ Keywords#secplus_portal_10d — portal baseline (low bid / optional)]] |
+| **Campaign name** | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
+| **Ad group** | **`Security+ PBQ Practice`** (only) |
+| **utm_campaign** | `secplus_portal` |
+| **utm_content** | `pbq-wedge` |
+| **Budget** | **$20.00/day** |
+| **Max CPC** | **$2.75** |
+| **Conversion** | GA4 `begin_checkout` (`secplus_portal_10d`, `secplus_portal_30d`) |
+| **Landing** | `/secplus/pbq-practice-browser.html` |
+| **Geo** | US, CA, UK, AU · presence only |
 
-**Checklist CSV:** `scripts/secplus-google-ads-campaign-checklist.csv`
+**Offer:** Interactive PBQ prep in browser — **34 scenarios**, 1000+ MCQs, timed sim with scorecard — **$9.99/10d** · **$19.99/30d**.
+
+Full positioning: [[Sec+ Positioning]]
 
 ---
 
 ## Quick links
 
+- Landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 - [[Campaigns]] · [[Site Mission]]

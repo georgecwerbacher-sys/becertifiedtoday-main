@@ -83,8 +83,8 @@ Repo checklist: `scripts/ccna-wedge-lab-google-ads-checklist.csv` · setup guide
 
 | Theme | Example keywords | Ad group |
 |-------|------------------|----------|
-| PBQ / performance-based | `[security+ pbq practice]`, `[sy0-701 pbq]`, `"security+ performance based questions"`, `"security+ pbq practice online"` | **`secplus_pbq_wedge`** |
-| Browser sim | `"security+ simulation online"`, `"security+ pbq browser"` | **`secplus_pbq_wedge`** |
+| PBQ / performance-based | `[security+ pbq practice]`, `[sy0-701 pbq]`, `"security+ performance based questions"`, `"security+ pbq practice online"` | **`Security+ PBQ Practice`** |
+| Browser sim | `"security+ simulation online"`, `"security+ pbq browser"` | **`Security+ PBQ Practice`** |
 | Timed sim *(build page first)* | `"security+ timed practice test"`, `"sy0-701 mock exam timed"` | `secplus_timed_sim` *(new)* |
 | Federal / 8140 *(optional)* | `"security+ 8140"`, `"dod security+ prep"` | `secplus_federal` *(future)* |
 
@@ -122,7 +122,7 @@ Repo checklist: `scripts/secplus-google-ads-campaign-checklist.csv` (Ad group 2)
 
 | Ad group | Budget share | Pin H1 | Pin H2 | Final URL |
 |----------|--------------|--------|--------|-----------|
-| **`secplus_pbq_wedge`** | **60–70%** (after day-7) | Security+ PBQ Practice | $9.99 · 10-Day Access | `/secplus/pbq-practice-browser.html` |
+| **`Security+ PBQ Practice`** | **60–70%** (after day-7) | Security+ PBQ Practice | $9.99 · 10-Day Access | `/secplus/pbq-practice-browser.html` |
 | `secplus_timed_sim` | **20–25%** *(build)* | 90-Min Timed Security+ Sim | $9.99 · 10-Day Access | `/secplus/timed-practice-test.html` |
 | `secplus_portal_10d` | **15–20%** | Security+ Practice Test | $9.99 for 10-Day Access | `comptia-sec+-home.html#purchase` (low bid) |
 
