@@ -11,7 +11,7 @@ created: 2026-06-19
 
 Tracking hub for **paid Reddit ads** and **organic posting** on becertifiedtoday.com.
 
-**Google Ads (parallel):** [[../Campaigns|Campaigns]] · wedge plan [[../Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]]
+**Google Ads (parallel):** [[../Campaigns|Campaigns]] · Sec+ Search [[../Sec+ Campaign/README|Sec+ Campaign]] · wedge plan [[../Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]]
 
 **Budget context:** Google **$10/day** (promo chase to **$510** by Jul 19, 2026) · Reddit **$10/day** test
 
@@ -37,7 +37,8 @@ Tracking hub for **paid Reddit ads** and **organic posting** on becertifiedtoday
 | [[marketing/Ad setup checklist]] | First time in ads.reddit.com |
 | [[marketing/Quick pitch]] | **Canonical short pitch** — copy-paste for ads & posts |
 | [[marketing/CCNA ad copy]] | Paste promoted post copy |
-| [[marketing/Sec+ ad copy]] | PBQ + timed sim ads |
+| [[../Sec+ Campaign/Sec+ Reddit Notes\|Sec+ Reddit Notes]] | **Sec+ paid ads — start here** |
+| [[marketing/Sec+ ad copy]] | Redirect → [[../Sec+ Campaign/Sec+ Reddit Copy\|Sec+ Reddit Copy]] |
 | [[marketing/Budget and UTMs]] | Daily spend + GA4 tracking |
 | [[posting/Voice guide]] | **Read before any organic reply** |
 | [[posting/Post log]] | Log every thread you touch |

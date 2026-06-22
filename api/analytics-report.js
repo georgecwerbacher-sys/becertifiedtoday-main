@@ -6,6 +6,7 @@
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
 import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
 import {
   analyticsApiReady,
@@ -152,15 +153,20 @@ export default async function handler(req, res) {
       })),
     ]);
 
-    const certHomeLanding = await buildCertHomeLandingReport(
-      client,
-      env.propertyId,
-      range,
-      rangePreset,
-      sampleLeadRows && !sampleLeadRows.error ? sampleLeadRows : []
-    ).catch((err) => ({
-      error: err?.message || "Cert home landing report failed",
-    }));
+    const [certHomeLanding, campaignMarketing] = await Promise.all([
+      buildCertHomeLandingReport(
+        client,
+        env.propertyId,
+        range,
+        rangePreset,
+        sampleLeadRows && !sampleLeadRows.error ? sampleLeadRows : []
+      ).catch((err) => ({
+        error: err?.message || "Cert home landing report failed",
+      })),
+      buildCampaignMarketingReport(client, env.propertyId, range).catch((err) => ({
+        error: err?.message || "Campaign marketing report failed",
+      })),
+    ]);
 
     return res.status(200).json({
       ok: true,
@@ -178,6 +184,13 @@ export default async function handler(req, res) {
               pages: [],
               totals: {},
               error: certHomeLanding?.error || "Cert home landing unavailable",
+            },
+      campaignMarketing:
+        campaignMarketing && !campaignMarketing.error
+          ? campaignMarketing
+          : {
+              campaigns: [],
+              error: campaignMarketing?.error || "Campaign tracker unavailable",
             },
       sampleLeadCsvError: sampleLeadRows?.error || null,
       fetchedAt: new Date().toISOString(),

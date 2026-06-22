@@ -1,18 +1,21 @@
 /**
- * Google Ads / UTM campaign definitions for admin marketing dashboard.
- * Setup copy lives in scripts/*-google-ads.{txt,md} (not deployed to public/).
+ * Google Ads / Reddit Ads / UTM campaign definitions for admin marketing dashboard.
  */
 
 /** @typedef {object} CampaignMarketingDefinition */
 /**
  * @property {string} id
+ * @property {'google'|'reddit'} channel
  * @property {'ccna'|'encor'|'secplus'} product
  * @property {string} label
- * @property {string} googleAdsCampaignName
+ * @property {string} [googleAdsCampaignName]
+ * @property {string} [redditAdsCampaignName]
  * @property {string} utmCampaign — matches GA4 sessionCampaignName when tagged
+ * @property {string} utmSource
+ * @property {string} utmMedium
  * @property {string} adGroup
  * @property {number} dailyBudgetUsd
- * @property {number} maxCpcUsd
+ * @property {number|null} [maxCpcUsd]
  * @property {string} landingPath
  * @property {string} landingHash
  * @property {string} utmContentPrimary
@@ -23,16 +26,20 @@
  * @property {string} setupDoc
  * @property {string} setupDocTxt
  * @property {string[]} sampleTracks
+ * @property {string} [adsDashboardUrl]
  */
 
 /** @type {CampaignMarketingDefinition[]} */
 export const CAMPAIGN_MARKETING_REGISTRY = [
   {
     id: "ccna_portal",
+    channel: "google",
     product: "ccna",
     label: "CCNA 200-301 · portal · 7-day test",
     googleAdsCampaignName: "CCNA 200-301 · Exam prep · becertifiedtoday",
     utmCampaign: "ccna_portal",
+    utmSource: "google",
+    utmMedium: "cpc",
     adGroup: "ccna_portal_10v1, ccna_browser_labs",
     dailyBudgetUsd: 25,
     maxCpcUsd: 3.0,
@@ -50,10 +57,13 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
   },
   {
     id: "ccna_wedge_lab",
+    channel: "google",
     product: "ccna",
     label: "CCNA_Wedge_Lab · browser CLI labs",
     googleAdsCampaignName: "CCNA_Wedge_Lab",
     utmCampaign: "ccna_wedge_lab",
+    utmSource: "google",
+    utmMedium: "cpc",
     adGroup: "CCNA_Wedge_Lab",
     dailyBudgetUsd: 15,
     maxCpcUsd: 4.5,
@@ -70,11 +80,39 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     sampleTracks: ["ccna-vlan", "ccna-questions", "ccna-dnd"],
   },
   {
+    id: "ccna_wedge_reddit",
+    channel: "reddit",
+    product: "ccna",
+    label: "CCNA_Wedge_Reddit · labs",
+    redditAdsCampaignName: "CCNA_Wedge_Reddit",
+    utmCampaign: "ccna_wedge_lab",
+    utmSource: "reddit",
+    utmMedium: "cpc",
+    adGroup: "r/CCNA · r/Cisco",
+    dailyBudgetUsd: 10,
+    maxCpcUsd: null,
+    landingPath: "/ccna-home.html",
+    landingHash: "",
+    utmContentPrimary: "reddit-labs",
+    finalUrl:
+      "https://becertifiedtoday.com/ccna-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=ccna_wedge_lab&utm_content=reddit-labs",
+    primaryConversion: "begin_checkout",
+    conversionItemIds: ["ccna_portal_10d", "ccna_portal_30d"],
+    primaryOffer: "10-day $9.99 — Reddit image ad · Feed + Conversation",
+    setupDoc: "marketing-research/Reddit/marketing/CCNA campaign — Reddit only.md",
+    setupDocTxt: "marketing-research/Reddit/marketing/Ad setup checklist.md",
+    sampleTracks: ["ccna-vlan", "ccna-questions", "ccna-dnd"],
+    adsDashboardUrl: "https://ads.reddit.com",
+  },
+  {
     id: "encor_portal",
+    channel: "google",
     product: "encor",
     label: "CCNP ENCOR 350-401 · portal · 7-day test",
     googleAdsCampaignName: "CCNP ENCOR 350-401 · Exam prep · becertifiedtoday",
     utmCampaign: "encor_portal",
+    utmSource: "google",
+    utmMedium: "cpc",
     adGroup: "encor_portal",
     dailyBudgetUsd: 10,
     maxCpcUsd: 2.75,
@@ -92,10 +130,13 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
   },
   {
     id: "secplus_portal",
+    channel: "google",
     product: "secplus",
     label: "Security+ SY0-701 · PBQ Practice · $20/day",
     googleAdsCampaignName: "Security+ SY0-701 · Exam prep · becertifiedtoday",
     utmCampaign: "secplus_portal",
+    utmSource: "google",
+    utmMedium: "cpc",
     adGroup: "Security+ PBQ Practice",
     dailyBudgetUsd: 20,
     maxCpcUsd: 2.75,
@@ -110,6 +151,56 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
+  },
+  {
+    id: "secplus_wedge_pbq_reddit",
+    channel: "reddit",
+    product: "secplus",
+    label: "SEC+_Wedge_Reddit · PBQ",
+    redditAdsCampaignName: "SEC+_Wedge_Reddit",
+    utmCampaign: "secplus_wedge_pbq",
+    utmSource: "reddit",
+    utmMedium: "cpc",
+    adGroup: "r/CompTIA · r/SecurityPlus",
+    dailyBudgetUsd: 10,
+    maxCpcUsd: null,
+    landingPath: "/secplus/pbq-practice-browser.html",
+    landingHash: "",
+    utmContentPrimary: "reddit-pbq",
+    finalUrl:
+      "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq",
+    primaryConversion: "begin_checkout",
+    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    primaryOffer: "10-day $9.99 · 30-day $19.99 — Reddit PBQ wedge · Feed + Conversation",
+    setupDoc: "marketing-research/Sec+ Campaign/secplus-reddit-checklist.csv",
+    setupDocTxt: "marketing-research/Sec+ Campaign/secplus-reddit-checklist-README.txt",
+    sampleTracks: ["sim-dark-web", "questions"],
+    adsDashboardUrl: "https://ads.reddit.com",
+  },
+  {
+    id: "secplus_portal_reddit_timed",
+    channel: "reddit",
+    product: "secplus",
+    label: "SEC+_Wedge_Reddit · timed sim (phase 2)",
+    redditAdsCampaignName: "SEC+_Wedge_Reddit",
+    utmCampaign: "secplus_portal",
+    utmSource: "reddit",
+    utmMedium: "cpc",
+    adGroup: "r/CompTIA · r/SecurityPlus",
+    dailyBudgetUsd: 10,
+    maxCpcUsd: null,
+    landingPath: "/comptia-sec+-home.html",
+    landingHash: "",
+    utmContentPrimary: "reddit-timed-sim",
+    finalUrl:
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=reddit-timed-sim",
+    primaryConversion: "begin_checkout",
+    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    primaryOffer: "Work-cert angle · 90-min timed sim — A/B after PBQ ad set",
+    setupDoc: "marketing-research/Sec+ Campaign/Sec+ Reddit Copy.md",
+    setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Reddit Notes.md",
+    sampleTracks: ["sim-dark-web", "questions"],
+    adsDashboardUrl: "https://ads.reddit.com",
   },
 ];
 
@@ -127,5 +218,5 @@ export const AD_LANDING_MONITOR_PATHS = [
 ];
 
 export function utmCampaignNames() {
-  return CAMPAIGN_MARKETING_REGISTRY.map((c) => c.utmCampaign);
+  return [...new Set(CAMPAIGN_MARKETING_REGISTRY.map((c) => c.utmCampaign))];
 }

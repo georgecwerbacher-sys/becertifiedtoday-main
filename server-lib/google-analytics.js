@@ -579,6 +579,48 @@ export async function fetchRedditCpcByCampaign(client, propertyId, range, limit 
   return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "cpc", limit);
 }
 
+/**
+ * begin_checkout sessions by campaign for a source/medium pair (Reddit vs Google split).
+ */
+export async function fetchBeginCheckoutBySourceCampaign(
+  client,
+  propertyId,
+  range,
+  source,
+  medium,
+  limit = 25
+) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      beginCheckoutEventFilter(),
+      {
+        filter: {
+          fieldName: "sessionSource",
+          stringFilter: { matchType: "EXACT", value: String(source || "").trim() },
+        },
+      },
+      {
+        filter: {
+          fieldName: "sessionMedium",
+          stringFilter: { matchType: "EXACT", value: String(medium || "").trim() },
+        },
+      }
+    ),
+    dimensions: [{ name: "sessionCampaignName" }],
+    metrics: [{ name: "sessions" }],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    campaign: row.dimensionValues?.[0]?.value || "(not set)",
+    beginCheckout: Number(row.metricValues?.[0]?.value || 0),
+  }));
+}
+
 /** Organic Reddit links (replies, community posts): sessionSource = reddit, sessionMedium = organic. */
 export async function fetchRedditOrganicByCampaign(client, propertyId, range, limit = 25) {
   return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "organic", limit);

@@ -120,6 +120,8 @@
     }
     .badge.active { background: rgba(61, 214, 140, 0.2); color: var(--good); }
     .badge.expired { background: rgba(240, 113, 120, 0.15); color: var(--bad); }
+    .badge.channel-google { background: rgba(47, 102, 191, 0.25); color: #7eb6ff; }
+    .badge.channel-reddit { background: rgba(255, 120, 60, 0.2); color: #ffb088; }
     .status { margin-top: 10px; font-size: 0.9rem; }
     .status.err { color: var(--bad); }
     .status.ok { color: var(--good); }
@@ -310,6 +312,7 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-register">Stripe checkout</a>
+        <a href="#section-campaigns">Campaign tracker</a>
         <a href="#section-cert-homes">Home pages</a>
         <a href="#section-magic-link">Magic link reset</a>
         <a href="#section-traffic">Site traffic</a>
@@ -532,6 +535,17 @@
         </div>
         <div class="link-grid" id="portalBypassLinks"></div>
         <p id="portalBypassStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="panel" id="section-campaigns">
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google + Reddit</h2>
+        <p class="section-note" style="margin-top:0">
+          GA4 sessions and <code>begin_checkout</code> for tagged campaigns in the selected date range.
+          Spend and CTR still live in Google Ads and <a href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">ads.reddit.com</a>.
+          <strong>Reddit ads:</strong> paste the copied URL into <strong>Destination URL</strong> only — leave <strong>Tracker URL</strong> empty.
+        </p>
+        <div class="campaign-grid" id="campaignMarketingGrid"></div>
+        <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
       </div>
 
       <p id="dashStatus" class="status" aria-live="polite"></p>
@@ -759,6 +773,145 @@
             );
           })
           .join("");
+      }
+
+      var CAMPAIGN_PRODUCT_LABELS = {
+        ccna: "CCNA",
+        encor: "ENCOR",
+        secplus: "Security+",
+      };
+
+      function fmtPct(rate) {
+        if (rate == null || isNaN(rate)) return "—";
+        return (rate * 100).toFixed(1) + "%";
+      }
+
+      function renderCampaignMarketing(data) {
+        var grid = document.getElementById("campaignMarketingGrid");
+        var statusEl = document.getElementById("campaignMarketingStatus");
+        if (!grid) return;
+
+        if (!data || data.error) {
+          grid.innerHTML =
+            '<p style="color:var(--muted);margin:0">Campaign tracker not loaded.</p>';
+          if (statusEl) {
+            statusEl.textContent = (data && data.error) || "";
+            statusEl.className = data && data.error ? "status err" : "status";
+          }
+          return;
+        }
+
+        var campaigns = data.campaigns || [];
+        if (!campaigns.length) {
+          grid.innerHTML =
+            '<p style="color:var(--muted);margin:0">No campaigns in registry.</p>';
+          if (statusEl) statusEl.textContent = "";
+          return;
+        }
+
+        grid.innerHTML = campaigns
+          .map(function (c, i) {
+            var m = c.metrics || {};
+            var channel = c.channel === "reddit" ? "reddit" : "google";
+            var channelLabel = channel === "reddit" ? "Reddit" : "Google";
+            var productLabel = CAMPAIGN_PRODUCT_LABELS[c.product] || c.product || "";
+            var budgetLine =
+              "$" + Number(c.dailyBudgetUsd || 0).toFixed(0) + "/day";
+            if (c.maxCpcUsd != null && c.maxCpcUsd > 0) {
+              budgetLine += " · max CPC $" + Number(c.maxCpcUsd).toFixed(2);
+            } else if (channel === "reddit") {
+              budgetLine += " · lowest cost";
+            }
+            var platformName = c.platformCampaignName || c.label || "";
+            var meta =
+              productLabel +
+              " · " +
+              platformName +
+              " · " +
+              (c.adGroup || "") +
+              " · " +
+              budgetLine;
+
+            return (
+              '<article class="campaign-card" data-campaign-id="' +
+              escapeAttr(c.id || "") +
+              '"><h3>' +
+              (c.label || c.id) +
+              ' <span class="badge channel-' +
+              channel +
+              '">' +
+              channelLabel +
+              "</span></h3>" +
+              '<p class="campaign-meta">' +
+              meta +
+              "</p>" +
+              '<div class="campaign-metrics">' +
+              [
+                ["Paid sessions", fmt(m.paidSessions != null ? m.paidSessions : m.sessions)],
+                ["Users", fmt(m.users)],
+                ["Landing views", fmt(m.landingPageViews)],
+                ["begin_checkout", fmt(m.beginCheckout)],
+                ["Checkout rate", fmtPct(m.checkoutRate)],
+              ]
+                .map(function (pair) {
+                  return (
+                    '<div class="campaign-metric"><div class="val">' +
+                    pair[1] +
+                    '</div><div class="lbl">' +
+                    pair[0] +
+                    "</div></div>"
+                  );
+                })
+                .join("") +
+              "</div>" +
+              '<p class="campaign-url" id="campaign-url-' +
+              i +
+              '">' +
+              (c.finalUrl || "").replace(/</g, "&lt;") +
+              "</p>" +
+              '<div class="campaign-actions">' +
+              '<button type="button" class="primary" data-copy-campaign-url="' +
+              i +
+              '">Copy destination URL</button>' +
+              (c.adsDashboardUrl
+                ? '<a class="btn-inline" href="' +
+                  c.adsDashboardUrl +
+                  '" target="_blank" rel="noopener noreferrer">Open ads dashboard</a>'
+                : "") +
+              '<a class="btn-inline" href="' +
+              (c.landingPath || "/") +
+              '" target="_blank" rel="noopener noreferrer">Preview landing</a>' +
+              "</div></article>"
+            );
+          })
+          .join("");
+
+        grid.querySelectorAll("[data-copy-campaign-url]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var idx = parseInt(btn.getAttribute("data-copy-campaign-url") || "0", 10);
+            var url = campaigns[idx] && campaigns[idx].finalUrl;
+            if (!url) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(url);
+            }
+            if (statusEl) {
+              statusEl.textContent = "Copied destination URL for " + (campaigns[idx].label || "campaign") + ".";
+              statusEl.className = "status ok";
+            }
+          });
+        });
+
+        if (statusEl) {
+          var redditCount = campaigns.filter(function (c) {
+            return c.channel === "reddit";
+          }).length;
+          statusEl.textContent =
+            campaigns.length +
+            " campaigns (" +
+            redditCount +
+            " Reddit). Filter GA4 by session source reddit + utm_campaign for cross-check.";
+          statusEl.className = "status ok";
+        }
       }
 
       function fmtIsoUtc(iso) {
@@ -1214,6 +1367,11 @@
           certHomeStatus.textContent = "Loading home page metrics…";
           certHomeStatus.className = "status";
         }
+        var campaignStatus = document.getElementById("campaignMarketingStatus");
+        if (campaignStatus) {
+          campaignStatus.textContent = "Loading campaign tracker…";
+          campaignStatus.className = "status";
+        }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
 
@@ -1239,6 +1397,7 @@
 
             renderSummary(ga.body);
             renderCertHomeLanding(ga.body.certHomeLanding);
+            renderCampaignMarketing(ga.body.campaignMarketing);
             renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";
@@ -1261,6 +1420,7 @@
             if (magicStatus) magicStatus.textContent = "";
             if (certHomeStatus) certHomeStatus.textContent = "";
             renderCertHomeLanding(null);
+            renderCampaignMarketing(null);
           });
       }
 

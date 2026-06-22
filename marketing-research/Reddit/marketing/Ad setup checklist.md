@@ -9,7 +9,7 @@ created: 2026-06-19
 
 # Reddit ad setup checklist
 
-Step-by-step for **ads.reddit.com** (not regular reddit.com). Copy lives in [[CCNA ad copy]] and [[Sec+ ad copy]].
+Step-by-step for **ads.reddit.com** (not regular reddit.com). Copy lives in [[CCNA ad copy]] and [[../../Sec+ Campaign/Sec+ Reddit Copy|Sec+ Reddit Copy]].
 
 [[../README|← Reddit hub]] · UTMs: [[Budget and UTMs]]
 
@@ -40,6 +40,7 @@ See [[../Account|Account]] for username and personal vs business notes.
 - [x] **Bidding:** **Lowest cost** (automated on) · **Cost cap OFF**
 - [x] Skip interest / keyword targeting for launch
 - [x] **Tracker / Reddit Pixel:** skip · UTMs in URL only
+- [ ] **Third-party Tracker URL:** leave **empty** (not the same as Destination URL)
 - [ ] Ad format: **Promoted post** (text + optional image)
 - [ ] Paste copy from [[CCNA ad copy#Ad A — primary (start here)|CCNA Ad A]]
 - [ ] **Final URL** (copy-paste):
@@ -57,13 +58,15 @@ https://becertifiedtoday.com/ccna-home.html?utm_source=reddit&utm_medium=cpc&utm
 
 ## Phase 3 — Security+ campaign
 
+**Full setup in Sec+ Campaign folder:** [[../../Sec+ Campaign/Sec+ Reddit Notes|Sec+ Reddit Notes]] · [[../../Sec+ Campaign/Sec+ campaign — Reddit only|Reddit shell]] · [[../../Sec+ Campaign/secplus-reddit-checklist.csv|checklist CSV]]
+
 **Campaign name:** `SEC+_Wedge_Reddit`
 
 - [ ] Objective: **Traffic**
 - [ ] Daily budget: **$10/day** (or split $5 PBQ + $5 timed sim later)
 - [ ] **Locations:** US, CA, UK, AU
 - [ ] **Communities:** `r/CompTIA`, `r/SecurityPlus`
-- [ ] Ad set 1 — PBQ angle · copy from [[Sec+ ad copy#Ad set 1 — PBQ (start here)|Sec+ PBQ ad]]
+- [ ] Ad set 1 — PBQ angle · copy from [[../../Sec+ Campaign/Sec+ Reddit Copy#Ad set 1 — PBQ (start here)|Sec+ Reddit Copy · Ad set 1]]
 - [ ] **Final URL:**
 
 ```
@@ -71,7 +74,7 @@ https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit
 ```
 
 - [ ] CTA: **Learn More**
-- [ ] Image (optional): PBQ scenario screenshot
+- [ ] Image: PBQ scenario screenshot + on-image text ([[../../Sec+ Campaign/Sec+ Reddit Copy#Image ad — text on creative|image text]])
 - [ ] Submit · **Active**
 
 ---
@@ -108,5 +111,16 @@ https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit
 
 1. Read rejection reason in ads dashboard
 2. Remove: guaranteed pass, actual exam questions, dump language
-3. Resubmit with softer copy from [[CCNA ad copy]] / [[Sec+ ad copy]]
+3. Resubmit with softer copy from [[CCNA ad copy]] / [[../../Sec+ Campaign/Sec+ Reddit Copy|Sec+ Reddit Copy]]
 4. Note rejection + fix in Post log
+
+---
+
+## If “Not delivering · No active ad groups”
+
+Campaign saved, but **no live ad group + ad** underneath.
+
+1. Campaign → **Ad groups** tab → create or unpause an ad group
+2. Ad group → **Ads** tab → create ad · paste URL + copy · **Publish / Submit**
+3. Wait for **In review** → **Active** (24–48 hr)
+4. Sec+ walkthrough: [[../../Sec+ Campaign/Sec+ Reddit Notes#Troubleshooting — “Not delivering · No active ad groups”|Sec+ Reddit Notes · troubleshooting]]

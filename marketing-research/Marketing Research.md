@@ -19,7 +19,7 @@ Hub for competitor intel, ad campaigns, and weekly analytics.
 - [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] — positioning, wedge keywords, content, 30-day checklist
 
 - [[Tools/README|Tools]] — campaign helpers (Sec+ keyword list · copy for Google Ads)
-- [[Sec+ Campaign/README|Sec+ Campaign]] — **Security+ Google Ads** (one campaign, one ad group, $20/day, keywords CSV, checklist)
+- [[Sec+ Campaign/README|Sec+ Campaign]] — **Security+ Google Ads + Reddit** ($20/day Search · $10/day Reddit PBQ, checklists, copy)
 - [[Reddit/README|Reddit]] — paid ads + organic posting (voice guide, checklists, post log)
 - [[Competitors]] — SEC+, CCNA, ENCOR prep sites
 - [[Campaigns]] — Google Ads setup and UTM registry (**initial 7-day test** through 2026-06-21)

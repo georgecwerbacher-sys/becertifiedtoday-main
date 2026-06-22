@@ -4,13 +4,23 @@ product: secplus
 tags:
   - marketing
   - google-ads
+  - reddit
   - security+
   - secplus
 ---
 
 # Sec+ Campaign
 
-**Single Google Ads campaign, single ad group** — Security+ SY0-701 PBQ practice. All setup copy lives in this folder.
+**Security+ SY0-701** marketing — Google Search + Reddit paid ads. All setup copy lives in this folder.
+
+| Channel | Start here | Budget |
+|---------|------------|--------|
+| **Google Ads** | [[Sec+ Notes\|Sec+ Notes]] | **$20/day** · one campaign, one ad group |
+| **Reddit Ads** | [[Sec+ Reddit Notes\|Sec+ Reddit Notes]] | **$10/day** shared pool · launch PBQ first |
+
+---
+
+## Google Ads
 
 **AdWords checklist:** [[secplus-campaign-checklist.csv]] — paste 67 keywords + negatives + RSA into Google Ads (Numbers). Regenerate: `npm run sync:secplus-checklist`
 
@@ -18,22 +28,47 @@ tags:
 
 | Note | Purpose |
 |------|---------|
-| [[Sec+ Notes\|Sec+ Notes]] | **Start here** — step-by-step build checklist |
+| [[Sec+ Notes\|Sec+ Notes]] | Step-by-step Google build checklist |
 | [[Security+ Campaign\|Campaign shell]] | Campaign settings, budget, conversions, products |
 | [[Sec+ Keywords\|Sec+ Keywords]] | PBQ keywords + negatives |
 | [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Headlines & descriptions — `Security+ PBQ Practice` |
-| [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
 | [[Extensions\|Extensions]] | Sitelinks · display paths · UTM map |
-| [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | **AdWords checklist** — keywords, negatives, RSA (paste into Google Ads) |
-| [[secplus-campaign-checklist-README.txt\|checklist README]] | Numbers column guide |
-| [[secplus-keywords.csv\|secplus-keywords.csv]] | Keyword source CSV — edit then `npm run sync:secplus-checklist` |
+| [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | Keywords, negatives, RSA (paste into Google Ads) |
+| [[secplus-campaign-checklist-README.txt\|Google checklist README]] | Numbers column guide |
 | [[../Tools/Sec+ Campaign Keywords\|Tools · keyword workflow]] | Numbers filter steps for pasting keywords |
-
-**Registry:** `server-lib/campaign-marketing-registry.js` → id `secplus_portal`
 
 ---
 
-## Campaign
+## Reddit Ads
+
+**Reddit checklist:** [[secplus-reddit-checklist.csv]] — paste steps into ads.reddit.com (Numbers)
+
+| Note | Purpose |
+|------|---------|
+| [[Sec+ Reddit Notes\|Sec+ Reddit Notes]] | **Start here** — step-by-step Reddit build |
+| [[Sec+ campaign — Reddit only\|Reddit campaign shell]] | Single-page ads.reddit.com settings |
+| [[Sec+ Reddit Copy\|Sec+ Reddit Copy]] | Headlines, body, image text, A/B log |
+| [[secplus-reddit-checklist.csv\|secplus-reddit-checklist.csv]] | Checklist CSV for Numbers |
+| [[secplus-reddit-checklist-README.txt\|Reddit checklist README]] | Column guide |
+
+**Organic (parallel):** [[../Reddit/posting/Sec+ replies\|Sec+ replies]] · [[../Reddit/posting/Voice guide\|Voice guide]] · [[../Reddit/posting/Post log\|Post log]]
+
+---
+
+## Shared
+
+| Note | Purpose |
+|------|---------|
+| [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
+| [[secplus-keywords.csv\|secplus-keywords.csv]] | Keyword source CSV — edit then `npm run sync:secplus-checklist` |
+
+**Registry:** `server-lib/campaign-marketing-registry.js` → ids `secplus_portal` (Google) · `secplus_wedge_pbq_reddit` (Reddit)
+
+**Admin tracker:** [/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns) — GA4 sessions + `begin_checkout` · copy destination URL
+
+---
+
+## Google campaign
 
 | Setting | Value |
 |---------|--------|
@@ -43,11 +78,21 @@ tags:
 | **utm_content** | `pbq-wedge` |
 | **Budget** | **$20.00/day** |
 | **Max CPC** | **$2.75** |
-| **Conversion** | GA4 `begin_checkout` (`secplus_portal_10d`, `secplus_portal_30d`) |
 | **Landing** | `/secplus/pbq-practice-browser.html` |
-| **Geo** | US, CA, UK, AU · presence only |
 
-**Offer:** Interactive PBQ prep in browser — **34 scenarios**, 1000+ MCQs, timed sim with scorecard — **$9.99/10d** · **$19.99/30d**.
+---
+
+## Reddit campaign
+
+| Setting | Value |
+|---------|--------|
+| **Campaign name** | `SEC+_Wedge_Reddit` |
+| **Communities** | `r/CompTIA`, `r/SecurityPlus` |
+| **utm_campaign** | `secplus_wedge_pbq` |
+| **utm_content** | `reddit-pbq` |
+| **Budget** | **$10/day** (shared with CCNA Reddit) |
+| **Landing** | `/secplus/pbq-practice-browser.html` |
+| **Account** | u/BeCertifiedToday |
 
 Full positioning: [[Sec+ Positioning]]
 
@@ -55,5 +100,6 @@ Full positioning: [[Sec+ Positioning]]
 
 ## Quick links
 
-- Landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
-- [[Campaigns]] · [[Site Mission]]
+- Google landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
+- Reddit landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
+- [[Campaigns]] · [[Site Mission]] · [[../Reddit/README\|Reddit hub]]
