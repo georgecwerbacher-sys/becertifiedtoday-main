@@ -7,7 +7,7 @@ last_updated: 2026-06-22
 
 # Site-to-site VPN configuration
 
-Dual-gateway IPsec sim: IKE Phase 1 + IPsec Phase 2 on HQ1 and HQ2.
+Dual-gateway IPsec sim for **BeCertifiedToday.com**: IKE Phase 1 + IPsec Phase 2 on BCT_HQ1 and BCT_HQ2.
 
 ## SY0-701 mapping
 

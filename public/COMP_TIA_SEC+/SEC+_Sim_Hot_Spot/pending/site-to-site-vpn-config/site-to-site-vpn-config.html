@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure IKE Phase 1 and IPsec Phase 2 on both VPN gateways for a secure site-to-site tunnel between HQ1 and HQ2." />
+    <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure IKE Phase 1 and IPsec Phase 2 on both BeCertifiedToday.com VPN gateways for a secure site-to-site tunnel between BCT_HQ1 and BCT_HQ2." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/site-to-site-vpn-config/site-to-site-vpn-config.html" />
   <title>Security+ Simulation: Site-to-Site VPN Tunnel Configuration | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
@@ -28,7 +28,7 @@
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
         <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 1.4 · 2.4 · 3.2</p>
         <h1>Simulation: Site-to-Site VPN Tunnel Configuration</h1>
-        <p class="lead pbq-sub">Configure IKE Phase 1 and IPsec Phase 2 on both VPN gateways for a secure site-to-site tunnel between HQ1 and HQ2.</p>
+        <p class="lead pbq-sub">Configure IKE Phase 1 and IPsec Phase 2 on both BeCertifiedToday.com VPN gateways for a secure site-to-site tunnel between BCT_HQ1 and BCT_HQ2.</p>
         <p class="instructions pbq-instructions">
           Configure <strong>Phase 1 and Phase 2</strong> on both VPN gateways using the topology diagram — choose the most secure options.
         </p>
@@ -43,14 +43,14 @@
           <article class="pbq-suite-section" id="site-to-site-vpn-config" data-scenario="site-to-site-vpn-config" hidden><div class="pbq-suite-section__inner">
   <h1>Site-to-Site VPN Tunnel Configuration</h1>
   <p class="pbq-sub">
-    Configure site-to-site VPN tunnels between two headquarters so they can communicate securely over the internet.
+    Configure site-to-site VPN tunnels between two <strong>BeCertifiedToday.com</strong> headquarters so they can communicate securely over the internet.
   </p>
 
   <div class="sim-frame pbq-vpn-sim">
     <section class="panel pbq-vpn-brief" aria-labelledby="vpn-brief-heading">
       <h2 id="site-to-site-vpn-config-vpn-brief-heading">Scenario</h2>
       <p class="pbq-waf-ticket__text">
-        Your organization has two headquarters that must securely communicate over the internet.
+        <strong>BeCertifiedToday.com</strong> has two headquarters that must securely communicate over the internet.
         Configure <strong>both VPN gateways</strong> — Phase 1 (IKE) and Phase 2 (IPsec) — to establish the
         <strong>most secure</strong> site-to-site connection between the offices.
       </p>
@@ -59,29 +59,29 @@
       </p>
     </section>
 
-    <figure class="pbq-vpn-topology" aria-label="HQ1 and HQ2 connected over the internet">
+    <figure class="pbq-vpn-topology" aria-label="BCT_HQ1 and BCT_HQ2 connected over the internet">
       <div class="pbq-vpn-topology__site">
-        <div class="pbq-vpn-topology__hq">HQ 1</div>
-        <div class="pbq-vpn-topology__lan">192.168.10.0/24</div>
+        <div class="pbq-vpn-topology__hq">BCT_HQ1</div>
+        <div class="pbq-vpn-topology__lan">172.16.50.0/24</div>
         <div class="pbq-vpn-topology__gw">
           <span class="pbq-vpn-topology__gw-label">VPN Gateway</span>
-          <span class="pbq-vpn-topology__gw-ip">5.5.5.10</span>
+          <span class="pbq-vpn-topology__gw-ip">198.51.100.41</span>
         </div>
       </div>
       <div class="pbq-vpn-topology__cloud" aria-hidden="true">☁ Internet</div>
       <div class="pbq-vpn-topology__site">
-        <div class="pbq-vpn-topology__hq">HQ 2</div>
-        <div class="pbq-vpn-topology__lan">192.168.20.0/24</div>
+        <div class="pbq-vpn-topology__hq">BCT_HQ2</div>
+        <div class="pbq-vpn-topology__lan">172.16.60.0/24</div>
         <div class="pbq-vpn-topology__gw">
           <span class="pbq-vpn-topology__gw-label">VPN Gateway</span>
-          <span class="pbq-vpn-topology__gw-ip">5.5.5.20</span>
+          <span class="pbq-vpn-topology__gw-ip">198.51.100.52</span>
         </div>
       </div>
     </figure>
 
     <div class="pbq-vpn-gateways">
       <section class="panel pbq-vpn-gateway" aria-labelledby="vpn-hq1-heading">
-        <h2 id="site-to-site-vpn-config-vpn-hq1-heading">HQ 1 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 5.5.5.10</span></h2>
+        <h2 id="site-to-site-vpn-config-vpn-hq1-heading">BCT_HQ1 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.41</span></h2>
         <div class="pbq-vpn-phases">
           <div class="pbq-vpn-phase" data-phase-col="1">
             <h3 class="pbq-vpn-phase__title">Phase 1</h3>
@@ -169,7 +169,7 @@
       </section>
 
       <section class="panel pbq-vpn-gateway" aria-labelledby="vpn-hq2-heading">
-        <h2 id="site-to-site-vpn-config-vpn-hq2-heading">HQ 2 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 5.5.5.20</span></h2>
+        <h2 id="site-to-site-vpn-config-vpn-hq2-heading">BCT_HQ2 VPN Gateway <span class="pbq-vpn-gateway__meta">Public 198.51.100.52</span></h2>
         <div class="pbq-vpn-phases">
           <div class="pbq-vpn-phase" data-phase-col="1">
             <h3 class="pbq-vpn-phase__title">Phase 1</h3>
@@ -291,20 +291,20 @@
 (function () {
   var ANSWERS = {
     hq1: {
-      p1: { auth: "psk", encryption: "aes", hash: "sha256", "dh-group": "group14", "peer-ip": "5.5.5.20" },
+      p1: { auth: "psk", encryption: "aes", hash: "sha256", "dh-group": "group14", "peer-ip": "198.51.100.52" },
       p2: {
-        "local-subnet": "192.168.10.0/24",
-        "remote-subnet": "192.168.20.0/24",
+        "local-subnet": "172.16.50.0/24",
+        "remote-subnet": "172.16.60.0/24",
         protocol: "esp",
         encryption: "aes",
         hash: "sha256"
       }
     },
     hq2: {
-      p1: { auth: "psk", encryption: "aes", hash: "sha256", "dh-group": "group14", "peer-ip": "5.5.5.10" },
+      p1: { auth: "psk", encryption: "aes", hash: "sha256", "dh-group": "group14", "peer-ip": "198.51.100.41" },
       p2: {
-        "local-subnet": "192.168.20.0/24",
-        "remote-subnet": "192.168.10.0/24",
+        "local-subnet": "172.16.60.0/24",
+        "remote-subnet": "172.16.50.0/24",
         protocol: "esp",
         encryption: "aes",
         hash: "sha256"
@@ -312,7 +312,7 @@
     }
   };
   var PASS_MSG =
-    "Correct. Both gateways use PSK with AES, SHA-256, and DH Group 14 for IKE; ESP protects the mirrored 192.168.10.0/24 ↔ 192.168.20.0/24 traffic with peer public IPs 5.5.5.20 and 5.5.5.10.";
+    "Correct. Both gateways use PSK with AES, SHA-256, and DH Group 14 for IKE; ESP protects the mirrored 172.16.50.0/24 ↔ 172.16.60.0/24 traffic with peer public IPs 198.51.100.52 and 198.51.100.41.";
 
   var root = document.getElementById("site-to-site-vpn-config");
   if (!root) return;

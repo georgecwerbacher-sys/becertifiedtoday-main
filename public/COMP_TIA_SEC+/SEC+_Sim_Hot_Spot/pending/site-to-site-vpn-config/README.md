@@ -2,19 +2,19 @@
 
 **SY0-701 PBQ · dual-gateway IPsec configuration**
 
-Configure Phase 1 (IKE) and Phase 2 (IPsec) on both VPN gateways for HQ1 (`192.168.10.0/24`, public `5.5.5.10`) and HQ2 (`192.168.20.0/24`, public `5.5.5.20`).
+Configure Phase 1 (IKE) and Phase 2 (IPsec) on both VPN gateways for **BeCertifiedToday.com** BCT_HQ1 (`172.16.50.0/24`, public `198.51.100.41`) and BCT_HQ2 (`172.16.60.0/24`, public `198.51.100.52`).
 
 ## Answer key (both gateways)
 
-| Setting | HQ 1 | HQ 2 |
+| Setting | BCT_HQ1 | BCT_HQ2 |
 |---------|------|------|
 | **Phase 1 — Auth** | Pre-Shared Key | Pre-Shared Key |
 | **Phase 1 — Encryption** | AES | AES |
 | **Phase 1 — Hash** | SHA-256 | SHA-256 |
 | **Phase 1 — DH Group** | Group 14 | Group 14 |
-| **Phase 1 — Peer IP** | `5.5.5.20` | `5.5.5.10` |
-| **Phase 2 — Local subnet** | `192.168.10.0/24` | `192.168.20.0/24` |
-| **Phase 2 — Remote subnet** | `192.168.20.0/24` | `192.168.10.0/24` |
+| **Phase 1 — Peer IP** | `198.51.100.52` | `198.51.100.41` |
+| **Phase 2 — Local subnet** | `172.16.50.0/24` | `172.16.60.0/24` |
+| **Phase 2 — Remote subnet** | `172.16.60.0/24` | `172.16.50.0/24` |
 | **Phase 2 — Protocol** | ESP | ESP |
 | **Phase 2 — Encryption** | AES | AES |
 | **Phase 2 — Hash** | SHA-256 | SHA-256 |
