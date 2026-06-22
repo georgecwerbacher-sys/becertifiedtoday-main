@@ -2,7 +2,7 @@
 
 Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.cursor/rules/secplus-pbq-dragdrop-pages.mdc`.
 
-**Current tail of chain:** `governance` (`next: None` in `scripts/build-pbq-production-suite.py`).
+**Current tail of chain:** `cloud-waf-setup` (`next: None` in `scripts/build-pbq-production-suite.py`).
 
 ---
 
@@ -130,7 +130,7 @@ Create `{scenario-slug}/README.md` with:
     "title": "Display title",
     "body_class": "pbq-your-hook dragdrop-exercise",  # optional CSS hooks
     "description": "One-line meta description (page meta tag)",
-    "prev": "governance",  # current tail when appending
+    "prev": "cloud-waf-setup",  # current tail when appending
     "next": None,
     "sections": [
         {
@@ -144,8 +144,8 @@ Create `{scenario-slug}/README.md` with:
 
 **Chain wiring when appending:**
 
-1. Set **current tail** (`governance`) `"next"` → `"your-new-slug"`
-2. Set new entry `"prev"` → `"governance"`, `"next"` → `None`
+1. Set **current tail** (`cloud-waf-setup`) `"next"` → `"your-new-slug"`
+2. Set new entry `"prev"` → `"cloud-waf-setup"`, `"next"` → `None`
 
 ### 8. Rebuild
 

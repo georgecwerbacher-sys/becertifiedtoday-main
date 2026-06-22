@@ -19,7 +19,7 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT
 |--------|-------------|---------|
 | [`home-wlan-director-config/`](home-wlan-director-config/) | Director home router — WPA2, MAC filter, admin password | [Open](home-wlan-director-config/home-wlan-director-config.html) |
 | [`public-wlan-guest-config/`](public-wlan-guest-config/) | BCT lobby guest WLAN — open SSID, channel 11, admin username | [Open](public-wlan-guest-config/public-wlan-guest-config.html) |
-| [`cloud-waf-setup/`](cloud-waf-setup/) | Cloud WAF — HTTPS, OWASP Top 10, XSS block, verbose logging | [Open](cloud-waf-setup/cloud-waf-setup.html) |
+| [`cloud-waf-setup/`](cloud-waf-setup/) | *(shipped — see [production](../PBQ_Production/cloud-waf-setup/))* | [Production](../PBQ_Production/cloud-waf-setup/cloud-waf-setup.html) |
 | [`mdm-enrollment-config/`](mdm-enrollment-config/) | Acme MDM — iOS compliance, app restrictions, ADE | [Open](mdm-enrollment-config/mdm-enrollment-config.html) |
 | [`siem-alert-settings-config/`](siem-alert-settings-config/) | SIEM failed-login alert — sliding window, email notify | [Open](siem-alert-settings-config/siem-alert-settings-config.html) |
 | [`network-protocols-matching/`](network-protocols-matching/) | Match protocols to security functions (drag-and-drop) | [Open](network-protocols-matching/network-protocols-matching.html) |
@@ -31,7 +31,7 @@ Legacy `SEC+_Sim_Hot_Spot/simulation-*.html` URLs redirect here for the four BCT
 
 Pending chain: … → site-to-site VPN → malware log analysis → **web app subnet zoning**.
 
-Production PBQ chain (21 labs) ends at [`../PBQ_Production/governance/`](../PBQ_Production/governance/governance.html).
+Production PBQ chain (22 labs) ends at [`../PBQ_Production/cloud-waf-setup/`](../PBQ_Production/cloud-waf-setup/cloud-waf-setup.html).
 
 ## Reference only
 

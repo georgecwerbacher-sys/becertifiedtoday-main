@@ -6,7 +6,7 @@ Answer keys were verified against CompTIA-aligned objectives and primary sources
 
 **Adding a new scenario:** follow **[ADD-PBQ.md](ADD-PBQ.md)**.
 
-Only scenarios registered in `scripts/build-pbq-production-suite.py` live here (21 labs). Staged sims and PBQs not yet in the build chain are in [`../pending/`](../pending/).
+Only scenarios registered in `scripts/build-pbq-production-suite.py` live here (22 labs). Staged sims and PBQs not yet in the build chain are in [`../pending/`](../pending/).
 
 ## Entry points
 
@@ -43,6 +43,7 @@ Legacy `*-partN.html` URLs redirect to `{slug}/{slug}.html#section-id`.
 19. [Malware IOC Analysis](malware-ioc-analysis/malware-ioc-analysis.html)
 20. [Data Protection](data-protection/data-protection.html)
 21. [Governance](governance/governance.html)
+22. [Sec+ Cloud Web Application Firewall Setup](cloud-waf-setup/cloud-waf-setup.html)
 
 ## Section source files
 
@@ -77,6 +78,7 @@ npm run build:pbq-suite
 | [`malware-ioc-analysis/`](malware-ioc-analysis/) | Endpoint IOC console + malware classification MCQ |
 | [`data-protection/`](data-protection/) | Classification exhibit + PCI tokenization MCQ |
 | [`governance/`](governance/) | Frameworks, policies, breach notification MCQ |
+| [`cloud-waf-setup/`](cloud-waf-setup/) | Sample ticket + four-tab cloud WAF console |
 
 _WLAN router PBQs (home + public guest) live in [`../pending/`](../pending/) until registered in the build script._
 

@@ -5,9 +5,9 @@ scenario: cloud-waf-setup
 last_updated: 2026-06-22
 ---
 
-# Cloud WAF setup — ticket #983498
+# Cloud WAF setup — ticket #bct2026
 
-Security engineer configures a cloud WAF for `example.com`. Four-tab UI matches common SY0-701 cloud WAF configuration PBQs.
+Security engineer configures a cloud WAF for `BeCertifiedToday.com`. Four-tab UI matches common SY0-701 cloud WAF configuration PBQs.
 
 ## SY0-701 mapping
 

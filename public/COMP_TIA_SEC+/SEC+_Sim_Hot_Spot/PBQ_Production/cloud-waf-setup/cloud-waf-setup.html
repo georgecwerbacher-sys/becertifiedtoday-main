@@ -1,12 +1,50 @@
-<meta name="robots" content="noindex, nofollow" />
-<article class="pbq-section-fragment" data-id="cloud-waf-setup">
-  <div class="sim-frame pbq-home-router-sim pbq-waf-sim">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: Configure a cloud WAF from ticket #bct2026: HTTPS policy for BeCertifiedToday.com, OWASP Top 10 baseline, custom XSS block rule, and verbose logging." />
+  <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cloud-waf-setup/cloud-waf-setup.html" />
+  <title>Security+ Simulation: Sec+ Cloud Web Application Firewall Setup | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-deep-dive.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-page.css" />
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.css" />
+</head>
+<body class="secplus-question-ui secplus-sim-page secplus-pbq-ui pbq-bct-sim pbq-folder-suite pbq-home-router pbq-waf-config">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-portal-chrome.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell question-shell--suite">
+    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ practice portal">
+      <img src="/images/logo/becertifiedtoday_logo_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="pbq-card pbq-card--suite">
+      <header class="pbq-suite-header">
+        <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
+        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.2 · 3.4 · 4.5</p>
+        <h1>Simulation: Sec+ Cloud Web Application Firewall Setup</h1>
+        <p class="lead pbq-sub">Configure a cloud WAF from ticket #bct2026: HTTPS policy for BeCertifiedToday.com, OWASP Top 10 baseline, custom XSS block rule, and verbose logging.</p>
+        <p class="instructions pbq-instructions">
+          Review sample ticket <strong>#bct2026</strong> — work through each task note on the four WAF tabs.
+        </p>
+      </header>
+
+      <div class="pbq-suite-layout pbq-suite-layout--single">
+        
+        <div class="pbq-suite-main" id="pbqSuiteMain">
+          <article class="pbq-suite-section" id="cloud-waf-setup" data-scenario="cloud-waf-setup" hidden><div class="pbq-suite-section__inner"><div class="sim-frame pbq-home-router-sim pbq-waf-sim">
     <div class="layout layout--two-col pbq-home-router-layout">
       <section class="panel pbq-home-router-reqs pbq-sample-ticket" aria-labelledby="cloud-waf-reqs-heading">
         <header class="pbq-sample-ticket__header">
           <div class="pbq-sample-ticket__title-row">
             <span class="pbq-sample-ticket__badge">Sample ticket</span>
-            <h2 id="cloud-waf-reqs-heading" class="pbq-sample-ticket__id">#bct2026</h2>
+            <h2 id="cloud-waf-setup-cloud-waf-reqs-heading" class="pbq-sample-ticket__id">#bct2026</h2>
             <span class="pbq-sample-ticket__status pbq-sample-ticket__status--open">Open</span>
           </div>
           <dl class="pbq-sample-ticket__meta">
@@ -87,7 +125,7 @@
       </section>
 
       <section class="panel pbq-home-router-console" aria-labelledby="cloud-waf-console-heading">
-        <h2 id="cloud-waf-console-heading" class="visually-hidden">WAF configuration</h2>
+        <h2 id="cloud-waf-setup-cloud-waf-console-heading" class="visually-hidden">WAF configuration</h2>
         <div class="pbq-home-router-console-wrap">
           <div class="pbq-home-router-tabs pbq-waf-tabs" role="tablist" aria-label="WAF settings">
             <button type="button" class="pbq-home-router-tab pbq-home-router-tab--active" role="tab" aria-selected="true" data-tab="general">General Settings</button>
@@ -101,11 +139,11 @@
               <p class="pbq-home-router-pane__title">General Settings</p>
               <div class="pbq-home-router-field">
                 <label for="wafDomain">Domain Name</label>
-                <input class="pbq-home-router-input" id="wafDomain" data-field="domain" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="cloud-waf-setup-wafDomain" data-field="domain" type="text" autocomplete="off" />
               </div>
               <div class="pbq-home-router-field">
                 <label for="wafProtocol">Protocol</label>
-                <select class="pbq-home-router-select" id="wafProtocol" data-field="protocol">
+                <select class="pbq-home-router-select" id="cloud-waf-setup-wafProtocol" data-field="protocol">
                   <option value="">- Choose Option -</option>
                   <option value="http">HTTP</option>
                   <option value="https">HTTPS</option>
@@ -113,7 +151,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wafPolicyName">WAF Policy Name</label>
-                <input class="pbq-home-router-input" id="wafPolicyName" data-field="policy-name" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="cloud-waf-setup-wafPolicyName" data-field="policy-name" type="text" autocomplete="off" />
               </div>
             </div>
 
@@ -121,7 +159,7 @@
               <p class="pbq-home-router-pane__title">Security Rules</p>
               <div class="pbq-home-router-field">
                 <label for="wafBaseline">Baseline Rule Set</label>
-                <select class="pbq-home-router-select" id="wafBaseline" data-field="baseline">
+                <select class="pbq-home-router-select" id="cloud-waf-setup-wafBaseline" data-field="baseline">
                   <option value="">-- Choose Option --</option>
                   <option value="common-threats">Common Threats</option>
                   <option value="owasp-top-10">OWASP Top 10</option>
@@ -134,11 +172,11 @@
               <p class="pbq-home-router-pane__title">Custom Rule</p>
               <div class="pbq-home-router-field">
                 <label for="wafRuleName">Rule Name</label>
-                <input class="pbq-home-router-input" id="wafRuleName" data-field="rule-name" type="text" autocomplete="off" />
+                <input class="pbq-home-router-input" id="cloud-waf-setup-wafRuleName" data-field="rule-name" type="text" autocomplete="off" />
               </div>
               <div class="pbq-home-router-field">
                 <label for="wafMatch">Match Condition</label>
-                <select class="pbq-home-router-select" id="wafMatch" data-field="match">
+                <select class="pbq-home-router-select" id="cloud-waf-setup-wafMatch" data-field="match">
                   <option value="">- Choose Option -</option>
                   <option value="sql-injection">SQL Injection</option>
                   <option value="xss">XSS</option>
@@ -147,7 +185,7 @@
               </div>
               <div class="pbq-home-router-field">
                 <label for="wafAction">Action</label>
-                <select class="pbq-home-router-select" id="wafAction" data-field="action">
+                <select class="pbq-home-router-select" id="cloud-waf-setup-wafAction" data-field="action">
                   <option value="">- Choose Option -</option>
                   <option value="allow">Allow</option>
                   <option value="block">Block</option>
@@ -159,7 +197,7 @@
               <p class="pbq-home-router-pane__title">Logging &amp; Monitoring</p>
               <div class="pbq-home-router-field">
                 <label for="wafLogging">Logging Level</label>
-                <select class="pbq-home-router-select" id="wafLogging" data-field="logging">
+                <select class="pbq-home-router-select" id="cloud-waf-setup-wafLogging" data-field="logging">
                   <option value="">-- Choose Option --</option>
                   <option value="off">Off</option>
                   <option value="minimal">Minimal</option>
@@ -174,12 +212,32 @@
   </div>
 
   <div class="actions">
-    <button id="checkBtn" type="button">Check Answer</button>
-    <button id="resetBtn" type="button">Reset</button>
-    <button id="showBtn" type="button">Show Answer</button>
-    <span id="result" role="status" aria-live="polite"></span>
+    <button id="cloud-waf-setup-checkBtn" type="button">Check Answer</button>
+    <button id="cloud-waf-setup-resetBtn" type="button">Reset</button>
+    <button id="cloud-waf-setup-showBtn" type="button">Show Answer</button>
+    <span id="cloud-waf-setup-result" role="status" aria-live="polite"></span>
+  </div></div></article>
+        </div>
+      </div>
+
+      <div class="pbq-suite-footer">
+        <div class="pbq-suite-footer__deep-dive">
+          <button type="button" class="deep-dive-btn" id="pbqDeepDiveBtn" data-deep-dive-key="cloud-waf-setup.html">Deep dive explanation</button>
+        </div>
+      <nav class="question-nav question-nav--footer" aria-label="Question navigation (footer)">
+        <div class="question-nav-links">
+          <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/governance/governance.html">Back</a>
+          <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+          <span class="nav-link nav-next nav-link--disabled" aria-hidden="true">Next</span>
+        </div>
+      </nav>
+      </div>
+    </main>
   </div>
-</article>
+
+  <script src="/COMP_TIA_SEC+/js/pbq-folder-suite.js"></script>
+  <script>window.PBQ_SUITE_DEFAULT_SECTION = "cloud-waf-setup"; window.PBQ_DEEP_DIVE_KEY = "cloud-waf-setup.html";</script>
+  <!-- cloud-waf-setup -->
 <script>
 (function () {
   var CORRECT_DOMAIN = "BeCertifiedToday.com";
@@ -325,3 +383,8 @@
   });
 })();
 </script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-deep-dive-modal.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-pbq-deep-dive.js"></script>
+</body>
+</html>

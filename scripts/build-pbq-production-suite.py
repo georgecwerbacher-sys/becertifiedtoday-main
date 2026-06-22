@@ -364,12 +364,29 @@ SCENARIOS = [
         "suite_instructions": "Review the <strong>governance exhibit</strong>, then answer the breach notification question.",
         "description": "As the new CISO at BeCertifiedToday, align policy, vendor risk, and breach notification with frameworks and regulations. A breach exposes EU personal data and payment cards; identify which notification obligations apply.",
         "prev": "data-protection",
-        "next": None,
+        "next": "cloud-waf-setup",
         "sections": [
             {
                 "id": "governance",
                 "label": "Governance exhibit",
                 "path": "governance/sections/governance.html",
+            },
+        ],
+    },
+    {
+        "slug": "cloud-waf-setup",
+        "title": "Sec+ Cloud Web Application Firewall Setup",
+        "body_class": "pbq-home-router pbq-waf-config",
+        "objectives": "3.2 · 3.4 · 4.5",
+        "suite_instructions": "Review sample ticket <strong>#bct2026</strong> — work through each task note on the four WAF tabs.",
+        "description": "Configure a cloud WAF from ticket #bct2026: HTTPS policy for BeCertifiedToday.com, OWASP Top 10 baseline, custom XSS block rule, and verbose logging.",
+        "prev": "governance",
+        "next": None,
+        "sections": [
+            {
+                "id": "cloud-waf-setup",
+                "label": "WAF console",
+                "path": "cloud-waf-setup/sections/cloud-waf-setup.html",
             },
         ],
     },

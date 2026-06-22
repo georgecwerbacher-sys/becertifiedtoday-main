@@ -3831,27 +3831,201 @@ body.secplus-pbq-ui.pbq-home-router .pbq-home-router-input--mono {
   font-size: 0.86rem;
 }
 
+body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tabs {
+  gap: 0;
+  background: #1e3a5f;
+}
+
 body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tab {
-  background: #e8ebf5;
-  color: #334155;
+  background: #1e3a5f;
+  color: #fff;
+  border-radius: 0;
 }
 
 body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tab--active {
-  background: #4a5568;
+  background: #2563eb;
   color: #fff;
 }
 
-body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tab:hover {
-  filter: brightness(0.98);
+body.secplus-pbq-ui.pbq-bct-sim.pbq-home-router .pbq-home-router-tab:hover:not(.pbq-home-router-tab--active) {
+  background: #274d78;
+  filter: none;
 }
 
 /* Cloud WAF — four-tab console (logging tab wraps to second row) */
 body.secplus-pbq-ui.pbq-waf-config .pbq-waf-tabs .pbq-home-router-tab {
-  flex: 0 0 calc(33.333% - 4px);
+  flex: 0 0 33.333%;
 }
 
 body.secplus-pbq-ui.pbq-waf-config .pbq-waf-tab--logging {
-  margin-top: 2px;
+  margin-top: 0;
+}
+
+/* Sample ITSM ticket panel (WAF, SIEM, etc.) */
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket {
+  padding: 0;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__header {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, #fff 0%, #f1f5f9 100%);
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-bottom: 12px;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1e40af;
+  background: #dbeafe;
+  border: 1px solid #93c5fd;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__id {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__status {
+  margin-left: auto;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__status--open {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #86efac;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__meta {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+@media (min-width: 520px) {
+  body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__meta-item {
+  margin: 0;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__meta-item dt {
+  margin: 0 0 2px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__meta-item dd {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: #0f172a;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__summary {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #334155;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__note {
+  padding: 12px 16px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__note:last-child {
+  border-bottom: none;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__note-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-bottom: 6px;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__author {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__time {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__task-label {
+  margin: 0 0 6px;
+  padding-left: 10px;
+  border-left: 3px solid #2563eb;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e40af;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__task-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__task-list li + li {
+  margin-top: 4px;
+}
+
+body.secplus-pbq-ui.pbq-waf-config .pbq-sample-ticket__footer {
+  margin: 0;
+  padding: 10px 16px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #64748b;
+  background: #f1f5f9;
+  border-top: 1px solid #e2e8f0;
 }
 
 body.secplus-pbq-ui.pbq-waf-config .pbq-waf-ticket__section {

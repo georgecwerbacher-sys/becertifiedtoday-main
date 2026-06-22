@@ -287,6 +287,21 @@
 
 ---
 
+## 22. Sec+ Cloud Web Application Firewall Setup (`cloud-waf-setup/`)
+
+| Tab / field | Key | Verdict | Primary sources |
+|-------------|-----|---------|-----------------|
+| Domain | `BeCertifiedToday.com` | **Pass** | WAF scope = protected hostname |
+| Protocol | HTTPS | **Pass** | Encrypt web traffic at the edge |
+| Policy name | `ProductionPolicy` | **Pass** | Ticket naming |
+| Baseline | OWASP Top 10 | **Pass** | OWASP Top 10 web application risks |
+| Custom rule | `CrossSiteScripting` / XSS / Block | **Pass** | Block reflected/stored XSS |
+| Logging | Verbose | **Pass** | Detailed WAF logs during rollout validation |
+
+**CompTIA SY0-701 fit:** **3.2** secure web gateways / WAF; **3.4** secure baselines; **4.5** monitoring and logging.
+
+---
+
 ## References (quick list)
 
 | Topic | Reference |

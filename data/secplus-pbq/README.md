@@ -37,8 +37,9 @@ Study and authoring notes for each scenario under `public/COMP_TIA_SEC+/SEC+_Sim
 | 19 | `malware-ioc-analysis` | [Malware IOCs](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/malware-ioc-analysis/malware-ioc-analysis.html) | [[malware-ioc-analysis/notes|Malware IOC]] |
 | 20 | `data-protection` | [Data protection](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/data-protection/data-protection.html) | [[data-protection/notes|Data protection]] |
 | 21 | `governance` | [Governance](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/governance/governance.html) | [[governance/notes|Governance]] |
+| 22 | `cloud-waf-setup` | [Cloud WAF](https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production/cloud-waf-setup/cloud-waf-setup.html) | [[cloud-waf-setup/notes|Cloud WAF]] |
 
-**Pending (not in build):** BCT sims `dark-web-account-protection`, `malware-outbreak-classification`, `secure-web-architecture-openssl`, `vpc-payment-architecture`; configuration PBQs `home-wlan-director-config`, `public-wlan-guest-config`, `cloud-waf-setup`, `mdm-enrollment-config`, `siem-alert-settings-config`, `network-protocols-matching`, `incident-response-matching`, `cryptographic-algorithms-matching`, `site-to-site-vpn-config`, `malware-infection-log-analysis`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
+**Pending (not in build):** BCT sims `dark-web-account-protection`, `malware-outbreak-classification`, `secure-web-architecture-openssl`, `vpc-payment-architecture`; configuration PBQs `home-wlan-director-config`, `public-wlan-guest-config`, `mdm-enrollment-config`, `siem-alert-settings-config`, `network-protocols-matching`, `incident-response-matching`, `cryptographic-algorithms-matching`, `site-to-site-vpn-config`, `malware-infection-log-analysis`, `web-app-subnet-zoning` → `public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/pending/`
 
 Each scenario folder contains:
 

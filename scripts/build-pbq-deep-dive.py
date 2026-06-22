@@ -23,9 +23,12 @@ from pbq_deep_dive_md import write_deep_dive_js  # noqa: E402
 
 OUT = ROOT / "public/COMP_TIA_SEC+/js/secplus-pbq-deep-dive-data.js"
 
+# Pending PBQs with vault deep-dive-solution.md (not yet in PBQ_Production build chain)
+PENDING_PBq_SLUGS: list[str] = []
+
 
 def main() -> None:
-    slugs = [sc["slug"] for sc in SCENARIOS]
+    slugs = [sc["slug"] for sc in SCENARIOS] + PENDING_PBq_SLUGS
     count = write_deep_dive_js(slugs, OUT)
     print(f"wrote {OUT.relative_to(ROOT)} ({count} scenarios)")
 
