@@ -45,7 +45,7 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 **Final URL:**
 
 ```
-https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
+https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 ```
 
 RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]] · Keywords: [[Sec+ Keywords#Ad group — Security+ PBQ Practice]]
@@ -69,10 +69,10 @@ RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]] · Keywords: [[Sec+ Keywo
 ## Pre-launch checks
 
 - [ ] Stripe `secplus-portal-10d` ($9.99) and `secplus-portal-30d` ($19.99) live
-- [ ] Checkout works on PBQ landing (desktop + mobile)
+- [ ] Checkout works on cert home (desktop + mobile)
 - [ ] GA4 `begin_checkout` fires for both item IDs
-- [ ] `secplus-home-conversion.js` — test `?utm_content=pbq-wedge` on PBQ landing
-- [ ] PBQ landing loads: `/secplus/pbq-practice-browser.html`
+- [ ] `secplus-home-conversion.js` — test `?utm_content=pbq-wedge` on cert home
+- [ ] Cert home loads: `/comptia-sec+-home.html`
 - [ ] Keyword Planner worksheet filled — [[Sec+ Keywords#Keyword Planner worksheet]]
 
 ---

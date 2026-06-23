@@ -19,7 +19,7 @@ Paste at **campaign** level. Link text ≤25 chars · each description ≤35 cha
 
 Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
 
-**Primary landing:** `/comptia-sec+-home.html` — all Google Ads traffic (final URL + sitelinks). `/secplus/pbq-practice-browser.html` is organic/SEO only; paid clicks redirect to home.
+**Primary landing:** `/comptia-sec+-home.html` — all Google Ads traffic (final URL + sitelinks). `/secplus/pbq-practice-browser.html` is organic/SEO only.
 
 ---
 
@@ -89,7 +89,7 @@ URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_m
 
 ## Geo
 
-Same Tier A/B country lists as CCNA portal setup (`scripts/ccna-portal-10d-google-ads.md`). Federal/defense US metros are especially relevant for Security+ (DoD 8570/8140). **$20/day** on PBQ wedge keywords.
+Same Tier A/B country lists as prior portal setup. Federal/defense US metros are especially relevant for Security+ (DoD 8570/8140). **$20/day** on PBQ wedge keywords.
 
 **Location option:** Presence — people in or regularly in targeted locations.
 

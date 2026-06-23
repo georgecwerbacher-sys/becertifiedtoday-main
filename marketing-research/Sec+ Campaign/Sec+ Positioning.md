@@ -124,6 +124,5 @@ See full lists: [[Sec+ Keywords]]
 ## Related
 
 - [[Sec+ Notes]] — Google Ads setup
-- [[Sec+ Reddit Notes]] — Reddit Ads setup
 - [[Sec+ RSA Copy]] — headlines tied to this voice
 - [[README]] — campaign folder home

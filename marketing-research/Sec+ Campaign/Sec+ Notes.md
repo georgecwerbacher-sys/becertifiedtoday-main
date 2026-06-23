@@ -30,7 +30,7 @@ Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 ## Before you open Google Ads
 
 - [ ] Stripe $9.99 / $19.99 products live
-- [ ] Checkout on PBQ landing (desktop + phone)
+- [ ] Checkout on cert home (desktop + phone)
 - [ ] MCQ + dark web PBQ samples reachable from landing
 - [ ] GA4 `begin_checkout` imported as Primary
 - [ ] Keyword Planner worksheet — [[Sec+ Keywords#Keyword Planner worksheet]]
@@ -77,9 +77,9 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 - [ ] One ad group enabled: **`Security+ PBQ Practice`**
 - [ ] 6 sitelinks pasted — checklist **Extensions** rows or [[Extensions]]
-- [ ] Final URL opens PBQ landing with correct UTMs
+- [ ] Final URL opens cert home with correct UTMs
 - [ ] GA4 `begin_checkout` on test purchase click
-- [ ] Mobile checkout on PBQ landing
+- [ ] Mobile checkout on cert home
 
 ---
 

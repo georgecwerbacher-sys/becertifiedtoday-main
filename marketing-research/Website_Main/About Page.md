@@ -125,5 +125,4 @@ Interactive certification prep in your browser—timed simulation, adaptive revi
 
 - Source voice: [[../Sec+ Campaign/Sec+ Positioning#Canonical reference (future use)|Sec+ Positioning — canonical reference]]
 - Campaign setup (not public): [[../Sec+ Campaign/Sec+ Notes|Sec+ Notes]]
-- Strategy: [[../Wedge Marketing plan/secplus-wedge-campaign/00-why-marketing-changed|Why SEC+ marketing changed]]
-- [[../Site Mission|Site Mission]] · [[../Marketing Research|Marketing Research]]
+- [[../Sec+ Campaign/README|Sec+ Campaign]] · [[../Site Mission|Site Mission]] · [[../Marketing Research|Marketing Research]]

@@ -7,11 +7,11 @@ tags:
 
 # Tools
 
-Operational helpers for Google Ads campaigns — same **AdWords checklist** pattern as CCNA (`scripts/ccna-google-ads-campaign-checklist.csv`).
+Operational helpers for the live **Security+ Google Ads** campaign.
 
 | Tool | Use |
 |------|-----|
-| [[Sec+ Campaign Keywords\|Sec+ Campaign Keywords]] | Security+ — ranked keywords in Numbers checklist |
+| [[Sec+ Campaign Keywords\|Sec+ Campaign Keywords]] | Ranked keywords in Numbers checklist |
 
 **Primary file:** [[../Sec+ Campaign/secplus-campaign-checklist.csv|secplus-campaign-checklist.csv]]  
 **Open in Numbers:** filter `Section` = Setup · `Phase` = Ad group → paste keywords row by row into Google Ads.

@@ -7,72 +7,15 @@ tags:
 
 # Campaigns
 
-Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan|Wedge Marketing plan]] · `server-lib/campaign-marketing-registry.js`
+Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 
-## Active: initial 7-day AdWords test
+## Active: Security+ Google Search · 21-day test
 
-**Window:** 2026-06-14 → 2026-06-21 · **Review:** 2026-06-22
-
-| Campaign | Budget | Live ad groups | Goal |
-|----------|--------|----------------|------|
-| [[campaigns/CCNA Campaign|CCNA]] | $25/day | **`ccna_portal_10v1` only** (browser_labs next) | Baseline CTR, CPC, checkout rate |
-| [[campaigns/ENCOR Campaign|ENCOR]] | $10/day | `encor_portal` | Baseline CTR, CPC, checkout rate |
-
-**During the test:** collect data only — no budget increases, no new countries, no bidding changes. **`ccna_browser_labs` stays paused** until portal_10v1 baseline is reviewed. Add campaign negatives only for obvious junk search terms.
-
-**Day 7 review:** compare ad groups, note top search terms, decide scale / pause / optimize before week 2.
-
-**Wedge pivot:** If head-term CPC is untenable, launch [[campaigns/CCNA Wedge Lab Campaign|CCNA_Wedge_Lab]] — follow [[Wedge Marketing plan/02-keywords-and-google-ads|Keywords & Google Ads]] and [[Wedge Marketing plan/06-30-day-action-plan|30-day action plan]]. Rationale: [[Wedge Marketing plan/00-why-ccna-marketing-changed|Why CCNA marketing changed]].
-
-## CCNA_Wedge_Lab (ready to build)
-
-**Primary doc:** [[campaigns/CCNA Wedge Lab Campaign|CCNA Wedge Lab Campaign]] — dedicated wedge Search campaign, **$15/day** launch
-
-| Item | Link |
-|------|------|
-| Setup checklist (CSV) | `scripts/ccna-wedge-lab-google-ads-checklist.csv` |
-| Checklist guide | `scripts/ccna-wedge-lab-google-ads-README.txt` |
-| Setup guide | `scripts/ccna-wedge-lab-google-ads.md` |
-| Landing | https://becertifiedtoday.com/ccna/labs-without-gns3.html |
-
-| Ad group | Budget | Focus |
-|----------|--------|-------|
-| **`CCNA_Wedge_Lab`** | $15/day | Browser CLI labs · no GNS3 · wedge landing |
-
-**Before enable:** pause `ccna_browser_labs` in the combined CCNA campaign.
-
-## CCNA 200-301 (combined)
-
-**Primary doc:** [[campaigns/CCNA Campaign|CCNA Campaign]] — one campaign, two ad groups, **$25/day**
-
-| Item | Link |
-|------|------|
-| **Obsidian build steps** | [[campaigns/CCNA campaign build steps|CCNA campaign build steps]] |
-| Setup checklist (CSV) | `scripts/ccna-google-ads-campaign-checklist.csv` |
-| Checklist guide | `scripts/ccna-google-ads-campaign-checklist-README.txt` |
-| Extended reference | [[campaigns/ccna-portal-10d|locations · products · metros]] |
-
-| Ad group | Budget | Focus |
-|----------|--------|-------|
-| `ccna_portal_10v1` | ~$17/day | Practice tests, mock exams, question bank |
-| `ccna_browser_labs` | ~$8/day | Browser CLI labs, no GNS3/Packet Tracer |
-
-## ENCOR 350-401
-
-**Primary doc:** [[campaigns/ENCOR Campaign|ENCOR Campaign]] — one campaign, one ad group, **$10/day**
-
-| Item | Link |
-|------|------|
-| Setup doc (markdown) | [[campaigns/encor-portal|encor-portal-10d-google-ads.md]] |
-| Setup doc (plain text) | [[campaigns/encor-portal.txt|encor-portal-10d-google-ads.txt]] |
-
-| Ad group | Budget | Focus |
-|----------|--------|-------|
-| `encor_portal` | $10/day | 30-day $19.99 portal · `utm_content=portal-30d` |
-
-**Do not** use `utm_content=portal-10d` — $9.99 / 10-day is an on-page popup only.
-
-## Security+ SY0-701 · Exam prep · becertifiedtoday
+**Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
+**Ad group:** **`Security+ PBQ Practice`** (only)  
+**Budget:** **$20.00/day** · max CPC **$2.75**  
+**Landing:** `/comptia-sec+-home.html`  
+**utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
 
 **Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]] — all setup copy in one folder
 
@@ -82,25 +25,21 @@ Source of truth: [[Site Mission]] · [[Wedge Marketing plan/Wedge Marketing plan
 | Campaign shell | [[Sec+ Campaign/Security+ Campaign\|Campaign shell]] |
 | Keywords | [[Sec+ Campaign/Sec+ Keywords\|Sec+ Keywords]] · [[Sec+ Campaign/secplus-keywords.csv\|keywords CSV]] |
 | RSA copy | [[Sec+ Campaign/Sec+ RSA Copy\|Sec+ RSA Copy]] |
+| Extensions | [[Sec+ Campaign/Extensions\|Extensions]] |
 | Checklist CSV | [[Sec+ Campaign/secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] |
-| Landing | https://becertifiedtoday.com/secplus/pbq-practice-browser.html |
+| Landing | https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge |
 
-| Setting | Value |
-|---------|--------|
-| **Ad group** | **`Security+ PBQ Practice`** (only) |
-| **Budget** | **$20/day** |
-| **Max CPC** | **$2.75** |
-| **utm_campaign** | `secplus_portal` · **utm_content** `pbq-wedge` |
+**During the test:** collect data for 21 days — track sessions, `begin_checkout`, and Stripe Sec+ purchases in [/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns). Add campaign negatives only for obvious junk search terms.
 
-**Before enable:** Keyword Planner sign-off on [[Sec+ Campaign/Sec+ Keywords|Sec+ Keywords]].
+**Before changes:** compare search terms, CPA, and checkout rate at day 21 before scaling budget or bids.
 
-## Landing pages
+## Landing page
 
-- CCNA → `/ccna-home.html` · wedge → `/ccna-home.html` (exam-ready UTMs; sitelinks stay on home)
-- ENCOR → `/ccnp-home.html#purchase`
-- Security+ → `/comptia-sec+-home.html#purchase` · wedge → `/secplus/pbq-practice-browser.html`
+- **Paid traffic:** `/comptia-sec+-home.html` (final URL + sitelinks)
+- **Organic only:** `/secplus/pbq-practice-browser.html` (not used in ads)
 
 ## Related
 
 - Guest page copy sync: `scripts/sync-guest-page-marketing.py`
 - Purchase conversion tag: `public/js/google-ads-purchase-conversion.js`
+- Admin projection: `server-lib/campaign-marketing-report.js`

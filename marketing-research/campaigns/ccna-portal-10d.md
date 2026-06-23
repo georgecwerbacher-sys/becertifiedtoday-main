@@ -1,1 +1,0 @@
-../../scripts/ccna-portal-10d-google-ads.md
