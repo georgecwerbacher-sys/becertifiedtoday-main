@@ -26,7 +26,7 @@ Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
 **Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `$9.99 · 10-Day Access`
 
-**Final URL:** `https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge`
+**Final URL:** `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge`
 
 ### Pin headlines
 

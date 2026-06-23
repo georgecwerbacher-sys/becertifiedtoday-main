@@ -470,7 +470,7 @@
       <div class="panel" id="section-cert-homes">
         <h2 style="margin:0 0 6px;font-size:1.05rem">Certification home pages</h2>
         <p class="section-note" style="margin-top:0">
-          Landing traffic for exam home pages and the Security+ PBQ ad landing in the selected date range (UTC).
+          Landing traffic for exam home pages in the selected date range (UTC).
           Sample and email-popup metrics come from site logs; popup shown/click/dismiss from GA4 after this deploy.
         </p>
         <div class="cards" id="certHomeSummaryCards"></div>
@@ -877,21 +877,6 @@
             var spendProj = Number(p.estimatedSpendProjectionUsd || 0);
             var cpaActual = purchases > 0 ? spendInRange / purchases : null;
             var cpaProj = projPurchases > 0 ? spendProj / projPurchases : null;
-            var relatedLine = "";
-            if (m.relatedLanding && m.relatedLanding.length) {
-              relatedLine = m.relatedLanding
-                .map(function (rl) {
-                  return (
-                    rl.path +
-                    ": " +
-                    fmt(rl.pageViews) +
-                    " views · " +
-                    fmt(rl.beginCheckout) +
-                    " checkout"
-                  );
-                })
-                .join(" · ");
-            }
 
             return (
               '<article class="campaign-card" data-campaign-id="' +
@@ -927,11 +912,6 @@
                 })
                 .join("") +
               "</div>" +
-              (relatedLine
-                ? '<p class="campaign-meta" style="margin-top:10px">Also: ' +
-                  relatedLine +
-                  "</p>"
-                : "") +
               '<div class="campaign-projection"><h4>' +
               projDays +
               "-day budget projection</h4>" +
@@ -959,15 +939,7 @@
                 })
                 .join("") +
               "</div></div>" +
-              '<p class="campaign-url" id="campaign-url-' +
-              i +
-              '">' +
-              (c.finalUrl || "").replace(/</g, "&lt;") +
-              "</p>" +
               '<div class="campaign-actions">' +
-              '<button type="button" class="primary" data-copy-campaign-url="' +
-              i +
-              '">Copy destination URL</button>' +
               (c.adsDashboardUrl
                 ? '<a class="btn-inline" href="' +
                   c.adsDashboardUrl +
@@ -980,21 +952,6 @@
             );
           })
           .join("");
-
-        grid.querySelectorAll("[data-copy-campaign-url]").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            var idx = parseInt(btn.getAttribute("data-copy-campaign-url") || "0", 10);
-            var url = campaigns[idx] && campaigns[idx].finalUrl;
-            if (!url) return;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-              navigator.clipboard.writeText(url);
-            }
-            if (statusEl) {
-              statusEl.textContent = "Copied destination URL for " + (campaigns[idx].label || "campaign") + ".";
-              statusEl.className = "status ok";
-            }
-          });
-        });
 
         if (statusEl) {
           statusEl.textContent =

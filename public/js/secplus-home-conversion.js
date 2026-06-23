@@ -13,7 +13,6 @@
   var SAMPLES_SECTION = "#home-secplus-samples-title";
   var SAMPLE_QUESTIONS = "/secplus-sample?track=questions";
   var SAMPLE_PBQ = "/secplus-sample?track=sim-dark-web";
-  var WEDGE_LANDING = "/secplus/pbq-practice-browser.html";
 
   var WEDGE_LEAD =
     "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +

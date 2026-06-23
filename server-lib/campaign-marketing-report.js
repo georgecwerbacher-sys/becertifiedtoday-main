@@ -31,11 +31,7 @@ function indexByCampaign(rows) {
  */
 export async function buildCampaignMarketingReport(client, propertyId, range, rangePreset = "7d") {
   const registry = getAdminTrackedCampaignRegistry();
-  const landingPaths = [
-    ...new Set(
-      registry.flatMap((c) => [c.landingPath, ...(c.relatedLandingPaths || [])].filter(Boolean))
-    ),
-  ];
+  const landingPaths = [...new Set(registry.map((c) => c.landingPath))];
   const rangeDays = rangeDaysFromPreset(rangePreset);
 
   const [
@@ -96,13 +92,6 @@ export async function buildCampaignMarketingReport(client, propertyId, range, ra
     const scaleToProjection =
       rangeDays > 0 && projectionDays !== rangeDays ? projectionDays / rangeDays : 1;
 
-    const relatedLanding = (def.relatedLandingPaths || []).map((path) => ({
-      path,
-      pageViews: Number(landingMap[path]?.screenPageViews || 0),
-      users: Number(landingMap[path]?.activeUsers || 0),
-      beginCheckout: Number(checkoutEventsByPath[path] || 0),
-    }));
-
     return {
       ...def,
       platformCampaignName:
@@ -118,7 +107,6 @@ export async function buildCampaignMarketingReport(client, propertyId, range, ra
         landingPageUsers: Number(landing.activeUsers || 0),
         landingBeginCheckout: Number(checkoutEventsByPath[def.landingPath] || 0),
         checkoutRate: paidSessions > 0 ? beginCheckout / paidSessions : null,
-        relatedLanding,
       },
       projection: {
         rangeDays,

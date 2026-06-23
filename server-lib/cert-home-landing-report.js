@@ -34,12 +34,6 @@ export const CERT_HOME_PAGES = [
     label: "Security+ home",
     previewUrl: "https://becertifiedtoday.com/comptia-sec+-home.html",
   },
-  {
-    path: "/secplus/pbq-practice-browser.html",
-    product: "secplus",
-    label: "Security+ PBQ landing (Google Ads)",
-    previewUrl: "https://becertifiedtoday.com/secplus/pbq-practice-browser.html",
-  },
 ];
 
 const TRACKED_GA4_EVENTS = [
@@ -176,7 +170,7 @@ export async function buildCertHomeLandingReport(
     pages,
     totals,
     note:
-      "GA4: page views and time on page for ccna-home, ccnp-home, comptia-sec+-home, and secplus PBQ landing. " +
+      "GA4: page views and time on page for ccna-home, ccnp-home, and comptia-sec+-home. " +
       "Landing sessions = visits that started on that URL. Sample/popup email metrics come from home-sample CSV logs. " +
       "10-day offer popup events (shown/click/dismiss) require this deploy — older visits won't include them.",
   };

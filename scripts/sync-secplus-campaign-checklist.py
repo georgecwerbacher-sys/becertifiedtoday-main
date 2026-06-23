@@ -17,7 +17,7 @@ README_TXT = ROOT / "marketing-research/Sec+ Campaign/secplus-campaign-checklist
 
 AD_GROUP = "Security+ PBQ Practice"
 UTM = "utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal"
-PBQ_LANDING = f"https://becertifiedtoday.com/secplus/pbq-practice-browser.html?{UTM}"
+HOME_LANDING = f"https://becertifiedtoday.com/comptia-sec+-home.html?{UTM}"
 HEADER = ["Done", "Section", "Phase", "Step", "Task", "Value", "Ad group", "Notes"]
 
 KEYWORD_TASKS = {
@@ -62,7 +62,7 @@ def static_setup_rows() -> list[list[str]]:
             "Setup",
             "Pre-launch",
             3,
-            "Test checkout from pbq-practice-browser.html desktop + mobile",
+            "Test checkout from comptia-sec+-home.html desktop + mobile",
             notes="Verify begin_checkout in GA4",
         ),
         checklist_row(
@@ -140,7 +140,7 @@ def static_setup_rows() -> list[list[str]]:
             "Ad group",
             3,
             "Set final URL",
-            "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge",
+            f"{HOME_LANDING}&utm_content=pbq-wedge",
             AD_GROUP,
         ),
     ]
@@ -151,17 +151,17 @@ def sitelink_rows() -> list[list[str]]:
     links = [
         (
             "Add sitelink · 10-Day Access · $9.99",
-            f"{PBQ_LANDING}&utm_content=sitelink-10d#purchase",
+            f"{HOME_LANDING}&utm_content=sitelink-10d#purchase",
             "Desc1: 34 PBQ scenarios included · Desc2: One payment, no subscription",
         ),
         (
             "Add sitelink · 34 PBQ Scenarios",
-            f"{PBQ_LANDING}&utm_content=sitelink-pbq-list",
+            f"{HOME_LANDING}&utm_content=sitelink-pbq-list#home-secplus-samples-title",
             "Desc1: Chain labs & hot spots · Desc2: Browser performance prep",
         ),
         (
             "Add sitelink · Timed 90-Min Sim",
-            f"{PBQ_LANDING}&utm_content=sitelink-sim#purchase",
+            f"{HOME_LANDING}&utm_content=sitelink-sim#purchase",
             "Desc1: Mixed MCQ and PBQ run · Desc2: Domain scorecard included",
         ),
         (
@@ -171,12 +171,12 @@ def sitelink_rows() -> list[list[str]]:
         ),
         (
             "Add sitelink · 30-Day Access · $19.99",
-            f"{PBQ_LANDING}&utm_content=sitelink-30d#purchase",
+            f"{HOME_LANDING}&utm_content=sitelink-30d#purchase",
             "Desc1: Best value study window · Desc2: Full portal + timed sim",
         ),
         (
             "Add sitelink · Scorecard & Review",
-            f"{PBQ_LANDING}&utm_content=sitelink-scorecard",
+            f"{HOME_LANDING}&utm_content=sitelink-scorecard#purchase",
             "Desc1: Timed sim + weak domains · Desc2: Adaptive review modes",
         ),
     ]
@@ -195,7 +195,7 @@ def launch_rows() -> list[list[str]]:
             "Click each sitelink — confirm PBQ landing or sample loads",
             "",
             "Campaign",
-            "Stay on pbq-practice-browser or secplus-sample",
+            "Stay on comptia-sec+-home or secplus-sample",
         ),
         checklist_row(
             "Setup",
@@ -415,7 +415,7 @@ Campaign summary
 Campaign:   Security+ SY0-701 · Exam prep · becertifiedtoday
 Budget:     $20.00/day · max CPC $2.75
 Ad group:   {AD_GROUP} (only)
-Landing:    https://becertifiedtoday.com/secplus/pbq-practice-browser.html
+Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
 UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 
 Full reference: marketing-research/Sec+ Campaign/Sec+ Notes.md

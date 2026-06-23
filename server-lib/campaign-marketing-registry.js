@@ -29,7 +29,6 @@
  * @property {string} [adsDashboardUrl]
  * @property {boolean} [trackInAdmin] — show on /admin campaign tracker (default false)
  * @property {number} [projectionWindowDays] — budget projection horizon (default 21)
- * @property {string[]} [relatedLandingPaths] — extra GA4 landing paths on campaign card
  */
 
 /** @type {CampaignMarketingDefinition[]} */
@@ -143,21 +142,20 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     adGroup: "Security+ PBQ Practice",
     dailyBudgetUsd: 20,
     maxCpcUsd: 2.75,
-    landingPath: "/secplus/pbq-practice-browser.html",
+    landingPath: "/comptia-sec+-home.html",
     landingHash: "",
     utmContentPrimary: "pbq-wedge",
     finalUrl:
-      "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge",
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
-    primaryOffer: "10-day $9.99 · 30-day $19.99 — Security+ PBQ Practice · $20/day",
+    primaryOffer: "10-day $9.99 · 30-day $19.99 — Security+ home · $20/day",
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl: "https://ads.google.com",
     trackInAdmin: true,
     projectionWindowDays: 21,
-    relatedLandingPaths: ["/comptia-sec+-home.html"],
   },
   {
     id: "secplus_wedge_pbq_reddit",
@@ -227,7 +225,6 @@ export const AD_LANDING_MONITOR_PATHS = [
   "/ccna-home.html",
   "/ccnp-home.html",
   "/comptia-sec+-home.html",
-  "/secplus/pbq-practice-browser.html",
   "/ccna/labs-without-gns3.html",
 ];
 

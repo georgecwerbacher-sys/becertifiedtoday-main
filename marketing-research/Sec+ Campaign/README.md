@@ -78,7 +78,7 @@ tags:
 | **utm_content** | `pbq-wedge` |
 | **Budget** | **$20.00/day** |
 | **Max CPC** | **$2.75** |
-| **Landing** | `/secplus/pbq-practice-browser.html` |
+| **Landing** | `/comptia-sec+-home.html` |
 
 ---
 
@@ -91,7 +91,7 @@ tags:
 | **utm_campaign** | `secplus_wedge_pbq` |
 | **utm_content** | `reddit-pbq` |
 | **Budget** | **$10/day** (shared with CCNA Reddit) |
-| **Landing** | `/secplus/pbq-practice-browser.html` |
+| **Landing** | `/comptia-sec+-home.html` |
 | **Account** | u/BeCertifiedToday |
 
 Full positioning: [[Sec+ Positioning]]
@@ -100,6 +100,6 @@ Full positioning: [[Sec+ Positioning]]
 
 ## Quick links
 
-- Google landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
-- Reddit landing: https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
+- Google landing: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
+- Reddit landing: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
 - [[Campaigns]] · [[Site Mission]] · [[../Reddit/README\|Reddit hub]]

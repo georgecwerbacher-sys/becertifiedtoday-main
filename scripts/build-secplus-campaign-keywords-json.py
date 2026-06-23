@@ -21,7 +21,7 @@ CAMPAIGN = {
     "utmCampaign": "secplus_portal",
     "utmContentPrimary": "pbq-wedge",
     "finalUrl": (
-        "https://becertifiedtoday.com/secplus/pbq-practice-browser.html"
+        "https://becertifiedtoday.com/comptia-sec+-home.html"
         "?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge"
     ),
     "primaryConversion": "begin_checkout",

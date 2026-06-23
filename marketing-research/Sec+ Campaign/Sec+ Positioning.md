@@ -107,7 +107,7 @@ See full lists: [[Sec+ Keywords]]
 
 | Ad group | Promise | Landing |
 |----------|---------|---------|
-| **`Security+ PBQ Practice`** | *Am I ready?* — PBQ + timed sim + scorecard in browser | `/secplus/pbq-practice-browser.html` |
+| **`Security+ PBQ Practice`** | *Am I ready?* — PBQ + timed sim + scorecard in browser | `/comptia-sec+-home.html` |
 
 ---
 
