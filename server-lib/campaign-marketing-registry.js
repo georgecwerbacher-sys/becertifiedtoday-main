@@ -153,7 +153,8 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
-    adsDashboardUrl: "https://ads.google.com",
+    adsDashboardUrl:
+      "https://ads.google.com/aw/overview?ocid=8235244277&euid=277397985&__u=6466314265&uscid=8235244277&__c=3900876173&authuser=0&workspaceId=0&subid=us-en-awhp-g-aw-c-home-signin-bgc!o2-aluminum%7Cib:2387565277%7Cib:8016481541%7Cib:6079319977%7C-ahpm-0000000209-0000000001%7C-ahpm-0000000179-0000000001",
     trackInAdmin: true,
     projectionWindowDays: 21,
   },
