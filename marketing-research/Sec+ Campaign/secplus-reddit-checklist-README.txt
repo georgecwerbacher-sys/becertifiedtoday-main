@@ -3,7 +3,7 @@ Security+ Reddit Ads — checklist (Apple Numbers)
 
 File: marketing-research/Sec+ Campaign/secplus-reddit-checklist.csv
 
-One Reddit campaign · PBQ ad set first · $10/day shared budget:
+One Reddit campaign · PBQ ad set · $20/day · max bid $4.00:
   • Pre-launch (Stripe, checkout, ads account)
   • Campaign shell (SEC+_Wedge_Reddit)
   • Targeting (r/CompTIA, r/SecurityPlus · Feed + Conversation)
@@ -41,8 +41,10 @@ Full reference
 Campaign summary
 ----------------
 Campaign:   SEC+_Wedge_Reddit
-Budget:     $10.00/day (shared Reddit pool with CCNA)
+Budget:     $20.00/day
+Max bid:    $4.00
 Subs:       r/CompTIA, r/SecurityPlus
-Landing:    https://becertifiedtoday.com/secplus/pbq-practice-browser.html
+Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
 UTM:        utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
+Admin:      /admin campaign tracker (Google + Reddit live)
 Account:    u/BeCertifiedToday · ads.reddit.com

@@ -5,7 +5,7 @@ tags:
   - reddit
   - account
 created: 2026-06-19
-updated: 2026-06-19
+updated: 2026-06-22
 ---
 
 # Reddit account
@@ -39,12 +39,13 @@ updated: 2026-06-19
 
 - [x] Username **BeCertifiedToday**
 - [x] Logo / avatar
-- [ ] **About** bio (paste below if not done yet)
+- [ ] **About** bio (paste below)
 - [ ] Display name (optional): `Be Certified Today` or `BCT · network engineer`
+- [ ] **Profile welcome post** pinned ([[community/Welcome post#Unified welcome (profile pin + PBQ communities)|unified welcome]])
 
-**About (suggested):**
+**About (paste into profile):**
 
-> 20+ years in networking, mostly fed and DoD. I built becertifiedtoday.com for browser labs and timed practice when you cant install sims on a work laptop. Not dumps, not a course upsell. Happy to help if you're close to test day.
+> 20+ yrs networking, fed/DoD. ITs been good to me. PBQ and cert prep help. Built becertifiedtoday.com. Not dumps.
 
 ---
 

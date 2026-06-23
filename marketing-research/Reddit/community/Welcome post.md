@@ -6,15 +6,68 @@ tags:
   - community
   - welcome
 created: 2026-06-19
+updated: 2026-06-22
 ---
 
-# Welcome post (pin when sub goes live)
+# Welcome post
 
-[[Community plan|← Community plan]] · Voice: [[../posting/Voice guide|Voice guide]]
+[[Community plan|← Community plan]] · Account: [[../Account|Reddit Account]] · Voice: [[../posting/Voice guide|Voice guide]]
+
+---
+
+## Unified welcome (profile pin + PBQ communities)
+
+One core post. **Lead with help, not the site.** Same story everywhere; trim the optional lines per table below.
+
+| Where | Title | Trim |
+|-------|-------|------|
+| **Profile** (`u/BeCertifiedToday`) | `hey. 20+ yrs networking. here to help with pbqs.` | Keep full body · pin post |
+| **r/SecurityPlus, r/CompTIA** | `pbqs messed with my head too. happy to help` | Drop last line · no URL unless asked |
+| **Your sub** (later) | Same as profile title | Add [[#Sub welcome (pin when sub goes live)\|sub rules block]] below this body |
+
+**Title**
+
+hey. 20+ yrs networking. here to help with pbqs.
+
+**Body**
+
+hey
+
+pbqs messed with my head too. pdfs and videos are ok for mcq. drag and drop with a timer is a different animal.
+
+sec+ pulls from a huge pool. even the newest pdf bank, you might get lucky and see a few of those questions on your form. most wont be there. i crammed a thick pdf before my retake and maybe recognized a handful on the form. thats it. skip pbq prep and passing gets tight. a lot of barely-pass score reports and fails-after-mcq-felt-fine... thats usually pbqs eating the score.
+
+helps when practice tells you *why* you missed it, not just wrong. narrows what to study instead of rereading the same pdf blind.
+
+network engineer 20+ years, mostly fed and DoD. switched jobs recently, back in dod. my old sec+ wasnt valid for the job. comptia marked it lifetime but dod doesnt honor that anymore. had three days to pass before i could start the new gig. already left the old job so no wiggle room. feel your pain on the cram and pbq panic.
+
+IT has been good to me a long time. trying to give some of that back here.
+
+couldnt run packet tracer on my work laptop for years. i built browser pbq practice for that, then opened it up. full disclosure, thats becertifiedtoday.com. not dumps, not a course. just pbq-style clicks with feedback on why an answer was off.
+
+not selling in this post. ask me pbq stuff, sec+, labs, readiness. i wont drop links unless you ask.
+
+stuck before test day? comment.
+
+*(profile only — delete in cert subs)* practice like test day. walk in ready.
+
+**About** (profile bio)
+
+> 20+ yrs networking, fed/DoD. ITs been good to me. PBQ and cert prep help. Built becertifiedtoday.com. Not dumps.
+
+**Why this reads help-first, not ad**
+
+- Opens on **PBQ fear** and **why Sec+ pool size makes PDF-only prep risky**, not your product
+- Site = one honest disclosure mid-post, not a feature list
+- No price, no free sample pitch, no link in the community version
+- Close is an **offer to help**, not a CTA
+- **No screenshot on Reddit** — keep any pdf/study list images private (dump-adjacent, mod risk). First-person overlap line in the post is enough
+
+---
+
+## Sub welcome (pin when sub goes live)
 
 Copy-paste when the sub is ready. Pin after posting.
-
----
 
 **Title**
 

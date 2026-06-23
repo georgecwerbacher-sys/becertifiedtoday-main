@@ -1,7 +1,7 @@
 /**
  * Merge static campaign registry with GA4 metrics for /admin marketing section.
  */
-import { getCampaignMarketingRegistry } from "./campaign-marketing-registry.js";
+import { getAdminTrackedCampaignRegistry } from "./campaign-marketing-registry.js";
 import {
   fetchBeginCheckoutByCampaign,
   fetchBeginCheckoutBySourceCampaign,
@@ -27,7 +27,7 @@ function indexByCampaign(rows) {
  * @param {{ startDate: string, endDate: string }} range
  */
 export async function buildCampaignMarketingReport(client, propertyId, range) {
-  const registry = getCampaignMarketingRegistry();
+  const registry = getAdminTrackedCampaignRegistry();
   const landingPaths = [...new Set(registry.map((c) => c.landingPath))];
 
   const [

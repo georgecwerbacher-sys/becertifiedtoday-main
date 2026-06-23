@@ -27,6 +27,7 @@
  * @property {string} setupDocTxt
  * @property {string[]} sampleTracks
  * @property {string} [adsDashboardUrl]
+ * @property {boolean} [trackInAdmin] — show on /admin campaign tracker (default false)
  */
 
 /** @type {CampaignMarketingDefinition[]} */
@@ -132,7 +133,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     id: "secplus_portal",
     channel: "google",
     product: "secplus",
-    label: "Security+ SY0-701 · PBQ Practice · $20/day",
+    label: "Security+ SY0-701 · Exam prep · becertifiedtoday",
     googleAdsCampaignName: "Security+ SY0-701 · Exam prep · becertifiedtoday",
     utmCampaign: "secplus_portal",
     utmSource: "google",
@@ -151,31 +152,34 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
+    adsDashboardUrl: "https://ads.google.com",
+    trackInAdmin: true,
   },
   {
     id: "secplus_wedge_pbq_reddit",
     channel: "reddit",
     product: "secplus",
-    label: "SEC+_Wedge_Reddit · PBQ",
+    label: "SEC+_Wedge_Reddit · PBQ Reddit",
     redditAdsCampaignName: "SEC+_Wedge_Reddit",
     utmCampaign: "secplus_wedge_pbq",
     utmSource: "reddit",
     utmMedium: "cpc",
-    adGroup: "r/CompTIA · r/SecurityPlus",
-    dailyBudgetUsd: 10,
-    maxCpcUsd: null,
-    landingPath: "/secplus/pbq-practice-browser.html",
+    adGroup: "r/CompTIA · r/SecurityPlus · PBQ",
+    dailyBudgetUsd: 20,
+    maxCpcUsd: 4.0,
+    landingPath: "/comptia-sec+-home.html",
     landingHash: "",
     utmContentPrimary: "reddit-pbq",
     finalUrl:
-      "https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq",
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
-    primaryOffer: "10-day $9.99 · 30-day $19.99 — Reddit PBQ wedge · Feed + Conversation",
+    primaryOffer: "10-day $9.99 · 30-day $19.99 — Reddit PBQ · comptia-sec+-home",
     setupDoc: "marketing-research/Sec+ Campaign/secplus-reddit-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-reddit-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl: "https://ads.reddit.com",
+    trackInAdmin: true,
   },
   {
     id: "secplus_portal_reddit_timed",
@@ -206,6 +210,13 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
 
 export function getCampaignMarketingRegistry() {
   return CAMPAIGN_MARKETING_REGISTRY.map((c) => ({ ...c }));
+}
+
+/** Campaigns shown on /admin (trackInAdmin: true). */
+export function getAdminTrackedCampaignRegistry() {
+  return CAMPAIGN_MARKETING_REGISTRY.filter((c) => c.trackInAdmin === true).map((c) => ({
+    ...c,
+  }));
 }
 
 /** Ad landing paths monitored on /admin (exact GA4 pagePath). */

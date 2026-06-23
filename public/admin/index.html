@@ -538,10 +538,11 @@
       </div>
 
       <div class="panel" id="section-campaigns">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google + Reddit</h2>
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google + Reddit (live)</h2>
         <p class="section-note" style="margin-top:0">
-          GA4 sessions and <code>begin_checkout</code> for tagged campaigns in the selected date range.
-          Spend and CTR still live in Google Ads and <a href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">ads.reddit.com</a>.
+          GA4 sessions and <code>begin_checkout</code> for active Sec+ campaigns in the selected date range.
+          Spend and CTR live in <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a> and
+          <a href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">ads.reddit.com</a>.
           <strong>Reddit ads:</strong> paste the copied URL into <strong>Destination URL</strong> only — leave <strong>Tracker URL</strong> empty.
         </p>
         <div class="campaign-grid" id="campaignMarketingGrid"></div>
@@ -818,7 +819,10 @@
             var budgetLine =
               "$" + Number(c.dailyBudgetUsd || 0).toFixed(0) + "/day";
             if (c.maxCpcUsd != null && c.maxCpcUsd > 0) {
-              budgetLine += " · max CPC $" + Number(c.maxCpcUsd).toFixed(2);
+              budgetLine +=
+                channel === "reddit"
+                  ? " · max bid $" + Number(c.maxCpcUsd).toFixed(2)
+                  : " · max CPC $" + Number(c.maxCpcUsd).toFixed(2);
             } else if (channel === "reddit") {
               budgetLine += " · lowest cost";
             }
@@ -902,14 +906,19 @@
         });
 
         if (statusEl) {
+          var googleCount = campaigns.filter(function (c) {
+            return c.channel === "google";
+          }).length;
           var redditCount = campaigns.filter(function (c) {
             return c.channel === "reddit";
           }).length;
           statusEl.textContent =
             campaigns.length +
-            " campaigns (" +
+            " live (" +
+            googleCount +
+            " Google · " +
             redditCount +
-            " Reddit). Filter GA4 by session source reddit + utm_campaign for cross-check.";
+            " Reddit). Cross-check GA4 by session source + utm_campaign.";
           statusEl.className = "status ok";
         }
       }

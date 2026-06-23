@@ -14,8 +14,8 @@ created: 2026-06-22
 # Sec+ Reddit Notes — how to set up the campaign
 
 **Campaign:** `SEC+_Wedge_Reddit`  
-**Ad set 1:** PBQ angle → `/secplus/pbq-practice-browser.html`  
-**Budget:** **$10/day** shared Reddit pool (CCNA + Sec+) — launch Sec+ PBQ first  
+**Ad set 1:** PBQ angle → `/comptia-sec+-home.html`  
+**Budget:** **$20/day** · **max bid $4.00**  
 **utm_campaign:** `secplus_wedge_pbq` · **utm_content:** `reddit-pbq`
 
 **Checklist CSV:** [[secplus-reddit-checklist.csv]] · **Copy:** [[Sec+ Reddit Copy]] · **Shell:** [[Sec+ campaign — Reddit only]]
@@ -47,9 +47,10 @@ Reddit copy: [[Sec+ Reddit Copy]] · organic templates: [[../Reddit/posting/Sec+
 
 1. Campaign name: **`SEC+_Wedge_Reddit`**
 2. Objective: **Traffic**
-3. Daily budget: **$10/day** (or $5 if splitting with CCNA)
-4. Schedule: continuous
-5. Locations: US, CA, UK, AU
+3. Daily budget: **$20/day**
+4. Max bid: **$4.00**
+5. Schedule: continuous
+6. Locations: US, CA, UK, AU
 
 ---
 
@@ -58,7 +59,7 @@ Reddit copy: [[Sec+ Reddit Copy]] · organic templates: [[../Reddit/posting/Sec+
 1. **Placements:** Feed **ON** · Conversation **ON**
 2. **Communities:** `r/CompTIA`, `r/SecurityPlus`
 3. Skip interests and keyword targeting for launch
-4. **Bidding:** Lowest cost · automated on · cost cap off
+4. **Bidding:** Max bid **$4.00** (or cost cap if Reddit UI labels it that way)
 5. **Reddit Pixel:** skip · UTMs in URL only
 
 ---
@@ -73,7 +74,7 @@ Reddit copy: [[Sec+ Reddit Copy]] · organic templates: [[../Reddit/posting/Sec+
 **Option A — single field:**
 
 ```
-https://becertifiedtoday.com/secplus/pbq-practice-browser.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
+https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
 ```
 
 **Option B — split fields:**
