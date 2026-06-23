@@ -163,7 +163,7 @@ export default async function handler(req, res) {
       ).catch((err) => ({
         error: err?.message || "Cert home landing report failed",
       })),
-      buildCampaignMarketingReport(client, env.propertyId, range).catch((err) => ({
+      buildCampaignMarketingReport(client, env.propertyId, range, rangePreset).catch((err) => ({
         error: err?.message || "Campaign marketing report failed",
       })),
     ]);

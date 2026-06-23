@@ -28,6 +28,8 @@
  * @property {string[]} sampleTracks
  * @property {string} [adsDashboardUrl]
  * @property {boolean} [trackInAdmin] — show on /admin campaign tracker (default false)
+ * @property {number} [projectionWindowDays] — budget projection horizon (default 21)
+ * @property {string[]} [relatedLandingPaths] — extra GA4 landing paths on campaign card
  */
 
 /** @type {CampaignMarketingDefinition[]} */
@@ -154,6 +156,8 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl: "https://ads.google.com",
     trackInAdmin: true,
+    projectionWindowDays: 21,
+    relatedLandingPaths: ["/comptia-sec+-home.html"],
   },
   {
     id: "secplus_wedge_pbq_reddit",
@@ -179,7 +183,6 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-reddit-checklist-README.txt",
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl: "https://ads.reddit.com",
-    trackInAdmin: true,
   },
   {
     id: "secplus_portal_reddit_timed",

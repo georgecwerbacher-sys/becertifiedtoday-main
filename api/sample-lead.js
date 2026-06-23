@@ -179,7 +179,7 @@ function mapQuestionVerifyReason(reason) {
 
 function normalizeRangePreset(raw) {
   const p = typeof raw === "string" ? raw.trim().toLowerCase() : "";
-  if (p === "today" || p === "7d" || p === "28d" || p === "90d") return p;
+  if (p === "today" || p === "7d" || p === "21d" || p === "28d" || p === "90d") return p;
   return "7d";
 }
 

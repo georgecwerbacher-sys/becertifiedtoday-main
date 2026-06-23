@@ -855,6 +855,8 @@ export function rangeFromPreset(preset) {
   switch (preset) {
     case "today":
       return { startDate: "today", endDate: "today" };
+    case "21d":
+      return { startDate: "21daysAgo", endDate: "today" };
     case "28d":
       return { startDate: "28daysAgo", endDate: "today" };
     case "90d":
@@ -868,9 +870,27 @@ export function rangeFromPreset(preset) {
 const RANGE_PRESET_LABELS = {
   today: "Today",
   "7d": "Last 7 days",
+  "21d": "Last 21 days",
   "28d": "Last 28 days",
   "90d": "Last 90 days",
 };
+
+/** Inclusive day count for admin range presets (for spend projection). */
+export function rangeDaysFromPreset(preset) {
+  switch (preset) {
+    case "today":
+      return 1;
+    case "21d":
+      return 21;
+    case "28d":
+      return 28;
+    case "90d":
+      return 90;
+    case "7d":
+    default:
+      return 7;
+  }
+}
 
 /** UTC instant at start of the admin range preset (inclusive). */
 export function utcStartFromPreset(preset) {
@@ -878,6 +898,9 @@ export function utcStartFromPreset(preset) {
   const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   switch (preset) {
     case "today":
+      break;
+    case "21d":
+      start.setUTCDate(start.getUTCDate() - 20);
       break;
     case "28d":
       start.setUTCDate(start.getUTCDate() - 27);

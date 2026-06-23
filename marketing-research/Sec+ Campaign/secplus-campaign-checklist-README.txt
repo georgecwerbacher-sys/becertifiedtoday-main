@@ -43,6 +43,6 @@ Budget:     $20.00/day · max CPC $2.75
 Ad group:   Security+ PBQ Practice (only)
 Landing:    https://becertifiedtoday.com/secplus/pbq-practice-browser.html
 UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
-Admin:      /admin campaign tracker (Google + Reddit live)
+Admin:      /admin campaign tracker (Google Ads live · 21-day projection)
 
 Full reference: marketing-research/Sec+ Campaign/Sec+ Notes.md

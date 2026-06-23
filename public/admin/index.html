@@ -286,6 +286,29 @@
       word-break: break-all;
       line-height: 1.45;
     }
+    .campaign-projection {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #0c1220;
+    }
+    .campaign-projection h4 {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      color: #c5d4f0;
+    }
+    .campaign-projection p {
+      margin: 0 0 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .campaign-projection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
   </style>
 </head>
 <body>
@@ -325,8 +348,9 @@
         <div>
           <label for="range">Date range</label>
           <select id="range">
-            <option value="today" selected>Today</option>
+            <option value="today">Today</option>
             <option value="7d">Last 7 days</option>
+            <option value="21d" selected>Last 21 days</option>
             <option value="28d">Last 28 days</option>
             <option value="90d">Last 90 days</option>
           </select>
@@ -338,8 +362,9 @@
       <div class="panel" id="portalPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-register">Stripe checkout · New Register</h2>
         <p class="section-note" style="margin-top:0">
-          Paid checkouts from Stripe in the selected date range (UTC). Track Google Ads and Reddit in those platforms —
-          this section is <strong>completed purchases only</strong> (email + product + checkout session).
+          Paid checkouts from Stripe in the selected date range (UTC). Google Ads spend lives in
+          <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a>.
+          This section is <strong>completed purchases only</strong> (email + product + checkout session).
           <strong>New Register</strong> = distinct checkout emails in the range.
         </p>
         <div class="cards" id="stripePurchasesSummaryCards"></div>
@@ -445,9 +470,8 @@
       <div class="panel" id="section-cert-homes">
         <h2 style="margin:0 0 6px;font-size:1.05rem">Certification home pages</h2>
         <p class="section-note" style="margin-top:0">
-          Landing traffic for <code>ccna-home.html</code>, <code>ccnp-home.html</code>, and
-          <code>comptia-sec+-home.html</code> in the selected date range (UTC). Sample and email-popup
-          metrics come from site logs; popup shown/click/dismiss from GA4 after this deploy.
+          Landing traffic for exam home pages and the Security+ PBQ ad landing in the selected date range (UTC).
+          Sample and email-popup metrics come from site logs; popup shown/click/dismiss from GA4 after this deploy.
         </p>
         <div class="cards" id="certHomeSummaryCards"></div>
         <div class="portal-table-wrap">
@@ -538,12 +562,11 @@
       </div>
 
       <div class="panel" id="section-campaigns">
-        <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google + Reddit (live)</h2>
+        <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google Ads (21-day test)</h2>
         <p class="section-note" style="margin-top:0">
-          GA4 sessions and <code>begin_checkout</code> for active Sec+ campaigns in the selected date range.
-          Spend and CTR live in <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a> and
-          <a href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">ads.reddit.com</a>.
-          <strong>Reddit ads:</strong> paste the copied URL into <strong>Destination URL</strong> only — leave <strong>Tracker URL</strong> empty.
+          GA4 paid traffic, landing funnel, and <code>begin_checkout</code> for the live Security+ Google campaign.
+          Use <strong>Last 21 days</strong> for budget projection. Stripe Security+ purchases (above) complete the funnel.
+          Spend and CPC live in <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a>.
         </p>
         <div class="campaign-grid" id="campaignMarketingGrid"></div>
         <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
@@ -787,7 +810,12 @@
         return (rate * 100).toFixed(1) + "%";
       }
 
-      function renderCampaignMarketing(data) {
+      function fmtUsd(n) {
+        if (n == null || isNaN(n)) return "—";
+        return "$" + Number(n).toFixed(0);
+      }
+
+      function renderCampaignMarketing(data, stripePurchases) {
         var grid = document.getElementById("campaignMarketingGrid");
         var statusEl = document.getElementById("campaignMarketingStatus");
         if (!grid) return;
@@ -813,6 +841,7 @@
         grid.innerHTML = campaigns
           .map(function (c, i) {
             var m = c.metrics || {};
+            var p = c.projection || {};
             var channel = c.channel === "reddit" ? "reddit" : "google";
             var channelLabel = channel === "reddit" ? "Reddit" : "Google";
             var productLabel = CAMPAIGN_PRODUCT_LABELS[c.product] || c.product || "";
@@ -835,6 +864,34 @@
               (c.adGroup || "") +
               " · " +
               budgetLine;
+            var purchases = 0;
+            if (stripePurchases && c.product === "secplus") {
+              purchases = Number((stripePurchases.byProduct || {}).secplus || 0);
+            }
+            var projDays = p.projectionDays || 21;
+            var rangeDays = p.rangeDays || 1;
+            var scale = rangeDays > 0 ? projDays / rangeDays : 0;
+            var projPurchases = purchases * scale;
+            var projCheckouts = Number(p.scaledBeginCheckout || 0);
+            var spendInRange = Number(p.estimatedSpendInRangeUsd || 0);
+            var spendProj = Number(p.estimatedSpendProjectionUsd || 0);
+            var cpaActual = purchases > 0 ? spendInRange / purchases : null;
+            var cpaProj = projPurchases > 0 ? spendProj / projPurchases : null;
+            var relatedLine = "";
+            if (m.relatedLanding && m.relatedLanding.length) {
+              relatedLine = m.relatedLanding
+                .map(function (rl) {
+                  return (
+                    rl.path +
+                    ": " +
+                    fmt(rl.pageViews) +
+                    " views · " +
+                    fmt(rl.beginCheckout) +
+                    " checkout"
+                  );
+                })
+                .join(" · ");
+            }
 
             return (
               '<article class="campaign-card" data-campaign-id="' +
@@ -853,9 +910,11 @@
               [
                 ["Paid sessions", fmt(m.paidSessions != null ? m.paidSessions : m.sessions)],
                 ["Users", fmt(m.users)],
-                ["Landing views", fmt(m.landingPageViews)],
-                ["begin_checkout", fmt(m.beginCheckout)],
-                ["Checkout rate", fmtPct(m.checkoutRate)],
+                ["Ad landing views", fmt(m.landingPageViews)],
+                ["Landing checkout", fmt(m.landingBeginCheckout)],
+                ["utm begin_checkout", fmt(m.beginCheckout)],
+                ["Stripe Sec+ buys", fmt(purchases)],
+                ["Session→checkout", fmtPct(m.checkoutRate)],
               ]
                 .map(function (pair) {
                   return (
@@ -868,6 +927,38 @@
                 })
                 .join("") +
               "</div>" +
+              (relatedLine
+                ? '<p class="campaign-meta" style="margin-top:10px">Also: ' +
+                  relatedLine +
+                  "</p>"
+                : "") +
+              '<div class="campaign-projection"><h4>' +
+              projDays +
+              "-day budget projection</h4>" +
+              "<p>Linear scale from selected range (" +
+              rangeDays +
+              "d). Enter actual Google spend to refine CPA.</p>" +
+              '<div class="campaign-projection-grid">' +
+              [
+                ["Spend in range", fmtUsd(spendInRange)],
+                ["Spend " + projDays + "d", fmtUsd(spendProj)],
+                ["Proj. sessions", fmt(Math.round(Number(p.scaledPaidSessions || 0)))],
+                ["Proj. checkout", fmt(Math.round(projCheckouts))],
+                ["Proj. purchases", fmt(Math.round(projPurchases))],
+                ["CPA (actual)", cpaActual != null ? fmtUsd(cpaActual) : "—"],
+                ["CPA (proj.)", cpaProj != null ? fmtUsd(cpaProj) : "—"],
+              ]
+                .map(function (pair) {
+                  return (
+                    '<div class="campaign-metric"><div class="val">' +
+                    pair[1] +
+                    '</div><div class="lbl">' +
+                    pair[0] +
+                    "</div></div>"
+                  );
+                })
+                .join("") +
+              "</div></div>" +
               '<p class="campaign-url" id="campaign-url-' +
               i +
               '">' +
@@ -906,19 +997,10 @@
         });
 
         if (statusEl) {
-          var googleCount = campaigns.filter(function (c) {
-            return c.channel === "google";
-          }).length;
-          var redditCount = campaigns.filter(function (c) {
-            return c.channel === "reddit";
-          }).length;
           statusEl.textContent =
-            campaigns.length +
-            " live (" +
-            googleCount +
-            " Google · " +
-            redditCount +
-            " Reddit). Cross-check GA4 by session source + utm_campaign.";
+            "Google Ads only · default range 21 days · " +
+            (data.projectionWindowDays || 21) +
+            "-day projection uses budget × days and scales GA4 + Stripe from the selected range.";
           statusEl.className = "status ok";
         }
       }
@@ -1406,7 +1488,11 @@
 
             renderSummary(ga.body);
             renderCertHomeLanding(ga.body.certHomeLanding);
-            renderCampaignMarketing(ga.body.campaignMarketing);
+            var stripeData =
+              portal.ok && portal.body && portal.body.purchasesInRange
+                ? portal.body.purchasesInRange
+                : null;
+            renderCampaignMarketing(ga.body.campaignMarketing, stripeData);
             renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";

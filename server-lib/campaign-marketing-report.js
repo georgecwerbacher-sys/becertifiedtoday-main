@@ -5,10 +5,12 @@ import { getAdminTrackedCampaignRegistry } from "./campaign-marketing-registry.j
 import {
   fetchBeginCheckoutByCampaign,
   fetchBeginCheckoutBySourceCampaign,
+  fetchCertHomeEventCounts,
   fetchGoogleCpcByCampaign,
   fetchHomeLandingPageViews,
   fetchRedditCpcByCampaign,
   fetchSessionsByCampaign,
+  rangeDaysFromPreset,
 } from "./google-analytics.js";
 
 function indexByCampaign(rows) {
@@ -25,10 +27,16 @@ function indexByCampaign(rows) {
  * @param {import('@google-analytics/data').BetaAnalyticsDataClient} client
  * @param {string} propertyId
  * @param {{ startDate: string, endDate: string }} range
+ * @param {string} [rangePreset]
  */
-export async function buildCampaignMarketingReport(client, propertyId, range) {
+export async function buildCampaignMarketingReport(client, propertyId, range, rangePreset = "7d") {
   const registry = getAdminTrackedCampaignRegistry();
-  const landingPaths = [...new Set(registry.map((c) => c.landingPath))];
+  const landingPaths = [
+    ...new Set(
+      registry.flatMap((c) => [c.landingPath, ...(c.relatedLandingPaths || [])].filter(Boolean))
+    ),
+  ];
+  const rangeDays = rangeDaysFromPreset(rangePreset);
 
   const [
     sessionsByCampaign,
@@ -38,6 +46,7 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     googleCpcByCampaign,
     redditCpcByCampaign,
     landingPages,
+    landingEvents,
   ] = await Promise.all([
     fetchSessionsByCampaign(client, propertyId, range),
     fetchBeginCheckoutByCampaign(client, propertyId, range),
@@ -46,6 +55,7 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     fetchGoogleCpcByCampaign(client, propertyId, range),
     fetchRedditCpcByCampaign(client, propertyId, range),
     fetchHomeLandingPageViews(client, propertyId, range, landingPaths),
+    fetchCertHomeEventCounts(client, propertyId, range, landingPaths, ["begin_checkout"]),
   ]);
 
   const sessionsMap = indexByCampaign(sessionsByCampaign);
@@ -57,6 +67,13 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
   const landingMap = Object.create(null);
   for (const row of landingPages) {
     landingMap[row.pagePath] = row;
+  }
+
+  const checkoutEventsByPath = Object.create(null);
+  for (const row of landingEvents || []) {
+    if (row.eventName !== "begin_checkout") continue;
+    checkoutEventsByPath[row.pagePath] =
+      (checkoutEventsByPath[row.pagePath] || 0) + Number(row.eventCount || 0);
   }
 
   const campaigns = registry.map((def) => {
@@ -73,6 +90,18 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     const landing = landingMap[def.landingPath] || {};
     const paidSessions = Number(paid.sessions || 0);
     const beginCheckout = Number(checkout.beginCheckout || 0);
+    const projectionDays = def.projectionWindowDays || 21;
+    const estimatedSpendInRangeUsd = def.dailyBudgetUsd * rangeDays;
+    const estimatedSpendProjectionUsd = def.dailyBudgetUsd * projectionDays;
+    const scaleToProjection =
+      rangeDays > 0 && projectionDays !== rangeDays ? projectionDays / rangeDays : 1;
+
+    const relatedLanding = (def.relatedLandingPaths || []).map((path) => ({
+      path,
+      pageViews: Number(landingMap[path]?.screenPageViews || 0),
+      users: Number(landingMap[path]?.activeUsers || 0),
+      beginCheckout: Number(checkoutEventsByPath[path] || 0),
+    }));
 
     return {
       ...def,
@@ -87,7 +116,18 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
         paidSessions,
         landingPageViews: Number(landing.screenPageViews || 0),
         landingPageUsers: Number(landing.activeUsers || 0),
+        landingBeginCheckout: Number(checkoutEventsByPath[def.landingPath] || 0),
         checkoutRate: paidSessions > 0 ? beginCheckout / paidSessions : null,
+        relatedLanding,
+      },
+      projection: {
+        rangeDays,
+        projectionDays,
+        estimatedSpendInRangeUsd,
+        estimatedSpendProjectionUsd,
+        scaledPaidSessions: paidSessions * scaleToProjection,
+        scaledBeginCheckout: beginCheckout * scaleToProjection,
+        sessionToCheckoutRate: paidSessions > 0 ? beginCheckout / paidSessions : null,
       },
     };
   });
@@ -101,6 +141,9 @@ export async function buildCampaignMarketingReport(client, propertyId, range) {
     .slice(0, 5);
 
   return {
+    rangePreset,
+    rangeDays,
+    projectionWindowDays: 21,
     campaigns,
     otherRedditSessions,
     otherGoogleCpcSessions,

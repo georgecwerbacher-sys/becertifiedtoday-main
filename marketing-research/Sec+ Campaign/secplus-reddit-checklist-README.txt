@@ -46,5 +46,5 @@ Max bid:    $4.00
 Subs:       r/CompTIA, r/SecurityPlus
 Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
 UTM:        utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq
-Admin:      /admin campaign tracker (Google + Reddit live)
+Admin:      /admin campaign tracker (Google Ads live · 21-day projection)
 Account:    u/BeCertifiedToday · ads.reddit.com
