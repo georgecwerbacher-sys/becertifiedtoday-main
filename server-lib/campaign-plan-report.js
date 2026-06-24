@@ -7,6 +7,7 @@ import { getCampaignTestPlan } from "./campaign-test-plan-registry.js";
 import {
   fetchDailyGoogleCpcCampaignBeginCheckout,
   fetchDailyGoogleCpcCampaignSessions,
+  fetchDailyLandingBeginCheckout,
   fetchDailyLandingPageViews,
   gaDateToIso,
 } from "./google-analytics.js";
@@ -88,27 +89,38 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
   let gaError = null;
   if (client && propertyId && campaignDef) {
     try {
-      const [sessionsDaily, checkoutDaily, landingDaily] = await Promise.all([
+      const [sessionsDaily, checkoutDaily, landingDaily, landingCheckoutDaily] = await Promise.all([
         fetchDailyGoogleCpcCampaignSessions(client, propertyId, range, campaignDef.utmCampaign),
         fetchDailyGoogleCpcCampaignBeginCheckout(client, propertyId, range, campaignDef.utmCampaign),
         fetchDailyLandingPageViews(client, propertyId, range, campaignDef.landingPath),
+        fetchDailyLandingBeginCheckout(client, propertyId, range, campaignDef.landingPath),
       ]);
 
       const sessionsMap = indexByDate(sessionsDaily, "paidSessions");
       const checkoutMap = indexByDate(checkoutDaily, "beginCheckout");
       const landingMap = indexByDate(landingDaily, "landingPageViews");
+      const landingCheckoutMap = indexByDate(landingCheckoutDaily, "landingBeginCheckout");
 
       const allDates = new Set([
         ...Object.keys(sessionsMap),
         ...Object.keys(checkoutMap),
         ...Object.keys(landingMap),
+        ...Object.keys(landingCheckoutMap),
       ]);
 
       for (const date of allDates) {
+        const paidSessions = Number(sessionsMap[date] || 0);
+        const beginCheckout = Number(checkoutMap[date] || 0);
+        const landingPageViews = Number(landingMap[date] || 0);
+        const landingBeginCheckout = Number(landingCheckoutMap[date] || 0);
         autoByDate[date] = {
-          paidSessions: Number(sessionsMap[date] || 0),
-          beginCheckout: Number(checkoutMap[date] || 0),
-          landingPageViews: Number(landingMap[date] || 0),
+          paidSessions,
+          beginCheckout,
+          landingPageViews,
+          landingBeginCheckout,
+          checkoutRate: paidSessions > 0 ? beginCheckout / paidSessions : null,
+          landingCheckoutRate:
+            landingPageViews > 0 ? landingBeginCheckout / landingPageViews : null,
         };
       }
     } catch (err) {
@@ -142,6 +154,9 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
   let runningPurchases = 0;
   let runningCheckouts = 0;
   let runningPaidSessions = 0;
+  let runningLandingViews = 0;
+  let runningLandingCheckouts = 0;
+  let runningAdsClicks = 0;
 
   for (let i = 0; i < plan.durationDays; i += 1) {
     const date = addDaysIso(startDate, i);
@@ -151,25 +166,45 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
       paidSessions: 0,
       beginCheckout: 0,
       landingPageViews: 0,
+      landingBeginCheckout: 0,
+      checkoutRate: null,
+      landingCheckoutRate: null,
     };
     const secplusPurchases = Number(stripeByDate[date] || 0);
+    const adsClicks = Number(manual.adsClicks || 0);
 
     runningSpend += Number(manual.adsSpendUsd || 0);
     runningPurchases += secplusPurchases;
     runningCheckouts += Number(auto.beginCheckout || 0);
     runningPaidSessions += Number(auto.paidSessions || 0);
+    runningLandingViews += Number(auto.landingPageViews || 0);
+    runningLandingCheckouts += Number(auto.landingBeginCheckout || 0);
+    runningAdsClicks += adsClicks;
 
     calendarDays.push({
       date,
       dayNumber,
       milestone: milestonesByDay[dayNumber] || null,
+      checklist: getDailyChecklistForDay(dayNumber, milestonesByDay[dayNumber]),
       manual,
-      auto: { ...auto, secplusPurchases },
+      auto: {
+        ...auto,
+        secplusPurchases,
+        clickToCheckoutRate: adsClicks > 0 ? Number(auto.beginCheckout || 0) / adsClicks : null,
+      },
       running: {
         adsSpendUsd: runningSpend,
+        adsClicks: runningAdsClicks,
         secplusPurchases: runningPurchases,
         beginCheckout: runningCheckouts,
         paidSessions: runningPaidSessions,
+        landingPageViews: runningLandingViews,
+        landingBeginCheckout: runningLandingCheckouts,
+        checkoutRate: runningPaidSessions > 0 ? runningCheckouts / runningPaidSessions : null,
+        landingCheckoutRate:
+          runningLandingViews > 0 ? runningLandingCheckouts / runningLandingViews : null,
+        clickToCheckoutRate:
+          runningAdsClicks > 0 ? runningCheckouts / runningAdsClicks : null,
       },
     });
   }
@@ -189,8 +224,15 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
     calendarDays,
     totals: {
       manualAdsSpendUsd: sumManualSpend(state.daily),
+      manualAdsClicks: runningAdsClicks,
       autoPaidSessions: runningPaidSessions,
       autoBeginCheckout: runningCheckouts,
+      autoLandingPageViews: runningLandingViews,
+      autoLandingBeginCheckout: runningLandingCheckouts,
+      checkoutRate: runningPaidSessions > 0 ? runningCheckouts / runningPaidSessions : null,
+      landingCheckoutRate:
+        runningLandingViews > 0 ? runningLandingCheckouts / runningLandingViews : null,
+      clickToCheckoutRate: runningAdsClicks > 0 ? runningCheckouts / runningAdsClicks : null,
       stripeSecplusPurchases: runningPurchases,
       stepsCompleted: completedSteps,
       stepsTotal: totalSteps,

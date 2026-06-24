@@ -268,9 +268,23 @@ function normalizeDailyPatch(patch) {
   }
   if (patch.keywordCsvUpdated === true || patch.keywordCsvUpdated === "true") {
     out.keywordCsvUpdated = true;
+  } else if (patch.keywordCsvUpdated === false || patch.keywordCsvUpdated === "false") {
+    out.keywordCsvUpdated = false;
   }
   if (patch.negativesAdded === true || patch.negativesAdded === "true") {
     out.negativesAdded = true;
+  } else if (patch.negativesAdded === false || patch.negativesAdded === "false") {
+    out.negativesAdded = false;
+  }
+  if (patch.landingChange === true || patch.landingChange === "true") {
+    out.landingChange = true;
+  } else if (patch.landingChange === false || patch.landingChange === "false") {
+    out.landingChange = false;
+  }
+  if (Array.isArray(patch.completedDailyTaskIds)) {
+    out.completedDailyTaskIds = [
+      ...new Set(patch.completedDailyTaskIds.map((s) => String(s || "").trim()).filter(Boolean)),
+    ];
   }
   out.savedAt = new Date().toISOString();
   return out;

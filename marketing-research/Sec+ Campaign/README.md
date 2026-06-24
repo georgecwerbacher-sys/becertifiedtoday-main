@@ -16,7 +16,7 @@ tags:
 |---------|--------|
 | **Campaign name** | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
 | **Ad group** | **`Security+ PBQ Practice`** (only) |
-| **Budget** | **$20.00/day** |
+| **Budget** | **$15.00/day** |
 | **Max CPC** | **$2.75** |
 | **Landing** | `/comptia-sec+-home.html` |
 | **utm_campaign** | `secplus_portal` |
@@ -48,10 +48,15 @@ tags:
 | Note | Purpose |
 |------|---------|
 | [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
+| [[Sec+ Phase 1 Purpose\|Phase 1 purpose]] | **Budget rules, stable, break-even — read first** |
+| [[Sec+ Phase 1 Scorecard\|Phase 1 scorecard]] | **Numeric goals, cutback playbook, monthly CSV** |
+| [[Sec+ Phase 1 Action Plan\|Phase 1 action plan]] | **What you do each week · experiment menu** |
 
 **Registry:** `server-lib/campaign-marketing-registry.js` → id **`secplus_portal`**
 
 **Admin tracker:** [/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns) — GA4 sessions + `begin_checkout` + 21-day projection
+
+**Promo spend ($500 → $1k credit by Jul 19):** [[Google Ads Spend Promo]] · [[google-ads-spend-promo-2026.csv]]
 
 ---
 

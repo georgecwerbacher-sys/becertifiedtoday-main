@@ -1,9 +1,10 @@
 # CompTIA Security+ Google Ads
 
-> **Source of truth:** `marketing-research/Sec+ Campaign/` — start at `README.md`, build steps in `Sec+ Notes.md`, keywords in `secplus-keywords.csv`.  
-> This file is a legacy mirror for the portal ad group only. Do not edit here first.
+> **DEPRECATED — do not use for new setup.**  
+> **Source of truth:** `marketing-research/Sec+ Campaign/` — start at `README.md`, build steps in `Sec+ Notes.md`.  
+> This file described the retired **$9.99 / 10-day** ad group (`secplus_portal_10d`). Live campaign is **`Security+ PBQ Practice`** only — **30-day · $19.99**. See [[Sec+ RSA Copy]] and [[Sec+ Notes#Remove 10-day from live Google Ads]].
 
-Paste-ready setup for Google Ads UI. Landing: `public/comptia-sec+-home.html` with `utm_content=portal-10d` shows **$9.99 / 10-day** as the only primary purchase CTA.
+~~Paste-ready setup for Google Ads UI. Landing: `public/comptia-sec+-home.html` with `utm_content=portal-10d` shows **$9.99 / 10-day** as the only primary purchase CTA.~~
 
 ---
 

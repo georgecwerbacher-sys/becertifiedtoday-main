@@ -13,7 +13,7 @@ tags:
 
 **Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
 **Ad group:** **`Security+ PBQ Practice`** (only)  
-**Budget:** $20.00/day · max CPC $2.75 · **utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
+**Budget:** $15.00/day · max CPC $2.75 · **utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
 
 **Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
 

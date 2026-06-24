@@ -12,9 +12,9 @@ tags:
 
 Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
-**Live campaign:** one ad group — **`Security+ PBQ Practice`** ($20/day · max CPC $2.75).
+**Live campaign:** one ad group — **`Security+ PBQ Practice`** ($15/day · max CPC $2.75).
 
-**Landing offer (Google Ads):** **30-day · $19.99 only** — site hides 10-day popups and sticky offers for `utm_source=google`.
+**Landing offer:** **30-day · $19.99 only** — 10-day offer removed from cert home.
 
 **Voice:** *Am I ready for the test?* — PBQ + timed sim + scorecard, not a PDF dump or video course.
 

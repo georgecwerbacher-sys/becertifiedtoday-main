@@ -16,7 +16,7 @@ CAMPAIGN = {
     "id": "secplus_portal",
     "googleAdsCampaignName": "Security+ SY0-701 · Exam prep · becertifiedtoday",
     "adGroup": "Security+ PBQ Practice",
-    "dailyBudgetUsd": 20,
+    "dailyBudgetUsd": 15,
     "maxCpcUsd": 2.75,
     "utmCampaign": "secplus_portal",
     "utmContentPrimary": "pbq-wedge",

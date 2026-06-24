@@ -435,6 +435,52 @@
       color: var(--muted);
     }
     .plan-daily-auto strong { color: #c5d4f0; }
+    .plan-daily-checklist {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      border: 1px solid #2a3548;
+      border-radius: 8px;
+      background: #121820;
+    }
+    .plan-daily-checklist h5 {
+      margin: 0 0 6px;
+      font-size: 0.82rem;
+      color: #9fd4ff;
+      font-weight: 700;
+    }
+    .plan-daily-checklist .plan-checklist-summary {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .plan-daily-checklist ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .plan-daily-checklist li {
+      margin: 0 0 8px;
+    }
+    .plan-daily-checklist li:last-child { margin-bottom: 0; }
+    .plan-daily-checklist label {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      color: #d8e2f0;
+      cursor: pointer;
+    }
+    .plan-daily-checklist label.done { color: #8b9cb5; text-decoration: line-through; }
+    .plan-daily-checklist label.milestone-task { color: #b8f0d0; }
+    .plan-daily-checklist .task-hint {
+      display: block;
+      margin: 2px 0 0 22px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .plan-daily-checklist input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
     .plan-daily-form textarea {
       width: 100%;
       min-height: 72px;
@@ -712,12 +758,12 @@
       <div class="panel" id="section-campaign-plan">
         <h2 style="margin:0 0 6px;font-size:1.05rem">Sec+ Google Ads · 21-day project plan</h2>
         <p class="section-note" style="margin-top:0">
-          Goals, setup checklist, and daily log for the live <code>secplus_portal</code> test.
-          GA4 funnel + Stripe purchases pull automatically; enter
-          <strong>Google Ads spend, impressions, clicks</strong> from
-          <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a> daily or on review days (3, 7, 21).
-          Saved to <code>data/reports/campaign-plan/</code>. See also
-          <a href="#section-campaigns">Campaign tracker</a>.
+          <strong>Conversion-first:</strong> maximize qualified clicks within budget, then optimize
+          <strong>after the click</strong> — landing → <code>begin_checkout</code> → purchase.
+          Log <strong>Google Ads spend + clicks</strong> daily; GA4 <strong>landing checkout rate</strong> is the primary auto metric.
+          See <code>marketing-research/Sec+ Campaign/Sec+ Phase 1 Scorecard.md</code> (confirmed).
+          Saved to <code>data/reports/campaign-plan/</code>.
+          <a href="#section-campaigns">Campaign tracker →</a>
         </p>
         <div class="row plan-start-row" style="margin-bottom:12px">
           <div>
@@ -728,17 +774,20 @@
         </div>
         <div id="planGoalBlock"></div>
         <div class="plan-progress-bar cards" id="planProgressCards"></div>
-        <h3 class="portal-product-title">Review milestones</h3>
-        <div class="plan-milestones" id="planMilestones"></div>
-        <h3 class="portal-product-title">Setup checklist</h3>
+        <h3 class="portal-product-title">Setup checklist (one-time)</h3>
         <div id="planPhases"></div>
-        <h3 class="portal-product-title">Calendar · click a day to log data</h3>
+        <h3 class="portal-product-title">Calendar · click a day for checklist + daily log</h3>
         <div class="plan-calendar-wrap">
           <div class="plan-calendar" id="planCalendar"></div>
         </div>
         <div class="plan-daily-form" id="planDailyForm">
           <h4 id="planDailyFormTitle">Select a day on the calendar</h4>
           <div class="plan-daily-auto" id="planDailyAuto">Auto metrics appear when a day is selected.</div>
+          <div class="plan-daily-checklist" id="planDailyChecklist" hidden>
+            <h5 id="planDailyChecklistTitle">Today&apos;s checklist</h5>
+            <p class="plan-checklist-summary" id="planDailyChecklistSummary"></p>
+            <ul id="planDailyChecklistList"></ul>
+          </div>
           <div class="plan-daily-grid">
             <div><label for="planAdsSpend">Spend (USD)</label><input id="planAdsSpend" type="number" min="0" step="0.01" placeholder="18.50" /></div>
             <div><label for="planAdsImpressions">Impressions</label><input id="planAdsImpressions" type="number" min="0" step="1" /></div>
@@ -749,11 +798,12 @@
           </div>
           <div class="plan-check-row">
             <label><input id="planAdsPaused" type="checkbox" /> Ads paused this day</label>
+            <label><input id="planLandingChange" type="checkbox" /> Landing page change shipped</label>
             <label><input id="planKeywordCsv" type="checkbox" /> Keyword CSV synced</label>
             <label><input id="planNegatives" type="checkbox" /> Negatives added</label>
           </div>
           <label for="planNotes">Ops notes</label>
-          <textarea id="planNotes" placeholder="Search terms reviewed, RSA change, pause reason…"></textarea>
+          <textarea id="planNotes" placeholder="Landing test, search terms, RSA tweak, checkout issue…"></textarea>
           <div class="row" style="margin-top:12px">
             <button type="button" id="planSaveDailyBtn">Save day</button>
             <button type="button" id="planRefreshBtn" class="secondary">Refresh plan</button>
@@ -1179,7 +1229,6 @@
             escapeAttr((data && data.error) || "Plan not loaded") +
             "</p>";
           document.getElementById("planProgressCards").innerHTML = "";
-          document.getElementById("planMilestones").innerHTML = "";
           document.getElementById("planPhases").innerHTML = "";
           document.getElementById("planCalendar").innerHTML = "";
           if (statusEl) {
@@ -1210,10 +1259,12 @@
 
         document.getElementById("planProgressCards").innerHTML = [
           ["Day", (progress.daysElapsed || 0) + " / " + (progress.daysTotal || 21)],
-          ["Steps done", (totals.stepsCompleted || 0) + " / " + (totals.stepsTotal || 0)],
+          ["Landing checkout rate", fmtPct(totals.landingCheckoutRate)],
+          ["Paid → checkout", fmtPct(totals.checkoutRate)],
+          ["Click → checkout", fmtPct(totals.clickToCheckoutRate)],
           ["Logged ad spend", fmtUsd(totals.manualAdsSpendUsd || 0)],
+          ["Logged clicks", fmt(totals.manualAdsClicks || 0)],
           ["Stripe Sec+ (auto)", fmt(totals.stripeSecplusPurchases || 0)],
-          ["Paid sessions (auto)", fmt(totals.autoPaidSessions || 0)],
           ["Checkouts (auto)", fmt(totals.autoBeginCheckout || 0)],
         ]
           .map(function (pair) {
@@ -1223,23 +1274,6 @@
               '</div><div class="lbl">' +
               pair[0] +
               "</div></div>"
-            );
-          })
-          .join("");
-
-        document.getElementById("planMilestones").innerHTML = (plan.milestones || [])
-          .map(function (m) {
-            return (
-              '<article class="plan-milestone' +
-              (m.optional ? " optional" : "") +
-              '"><h4>Day ' +
-              m.day +
-              " · " +
-              escapeAttr(m.title || "") +
-              "</h4><p>" +
-              escapeAttr(m.summary || "") +
-              (m.pullKeywordCsv ? " · keyword CSV" : "") +
-              "</p></article>"
             );
           })
           .join("");
@@ -1298,6 +1332,15 @@
               manual.adsSpendUsd != null && manual.adsSpendUsd !== ""
                 ? "$" + Number(manual.adsSpendUsd).toFixed(0)
                 : "";
+            var taskStat = "";
+            if (d.checklist && d.checklist.tasks && d.checklist.tasks.length) {
+              var doneCount = 0;
+              d.checklist.tasks.forEach(function (t) {
+                if (isPlanDailyTaskDone(t, manual)) doneCount += 1;
+              });
+              taskStat =
+                '<div class="day-stat">' + doneCount + "/" + d.checklist.tasks.length + " tasks</div>";
+            }
             return (
               '<button type="button" class="' +
               cls +
@@ -1308,9 +1351,13 @@
               '</div><div class="day-date">' +
               d.date.slice(5) +
               "</div>" +
+              taskStat +
               (spend ? '<div class="day-stat">' + spend + " spend</div>" : "") +
               (auto.paidSessions
                 ? '<div class="day-stat">' + fmt(auto.paidSessions) + " sess</div>"
+                : "") +
+              (auto.landingBeginCheckout
+                ? '<div class="day-stat">' + fmt(auto.landingBeginCheckout) + " L-co</div>"
                 : "") +
               (auto.secplusPurchases
                 ? '<div class="day-stat">' + fmt(auto.secplusPurchases) + " buy</div>"
@@ -1361,14 +1408,139 @@
         });
       }
 
+      function isPlanDailyTaskDone(task, manual) {
+        if (!task) return false;
+        manual = manual || {};
+        if (task.syncField && manual[task.syncField]) return true;
+        if (task.syncFields && task.syncFields.length) {
+          var allLogged = task.syncFields.every(function (field) {
+            return manual[field] != null && manual[field] !== "";
+          });
+          if (allLogged) return true;
+        }
+        var doneIds = manual.completedDailyTaskIds || [];
+        return doneIds.indexOf(task.id) !== -1;
+      }
+
+      function collectPlanDailyTaskIds(manual) {
+        manual = manual || {};
+        var ids = Array.isArray(manual.completedDailyTaskIds)
+          ? manual.completedDailyTaskIds.slice()
+          : [];
+        var box = document.getElementById("planDailyChecklistList");
+        if (box) {
+          box.querySelectorAll("[data-daily-task]").forEach(function (cb) {
+            var tid = cb.getAttribute("data-daily-task");
+            if (!tid) return;
+            if (cb.checked && ids.indexOf(tid) === -1) ids.push(tid);
+            if (!cb.checked) ids = ids.filter(function (x) {
+              return x !== tid;
+            });
+          });
+        }
+        return ids;
+      }
+
+      function renderPlanDailyChecklist(day) {
+        var wrap = document.getElementById("planDailyChecklist");
+        var list = document.getElementById("planDailyChecklistList");
+        var titleEl = document.getElementById("planDailyChecklistTitle");
+        var summaryEl = document.getElementById("planDailyChecklistSummary");
+        if (!wrap || !list || !day || !day.checklist) {
+          if (wrap) wrap.hidden = true;
+          return;
+        }
+        var checklist = day.checklist;
+        var manual = day.manual || {};
+        wrap.hidden = false;
+        if (titleEl) titleEl.textContent = checklist.heading || "Today's checklist";
+        if (summaryEl) {
+          summaryEl.textContent = checklist.summary || "";
+          summaryEl.hidden = !checklist.summary;
+        }
+        list.innerHTML = (checklist.tasks || [])
+          .map(function (task) {
+            var done = isPlanDailyTaskDone(task, manual);
+            return (
+              "<li>" +
+              '<label class="' +
+              (done ? "done" : "") +
+              (task.milestone ? " milestone-task" : "") +
+              '">' +
+              '<input type="checkbox" data-daily-task="' +
+              escapeAttr(task.id) +
+              '"' +
+              (done ? " checked" : "") +
+              " />" +
+              "<span>" +
+              escapeAttr(task.label) +
+              "</span></label>" +
+              (task.hint ? '<span class="task-hint">' + escapeAttr(task.hint) + "</span>" : "") +
+              "</li>"
+            );
+          })
+          .join("");
+        bindPlanDailyChecklistActions(day);
+      }
+
+      function bindPlanDailyChecklistActions(day) {
+        var box = document.getElementById("planDailyChecklistList");
+        if (!box) return;
+        box.querySelectorAll("[data-daily-task]").forEach(function (cb) {
+          if (cb.dataset.dailyTaskBound === "1") return;
+          cb.dataset.dailyTaskBound = "1";
+          cb.addEventListener("change", function () {
+            savePlanDailyChecklistOnly(day.date, day.checklist);
+          });
+        });
+      }
+
+      function savePlanDailyChecklistOnly(date, checklist) {
+        if (!date || !checklist) return;
+        var manualPatch = {
+          completedDailyTaskIds: collectPlanDailyTaskIds(findPlanDay(date)?.manual || {}),
+        };
+        (checklist.tasks || []).forEach(function (task) {
+          if (!task.syncField) return;
+          var taskCb = document.querySelector('[data-daily-task="' + task.id + '"]');
+          if (taskCb) manualPatch[task.syncField] = taskCb.checked;
+        });
+        var st = planStatusEl();
+        postJson("/api/analytics-report", {
+          action: "campaign_plan_save",
+          campaignId: "secplus_portal",
+          date: date,
+          daily: manualPatch,
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error((res.body && res.body.error) || "Save failed");
+            return loadCampaignPlanOnly();
+          })
+          .then(function () {
+            selectPlanDay(date);
+            if (st) {
+              st.textContent = "Checklist saved · " + date;
+              st.className = "status ok";
+            }
+          })
+          .catch(function (err) {
+            if (st) {
+              st.textContent = err.message || "Could not save checklist";
+              st.className = "status err";
+            }
+          });
+      }
+
       function selectPlanDay(date) {
         selectedPlanDate = date || null;
         var day = findPlanDay(date);
         var title = document.getElementById("planDailyFormTitle");
         var autoEl = document.getElementById("planDailyAuto");
+        var checklistWrap = document.getElementById("planDailyChecklist");
         if (!day) {
           if (title) title.textContent = "Select a day on the calendar";
           if (autoEl) autoEl.textContent = "Auto metrics appear when a day is selected.";
+          if (checklistWrap) checklistWrap.hidden = true;
           return;
         }
         if (title) title.textContent = "Day " + day.dayNumber + " · " + day.date;
@@ -1384,23 +1556,32 @@
         document.getElementById("planAdsConv").value =
           manual.adsConversions != null ? manual.adsConversions : "";
         document.getElementById("planAdsPaused").checked = Boolean(manual.adsPaused);
+        document.getElementById("planLandingChange").checked = Boolean(manual.landingChange);
         document.getElementById("planKeywordCsv").checked = Boolean(manual.keywordCsvUpdated);
         document.getElementById("planNegatives").checked = Boolean(manual.negativesAdded);
         document.getElementById("planNotes").value = manual.notes || "";
+        renderPlanDailyChecklist(day);
         if (autoEl) {
           autoEl.innerHTML =
             "<strong>Auto (GA4 + Stripe):</strong> " +
+            fmt(auto.landingPageViews || 0) +
+            " landing views · " +
+            fmt(auto.landingBeginCheckout || 0) +
+            " landing checkout · " +
+            fmtPct(auto.landingCheckoutRate) +
+            " landing rate · " +
             fmt(auto.paidSessions || 0) +
             " paid sessions · " +
             fmt(auto.beginCheckout || 0) +
-            " begin_checkout · " +
-            fmt(auto.landingPageViews || 0) +
-            " landing views · " +
+            " utm checkout · " +
+            fmtPct(auto.checkoutRate) +
+            " paid→checkout · " +
+            (manual.adsClicks
+              ? fmtPct(auto.clickToCheckoutRate) + " click→checkout (" + fmt(manual.adsClicks) + " clicks logged) · "
+              : "log Ads clicks for click→checkout · ") +
             fmt(auto.secplusPurchases || 0) +
-            " Stripe Sec+ · running spend logged " +
-            fmtUsd(day.running && day.running.adsSpendUsd) +
-            " · running buys " +
-            fmt((day.running && day.running.secplusPurchases) || 0);
+            " Stripe Sec+ · running spend " +
+            fmtUsd(day.running && day.running.adsSpendUsd);
         }
         document.querySelectorAll(".plan-cal-day").forEach(function (el) {
           el.classList.toggle("selected", el.getAttribute("data-plan-date") === date);
@@ -1483,8 +1664,12 @@
             adsCtr: document.getElementById("planAdsCtr").value,
             adsConversions: document.getElementById("planAdsConv").value,
             adsPaused: document.getElementById("planAdsPaused").checked,
+            landingChange: document.getElementById("planLandingChange").checked,
             keywordCsvUpdated: document.getElementById("planKeywordCsv").checked,
             negativesAdded: document.getElementById("planNegatives").checked,
+            completedDailyTaskIds: collectPlanDailyTaskIds(
+              findPlanDay(selectedPlanDate) ? findPlanDay(selectedPlanDate).manual : {}
+            ),
             notes: document.getElementById("planNotes").value,
           },
         })
@@ -1497,6 +1682,7 @@
               st.textContent = "Saved " + selectedPlanDate + ".";
               st.className = "status ok";
             }
+            selectPlanDay(selectedPlanDate);
           })
           .catch(function (err) {
             if (st) {

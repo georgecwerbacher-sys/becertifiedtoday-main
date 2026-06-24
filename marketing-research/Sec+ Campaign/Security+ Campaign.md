@@ -21,7 +21,7 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 |---------|--------|
 | Campaign name | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
 | Type | Search (Search partners **off** until baseline) |
-| Daily budget | **$20.00/day** |
+| Daily budget | **$15.00/day** |
 | Bidding (weeks 1–2) | Maximize clicks · max CPC **$2.75** |
 | utm_campaign | `secplus_portal` |
 | Language | English |
@@ -29,7 +29,7 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 | AI Max / URL expansion | **Off** |
 | Primary conversion | GA4 `begin_checkout` (import as Primary in Google Ads) |
 
-**One ad group only:** `Security+ PBQ Practice` — full $20/day budget goes here.
+**One ad group only:** `Security+ PBQ Practice` — full $15/day budget goes here.
 
 ---
 
@@ -58,19 +58,18 @@ RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]] · Keywords: [[Sec+ Keywo
 
 | # | Product / service name | Description (paste under name in Google Ads) |
 |---|------------------------|-----------------------------------------------|
-| 1 | Security+ 10-Day Exam Prep Access | 10 days of SY0-701 v5.0 exam prep in your browser: 1000+ practice questions, 34 PBQ scenarios, adaptive review, portal modes, and 90-min timed exam with scorecard. $9.99 one-time. |
-| 2 | Security+ 30-Day Exam Prep Access | 30 days of the same SY0-701 library: 1000+ questions, 34 PBQ scenarios, adaptive review, progress tracking, and timed exam. $19.99 one-time. |
-| 3 | Security+ Practice Questions | 1000+ SY0-701 MCQ bank with verified explanations, adaptive review, and timed exam. Browser-only. |
-| 4 | Security+ PBQ Scenarios | 34 performance-based scenarios—chain labs, drag-drop, hot spots, IR exhibits—in browser. |
-| 5 | Security+ Timed Exam Simulation | 90-minute mixed MCQ + PBQ run with domain scorecard review. Included with portal access. |
+| 1 | Security+ 30-Day Exam Prep Access | 30 days of SY0-701 v5.0 exam prep in your browser: 1000+ practice questions, 34 PBQ scenarios, adaptive review, progress tracking, and 90-min timed exam with scorecard. $19.99 one-time. |
+| 2 | Security+ Practice Questions | 1000+ SY0-701 MCQ bank with verified explanations, adaptive review, and timed exam. Browser-only. |
+| 3 | Security+ PBQ Scenarios | 34 performance-based scenarios—chain labs, drag-drop, hot spots, IR exhibits—in browser. |
+| 4 | Security+ Timed Exam Simulation | 90-minute mixed MCQ + PBQ run with domain scorecard review. Included with portal access. |
 
 ---
 
 ## Pre-launch checks
 
-- [ ] Stripe `secplus-portal-10d` ($9.99) and `secplus-portal-30d` ($19.99) live
+- [ ] Stripe `secplus-portal-30d` ($19.99) live
 - [ ] Checkout works on cert home (desktop + mobile)
-- [ ] GA4 `begin_checkout` fires for both item IDs
+- [ ] GA4 `begin_checkout` fires for `secplus_portal_30d`
 - [ ] `secplus-home-conversion.js` — test `?utm_content=pbq-wedge` on cert home
 - [ ] Cert home loads: `/comptia-sec+-home.html`
 - [ ] Keyword Planner worksheet filled — [[Sec+ Keywords#Keyword Planner worksheet]]

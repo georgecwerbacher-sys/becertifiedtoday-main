@@ -34,7 +34,7 @@ tags:
 |---------|--------|
 | Campaign | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
 | Ad group | **`Security+ PBQ Practice`** |
-| Budget | **$20.00/day** · max CPC **$2.75** |
+| Budget | **$15.00/day** · max CPC **$2.75** |
 | utm_campaign | `secplus_portal` · utm_content `pbq-wedge` |
 
 Full setup: [[../Sec+ Campaign/Sec+ Notes|Sec+ Notes]] · RSA: [[../Sec+ Campaign/Sec+ RSA Copy|Sec+ RSA Copy]]

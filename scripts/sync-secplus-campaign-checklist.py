@@ -56,37 +56,41 @@ def normalize_keyword(raw: str, match_type: str) -> str:
 
 def static_setup_rows() -> list[list[str]]:
     return [
-        checklist_row("Setup", "Pre-launch", 1, "Confirm Stripe secplus-portal-10d live at $9.99"),
-        checklist_row("Setup", "Pre-launch", 2, "Confirm Stripe secplus-portal-30d live at $19.99"),
         checklist_row(
             "Setup",
             "Pre-launch",
-            3,
+            1,
+            "Confirm Stripe secplus-portal-30d live at $19.99",
+        ),
+        checklist_row(
+            "Setup",
+            "Pre-launch",
+            2,
             "Test checkout from comptia-sec+-home.html desktop + mobile",
             notes="Verify begin_checkout in GA4",
         ),
         checklist_row(
             "Setup",
             "Pre-launch",
-            4,
-            "Confirm GA4 begin_checkout for secplus_portal_10d and secplus_portal_30d",
+            3,
+            "Confirm GA4 begin_checkout for secplus_portal_30d",
         ),
         checklist_row(
             "Setup",
             "Pre-launch",
-            5,
+            4,
             "Import GA4 begin_checkout as Primary conversion in Google Ads",
         ),
         checklist_row(
             "Setup",
             "Pre-launch",
-            6,
+            5,
             "Verify secplus-home-conversion.js on ?utm_content=pbq-wedge",
         ),
         checklist_row(
             "Setup",
             "Pre-launch",
-            7,
+            6,
             "Verify PBQ landing loads on mobile + desktop",
         ),
         checklist_row(
@@ -97,7 +101,7 @@ def static_setup_rows() -> list[list[str]]:
             "Security+ SY0-701 · Exam prep · becertifiedtoday",
             "Campaign",
         ),
-        checklist_row("Setup", "Campaign", 2, "Set daily budget", "$20.00/day", "Campaign"),
+        checklist_row("Setup", "Campaign", 2, "Set daily budget", "$15.00/day", "Campaign"),
         checklist_row(
             "Setup",
             "Campaign",
@@ -125,7 +129,7 @@ def static_setup_rows() -> list[list[str]]:
             "Create ad group",
             AD_GROUP,
             AD_GROUP,
-            "Only ad group — full $20/day budget",
+            "Only ad group — full $15/day budget",
         ),
         checklist_row(
             "Setup",
@@ -220,7 +224,7 @@ def launch_rows() -> list[list[str]]:
             "Confirm GA4 begin_checkout in Realtime",
             "",
             "Campaign",
-            "secplus_portal_10d or secplus_portal_30d",
+            "secplus_portal_30d",
         ),
     ]
 
@@ -281,7 +285,7 @@ def ops_rows() -> list[list[str]]:
             "Ops",
             "Week 1",
             3,
-            "Day 7 CPA review hold $20/day or tune max CPC",
+            "Day 7 CPA review hold $15/day or tune max CPC",
             "",
             "Campaign",
         ),
@@ -384,7 +388,7 @@ def write_readme(positive_count: int, campaign_neg_count: int, adgroup_neg_count
 
 File: marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv
 
-One campaign · one ad group · $20/day:
+One campaign · one ad group · $15/day:
   • Setup checklist (pre-launch through negatives)
   • 6 campaign sitelinks (Extensions phase — paste URLs + descriptions)
   • {positive_count} positive keywords (rank order — paste into Google Ads)
@@ -420,7 +424,7 @@ Source keywords: marketing-research/Sec+ Campaign/secplus-keywords.csv
 Campaign summary
 ----------------
 Campaign:   Security+ SY0-701 · Exam prep · becertifiedtoday
-Budget:     $20.00/day · max CPC $2.75
+Budget:     $15.00/day · max CPC $2.75
 Ad group:   {AD_GROUP} (only)
 Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
 UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge

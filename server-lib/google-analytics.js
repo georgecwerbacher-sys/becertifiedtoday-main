@@ -684,6 +684,34 @@ export async function fetchDailyLandingPageViews(client, propertyId, range, page
   }));
 }
 
+/** Daily begin_checkout event count on one landing pagePath (post-click landing conversion). */
+export async function fetchDailyLandingBeginCheckout(client, propertyId, range, pagePath) {
+  if (!pagePath) return [];
+  try {
+    const response = await runReportSafe(client, {
+      property: propertyName(propertyId),
+      dateRanges: [range],
+      dimensionFilter: mergeDimensionFilters(
+        gaCustomerTrafficDimensionFilter(),
+        pagePathExactFilter([pagePath]),
+        eventNameExactFilter(["begin_checkout"])
+      ),
+      dimensions: [{ name: "date" }],
+      metrics: [{ name: "eventCount" }],
+      orderBys: [{ dimension: { dimensionName: "date" } }],
+    });
+
+    return (response.rows || []).map((row) => ({
+      date: gaDateToIso(row.dimensionValues?.[0]?.value || ""),
+      landingBeginCheckout: Number(row.metricValues?.[0]?.value || 0),
+    }));
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (msg.includes("INVALID_ARGUMENT")) return [];
+    throw err;
+  }
+}
+
 /** Reddit Ads traffic: sessionSource = reddit, sessionMedium = cpc. */
 export async function fetchRedditCpcByCampaign(client, propertyId, range, limit = 25) {
   return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "cpc", limit);

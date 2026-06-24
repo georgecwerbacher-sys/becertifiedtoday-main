@@ -9,7 +9,7 @@ tags:
 
 **Start here:** [[Site Mission]] — canonical positioning for becertifiedtoday.com
 
-**Live campaign:** [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Google Search · **$20/day** · 21-day budget test
+**Live campaign:** [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Google Search · **$15/day** · Phase 1 purpose: [[Sec+ Campaign/Sec+ Phase 1 Purpose|Sec+ Phase 1 Purpose]]
 
 Hub for the active ad campaign, competitor intel, and weekly analytics.
 

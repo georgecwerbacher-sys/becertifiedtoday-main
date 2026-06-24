@@ -3,7 +3,7 @@
  *
  * Default hero: free samples. Headline changes when ?hl=, utm_content, or utm_term maps to a variant.
  *
- * Ad setup: scripts/secplus-portal-10d-google-ads.md · scripts/secplus-google-ads-campaign-checklist.csv
+ * Ad setup: marketing-research/Sec+ Campaign/ — Sec+ Notes.md · Sec+ RSA Copy.md · secplus-campaign-checklist.csv
  */
 (function () {
   "use strict";

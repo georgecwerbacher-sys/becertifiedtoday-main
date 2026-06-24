@@ -1,39 +1,15 @@
-Security+ Google Ads — combined checklist for Apple Numbers
-============================================================
+DEPRECATED — do not use for new setup
+=====================================
 
-File: scripts/secplus-google-ads-campaign-checklist.csv
+This checklist described the retired dual-ad-group setup (secplus_portal_10d + PBQ wedge)
+with $9.99 / 10-day offers. Live campaign is one ad group only:
 
-One file contains everything:
-  • Setup checklist (pre-launch through initial test)
-  • RSA headlines (15 per ad group)
-  • RSA descriptions (4 per ad group)
+  marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv
+  marketing-research/Sec+ Campaign/Sec+ Notes.md
+  marketing-research/Sec+ Campaign/Sec+ RSA Copy.md
 
-Columns
--------
-  Done      — set to TRUE when complete (or convert to checkbox in Numbers)
-  Section   — Setup | Headline | Description | Ops
-  Phase     — Pre-launch, Campaign, Ad group 1, secplus_portal_10d, etc.
-  Step      — step number within that phase
-  Task      — what to do
-  Value     — paste value, URL, keyword, headline text, or description text
-  Ad group  — secplus_portal_10d, secplus_pbq_wedge, Campaign, Both
-  Notes     — pins, char counts, reminders
+Offer: 30-day · $19.99 only · ad group Security+ PBQ Practice · $15/day
 
-Open in Numbers
----------------
-1. Numbers → File → Open → secplus-google-ads-campaign-checklist.csv
-2. Select Done column → Format → Checkbox (optional)
-3. Filter by Section column to show only Setup, Headline, or Description
-4. File → Save to create a .numbers file
+Regenerate live checklist: npm run sync:secplus-checklist
 
-Campaign summary
-----------------
-Budget:     $10.00/day
-Ad groups:  secplus_portal_10d (~$7/day) portal baseline only
-Landing:    https://becertifiedtoday.com/comptia-sec+-home.html#purchase
-Wedge:      Dedicated SEC+_Wedge_PBQ — see secplus-wedge-pbq-google-ads-checklist.csv
-UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=portal-10d
-
-Full reference: scripts/secplus-portal-10d-google-ads.md
-Campaign doc:   marketing-research/campaigns/Security+ Campaign.md
-Funnel tracker: marketing-research/Wedge Marketing plan/SEC+ funnel build tracker.md
+Legacy file kept for reference: scripts/secplus-google-ads-campaign-checklist.csv

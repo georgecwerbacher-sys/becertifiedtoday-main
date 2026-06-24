@@ -89,7 +89,7 @@ URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_m
 
 ## Geo
 
-Same Tier A/B country lists as prior portal setup. Federal/defense US metros are especially relevant for Security+ (DoD 8570/8140). **$20/day** on PBQ wedge keywords.
+Same Tier A/B country lists as prior portal setup. Federal/defense US metros are especially relevant for Security+ (DoD 8570/8140). **$15/day** on PBQ wedge keywords.
 
 **Location option:** Presence — people in or regularly in targeted locations.
 

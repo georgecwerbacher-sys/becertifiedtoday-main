@@ -13,7 +13,7 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 
 **Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
 **Ad group:** **`Security+ PBQ Practice`** (only)  
-**Budget:** **$20.00/day** · max CPC **$2.75**  
+**Budget:** **$15.00/day** · max CPC **$2.75**  
 **Landing:** `/comptia-sec+-home.html`  
 **utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
 
