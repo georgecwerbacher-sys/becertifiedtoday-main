@@ -28,11 +28,11 @@ Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
 | #   | Link text              | Description 1             | Description 2                | Full URL                                                                                                                                                        |
 | --- | ---------------------- | ------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | 30-Day Access · $19.99 | Full portal + timed sim   | One payment, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase` |
-| 2   | 34 PBQ Scenarios       | Chain labs & hot spots    | Browser performance prep     | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list`     |
+| 2   | 34 PBQ Scenarios       | Chain labs & hot spots    | Browser performance prep     | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list#home-secplus-samples-title`     |
 | 3   | Timed 90-Min Sim       | Mixed MCQ and PBQ run     | Domain scorecard included    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim#purchase` |
-| 4   | Try PBQ Sample         | 3-scenario PBQ preview    | Dark web IR · WLAN · ACL     | `https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq`          |
+| 4   | Try 3 PBQ Samples      | Dark web IR · WLAN · ACL  | On landing · sample scorecard  | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq#home-secplus-darkweb-title` |
 | 5   | Not a Course · PBQ Prep | Last-mile readiness check | PBQ + timed sim + scorecard    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-readiness#purchase` |
-| 6   | Scorecard & Review     | Timed sim + weak domains  | Adaptive review modes        | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard`    |
+| 6   | Scorecard & Review     | Timed sim + weak domains  | Adaptive review modes        | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard#purchase`    |
 
 ---
 
@@ -49,7 +49,7 @@ Sitelink 2
 Name: 34 PBQ Scenarios
 Description 1: Chain labs & hot spots
 Description 2: Browser performance prep
-URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list#home-secplus-samples-title
 
 Sitelink 3
 Name: Timed 90-Min Sim
@@ -58,10 +58,10 @@ Description 2: Domain scorecard included
 URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim#purchase
 
 Sitelink 4
-Name: Try PBQ Sample
-Description 1: 3-scenario PBQ preview
-Description 2: Dark web IR · WLAN · ACL
-URL: https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq
+Name: Try 3 PBQ Samples
+Description 1: Dark web IR · WLAN · ACL
+Description 2: On landing · sample scorecard
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq#home-secplus-darkweb-title
 
 Sitelink 5
 Name: Not a Course · PBQ Prep
@@ -73,7 +73,7 @@ Sitelink 6
 Name: Scorecard & Review
 Description 1: Timed sim + weak domains
 Description 2: Adaptive review modes
-URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard#purchase
 ```
 
 ---
@@ -81,9 +81,9 @@ URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_m
 ## Message match
 
 - **Purchase sitelinks** → `#purchase` on PBQ landing (same page as ad final URL)
-- **Sample sitelink** → 3-scenario PBQ preview chain (`secplus-sample?track=sim-dark-web`: dark web IR, WLAN, firewall ACL)
+- **Sample sitelink** → landing **PBQ Preview — 3 Scenarios** block (`#home-secplus-darkweb-title`); same three browser PBQs as **Start PBQ preview →** (dark web IR, WLAN configuration, firewall ACL)
 - **No policy-risk copy** in sitelink text — avoid *like test day*, *real exam*, *walk in ready*
-- **No “Free” in link text** — use *Try PBQ Sample* (sample is free on landing; don’t lead with free in extensions)
+- **No “Free” in link text** — use *Try 3 PBQ Samples* (samples live on landing; don’t lead with free in extensions)
 
 ---
 

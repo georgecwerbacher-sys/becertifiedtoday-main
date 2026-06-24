@@ -169,9 +169,9 @@ def sitelink_rows() -> list[list[str]]:
             "Desc1: Mixed MCQ and PBQ run · Desc2: Domain scorecard included",
         ),
         (
-            "Add sitelink · Try PBQ Sample",
-            f"https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&{UTM}&utm_content=sitelink-pbq",
-            "Desc1: Dark web IR scenario · Desc2: Browser preview, no download",
+            "Add sitelink · Try 3 PBQ Samples",
+            f"{HOME_LANDING}&utm_content=sitelink-pbq#home-secplus-darkweb-title",
+            "Desc1: Dark web IR · WLAN · ACL · Desc2: On landing · sample scorecard",
         ),
         (
             "Add sitelink · Not a Course · PBQ Prep",

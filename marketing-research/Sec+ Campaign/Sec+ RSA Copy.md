@@ -104,7 +104,7 @@ One payment—no subscription. Adaptive review on phone, tablet, or desktop.
 4. Replace headline `#2` with `Timed 90-Min Exam Sim` if duplicate.
 5. Add/replace headline `30-Day Access · $19.99` · remove `$9.99 · 10-Day Access` if present.
 6. Paste all 4 descriptions above (replace `$9.99/10d` line).
-7. **Sitelinks:** replace **10-Day Access · $9.99** with **30-Day Access · $19.99** (see [[Extensions]]).
+7. **Sitelinks:** all 6 from [[Extensions]] — replace **10-Day Access · $9.99** with **30-Day Access · $19.99**; add/replace **#4 Try 3 PBQ Samples** (landing `#home-secplus-darkweb-title`, not old `secplus-sample` URL).
 8. Preview on mobile — confirm price shows in description, not pinned headline.
 
 ---

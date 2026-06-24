@@ -3,7 +3,10 @@
  */
 import { getCampaignMarketingRegistry } from "./campaign-marketing-registry.js";
 import { readCampaignPlanState } from "./campaign-plan-store.js";
-import { getCampaignTestPlan } from "./campaign-test-plan-registry.js";
+import {
+  getCampaignTestPlan,
+  getDailyChecklistForDay,
+} from "./campaign-test-plan-registry.js";
 import {
   fetchDailyGoogleCpcCampaignBeginCheckout,
   fetchDailyGoogleCpcCampaignSessions,

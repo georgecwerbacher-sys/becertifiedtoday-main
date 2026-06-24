@@ -42,6 +42,8 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 | Pin H1        | `Security+ PBQ Practice`     |
 | Pin H2        | `Timed 90-Min Exam Sim`      |
 
+**Sitelinks (6):** [[Extensions#Sitelinks (6)|full paste block]] — sitelink **#4** = **Try 3 PBQ Samples** → landing `#home-secplus-darkweb-title` (dark web IR · WLAN · ACL).
+
 **Final URL:**
 
 ```

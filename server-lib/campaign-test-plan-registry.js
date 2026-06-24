@@ -198,7 +198,7 @@ export const SECPLUS_PORTAL_21D_PLAN = {
         { id: "shell-geo", label: "Geo US, CA, UK, AU · Presence only" },
         { id: "shell-utm", label: "utm_campaign secplus_portal on all ads" },
         { id: "shell-ai", label: "AI Max / URL expansion off" },
-        { id: "shell-sitelinks", label: "6 sitelinks pasted (30-day lead sitelink)" },
+        { id: "shell-sitelinks", label: "6 sitelinks pasted — incl. Try 3 PBQ Samples on landing" },
       ],
     },
     {
