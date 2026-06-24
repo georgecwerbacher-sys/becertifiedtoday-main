@@ -1420,6 +1420,35 @@
     html.secplus-landing-portal-10d .purchase-card-main--10d[hidden] {
       display: block !important;
     }
+    html.secplus-landing-google-paid.secplus-landing-portal-10d .purchase-card-main--30d {
+      display: block !important;
+    }
+    html.secplus-landing-google-paid.secplus-landing-portal-10d .purchase-card-main--10d {
+      display: none !important;
+    }
+    html.secplus-landing-google-paid #secplus10dOfferRoot,
+    html.secplus-landing-google-paid #secplus10dLastChanceBar,
+    html.secplus-landing-google-paid #secplusLeadStickyCta,
+    html.secplus-landing-google-paid .purchase-card-main--10d {
+      display: none !important;
+    }
+    html.secplus-landing-google-paid .purchase-card-main--30d {
+      display: block !important;
+    }
+    .secplus-google-paid-callout {
+      display: none;
+      margin: 0 0 clamp(18px, 3vw, 24px);
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(125, 206, 160, 0.35);
+      background: rgba(39, 174, 96, 0.08);
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    html.secplus-landing-google-paid .secplus-google-paid-callout {
+      display: block;
+    }
     .purchase-alt-tier-note {
       margin: 14px 0 0;
       font-size: 0.88rem;
@@ -2997,6 +3026,17 @@
               </div>
             </div>
           </section>
+          <div
+            class="secplus-google-paid-callout"
+            id="secplusGooglePaidCallout"
+            hidden
+            role="note"
+          >
+            <strong>Already using Messer, Dion, or another course?</strong>
+            This is not another video bootcamp—it is browser PBQ practice plus a
+            <strong>90-minute timed simulation with scorecard review</strong> so you can tell if you are ready before test day.
+            Try the free samples below, then unlock <strong>30-day full access for $19.99</strong>.
+          </div>
           <div class="funnel-intro hero-conversion" data-secplus-hl-pending="1">
             <div class="secplus-hero-header">
               <p class="eyebrow" id="hero-conversion-eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests · timed simulation</p>
@@ -3714,6 +3754,7 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
+  <script src="/js/secplus-google-paid-landing.js" defer></script>
   <script src="/js/secplus-portal-10d-landing.js" defer></script>
   <script src="/js/bcc-10d-one-time-offer.js" defer></script>
   <script src="/js/bcc-lead-sticky-cta.js" defer></script>

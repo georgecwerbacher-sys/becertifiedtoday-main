@@ -26,7 +26,7 @@ CAMPAIGN = {
     ),
     "primaryConversion": "begin_checkout",
     "pinH1": "Security+ PBQ Practice",
-    "pinH2": "$9.99 · 10-Day Access",
+    "pinH2": "Timed 90-Min Exam Sim",
 }
 
 

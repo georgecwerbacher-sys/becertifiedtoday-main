@@ -14,6 +14,9 @@
   var SAMPLE_QUESTIONS = "/secplus-sample?track=questions";
   var SAMPLE_PBQ = "/secplus-sample?track=sim-dark-web";
 
+  var PAID_30D_SUFFIX =
+    "Try the free MCQ or PBQ samples below, then unlock <strong>30-day full access for $19.99</strong>—PBQs, timed sim, and scorecard included.";
+
   var WEDGE_LEAD =
     "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
     "<strong>Try the free MCQ or PBQ samples below</strong>, then unlock a <strong>10-day sprint for $9.99</strong> when you want the library and timed exam.";
@@ -21,6 +24,48 @@
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. <strong>No PDFs.</strong> " +
     "Try free samples first—same UI as full access.";
+
+  var PAID_VARIANT_OVERRIDES = {
+    "portal-10d": {
+      eyebrow: "SY0-701 · 30-day access · $19.99",
+      lead: BASE_LEAD + " Unlock <strong>30-day full access for $19.99</strong> when you are ready.",
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+    "pbq-wedge": {
+      lead:
+        "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
+        "Try a <strong>free dark web IR simulation</strong>, then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+    "timed-sim": {
+      lead:
+        "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
+        "Included with <strong>30-day full access for $19.99</strong>.",
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+    "wedge-default": {
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+      lead:
+        "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
+        PAID_30D_SUFFIX,
+    },
+    federal: {
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+    "practice-test": {
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+    "question-bank": {
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
+    },
+  };
 
   var VARIANTS = {
     "wedge-default": {
@@ -203,8 +248,22 @@
     return { id: DEFAULT_VARIANT, source: "default" };
   }
 
+  function isGooglePaidLanding() {
+    return (
+      typeof window.bccIsSecplusGooglePaidLanding === "function" &&
+      window.bccIsSecplusGooglePaidLanding()
+    );
+  }
+
+  function withPaidOverrides(variant) {
+    if (!isGooglePaidLanding()) return variant;
+    var patch = PAID_VARIANT_OVERRIDES[variant.id];
+    if (!patch) return variant;
+    return Object.assign({}, variant, patch);
+  }
+
   function getVariant(id) {
-    return VARIANTS[id] || VARIANTS[DEFAULT_VARIANT];
+    return withPaidOverrides(VARIANTS[id] || VARIANTS[DEFAULT_VARIANT]);
   }
 
   function campaignQueryString() {
@@ -312,6 +371,10 @@
       '">' +
       stickyPrimary +
       "</a>";
+    if (isGooglePaidLanding() && stickyHref === "#purchase") {
+      bar.querySelector("a").classList.remove("cta-main--free");
+      bar.querySelector("a").classList.add("cta-main");
+    }
     document.body.appendChild(bar);
 
     var mq = window.matchMedia("(max-width: 767px)");

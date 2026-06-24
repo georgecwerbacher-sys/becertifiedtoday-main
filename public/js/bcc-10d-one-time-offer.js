@@ -154,6 +154,13 @@
 
   function canOffer() {
     if (!cfg) return false;
+    if (
+      cfg === CONFIGS.secplus &&
+      typeof window.bccIsSecplusGooglePaidLanding === "function" &&
+      window.bccIsSecplusGooglePaidLanding()
+    ) {
+      return false;
+    }
     if (portalGateOpen()) return false;
     if (forcePreview) return true;
     if (wasDismissed()) return false;

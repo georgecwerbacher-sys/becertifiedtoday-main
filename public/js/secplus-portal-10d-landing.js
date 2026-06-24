@@ -24,6 +24,12 @@
   }
 
   function isPortal10dLanding() {
+    if (
+      typeof window.bccIsSecplusGooglePaidLanding === "function" &&
+      window.bccIsSecplusGooglePaidLanding()
+    ) {
+      return false;
+    }
     var content = readUtmContent() || readAttributionContent();
     return UTM_RE.test(content);
   }

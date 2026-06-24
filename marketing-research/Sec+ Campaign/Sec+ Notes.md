@@ -62,7 +62,9 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 4. Keywords: paste **Ad group** rows from [[secplus-campaign-checklist.csv]] (rank 1–67) — or regenerate from [[secplus-keywords.csv]] with `npm run sync:secplus-checklist`
 5. RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]]
-6. Pin H1 `Security+ PBQ Practice` · H2 `$9.99 · 10-Day Access`
+6. Pin H1 `Security+ PBQ Practice` · H2 `Timed 90-Min Exam Sim` (Google Ads — see [[Sec+ RSA Copy]])
+
+**Google paid landing:** `utm_source=google` shows **30-day · $19.99 only** on cert home (no 10-day popup/sticky). Organic/direct still offers 10-day.
 
 ---
 

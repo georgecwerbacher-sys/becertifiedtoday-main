@@ -91,6 +91,13 @@
   }
 
   function canShowOffer() {
+    if (
+      cfg === CONFIGS.secplus &&
+      typeof window.bccIsSecplusGooglePaidLanding === "function" &&
+      window.bccIsSecplusGooglePaidLanding()
+    ) {
+      return false;
+    }
     if (forcePreviewOffer()) return true;
     return !!(cfg && !cfg.hasAccess());
   }

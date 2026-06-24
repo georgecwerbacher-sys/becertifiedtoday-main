@@ -150,9 +150,9 @@ def sitelink_rows() -> list[list[str]]:
     """Campaign sitelinks — link text ≤25 · each description ≤35 (Notes column)."""
     links = [
         (
-            "Add sitelink · 10-Day Access · $9.99",
-            f"{HOME_LANDING}&utm_content=sitelink-10d#purchase",
-            "Desc1: 34 PBQ scenarios included · Desc2: One payment, no subscription",
+            "Add sitelink · 30-Day Access · $19.99",
+            f"{HOME_LANDING}&utm_content=sitelink-30d#purchase",
+            "Desc1: Full portal + timed sim · Desc2: One payment, no subscription",
         ),
         (
             "Add sitelink · 34 PBQ Scenarios",
@@ -170,9 +170,9 @@ def sitelink_rows() -> list[list[str]]:
             "Desc1: Dark web IR scenario · Desc2: Browser preview, no download",
         ),
         (
-            "Add sitelink · 30-Day Access · $19.99",
-            f"{HOME_LANDING}&utm_content=sitelink-30d#purchase",
-            "Desc1: Best value study window · Desc2: Full portal + timed sim",
+            "Add sitelink · Not a Course · PBQ Prep",
+            f"{HOME_LANDING}&utm_content=sitelink-readiness#purchase",
+            "Desc1: Last-mile readiness check · Desc2: PBQ + timed sim + scorecard",
         ),
         (
             "Add sitelink · Scorecard & Review",
@@ -209,7 +209,7 @@ def launch_rows() -> list[list[str]]:
             "Setup",
             "Launch",
             3,
-            "Click $9.99 checkout from PBQ landing — confirm Stripe",
+            "Click $19.99 checkout from cert home — confirm Stripe",
             "",
             AD_GROUP,
         ),
@@ -228,12 +228,12 @@ def launch_rows() -> list[list[str]]:
 def rsa_rows() -> list[list[str]]:
     headlines = [
         ("Security+ PBQ Practice", "Pin H1 · 24 chars"),
-        ("$9.99 · 10-Day Access", "Pin H2 · 22 chars"),
+        ("Timed 90-Min Exam Sim", "Pin H2 · 21 chars"),
         ("Am I Ready? · Scorecard", "Primary job · 22 chars"),
         ("Ready Before You Sit · SY0-701", "28 chars"),
         ("Interactive PBQ Prep", "20 chars"),
         ("34 PBQ Scenarios Prep", "21 chars"),
-        ("Timed 90-Min Exam Sim", "21 chars"),
+        ("30-Day Access · $19.99", "22 chars"),
         ("Detailed Scorecard Review", "25 chars"),
         ("SY0-701 PBQ in Browser", "22 chars"),
         ("No Download · Browser PBQ", "25 chars"),
@@ -245,8 +245,8 @@ def rsa_rows() -> list[list[str]]:
     ]
     descriptions = [
         "Practice SY0-701 PBQs in browser—chain labs, drag-drop, IR scenarios. Scorecard included.",
-        "90-min timed sim + scorecard. $9.99/10d unlocks 34 PBQs and 1000+ questions. One payment.",
-        "Cert required for work? Interactive PBQ prep in browser—not a $99 PDF dump or course.",
+        "90-min timed sim + scorecard. $19.99/30d unlocks 34 PBQs and 1000+ questions. One payment.",
+        "Already studied with a course? Interactive PBQ prep in browser—not another video bootcamp.",
         "One payment—no subscription. Adaptive review on phone, tablet, or desktop.",
     ]
     rows: list[list[str]] = []
@@ -340,7 +340,7 @@ def keyword_rows(keywords: list[dict[str, str]]) -> tuple[list[list[str]], list[
             "Paste RSA headlines",
             "See Headline rows below",
             AD_GROUP,
-            "Pin H1 Security+ PBQ Practice · H2 $9.99 · 10-Day Access",
+            "Pin H1 Security+ PBQ Practice · H2 Timed 90-Min Exam Sim",
         )
     )
     positives.append(

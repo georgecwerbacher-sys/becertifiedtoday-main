@@ -40,7 +40,7 @@ Paste-ready settings for Google Ads UI. **Setup steps:** [[Sec+ Notes]] · **Key
 | Ad group name | **`Security+ PBQ Practice`** |
 | Display path  | `Security+` / `PBQ-Practice` |
 | Pin H1        | `Security+ PBQ Practice`     |
-| Pin H2        | `$9.99 · 10-Day Access`      |
+| Pin H2        | `Timed 90-Min Exam Sim`      |
 
 **Final URL:**
 

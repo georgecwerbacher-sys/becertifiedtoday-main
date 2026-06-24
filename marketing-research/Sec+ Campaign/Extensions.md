@@ -27,11 +27,11 @@ Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
 
 | #   | Link text              | Description 1             | Description 2                | Full URL                                                                                                                                                        |
 | --- | ---------------------- | ------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | 10-Day Access · $9.99  | 34 PBQ scenarios included | One payment, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-10d#purchase` |
+| 1   | 30-Day Access · $19.99 | Full portal + timed sim   | One payment, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase` |
 | 2   | 34 PBQ Scenarios       | Chain labs & hot spots    | Browser performance prep     | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq-list`     |
 | 3   | Timed 90-Min Sim       | Mixed MCQ and PBQ run     | Domain scorecard included    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim#purchase` |
 | 4   | Try PBQ Sample         | Dark web IR scenario      | Browser preview, no download | `https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq`          |
-| 5   | 30-Day Access · $19.99 | Best value study window   | Full portal + timed sim      | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase` |
+| 5   | Not a Course · PBQ Prep | Last-mile readiness check | PBQ + timed sim + scorecard    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-readiness#purchase` |
 | 6   | Scorecard & Review     | Timed sim + weak domains  | Adaptive review modes        | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard`    |
 
 ---
@@ -40,10 +40,10 @@ Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`
 
 ```
 Sitelink 1
-Name: 10-Day Access · $9.99
-Description 1: 34 PBQ scenarios included
+Name: 30-Day Access · $19.99
+Description 1: Full portal + timed sim
 Description 2: One payment, no subscription
-URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-10d#purchase
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase
 
 Sitelink 2
 Name: 34 PBQ Scenarios
@@ -64,10 +64,10 @@ Description 2: Browser preview, no download
 URL: https://becertifiedtoday.com/secplus-sample?track=sim-dark-web&utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-pbq
 
 Sitelink 5
-Name: 30-Day Access · $19.99
-Description 1: Best value study window
-Description 2: Full portal + timed sim
-URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase
+Name: Not a Course · PBQ Prep
+Description 1: Last-mile readiness check
+Description 2: PBQ + timed sim + scorecard
+URL: https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-readiness#purchase
 
 Sitelink 6
 Name: Scorecard & Review

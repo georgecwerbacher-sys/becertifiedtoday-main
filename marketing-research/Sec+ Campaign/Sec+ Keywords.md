@@ -57,7 +57,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 ```
 
 **Display path:** `Security+` / `PBQ-Practice`  
-**Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `$9.99 · 10-Day Access`
+**Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `Timed 90-Min Exam Sim` (Google Ads — no price pin)
 
 **Match notation:** `[brackets]` = Exact · `"quotes"` = Phrase
 
@@ -219,10 +219,24 @@ Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
 
 ## All negatives
 
+**Live in Google Ads:** 46 campaign + 8 ad group = **54** total. Export: [[google-ads-negative-export.csv]]
+
+Match notation: unquoted = **Broad** · `"quotes"` = **Phrase**
+
 **Campaign level:**
 
 ```
 free
+bootcamp
+udemy
+coursera
+boson
+jobs
+salary
+ccna
+cissp
+ceh
+examtopics
 "free course"
 "free practice"
 "free practice test"
@@ -236,20 +250,14 @@ free
 "free simulation"
 "35 minute free"
 "training course"
-bootcamp
 "instructor led"
 "brain dump"
 "exam dump"
 "guaranteed pass"
+"pass guarantee"
 "pdf download"
-udemy
-coursera
-boson
 "professor messer"
 "dion training"
-jobs
-salary
-examtopics
 "security+ jobs"
 "security+ salary"
 "security+ training"
@@ -259,28 +267,26 @@ examtopics
 "sy0-701 v5.0 question bank"
 "latest sy0-701 questions"
 "comptia security+ question bank"
-ccna
 "ccna 200-301"
 "ccnp encor"
-cissp
-ceh
 "pen test+"
 "unauthorized exam content"
 "exam content"
-"pass guarantee"
 ```
 
 **Ad group level (`Security+ PBQ Practice`):**
 
 ```
 free
+bootcamp
 dump
 braindump
-pdf download
 free course
-bootcamp
+pdf download
 "security+ flashcards"
 "security+ practice test"
 ```
+
+**Course-vendor traffic:** `udemy`, `coursera`, `training course`, `instructor led`, `professor messer`, `dion training`, `bootcamp`, and `security+ training` are already negated at campaign level. After day-3 Search terms, add phrase negatives for any `course` / `video` queries that still slip through.
 
 [[README|← Sec+ Campaign folder]]
