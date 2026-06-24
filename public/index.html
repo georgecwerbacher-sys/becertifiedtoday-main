@@ -357,129 +357,6 @@
       line-height: 1.5;
       color: var(--muted);
     }
-    .samples-preview-section {
-      margin-top: clamp(32px, 5vw, 48px);
-      padding-top: clamp(28px, 4vw, 36px);
-      border-top: 1px solid var(--border);
-    }
-    .samples-preview-section h2 {
-      margin: 0 0 8px;
-      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      text-align: center;
-    }
-    .samples-preview-section .samples-preview-lead {
-      margin: 0 auto clamp(22px, 3vw, 28px);
-      max-width: 40rem;
-      text-align: center;
-      font-size: 0.92rem;
-      color: var(--muted);
-    }
-    .samples-preview-grid {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(18px, 3vw, 22px);
-    }
-    @media (min-width: 720px) {
-      .samples-preview-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    .sample-preview-card {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      margin: 0;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
-      overflow: hidden;
-    }
-    .sample-preview-card--encor {
-      border-color: rgba(61, 157, 114, 0.45);
-    }
-    .sample-preview-thumb {
-      margin: 0;
-      aspect-ratio: 16 / 10;
-      background: #0d1528;
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-    .sample-preview-thumb img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .sample-preview-body {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      padding: 16px 18px 18px;
-    }
-    .sample-preview-card h3 {
-      margin: 0 0 8px;
-      font-size: 0.98rem;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-    }
-    .sample-preview-card p {
-      margin: 0 0 14px;
-      flex: 1;
-      font-size: 0.88rem;
-      line-height: 1.5;
-      color: var(--muted);
-    }
-    .sample-preview-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font: inherit;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      text-align: center;
-      touch-action: manipulation;
-      border: 1px solid var(--accent-border);
-      color: #f0f4fc;
-      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
-    }
-    .sample-preview-cta:hover {
-      filter: brightness(1.06);
-    }
-    .sample-preview-cta:focus-visible {
-      outline: 2px solid var(--accent-border);
-      outline-offset: 3px;
-    }
-    .sample-preview-card--encor .sample-preview-cta {
-      border-color: rgba(61, 157, 114, 0.75);
-      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
-      color: #f0fdf4;
-    }
-    .sample-preview-card--encor .sample-preview-cta:focus-visible {
-      outline-color: #86efac;
-    }
-    .sample-preview-card--secplus {
-      border-color: rgba(124, 58, 237, 0.45);
-    }
-    .sample-preview-card--secplus .sample-preview-cta {
-      border-color: rgba(139, 92, 246, 0.75);
-      background: linear-gradient(165deg, rgba(124, 58, 237, 0.95) 0%, rgba(76, 29, 149, 0.98) 100%);
-      color: #f3e8ff;
-    }
-    .sample-preview-card--secplus .sample-preview-cta:focus-visible {
-      outline-color: #c4b5fd;
-    }
     .reviews-section {
       margin-top: clamp(32px, 5vw, 48px);
       margin-left: calc(50% - 50vw);
@@ -634,7 +511,7 @@
       <div class="intro">
         <h1>Certification Exam Prep: Choose Your Track</h1>
         <p>
-          You pick the exam you are preparing for. Each track gives you browser-based practice tests, labs, drag-and-drop items, and timed simulations. This is exam prep, not instructor-led courses.
+          You pick the exam you are preparing for. Open that track&apos;s prep page for free samples, practice tests, labs, drag-and-drop items, and timed simulations. This is exam prep, not instructor-led courses.
         </p>
       </div>
       <ul class="paths" aria-label="Exam prep tracks">
@@ -643,13 +520,13 @@
             <span class="badge">Associate</span>
             <h2 id="path-ccna-title">CCNA</h2>
             <p>
-              You get CCNA 200-301 exam prep: a free timed sample with scorecard, plus labs, drag-and-drop, and a full timed simulation in your browser.
+              CCNA 200-301 exam prep in your browser—labs, drag-and-drop, timed simulation, and free NGTE samples on the CCNA page.
             </p>
             <a
               class="cta"
               id="path-ccna"
-              href="/ccna-home.html"
-              >CCNA exam prep</a
+              href="/ccna-home.html#home-ccna-samples-title"
+              >CCNA exam prep &amp; samples</a
             >
           </article>
         </li>
@@ -658,13 +535,13 @@
             <span class="badge">Professional</span>
             <h2 id="path-encor-title">CCNP</h2>
             <p>
-              You get CCNP ENCOR 350-401 exam prep: sample questions, CLI labs, drag-and-drop, and a 120-minute timed simulation in your browser. No GNS3 required.
+              CCNP ENCOR 350-401 exam prep—CLI labs, drag-and-drop, timed simulation, and free samples on the ENCOR page. No GNS3 required.
             </p>
             <a
               class="cta"
               id="path-encor"
-              href="/ccnp-home.html"
-              >ENCOR exam prep</a
+              href="/ccnp-home.html#home-encor-samples-title"
+              >ENCOR exam prep &amp; samples</a
             >
           </article>
         </li>
@@ -673,13 +550,13 @@
             <span class="badge">Security</span>
             <h2 id="path-secplus-title">CompTIA Security+</h2>
             <p>
-              You get Security+ SY0-701 exam prep: practice questions, PBQ-style simulations, and—with full access—a 90-minute timed exam and detailed scorecard review.
+              Security+ SY0-701 exam prep—PBQ scenarios, practice questions, timed exam, and free samples on the Security+ page.
             </p>
             <a
               class="cta"
               id="path-secplus"
-              href="/comptia-sec+-home.html"
-              >Security+ exam prep</a
+              href="/comptia-sec+-home.html#home-secplus-samples-title"
+              >Security+ exam prep &amp; samples</a
             >
           </article>
         </li>
@@ -737,145 +614,6 @@
               <p>
                 The question bank and labs stay updated so topics and wording align with current CCNA and CCNP ENCOR objectives, not stale PDF-era content.
               </p>
-            </article>
-          </li>
-        </ul>
-      </section>
-
-      <section class="samples-preview-section" aria-labelledby="samples-preview-title">
-        <h2 id="samples-preview-title">Try a Free Sample</h2>
-        <p class="samples-preview-lead">
-          You can open a short activity in your browser with no account required. CCNA, CCNP ENCOR, and Security+ previews are included.
-        </p>
-        <ul class="samples-preview-grid">
-          <li>
-            <article class="sample-preview-card" aria-labelledby="sample-ccna-q-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/images/ccna-sample-questions-thumbnail.png"
-                  width="1024"
-                  height="710"
-                  alt="CCNA sample question with Check answer, Show Answer, and instant correct-or-incorrect feedback."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-ccna-q-title">CCNA · Sample Questions</h3>
-                <p>
-                  You answer <strong>18 multiple-choice items</strong>—three random questions per CCNA domain—then review a
-                  <strong>scorecard</strong> when you finish. Use <strong>Check answer</strong>, then <strong>Next</strong>.
-                </p>
-                <a class="sample-preview-cta" href="/sample?track=ccna-questions">Open Sample Questions</a>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="sample-preview-card" aria-labelledby="sample-ccna-dd-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/images/ccna-sample-dragdrop-thumbnail.png"
-                  width="1024"
-                  height="532"
-                  alt="CCNA drag-and-drop sample matching characteristics to copper and single mode fiber cable types."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-ccna-dd-title">CCNA · Sample Drag-and-Drop</h3>
-                <p>
-                  You try <strong>four</strong> performance-style drag-and-drop items, shuffled each run. Drag snippets into the
-                  blanks or tap to place on a phone.
-                </p>
-                <a class="sample-preview-cta" href="/sample?track=ccna-dnd">Open Sample Drag-and-Drop</a>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="sample-preview-card sample-preview-card--encor" aria-labelledby="sample-ccnp-dd-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/images/encor-sample-dragdrop-thumbnail.png"
-                  width="1024"
-                  height="664"
-                  alt="ENCOR drag-and-drop sample ordering AAA authentication methods into priority steps."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-ccnp-dd-title">CCNP ENCOR · Sample Drag-and-Drop</h3>
-                <p>
-                  You try <strong>four</strong> performance-style drag-and-drop items, shuffled each run. Drag snippets into the
-                  blanks or tap to place on a phone.
-                </p>
-                <a class="sample-preview-cta" href="/sample?track=encor-dnd">Open Sample Drag-and-Drop</a>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="sample-preview-card" aria-labelledby="sample-ccna-lab-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/CCNA-Study/CCNA_labs/images/ccna-lab-vlan-sim-topology.png"
-                  width="1024"
-                  height="610"
-                  alt="CCNA VLAN simulation lab topology with two switches."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-ccna-lab-title">CCNA · Sample Lab</h3>
-                <p>
-                  You run a dual-switch VLAN lab in the browser. Configure access and voice VLANs on simulated CLI without extra
-                  software.
-                </p>
-                <a class="sample-preview-cta" href="/sample?track=ccna-vlan">Open Sample Lab</a>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="sample-preview-card sample-preview-card--secplus" aria-labelledby="sample-secplus-q-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/images/secplus-sample-questions-thumbnail.jpg"
-                  width="1024"
-                  height="919"
-                  alt="Security+ sample multiple-choice question with Back, Home, and Next navigation and instant feedback."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-secplus-q-title">Security+ · Sample Questions</h3>
-                <p>
-                  You answer two shuffled SY0-701 multiple-choice items with domain tags. Select an answer for instant feedback, then use <strong>Next</strong> through the set.
-                </p>
-                <a class="sample-preview-cta" href="/secplus-sample?track=questions">Open Sample Questions</a>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="sample-preview-card sample-preview-card--secplus" aria-labelledby="sample-secplus-darkweb-title">
-              <figure class="sample-preview-thumb">
-                <img
-                  src="/images/secplus-dark-web-sim-thumbnail.jpg"
-                  width="1024"
-                  height="779"
-                  alt="Security+ dark web simulation with draggable compensation report window, leaked artifact tiles, and weak password practice checkboxes."
-                  decoding="async"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="sample-preview-body">
-                <h3 id="sample-secplus-darkweb-title">Security+ · BeCertifiedToday.com dark web IR</h3>
-                <p>
-                  You get a performance-based SY0-701 preview for IR case <strong>IR-2024-0847</strong>: review leak artifacts, identify weak password practices, and choose containment without destroying kiosk forensic evidence.
-                </p>
-                <a class="sample-preview-cta" href="/secplus-sample?track=sim-dark-web">Open Dark Web Simulation</a>
-              </div>
             </article>
           </li>
         </ul>
