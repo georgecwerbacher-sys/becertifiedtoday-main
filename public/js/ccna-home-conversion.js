@@ -28,8 +28,8 @@
       eyebrow: "Be Certified Today · CCNA 200-301 exam prep in your browser",
       headline: "Are you ready?",
       lead:
-        "Courses, videos, books done—the <strong>$330</strong> CCNA exam is next. " +
-        "<strong>Practice for test day</strong> for <strong>less than $1/day</strong> ($9.99/10 days · $19.99/30 days). " +
+        "Courses and videos done—next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site. " +
+        "<strong>Practice for test day here</strong> from <strong>$9.99/10 days</strong> or <strong>$19.99/30 days</strong> (less than $1/day). " +
         "<strong>Preview NGTE below</strong>—no payment, same test-day experience as full access—then unlock the library with one payment.",
       ctaPrimary: "Preview NGTE samples",
       stickyPrimary: "NGTE previews",
@@ -64,9 +64,9 @@
       eyebrow: "CCNA 200-301 · exam scheduled · NGTE",
       headline: "Exam Scheduled? CCNA Test Prep",
       lead:
-        "Courses, videos, books done—the <strong>$330</strong> CCNA exam is next. " +
-        "<strong>Practice for test day</strong> with CLI labs, drag-and-drop, and a 120-minute timed simulation for <strong>less than $1/day</strong> " +
-        "(<strong>$9.99 / 10 days</strong> · <strong>$19.99 / 30 days</strong>). Preview NGTE on this page, then unlock the library with one payment.",
+        "Courses and videos done—next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site. " +
+        "<strong>Practice for test day here</strong> with CLI labs, drag-and-drop, and a 120-minute timed simulation from " +
+        "<strong>$9.99/10 days</strong> or <strong>$19.99/30 days</strong> (less than $1/day). Preview NGTE on this page, then unlock the library with one payment.",
       ctaPrimary: "Get 10-day CCNA access",
       ctaHref: "#purchase",
       stickyPrimary: "10-day access",

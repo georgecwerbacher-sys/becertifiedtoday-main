@@ -25,39 +25,46 @@
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. <strong>No PDFs.</strong> " +
     "Try free samples first—same UI as full access.";
 
+  var GOOGLE_PAID_PURCHASE_CTA = "Get 30-day access";
+
   var PAID_VARIANT_OVERRIDES = {
     "pbq-wedge": {
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
         "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
-      ctaPrimary: "Try free 3-scenario PBQ preview",
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
     },
     "timed-sim": {
       lead:
         "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
         "Included with <strong>30-day full access for $19.99</strong>.",
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
     },
     "wedge-default": {
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
       lead:
         "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
         PAID_30D_SUFFIX,
     },
     federal: {
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
     },
     "practice-test": {
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
     },
     "question-bank": {
-      stickyPrimary: "Get 30-day access",
+      ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
+      stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
     },
   };
@@ -258,8 +265,33 @@
     return Object.assign({}, variant, patch);
   }
 
+  function normalizeGooglePaidPurchaseCta(variant) {
+    if (!isGooglePaidLanding()) return variant;
+    var href = variant.ctaHref || SAMPLES_SECTION;
+    if (href !== "#purchase") return variant;
+    var label =
+      variant.stickyPrimary && variant.stickyPrimary !== "Free samples" && variant.stickyPrimary !== "Free PBQ preview"
+        ? variant.stickyPrimary
+        : GOOGLE_PAID_PURCHASE_CTA;
+    return Object.assign({}, variant, {
+      ctaPrimary: label,
+      stickyPrimary: label,
+      ctaHref: "#purchase",
+    });
+  }
+
   function getVariant(id) {
-    return withPaidOverrides(VARIANTS[id] || VARIANTS[DEFAULT_VARIANT]);
+    return normalizeGooglePaidPurchaseCta(withPaidOverrides(VARIANTS[id] || VARIANTS[DEFAULT_VARIANT]));
+  }
+
+  function syncHeroPrimaryCtaPresentation(ctaEl, variant) {
+    if (!ctaEl || ctaEl.tagName !== "A") return;
+    var href = variant.ctaHref || SAMPLES_SECTION;
+    var isPurchaseCta = isGooglePaidLanding() && href === "#purchase";
+    ctaEl.classList.toggle("cta-main--free", !isPurchaseCta);
+    if (isPurchaseCta) {
+      ctaEl.classList.add("cta-main");
+    }
   }
 
   function campaignQueryString() {
@@ -332,6 +364,7 @@
 
     if (ctaPrimary && ctaPrimary.tagName === "A") {
       ctaPrimary.setAttribute("href", resolveCtaHref(variant.ctaHref || SAMPLES_SECTION));
+      syncHeroPrimaryCtaPresentation(ctaPrimary, variant);
     }
 
     hero.setAttribute("data-secplus-hl-variant", variant.id);
