@@ -5,7 +5,15 @@
  * action "report" (default) — Authorization: Bearer <admin JWT>, Body: { "range": "7d"|... }
  */
 import crypto from "crypto";
+import Stripe from "stripe";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { buildCampaignPlanReport } from "../server-lib/campaign-plan-report.js";
+import {
+  saveCampaignPlanDailyEntry,
+  setCampaignPlanStartDate,
+  setCampaignPlanStepCompleted,
+} from "../server-lib/campaign-plan-store.js";
+import { getCampaignTestPlan } from "../server-lib/campaign-test-plan-registry.js";
 import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
 import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
 import {
@@ -19,6 +27,8 @@ import {
   rangeFromPreset,
 } from "../server-lib/google-analytics.js";
 import { readSampleLeadEvents } from "../server-lib/sample-lead-analytics.js";
+import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
+import { resolveGithubRepo } from "../server-lib/visitor-questions.js";
 
 function readJsonBody(req) {
   try {
@@ -81,6 +91,135 @@ async function handleLogin(req, res) {
   });
 }
 
+function campaignIdFromBody(body) {
+  const raw =
+    typeof body.campaignId === "string"
+      ? body.campaignId.trim()
+      : typeof body.campaign_id === "string"
+        ? body.campaign_id.trim()
+        : "secplus_portal";
+  return raw || "secplus_portal";
+}
+
+async function handleCampaignPlanSave(req, res, body) {
+  const campaignId = campaignIdFromBody(body);
+  const plan = getCampaignTestPlan(campaignId);
+  if (!plan) {
+    return res.status(404).json({ ok: false, error: "Campaign plan not found" });
+  }
+
+  if (typeof body.startDate === "string" && body.startDate.trim()) {
+    const result = await setCampaignPlanStartDate(campaignId, body.startDate.trim(), plan.defaultStartDate);
+    if (!result.ok) {
+      const status = result.reason === "not_configured" ? 503 : 400;
+      return res.status(status).json({
+        ok: false,
+        error: result.reason === "not_configured" ? "Campaign plan storage is not configured" : "Could not save start date",
+        reason: result.reason,
+        hint: "Set GITHUB_LEADS_TOKEN on Vercel (Contents read/write). Plan saves to data/reports/campaign-plan/ via GitHub API.",
+        detail: result.detail || null,
+      });
+    }
+    return res.status(200).json({ ok: true, ...result });
+  }
+
+  if (typeof body.stepId === "string" && body.stepId.trim()) {
+    const completed =
+      body.completed === true || body.completed === "true" || body.completed === 1 || body.completed === "1";
+    const result = await setCampaignPlanStepCompleted(
+      campaignId,
+      body.stepId.trim(),
+      completed,
+      plan.defaultStartDate
+    );
+    if (!result.ok) {
+      const status = result.reason === "not_configured" ? 503 : 502;
+      return res.status(status).json({
+        ok: false,
+        error: result.reason === "not_configured" ? "Campaign plan storage is not configured" : "Could not save step",
+        reason: result.reason,
+        detail: result.detail || null,
+      });
+    }
+    return res.status(200).json({ ok: true, ...result });
+  }
+
+  const date = typeof body.date === "string" ? body.date.trim() : "";
+  if (!date) {
+    return res.status(400).json({ ok: false, error: "Missing date (YYYY-MM-DD), stepId, or startDate" });
+  }
+
+  const daily = body.daily && typeof body.daily === "object" ? body.daily : body;
+  const result = await saveCampaignPlanDailyEntry(campaignId, date, daily, plan.defaultStartDate);
+  if (!result.ok) {
+    const status =
+      result.reason === "invalid_date"
+        ? 400
+        : result.reason === "not_configured"
+          ? 503
+          : 502;
+    return res.status(status).json({
+      ok: false,
+      error:
+        result.reason === "not_configured"
+          ? "Campaign plan storage is not configured"
+          : result.reason === "invalid_date"
+            ? "Invalid date — use YYYY-MM-DD"
+            : "Could not save daily entry",
+      reason: result.reason,
+      hint: "Set GITHUB_LEADS_TOKEN on Vercel. Daily metrics save to data/reports/campaign-plan/ via GitHub API.",
+      detail: result.detail || null,
+    });
+  }
+  return res.status(200).json({ ok: true, ...result });
+}
+
+async function handleCampaignPlan(req, res) {
+  const body = readJsonBody(req);
+  const campaignId = campaignIdFromBody(body);
+  const env = getGoogleAnalyticsEnv();
+  const client = analyticsApiReady(env) ? getAnalyticsDataClient(env) : null;
+
+  let stripe = null;
+  const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+  if (sk.secret) {
+    stripe = new Stripe(sk.secret);
+  }
+
+  try {
+    const report = await buildCampaignPlanReport({
+      client,
+      propertyId: env.propertyId,
+      stripe,
+      campaignId,
+    });
+
+    if (report.error && !report.calendarDays) {
+      const repoInfo = resolveGithubRepo();
+      return res.status(report.code === "github_not_configured" ? 503 : 502).json({
+        ok: false,
+        error: report.error,
+        hint:
+          report.code === "github_not_configured"
+            ? "Set GITHUB_LEADS_TOKEN on Vercel (Contents read/write on this repo)."
+            : null,
+        storageRepo: repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : null,
+        plan: report.plan || getCampaignTestPlan(campaignId),
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      campaignPlan: report,
+      storagePath: report.storagePath,
+      fetchedAt: report.fetchedAt,
+    });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Campaign plan error";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -109,6 +248,14 @@ export default async function handler(req, res) {
 
   if (!verifyAnalyticsAdminToken(token, jwtSecret)) {
     return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+
+  if (action === "campaign_plan_save") {
+    return handleCampaignPlanSave(req, res, body);
+  }
+
+  if (action === "campaign_plan") {
+    return handleCampaignPlan(req, res);
   }
 
   const env = getGoogleAnalyticsEnv();
@@ -153,7 +300,10 @@ export default async function handler(req, res) {
       })),
     ]);
 
-    const [certHomeLanding, campaignMarketing] = await Promise.all([
+    const sk = getStripeSecretKey(process.env.STRIPE_SECRET_KEY);
+    const stripe = sk.secret ? new Stripe(sk.secret) : null;
+
+    const [certHomeLanding, campaignMarketing, campaignPlan] = await Promise.all([
       buildCertHomeLandingReport(
         client,
         env.propertyId,
@@ -165,6 +315,14 @@ export default async function handler(req, res) {
       })),
       buildCampaignMarketingReport(client, env.propertyId, range, rangePreset).catch((err) => ({
         error: err?.message || "Campaign marketing report failed",
+      })),
+      buildCampaignPlanReport({
+        client,
+        propertyId: env.propertyId,
+        stripe,
+        campaignId: "secplus_portal",
+      }).catch((err) => ({
+        error: err?.message || "Campaign plan failed",
       })),
     ]);
 
@@ -191,6 +349,12 @@ export default async function handler(req, res) {
           : {
               campaigns: [],
               error: campaignMarketing?.error || "Campaign tracker unavailable",
+            },
+      campaignPlan:
+        campaignPlan && !campaignPlan.error
+          ? campaignPlan
+          : {
+              error: campaignPlan?.error || "Campaign plan unavailable",
             },
       sampleLeadCsvError: sampleLeadRows?.error || null,
       fetchedAt: new Date().toISOString(),

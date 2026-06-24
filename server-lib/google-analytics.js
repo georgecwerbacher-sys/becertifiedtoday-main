@@ -574,6 +574,116 @@ export async function fetchGoogleCpcByCampaign(client, propertyId, range, limit 
   return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "google", "cpc", limit);
 }
 
+function googleCpcSourceMediumFilter() {
+  return mergeDimensionFilters(
+    {
+      filter: {
+        fieldName: "sessionSource",
+        stringFilter: { matchType: "EXACT", value: "google" },
+      },
+    },
+    {
+      filter: {
+        fieldName: "sessionMedium",
+        stringFilter: { matchType: "EXACT", value: "cpc" },
+      },
+    }
+  );
+}
+
+function campaignNameExactFilter(name) {
+  return {
+    filter: {
+      fieldName: "sessionCampaignName",
+      stringFilter: { matchType: "EXACT", value: String(name || "").trim() },
+    },
+  };
+}
+
+/** GA4 API date dimension YYYYMMDD → YYYY-MM-DD. */
+export function gaDateToIso(gaDate) {
+  const s = String(gaDate || "").trim();
+  if (/^\d{8}$/.test(s)) {
+    return `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`;
+  }
+  return s;
+}
+
+/**
+ * Daily paid Google sessions for one utm_campaign (sessionCampaignName).
+ */
+export async function fetchDailyGoogleCpcCampaignSessions(client, propertyId, range, utmCampaign) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      googleCpcSourceMediumFilter(),
+      campaignNameExactFilter(utmCampaign)
+    ),
+    dimensions: [{ name: "date" }],
+    metrics: [{ name: "sessions" }, { name: "activeUsers" }],
+    orderBys: [{ dimension: { dimensionName: "date" } }],
+  });
+
+  return (response.rows || []).map((row) => ({
+    date: gaDateToIso(row.dimensionValues?.[0]?.value || ""),
+    paidSessions: Number(row.metricValues?.[0]?.value || 0),
+    users: Number(row.metricValues?.[1]?.value || 0),
+  }));
+}
+
+/**
+ * Daily begin_checkout sessions (Google CPC) for one utm_campaign.
+ */
+export async function fetchDailyGoogleCpcCampaignBeginCheckout(
+  client,
+  propertyId,
+  range,
+  utmCampaign
+) {
+  try {
+    const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+      metrics: [{ name: "sessions" }],
+      dimensions: [{ name: "date" }],
+      extraFilter: mergeDimensionFilters(googleCpcSourceMediumFilter(), campaignNameExactFilter(utmCampaign)),
+      orderBys: [{ dimension: { dimensionName: "date" } }],
+    });
+
+    return (response.rows || []).map((row) => ({
+      date: gaDateToIso(row.dimensionValues?.[0]?.value || ""),
+      beginCheckout: Number(row.metricValues?.[0]?.value || 0),
+    }));
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (msg.includes("INVALID_ARGUMENT")) return [];
+    throw err;
+  }
+}
+
+/**
+ * Daily landing page views for a cert home path.
+ */
+export async function fetchDailyLandingPageViews(client, propertyId, range, pagePath) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      pagePathExactFilter([pagePath])
+    ),
+    dimensions: [{ name: "date" }],
+    metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
+    orderBys: [{ dimension: { dimensionName: "date" } }],
+  });
+
+  return (response.rows || []).map((row) => ({
+    date: gaDateToIso(row.dimensionValues?.[0]?.value || ""),
+    landingPageViews: Number(row.metricValues?.[0]?.value || 0),
+    landingUsers: Number(row.metricValues?.[1]?.value || 0),
+  }));
+}
+
 /** Reddit Ads traffic: sessionSource = reddit, sessionMedium = cpc. */
 export async function fetchRedditCpcByCampaign(client, propertyId, range, limit = 25) {
   return fetchPaidSessionsBySourceCampaign(client, propertyId, range, "reddit", "cpc", limit);
