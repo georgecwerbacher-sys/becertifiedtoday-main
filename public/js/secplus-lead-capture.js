@@ -166,7 +166,7 @@
       }
       return;
     }
-    link.textContent = "Get 10-day access · $9.99";
+    link.textContent = "Get 30-day access · $19.99";
     link.setAttribute("href", HOME_PATH + PURCHASE_HASH);
     link.removeAttribute("data-secplus-start-free-sim");
     link.removeAttribute("data-secplus-start-method");

@@ -1,6 +1,6 @@
 /**
- * CompTIA Security+ home — Google Ads paid traffic: 30-day offer only.
- * Detects utm_source=google or gclid; disables 10-day purchase, popups, and sticky offers.
+ * CompTIA Security+ home — Google Ads paid traffic callout.
+ * Detects utm_source=google or gclid; shows course-contrast note for Messer/Dion shoppers.
  */
 (function () {
   "use strict";
@@ -33,34 +33,11 @@
   function applyDomState() {
     if (!isGooglePaidLanding()) return;
     document.documentElement.classList.add(HTML_CLASS);
-
     var callout = document.getElementById("secplusGooglePaidCallout");
     if (callout) {
       callout.hidden = false;
       callout.removeAttribute("hidden");
     }
-
-    var defaultBlock = document.getElementById("secplusPurchaseDefault");
-    var tenDayBlock = document.getElementById("secplusPurchase10d");
-    var purchase = document.getElementById("purchase");
-    if (defaultBlock) {
-      defaultBlock.hidden = false;
-      defaultBlock.removeAttribute("hidden");
-    }
-    if (tenDayBlock) {
-      tenDayBlock.hidden = true;
-      tenDayBlock.setAttribute("hidden", "");
-    }
-    if (purchase) {
-      purchase.classList.remove("purchase-fold--single-offer");
-    }
-
-    ["secplus10dOfferRoot", "secplus10dLastChanceBar", "secplusLeadStickyCta"].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (!el) return;
-      el.hidden = true;
-      el.setAttribute("hidden", "");
-    });
   }
 
   window.bccIsSecplusGooglePaidLanding = isGooglePaidLanding;

@@ -19,23 +19,18 @@
 
   var WEDGE_LEAD =
     "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
-    "<strong>Try the free MCQ or PBQ samples below</strong>, then unlock a <strong>10-day sprint for $9.99</strong> when you want the library and timed exam.";
+    PAID_30D_SUFFIX;
 
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. <strong>No PDFs.</strong> " +
     "Try free samples first—same UI as full access.";
 
   var PAID_VARIANT_OVERRIDES = {
-    "portal-10d": {
-      eyebrow: "SY0-701 · 30-day access · $19.99",
-      lead: BASE_LEAD + " Unlock <strong>30-day full access for $19.99</strong> when you are ready.",
-      stickyPrimary: "Get 30-day access",
-      ctaHref: "#purchase",
-    },
     "pbq-wedge": {
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
-        "Try a <strong>free dark web IR simulation</strong>, then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
+        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
+      ctaPrimary: "Try free 3-scenario PBQ preview",
       stickyPrimary: "Get 30-day access",
       ctaHref: "#purchase",
     },
@@ -80,11 +75,12 @@
     "portal-10d": {
       id: "portal-10d",
       adHeadline: "Security+ Practice Test",
-      eyebrow: "SY0-701 · 10-day access · $9.99",
+      eyebrow: "SY0-701 · 30-day access · $19.99",
       headline: "Security+ Practice Test — 1000+ SY0-701 Questions & PBQ Scenarios",
-      lead: BASE_LEAD + " Unlock <strong>10-day full access for $9.99</strong> when you are ready.",
+      lead: BASE_LEAD + " Unlock <strong>30-day full access for $19.99</strong> when you are ready.",
       ctaPrimary: "Preview free Security+ samples",
-      stickyPrimary: "Free samples",
+      stickyPrimary: "Get 30-day access",
+      ctaHref: "#purchase",
     },
     "pbq-wedge": {
       id: "pbq-wedge",
@@ -93,10 +89,10 @@
       headline: "Security+ PBQ Practice in Your Browser — Chain Labs & IR Scenarios",
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
-        "Try a <strong>free dark web IR simulation</strong>, then unlock 34 PBQ scenarios + 1000+ questions for <strong>$9.99 / 10 days</strong>.",
-      ctaPrimary: "Try free dark web PBQ sample",
+        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios + 1000+ questions for <strong>$19.99 / 30 days</strong>.",
+      ctaPrimary: "Try free 3-scenario PBQ preview",
       ctaHref: SAMPLE_PBQ,
-      stickyPrimary: "Free PBQ sample",
+      stickyPrimary: "Free PBQ preview",
     },
     "timed-sim": {
       id: "timed-sim",
@@ -105,7 +101,7 @@
       headline: "90-Minute Security+ Timed Simulation — MCQ + PBQ + Scorecard Review",
       lead:
         "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
-        "Included with full library access—unlock for <strong>$9.99 / 10 days</strong>.",
+        "Included with <strong>30-day full access for $19.99</strong>.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
     },
@@ -146,9 +142,9 @@
       id: "free-practice",
       adHeadline: "Free Security+ Practice",
       eyebrow: "Free Security+ practice · browser samples",
-      headline: "Free Security+ Practice — MCQ Samples & Dark Web PBQ",
+      headline: "Free Security+ Practice — MCQ & 3-Scenario PBQ Preview",
       lead:
-        "Try free Security+ samples in your browser: multiple-choice questions and a dark web IR simulation. " +
+        "Try free Security+ samples in your browser: multiple-choice questions and a 3-scenario PBQ preview (dark web IR, WLAN, firewall ACL). " +
         "<strong>No PDFs</strong>, no membership, and no app install.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
@@ -421,9 +417,7 @@
 
   function init() {
     applyHeadlineVariant();
-    if (!document.getElementById("secplusLeadStickyCta")) {
-      initStickyMobileCta();
-    }
+    initStickyMobileCta();
   }
 
   if (document.readyState === "loading") {

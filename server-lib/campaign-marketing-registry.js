@@ -148,7 +148,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     finalUrl:
       "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge",
     primaryConversion: "begin_checkout",
-    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    conversionItemIds: ["secplus_portal_30d"],
     primaryOffer: "30-day $19.99 — Security+ home · $20/day · Google Ads 30-day only",
     setupDoc: "marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-campaign-checklist-README.txt",
@@ -176,7 +176,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     finalUrl:
       "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_wedge_pbq&utm_content=reddit-pbq",
     primaryConversion: "begin_checkout",
-    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    conversionItemIds: ["secplus_portal_30d"],
     primaryOffer: "10-day $9.99 · 30-day $19.99 — Reddit PBQ · comptia-sec+-home",
     setupDoc: "marketing-research/Sec+ Campaign/secplus-reddit-checklist.csv",
     setupDocTxt: "marketing-research/Sec+ Campaign/secplus-reddit-checklist-README.txt",
@@ -201,7 +201,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     finalUrl:
       "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=reddit&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=reddit-timed-sim",
     primaryConversion: "begin_checkout",
-    conversionItemIds: ["secplus_portal_10d", "secplus_portal_30d"],
+    conversionItemIds: ["secplus_portal_30d"],
     primaryOffer: "Work-cert angle · 90-min timed sim — A/B after PBQ ad set",
     setupDoc: "marketing-research/Sec+ Campaign/Sec+ Reddit Copy.md",
     setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Reddit Notes.md",

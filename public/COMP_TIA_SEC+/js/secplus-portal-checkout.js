@@ -116,9 +116,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-secplus-portal-10d-checkout]").forEach(function (btn) {
-      wireCheckout(btn, "10d");
-    });
     document.querySelectorAll("[data-secplus-portal-30d-checkout]").forEach(function (btn) {
       wireCheckout(btn, "30d");
     });

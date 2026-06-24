@@ -1,5 +1,5 @@
 /**
- * One-time $9.99 / 10-day access on ccna-home.html, ccnp-home.html, and comptia-sec+-home.html:
+ * One-time $9.99 / 10-day access on ccna-home.html and ccnp-home.html:
  * - Modal popup 5s after page load (top-of-page timing)
  * - Bottom “last chance” bar after #faq is in view (~5s)
  * Both use the same localStorage dismiss flag (once per browser).
@@ -34,24 +34,6 @@
         return (
           typeof window.bccEncorPortalAccessActive === "function" &&
           window.bccEncorPortalAccessActive()
-        );
-      },
-    },
-    secplus: {
-      dismissedKey: "bcc_secplus_10d_one_time_offer_v1",
-      rootId: "secplus10dOfferRoot",
-      lastChanceBarId: "secplus10dLastChanceBar",
-      lastChanceVisibleClass: "bcc-secplus-last-chance-visible",
-      homeMatch: "comptia-sec+-home",
-      checkoutAttr: "data-secplus-portal-10d-checkout",
-      samplesHref: "#home-secplus-samples-title",
-      /** Pricing is above the fold — show last-chance bar after visitor scrolls past #purchase. */
-      lastChanceScrollId: "purchase",
-      lastChanceWhenExitsView: true,
-      hasAccess: function () {
-        return (
-          typeof window.bccSecplusPortalAccessActive === "function" &&
-          window.bccSecplusPortalAccessActive()
         );
       },
     },
@@ -90,7 +72,6 @@
     if (!cfg) return "";
     if (cfg === CONFIGS.ccna) return "ccna";
     if (cfg === CONFIGS.encor) return "encor";
-    if (cfg === CONFIGS.secplus) return "secplus";
     return "";
   }
 
@@ -117,13 +98,11 @@
   function detectConfig() {
     if (document.getElementById(CONFIGS.ccna.rootId)) return CONFIGS.ccna;
     if (document.getElementById(CONFIGS.encor.rootId)) return CONFIGS.encor;
-    if (document.getElementById(CONFIGS.secplus.rootId)) return CONFIGS.secplus;
     var path = location.pathname || "";
     if (path.indexOf(CONFIGS.ccna.homeMatch) >= 0 || path.indexOf("/ccna/practice-test") >= 0) {
       return CONFIGS.ccna;
     }
     if (path.indexOf(CONFIGS.encor.homeMatch) >= 0) return CONFIGS.encor;
-    if (path.indexOf(CONFIGS.secplus.homeMatch) >= 0) return CONFIGS.secplus;
     return null;
   }
 
@@ -154,13 +133,6 @@
 
   function canOffer() {
     if (!cfg) return false;
-    if (
-      cfg === CONFIGS.secplus &&
-      typeof window.bccIsSecplusGooglePaidLanding === "function" &&
-      window.bccIsSecplusGooglePaidLanding()
-    ) {
-      return false;
-    }
     if (portalGateOpen()) return false;
     if (forcePreview) return true;
     if (wasDismissed()) return false;

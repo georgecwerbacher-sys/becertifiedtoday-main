@@ -332,7 +332,7 @@
   function portalUpsellLead(session) {
     var kind = sampleKindLabel();
     var access =
-      "Get <strong>10-day full access</strong> for <strong>$9.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review—all in your browser.";
+      "Get <strong>30-day full access</strong> for <strong>$19.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review—all in your browser.";
     if (isMultiPbqSample(session)) {
       var remaining = remainingPbqCount(session);
       return (
@@ -492,13 +492,13 @@
       '<div class="secplus-sample-upsell-backdrop" data-secplus-upsell-dismiss tabindex="-1"></div>' +
       '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSamplePortalUpsellTitle" tabindex="-1">' +
       '<button type="button" class="secplus-sample-upsell-close" data-secplus-upsell-dismiss aria-label="Close dialog">×</button>' +
-      '<p class="secplus-sample-upsell-eyebrow">10-day full access · $9.99</p>' +
+      '<p class="secplus-sample-upsell-eyebrow">30-day full access · $19.99</p>' +
       '<h2 id="secplusSamplePortalUpsellTitle">Are you ready?</h2>' +
       '<p class="secplus-sample-upsell-lead">' +
       lead +
       "</p>" +
       '<div class="secplus-sample-upsell-actions">' +
-      '<button type="button" class="secplus-sample-upsell-primary">Get 10-day access · $9.99</button>' +
+      '<button type="button" class="secplus-sample-upsell-primary">Get 30-day access · $19.99</button>' +
       '<button type="button" class="secplus-sample-upsell-secondary" data-secplus-upsell-home>Return to Security+ home</button>' +
       "</div>" +
       "</div>";

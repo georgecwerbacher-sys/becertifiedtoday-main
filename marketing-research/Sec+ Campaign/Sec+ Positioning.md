@@ -28,7 +28,7 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 
 **Timed online simulation.** A **90-minute** exam-style run under time pressure—mixed MCQ and PBQ/hot-spot items—with a **detailed domain scorecard** when you finish (scaled score, weakest domains, objective-level review). That is how you answer *Am I ready?*—not by flipping through a PDF.
 
-**Price that matches a sprint, not a dump.** Instead of buying a stale PDF for $99.99, you get **10 days of full access for $9.99** or **30 days for $19.99**—one payment, no subscription game. That includes **1,000+ current-version SY0-701 questions**, verified explanations, **34 PBQ scenarios**, the **90-minute timed simulation + scorecard**, and adaptive review in one portal.
+**Price that matches a sprint, not a dump.** Instead of buying a stale PDF for $99.99, you get **30 days of full access for $19.99**—one payment, no subscription game. That includes **1,000+ current-version SY0-701 questions**, verified explanations, **34 PBQ scenarios**, the **90-minute timed simulation + scorecard**, and adaptive review in one portal.
 
 **Mobile-friendly testing and scenario practice.** The people who need this cert often study on a phone between work and home. The product is built for that—not desktop-only legacy sims.
 
@@ -44,8 +44,8 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 
 | Tier | What | CTA in ads / landing |
 |------|------|----------------------|
-| **Free proof** | MCQ sample questions · dark web PBQ preview | Yes — “try sample” / `#home-secplus-samples-title` |
-| **Paid library** | 1000+ Qs · 34 PBQs · adaptive review · **90-min timed sim + scorecard** | Yes — `$9.99/10d` · `#purchase` on landing |
+| **Free proof** | MCQ sample questions · 3-scenario PBQ preview (dark web IR, WLAN, firewall ACL) | Yes — “try sample” / `#home-secplus-samples-title` |
+| **Paid library** | 1000+ Qs · 34 PBQs · adaptive review · **90-min timed sim + scorecard** | Yes — `$19.99/30d` · `#purchase` on landing |
 | **Not offered** | Free timed simulation / guest 35-min exam | **No CTA** — negate `free timed*` in Search |
 
 The **timed simulation is a core sell**—always mention it with **paid access**, scorecard, and test-day pacing. Never lead with “free timed exam.”
@@ -54,9 +54,9 @@ The **timed simulation is a core sell**—always mention it with **paid access**
 
 ## Short versions (ads & pins)
 
-**One sentence:** Interactive Security+ prep in your browser—timed sim, adaptive review, and exam-style PBQ scenarios—for $9.99/10 days, not a $99 PDF.
+**One sentence:** Interactive Security+ prep in your browser—timed sim, adaptive review, and exam-style PBQ scenarios—for $19.99/30 days, not a $99 PDF.
 
-**Two sentences:** Practice SY0-701 the way you will be tested: online scenarios, timed simulation, and review modes that loop missed questions back until you are solid. Full access is $9.99 for 10 days or $19.99 for 30 days—built for people who need the cert for work and want to know they are ready.
+**Two sentences:** Practice SY0-701 the way you will be tested: online scenarios, timed simulation, and review modes that loop missed questions back until you are solid. Full access is **$19.99 for 30 days**—built for people who need the cert for work and want to know they are ready.
 
 **Tagline (site):** Practice like test day. Walk in ready.
 
@@ -66,7 +66,7 @@ The **timed simulation is a core sell**—always mention it with **paid access**
 
 | Competitors | You |
 |-------------|-----|
-| PDF / static dump for **$49–$99+** | **$9.99 / 10 days** or **$19.99 / 30 days** — full portal access |
+| PDF / static dump for **$49–$99+** | **$19.99 / 30 days** — full portal access |
 | Download desktop sim | **Online interactive scenarios** — same testing engine as paid access |
 | Random 1000-question banks, no loop | **Adaptive review** — weak domains pushed; missed items shuffle to end to retry |
 | Read-only or flat MCQ | **PBQ chain labs, drag-drop, IR scenarios** — like test day |
@@ -83,7 +83,7 @@ The **timed simulation is a core sell**—always mention it with **paid access**
 4. **Random or review** — full random order, or missed questions reshuffled to the end
 5. **1000+ SY0-701 (v5.0) questions** — current blueprint, verified explanations
 6. **34 PBQ scenarios** — chain labs, hot spots, exhibits in browser
-7. **Try before pay (samples only)** — free MCQ + dark web PBQ preview on the home page; **not** a free timed sim CTA
+7. **Try before pay (samples only)** — free MCQ + 3-scenario PBQ preview (dark web IR, WLAN, firewall ACL) on the home page; **not** a free timed sim CTA
 8. **Work-required cert** — DoD 8140 / contractor / job-mandated Security+
 
 ---

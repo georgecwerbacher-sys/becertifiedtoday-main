@@ -92,7 +92,7 @@
               "name": "Can I try Security+ practice before I pay?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Open free sample questions and the dark web PBQ preview on your phone or laptop with no checkout. Unlock the full 1000+ question library with a separate 30-day purchase ($19.99) when you are ready."
+                "text": "Yes. Open free sample questions and the 3-scenario PBQ preview (dark web IR, WLAN configuration, firewall ACL) on your phone or laptop with no checkout. Unlock the full 1000+ question library with a separate 30-day purchase ($19.99) when you are ready."
               }
             },
             {
@@ -148,7 +148,7 @@
               "name": "Are performance-based simulations and a timed practice exam included?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. The library includes 34 practice scenarios for PBQ-style study: chain labs, drag-and-drop, hot spots, and IR report exhibits, plus a 90-minute timed practice exam with domain scorecard review. Free sample questions and a dark web PBQ preview on this page let you judge quality before you buy."
+                "text": "Yes. The library includes 34 practice scenarios for PBQ-style study: chain labs, drag-and-drop, hot spots, and IR report exhibits, plus a 90-minute timed practice exam with domain scorecard review. Free sample questions and a 3-scenario PBQ preview (dark web IR, WLAN configuration, firewall ACL) on this page let you judge quality before you buy."
               }
             },
             {
@@ -172,7 +172,7 @@
               "name": "How much does full Security+ library access cost?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "30-day all-access is $19.99 one time. First-time visitors may see a one-time $9.99 / 10-day offer on this page. Includes 1000+ questions, 34 PBQ practice scenarios, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
+                "text": "30-day all-access is $19.99 one time. Includes 1000+ questions, 34 PBQ practice scenarios, adaptive review, progress tracking, and the full timed exam. No recurring membership. Price is shown before Stripe checkout."
               }
             },
             {
@@ -757,9 +757,6 @@
     .bcc-lead-sticky-cta .cta-main:focus-visible {
       outline: 2px solid #c4b5fd;
       outline-offset: 3px;
-    }
-    #secplus10dOfferRoot .ccna-sim-promo-panel {
-      border-color: rgba(139, 92, 246, 0.55);
     }
     .purchase-card .purchase-launch-pill {
       display: inline-block;
@@ -1414,37 +1411,20 @@
     .purchase-primary-cta .purchase-track-box {
       margin-top: 0;
     }
-    html.secplus-landing-portal-10d .purchase-card-main--30d {
-      display: none !important;
-    }
-    html.secplus-landing-portal-10d .purchase-card-main--10d[hidden] {
-      display: block !important;
-    }
-    html.secplus-landing-google-paid.secplus-landing-portal-10d .purchase-card-main--30d {
-      display: block !important;
-    }
-    html.secplus-landing-google-paid.secplus-landing-portal-10d .purchase-card-main--10d {
-      display: none !important;
-    }
-    html.secplus-landing-google-paid #secplus10dOfferRoot,
-    html.secplus-landing-google-paid #secplus10dLastChanceBar,
-    html.secplus-landing-google-paid #secplusLeadStickyCta,
-    html.secplus-landing-google-paid .purchase-card-main--10d {
-      display: none !important;
-    }
-    html.secplus-landing-google-paid .purchase-card-main--30d {
-      display: block !important;
-    }
     .secplus-google-paid-callout {
       display: none;
       margin: 0 0 clamp(18px, 3vw, 24px);
       padding: 14px 16px;
       border-radius: 12px;
-      border: 1px solid rgba(125, 206, 160, 0.35);
-      background: rgba(39, 174, 96, 0.08);
-      color: var(--text);
+      border: 1px solid rgba(39, 174, 96, 0.35);
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--page-text);
       font-size: 0.95rem;
       line-height: 1.5;
+    }
+    .secplus-google-paid-callout strong {
+      color: var(--page-text);
+      font-weight: 700;
     }
     html.secplus-landing-google-paid .secplus-google-paid-callout {
       display: block;
@@ -2902,13 +2882,6 @@
       <div class="hero-content">
         <div class="funnel">
           <!--
-            Stripe product (10-day all-access pass) — paste into Dashboard → Products (description ≤500 chars):
-            Name: CompTIA Security+ SY0-701 — 10-day all-access pass
-            Description: 10 days of full SY0-701 library on Be Certified Today: 1000+ question banks, 34 PBQ practice scenarios (chain labs, hot spots, and IR exhibits), portal study modes, and timed exam simulation—all in your browser. One-time purchase; no subscription. Access starts at checkout on your device and browser.
-            Payment Link metadata (optional): productId = secplus-portal-10d
-            Payment Link URL: https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06
-            After payment redirect: /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
-
             Stripe product (30-day all-access pass):
             Name: CompTIA Security+ SY0-701 — 30-day all-access pass
             Description: 30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (objectives v5.0), 34 PBQ practice scenarios (chain labs, hot spots, and IR exhibits), adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
@@ -2977,53 +2950,6 @@
                   </div>
                 </div>
               </div>
-              <div class="purchase-card-main purchase-card-main--10d" id="secplusPurchase10d" hidden>
-                <p class="purchase-label">Get Security+ access</p>
-                <h2 class="purchase-heading">10-day Security+ full access · $9.99</h2>
-                <p class="purchase-lead purchase-lead--tight">
-                  Full SY0-701 library and practice portal for ten days—one-time purchase, no subscription.
-                </p>
-                <div class="purchase-cta-stack purchase-cta-stack--single">
-                  <div class="purchase-primary-cta">
-                    <div
-                      class="purchase-track-box purchase-track-box--ten-day purchase-pricing-option purchase-track-box--one-time-live"
-                      aria-label="10-day Security+ access purchase"
-                    >
-                      <div class="purchase-track-head">
-                        <p class="purchase-track-title">10-day access</p>
-                        <span class="secplus-live-badge">One-time</span>
-                      </div>
-                      <p class="purchase-price" aria-label="9 dollars and 99 cents for 10 days">
-                        $9.99 <span>/ 10 days</span>
-                      </p>
-                      <p class="purchase-track-sub">
-                        1000+ questions, 34 PBQ scenarios, adaptive review, practice portal modes, and the 90-minute timed exam—all in your browser.
-                      </p>
-                      <p class="purchase-track-cta-wrap">
-                        <button
-                          type="button"
-                          class="cta-main cta-main--block"
-                          id="secplusPortal10dPurchaseBtn"
-                          data-secplus-portal-10d-checkout
-                          data-bcc-item-id="secplus_portal_10d"
-                          data-bcc-item-name="CompTIA Security+ 10-day access"
-                          data-bcc-value="9.99"
-                          data-bcc-currency="USD"
-                          aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
-                        >
-                          Get 10-day access · $9.99
-                        </button>
-                      </p>
-                      <p class="purchase-access-disclaimer">
-                        <strong>$9.99 / 10 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p class="purchase-alt-tier-note">
-                  Need more time? <strong>30-day access ($19.99)</strong> uses the same library with a longer study window.
-                </p>
-              </div>
             </div>
           </section>
           <div
@@ -3035,7 +2961,7 @@
             <strong>Already using Messer, Dion, or another course?</strong>
             This is not another video bootcamp—it is browser PBQ practice plus a
             <strong>90-minute timed simulation with scorecard review</strong> so you can tell if you are ready before test day.
-            Try the free samples below, then unlock <strong>30-day full access for $19.99</strong>.
+            Try the free samples below—MCQ plus a <strong>3-scenario PBQ preview</strong> (dark web IR, WLAN configuration, firewall ACL)—then unlock <strong>30-day full access for $19.99</strong>.
           </div>
           <div class="funnel-intro hero-conversion" data-secplus-hl-pending="1">
             <div class="secplus-hero-header">
@@ -3095,7 +3021,7 @@
               <div class="samples-block-intro">
                 <h2 class="samples-block-title" id="home-secplus-samples-title">Preview Quality on Phone, Tablet, or Desktop</h2>
                 <p class="samples-block-lead">
-                  You get two free previews from the <strong>1000+ question</strong> library and <strong>34-scenario</strong> PBQ set. Same verified explanations and browser UI as paid access.
+                  You get a free MCQ preview plus a <strong>3-scenario PBQ preview</strong> (dark web IR, WLAN configuration, firewall ACL) from the <strong>1000+ question</strong> library and <strong>34-scenario</strong> PBQ set. Same verified explanations and browser UI as paid access.
                   Open a sample on your phone to confirm layout before you buy. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish Sample</strong>).
                 </p>
               </div>
@@ -3335,7 +3261,7 @@
                 <div class="faq-answer">
                   <p>
                     <strong>Yes. No checkout required.</strong>
-                    <a class="faq-cta-link" href="#home-secplus-samples-title">Preview sample questions and the dark web simulation</a>
+                    <a class="faq-cta-link" href="#home-secplus-samples-title">Preview sample questions and the 3-scenario PBQ preview</a>
                     on your phone or laptop first.
                   </p>
                   <p>
@@ -3450,7 +3376,7 @@
                   </p>
                   <p>
                     Free on this page:
-                    <a class="faq-cta-link" href="/secplus-sample?track=sim-dark-web">dark web IR simulation sample</a>
+                    <a class="faq-cta-link" href="/secplus-sample?track=sim-dark-web">3-scenario PBQ preview</a>
                     and
                     <a class="faq-cta-link" href="/secplus-sample?track=questions">sample multiple-choice questions</a>.
                   </p>
@@ -3487,7 +3413,7 @@
                 <summary class="faq-summary">How much does full library access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>$19.99 for 30 days</strong>. First-time visitors may see a one-time <strong>$9.99 / 10-day</strong> offer on this page.
+                    <strong>$19.99 for 30 days</strong>. One-time payment—no subscription.
                     One-time purchase, <strong>no subscription</strong>. Includes <strong>1000+ questions</strong>,
                     <strong>34 PBQ practice scenarios</strong>, adaptive review, progress tracking, and the full timed exam. Price is shown before Stripe checkout.
                   </p>
@@ -3598,95 +3524,6 @@
     </footer>
   </div>
   <div
-    id="secplus10dOfferRoot"
-    class="ccna-sim-promo-root"
-    hidden
-    role="presentation"
-    aria-hidden="true"
-  >
-    <div class="ccna-sim-promo-backdrop" data-bcc-10d-offer-dismiss tabindex="-1"></div>
-    <div
-      class="ccna-sim-promo-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="secplus10dOfferTitle"
-      tabindex="-1"
-    >
-      <button type="button" class="ccna-sim-promo-close" data-bcc-10d-offer-dismiss aria-label="Close one-time offer">
-        ×
-      </button>
-      <p class="ccna-sim-promo-eyebrow">One-time visitor offer</p>
-      <h2 id="secplus10dOfferTitle">10-day Security+ full access</h2>
-      <p class="ccna-sim-promo-price">
-        <span class="ccna-sim-promo-price-now">$9.99</span>
-        <span class="ccna-sim-promo-limited-pill">10 days · one-time</span>
-      </p>
-      <p class="ccna-sim-promo-warning">
-        This is a one-time pop-up. When you close this box, it will not be shown again on this browser.
-      </p>
-      <p class="ccna-sim-promo-lead">
-        You get the full SY0-701 library for <strong>10 days</strong>: 1000+ questions, 34 PBQ scenarios (chain labs, hot spots, and IR exhibits), adaptive review,
-        practice portal modes, and the 90-minute timed exam—all in your browser. No subscription.
-      </p>
-      <div class="ccna-sim-promo-actions">
-        <button
-          type="button"
-          class="ccna-sim-promo-primary"
-          data-secplus-portal-10d-checkout
-          aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
-        >
-          Get 10-day access · $9.99
-        </button>
-        <a class="ccna-sim-promo-secondary" href="#home-secplus-samples-title" data-bcc-10d-offer-dismiss>
-          Try free samples first
-        </a>
-        <button type="button" class="ccna-sim-promo-secondary" data-bcc-10d-offer-dismiss>
-          No thanks
-        </button>
-      </div>
-    </div>
-  </div>
-  <div
-    id="secplus10dLastChanceBar"
-    class="bcc-last-chance-bar"
-    hidden
-    role="region"
-    aria-labelledby="secplus10dLastChanceTitle"
-    aria-live="polite"
-  >
-    <div class="bcc-last-chance-bar__inner">
-      <button type="button" class="bcc-last-chance-bar__close" data-bcc-10d-last-chance-dismiss aria-label="Dismiss last chance offer">
-        ×
-      </button>
-      <p id="secplus10dLastChanceTitle" class="bcc-last-chance-bar__eyebrow">Last chance · one-time offer</p>
-      <p class="bcc-last-chance-bar__copy">
-        <strong>$9.99</strong> for 10-day Security+ full access — 1000+ questions, 34 PBQ scenarios &amp; timed exam
-      </p>
-      <button
-        type="button"
-        class="bcc-last-chance-bar__cta"
-        data-bcc-10d-last-chance-checkout
-        data-secplus-portal-10d-checkout
-        aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
-      >
-        Claim 10-day access
-      </button>
-    </div>
-  </div>
-  <div id="secplusLeadStickyCta" class="bcc-lead-sticky-cta" hidden aria-hidden="true">
-    <p class="bcc-lead-sticky-cta__note">One-time $9.99 · closes when you leave this page</p>
-    <button
-      type="button"
-      id="secplusLeadStickyCtaBtn"
-      class="cta-main"
-      data-secplus-portal-10d-checkout
-      data-bcc-lead-sticky-checkout
-      aria-label="Purchase 10-day Security+ library access for nine ninety-nine"
-    >
-      Get 10-day access · $9.99
-    </button>
-  </div>
-  <div
     id="secplusPortalGateRoot"
     class="ccna-sim-promo-root"
     hidden
@@ -3755,9 +3592,6 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/js/secplus-google-paid-landing.js" defer></script>
-  <script src="/js/secplus-portal-10d-landing.js" defer></script>
-  <script src="/js/bcc-10d-one-time-offer.js" defer></script>
-  <script src="/js/bcc-lead-sticky-cta.js" defer></script>
   <script src="/js/secplus-home-conversion.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

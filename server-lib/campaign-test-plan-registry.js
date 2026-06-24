@@ -43,7 +43,7 @@ export const SECPLUS_PORTAL_21D_PLAN = {
       steps: [
         { id: "prep-stripe", label: "Stripe $19.99 / 30-day product live" },
         { id: "prep-checkout", label: "Checkout works on cert home (desktop + mobile)" },
-        { id: "prep-samples", label: "MCQ + dark web PBQ samples reachable from landing" },
+        { id: "prep-samples", label: "MCQ + 3-scenario PBQ preview reachable from landing (dark web IR, WLAN, firewall ACL)" },
         { id: "prep-ga4", label: "GA4 begin_checkout imported as Primary conversion" },
         { id: "prep-keywords", label: "Keyword list synced (secplus-keywords.csv)" },
         { id: "prep-rsa", label: "RSA reviewed — pin Timed 90-Min Exam Sim (not price)" },

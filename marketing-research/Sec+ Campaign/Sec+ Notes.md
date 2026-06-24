@@ -29,9 +29,9 @@ Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 
 ## Before you open Google Ads
 
-- [ ] Stripe $9.99 / $19.99 products live
+- [ ] Stripe $19.99 / 30-day product live
 - [ ] Checkout on cert home (desktop + phone)
-- [ ] MCQ + dark web PBQ samples reachable from landing
+- [ ] MCQ + 3-scenario PBQ preview reachable from landing (dark web IR, WLAN configuration, firewall ACL)
 - [ ] GA4 `begin_checkout` imported as Primary
 - [ ] Keyword Planner worksheet — [[Sec+ Keywords#Keyword Planner worksheet]]
 - [ ] RSA reviewed against [[Sec+ Positioning]]
