@@ -17,6 +17,8 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 
 - [[Site Mission]] — why the site exists; reference for all marketing work
 - [[Sec+ Campaign/README|Sec+ Campaign]] — Google Ads setup, keywords, RSA, extensions, checklist
+- [[YouTube Channels]] — video plan: Sec+ PBQ, CCNA/ENCOR labs, test prep techniques
+- [[videos/README|Videos]] — production notes by track (`website`, `ccna`, `sec+`, `encor`)
 - [[Tools/README|Tools]] — Sec+ keyword checklist workflow
 - [[Competitors]] — Security+ prep sites
 - [[Campaigns]] — live campaign summary + UTM registry
@@ -27,6 +29,7 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 | Folder | Source in repo |
 |--------|----------------|
 | `Sec+ Campaign/` | Google Ads copy, checklist CSV, keywords |
+| `videos/` | YouTube + site embed briefs by track |
 | `competitor-sites/` | `data/competitor-sites/` |
 | `weekly-reports/` | `data/reports/weekly/` |
 

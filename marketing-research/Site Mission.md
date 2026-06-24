@@ -24,16 +24,18 @@ My goal is simple: **help you finish what you started and earn the certification
 
 ## Tagline
 
-**Practice like test day. Walk in ready.**
+**Practice Like Test Day. Walk In Ready.**
 
-That is the line I want you to remember. It ties the site name to what I actually deliver — exam-realistic practice in your browser, verified against current objectives, with no membership noise — so you are **prepared, not guessing**, when you sit for the real thing.
+That is the line on logo v2 and what I want you to remember. It ties the site name to exam-realistic practice in your browser, verified against current objectives, with no membership noise — so you are **prepared, not guessing**, when you sit for the real thing.
 
 | Use | Copy |
 |-----|------|
-| **Primary** | Practice like test day. Walk in ready. |
-| **Short** | Walk in ready. |
+| **Primary** | Practice Like Test Day. Walk In Ready. |
+| **Short** | Walk In Ready. |
 | **Extended** | Current practice that feels like the real exam — verified answers, no membership, no ads in the portal. |
-| **With brand** | Be Certified Today — practice like test day. Walk in ready. |
+| **With brand** | Be Certified Today — Practice Like Test Day. Walk In Ready. |
+
+**Assets:** [[Website_Main/Brand Assets|Brand Assets]] · `public/images/logo/becertifiedtoday_logo_v2_white.png` (light) · `becertifiedtoday_logo_v2_trans.png` (transparent)
 
 **Alternates** *(ads, social, email — same voice)*
 
@@ -49,7 +51,7 @@ That is the line I want you to remember. It ties the site name to what I actuall
 
 **30 seconds** *(say this to a candidate)*
 
-> Be Certified Today is browser-based exam prep I built for CCNA, CCNP ENCOR, and Security+. You practice with current questions, timed simulations, drag-and-drop, and CLI labs — the way the real exam presents them — with answers I verify against official sources. Try free samples first, no account required. When you are ready, unlock the full library for a set period, one time — no membership, no ads inside the portal. **Practice like test day. Walk in ready.**
+> Be Certified Today is browser-based exam prep I built for CCNA, CCNP ENCOR, and Security+. You practice with current questions, timed simulations, drag-and-drop, and CLI labs — the way the real exam presents them — with answers I verify against official sources. Try free samples first, no account required. When you are ready, unlock the full library for a set period, one time — no membership, no ads inside the portal. **Practice Like Test Day. Walk In Ready.**
 
 **15 seconds** *(quick intro)*
 
@@ -61,7 +63,7 @@ That is the line I want you to remember. It ties the site name to what I actuall
 >
 > I keep the banks aligned to current exam objectives and I verify every answer against official Cisco and CompTIA sources — not forum votes or braindump sites. You can try free samples before you pay anything, and I do not make you create an account just to see the quality. If you purchase, you get clear access for a defined period — one payment, no membership games. Inside the practice portal, I keep third-party ads and pop-ups out of your way so you can focus.
 >
-> My tagline says it plainly: **Practice like test day. Walk in ready.** That is what I want for every guest — finish what you started, earn the cert, and walk in confident.
+> My tagline says it plainly: **Practice Like Test Day. Walk In Ready.** That is what I want for every guest — finish what you started, earn the cert, and walk in confident.
 
 | Length | When to use |
 |--------|-------------|
@@ -110,7 +112,7 @@ Paid and organic traffic lands on exam home pages with **purchase first** — mi
 | **Mission FAQ** | Second FAQ item: “Why did you build Be Certified Today?” on each exam home | Long-tail trust + first-person voice for skeptics who read FAQ before buying |
 | **Not on purchase fold** | `#purchase` card unchanged | Keeps ad landing ATF focused on price + checkout |
 
-**Canonical tagline on site:** *Practice like test day. Walk in ready.*
+**Canonical tagline on site:** *Practice Like Test Day. Walk In Ready.*
 
 | What I care about | What you get |
 |-------------------|--------------|
@@ -128,5 +130,7 @@ Paid and organic traffic lands on exam home pages with **purchase first** — mi
 ## Related notes *(internal)*
 
 - [[Sec+ Campaign/README|Sec+ Campaign]] — live Google Ads setup
+- [[YouTube Channels]] — organic video plan (PBQ, labs, test prep techniques)
 - [[Campaigns]] — how paid traffic maps to this mission
+- [[Website_Main/Brand Assets|Brand Assets]] — logo v2 + tagline files
 - [[Competitors]] — sites that compete on dumps, courses, or subscriptions

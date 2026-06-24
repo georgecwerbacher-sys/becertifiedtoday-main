@@ -696,7 +696,7 @@
       '<p class="cisco-ccna-offer-lead">' +
       lead +
       "</p>" +
-      '<p class="cisco-ccna-offer-tagline">Practice like test day. Walk in ready.</p>' +
+      '<p class="cisco-ccna-offer-tagline">Practice Like Test Day. Walk In Ready.</p>' +
       '<div class="cisco-ccna-offer-tiers" aria-label="CCNA access options">' +
       '<div class="cisco-ccna-offer-tier cisco-ccna-offer-tier--featured">' +
       '<p class="cisco-ccna-offer-tier-label">10-day full access</p>' +

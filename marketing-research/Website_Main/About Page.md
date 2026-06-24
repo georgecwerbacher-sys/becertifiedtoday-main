@@ -20,7 +20,7 @@ tags:
 
 ## Tagline
 
-**Practice like test day. Walk in ready.**
+**Practice Like Test Day. Walk In Ready.**
 
 ---
 

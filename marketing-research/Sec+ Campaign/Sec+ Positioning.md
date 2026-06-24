@@ -58,7 +58,7 @@ The **timed simulation is a core sell**—always mention it with **paid access**
 
 **Two sentences:** Practice SY0-701 the way you will be tested: online scenarios, timed simulation, and review modes that loop missed questions back until you are solid. Full access is **$19.99 for 30 days**—built for people who need the cert for work and want to know they are ready.
 
-**Tagline (site):** Practice like test day. Walk in ready.
+**Tagline (site / logo v2):** Practice Like Test Day. Walk In Ready.
 
 ---
 
