@@ -17,7 +17,28 @@ tags:
 
 **Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
 
-**Import:** [[secplus-keywords.csv]] · **Paste block:** [[#All positive keywords (67)]] below.
+**Import:** [[secplus-keywords.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Paste block:** [[#All positive keywords (67)]] below.
+
+**Live in Google Ads (2026-06-23):** all **67** positives enabled in `Security+ PBQ Practice`. CCNA `ccna_wedge_lab` is paused — not in this list.
+
+| Delivery status | Count |
+|-----------------|------:|
+| Eligible | 22 |
+| Limited (low quality) | 2 |
+| Not eligible (rarely served) | 43 |
+
+**Impressions on day 1 (2026-06-23):**
+
+| Keyword | Match | Impr. | Status |
+|---------|-------|------:|--------|
+| security+ practice questions | Phrase | 23 | Eligible |
+| comptia security+ pbq | Phrase | 17 | Limited · low quality |
+| comptia security+ pbq | Exact | 3 | Limited · low quality |
+| security+ pbq practice | Exact | 3 | Eligible |
+| sy0-701 practice questions | Phrase | 2 | Eligible |
+| security+ pbq practice | Phrase | 1 | Eligible |
+
+Full status per keyword: `Google status` column in [[secplus-keywords.csv]].
 
 **Positioning:** [[Sec+ Positioning]] · **Setup:** [[Sec+ Notes]] · **RSA:** [[Sec+ RSA Copy]]
 

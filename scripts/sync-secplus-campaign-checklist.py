@@ -312,6 +312,13 @@ def keyword_rows(keywords: list[dict[str, str]]) -> tuple[list[list[str]], list[
         task = KEYWORD_TASKS[("positive", match_type)]
         value = normalize_keyword(row.get("Keyword") or "", match_type)
         rank = (row.get("Rank") or "").strip()
+        notes_parts = []
+        if rank:
+            notes_parts.append(f"Rank {rank}")
+        google_status = (row.get("Google status") or "").strip()
+        if google_status:
+            notes_parts.append(google_status.split(";")[0].strip())
+        notes = " · ".join(notes_parts)
         positives.append(
             checklist_row(
                 "Setup",
@@ -320,7 +327,7 @@ def keyword_rows(keywords: list[dict[str, str]]) -> tuple[list[list[str]], list[
                 task,
                 value,
                 AD_GROUP,
-                f"Rank {rank}" if rank else "",
+                notes,
             )
         )
 
