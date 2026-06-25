@@ -53,6 +53,64 @@ function sumManualSpend(dailyState) {
   return total;
 }
 
+function sumManualField(dailyState, field) {
+  let total = 0;
+  for (const entry of Object.values(dailyState || {})) {
+    if (!entry || typeof entry !== "object") continue;
+    const n = Number(entry[field]);
+    if (Number.isFinite(n)) total += n;
+  }
+  return total;
+}
+
+function countLoggedDays(dailyState) {
+  let n = 0;
+  for (const entry of Object.values(dailyState || {})) {
+    if (!entry || typeof entry !== "object") continue;
+    if (entry.savedAt || entry.adsSpendUsd != null || entry.adsClicks != null) n += 1;
+  }
+  return n;
+}
+
+/**
+ * Next calendar day in the 21-day test to prep or log (first day on/after today without save, else day after last save).
+ * @param {object[]} calendarDays
+ */
+export function buildNextDayReview(calendarDays) {
+  if (!Array.isArray(calendarDays) || !calendarDays.length) return null;
+  const today = new Date().toISOString().slice(0, 10);
+  let lastSavedIdx = -1;
+  for (let i = 0; i < calendarDays.length; i += 1) {
+    const m = calendarDays[i].manual || {};
+    if (m.savedAt || m.adsSpendUsd != null || (m.adsClicks != null && m.adsClicks !== "")) {
+      lastSavedIdx = i;
+    }
+  }
+  let next =
+    calendarDays.find((d) => d.date >= today && !(d.manual && d.manual.savedAt)) || null;
+  if (!next && lastSavedIdx >= 0 && lastSavedIdx < calendarDays.length - 1) {
+    next = calendarDays[lastSavedIdx + 1];
+  }
+  if (!next) {
+    next = calendarDays.find((d) => d.date >= today) || calendarDays[calendarDays.length - 1];
+  }
+  const tasks = (next.checklist?.tasks || []).map((t) => ({
+    id: t.id,
+    label: t.label,
+    milestone: Boolean(t.milestone),
+  }));
+  return {
+    dayNumber: next.dayNumber,
+    date: next.date,
+    title: next.checklist?.heading || `Day ${next.dayNumber}`,
+    summary: next.checklist?.summary || "",
+    tasks,
+    milestone: next.milestone || null,
+    holdWeek: next.dayNumber >= 4 && next.dayNumber <= 6,
+    keywordReview: next.dayNumber === 3 || next.dayNumber === 7 || next.dayNumber === 14 || next.dayNumber === 21,
+  };
+}
+
 /**
  * @param {object} opts
  * @param {import('@google-analytics/data').BetaAnalyticsDataClient} [opts.client]
@@ -214,6 +272,13 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
 
   const totalSteps = plan.phases.reduce((n, p) => n + (p.steps?.length || 0), 0);
   const completedSteps = (state.completedStepIds || []).length;
+  const manualAdsSpendUsd = sumManualSpend(state.daily);
+  const manualAdsClicks = sumManualField(state.daily, "adsClicks");
+  const manualAdsImpressions = sumManualField(state.daily, "adsImpressions");
+  const daysLogged = countLoggedDays(state.daily);
+  const manualAdsAvgCpc =
+    manualAdsClicks > 0 ? Math.round((manualAdsSpendUsd / manualAdsClicks) * 100) / 100 : null;
+  const nextDayReview = buildNextDayReview(calendarDays);
 
   return {
     plan,
@@ -226,8 +291,11 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
     },
     calendarDays,
     totals: {
-      manualAdsSpendUsd: sumManualSpend(state.daily),
-      manualAdsClicks: runningAdsClicks,
+      manualAdsSpendUsd,
+      manualAdsClicks,
+      manualAdsImpressions,
+      manualAdsAvgCpc,
+      daysLogged,
       autoPaidSessions: runningPaidSessions,
       autoBeginCheckout: runningCheckouts,
       autoLandingPageViews: runningLandingViews,
@@ -248,7 +316,9 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
         Math.max(0, Math.floor((Date.now() - new Date(`${startDate}T00:00:00.000Z`).getTime()) / 86400000) + 1)
       ),
       daysTotal: plan.durationDays,
+      daysLogged,
     },
+    nextDayReview,
     autoSources: {
       ga4: client && propertyId ? (gaError ? { error: gaError } : { ok: true }) : { skipped: true },
       stripe: stripe ? (stripeError ? { error: stripeError } : { ok: true }) : { skipped: true },

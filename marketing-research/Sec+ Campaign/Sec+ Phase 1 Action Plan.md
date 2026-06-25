@@ -34,7 +34,7 @@ This is the project runbook — not competitor research. Competitors sell dumps 
 
 ## Your job — standing (every week)
 
-Open **Admin → 21-day plan → click the calendar day** for that day&apos;s checklist, then log spend below.
+Open **Admin → 21-day plan → click the calendar day** for that day&apos;s checklist, then log spend below. **Saving a day updates the Campaign tracker** below with running spend, clicks, and next-day review tasks.
 
 | # | You do | Where |
 |---|--------|--------|

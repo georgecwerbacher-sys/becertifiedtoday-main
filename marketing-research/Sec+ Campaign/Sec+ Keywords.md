@@ -17,7 +17,7 @@ tags:
 
 **Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
 
-**Import:** [[secplus-keywords.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Overview:** [[google-ads-overview-2026-06-25/README.txt|2026-06-25 overview CSVs]] · **Paste block:** [[#All positive keywords (64)]] below.
+**Import:** [[secplus-keywords.csv]] · **Change log:** [[secplus-keyword-changelog.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Overview:** [[google-ads-overview-2026-06-25/README.txt|2026-06-25 overview CSVs]] · **Paste block:** [[#All positive keywords (64)]] below.
 
 **Live in Google Ads (2026-06-23):** **64** positives enabled in `Security+ PBQ Practice` (was 67 — **removed generic practice-questions tier** 2026-06-25). CCNA `ccna_wedge_lab` is paused — not in this list.
 
@@ -281,6 +281,26 @@ Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
 Regenerate checklist: `npm run sync:secplus-checklist` · paste **Negatives** rows marked `pending` in [[secplus-keywords.csv]] · **remove** the three practice-questions **positives** in Google Ads UI.
 
 **Admin tracker:** after repo sync, check **Keyword CSV synced** + **Negatives added** on [Day 3 in /admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan) · setup step **Generic practice-questions tier removed** under Ad group phase.
+
+---
+
+## Keyword change log (tracker notes)
+
+**CSV:** [[secplus-keyword-changelog.csv]] — one row per change. Copy **Tracker note** or **Why** into admin **Ops notes**.
+
+**Quick paste (2026-06-25 · D3):**
+
+```
+KW D3: cut 3 practice-questions positives; +13 campaign negs pending paste. Keep PBQ/timed. 64 pos in repo. Pending Google: pause removed positives + paste negs from checklist.
+```
+
+| Date | Action | Summary |
+|------|--------|---------|
+| 2026-06-25 | remove ×3 | practice questions positives (expensive · wrong intent) |
+| 2026-06-25 | add neg ×13 | exam/test/Dion/PDF shopper terms — **pending in Google Ads** |
+| 2026-06-25 | keep | `[security+ pbq practice]` · `[security+ timed practice test]` · `[security+ performance based questions]` |
+
+Append a row after every keyword edit → `npm run sync:secplus-checklist`.
 
 Match notation: unquoted = **Broad** · `"quotes"` = **Phrase**
 

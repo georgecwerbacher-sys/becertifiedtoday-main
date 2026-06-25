@@ -309,6 +309,40 @@
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 8px;
     }
+    .campaign-plan-log,
+    .campaign-next-day {
+      margin: 12px 0;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: rgba(15, 23, 41, 0.75);
+    }
+    .campaign-plan-log h4,
+    .campaign-next-day h4 {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      color: #9fd4ff;
+    }
+    .campaign-plan-log p,
+    .campaign-next-day p {
+      margin: 0 0 8px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .campaign-next-day ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.78rem;
+      color: #d8e2f0;
+      line-height: 1.45;
+    }
+    .campaign-next-day li.milestone-task { color: #b8f0d0; }
+    .campaign-sync-note {
+      font-size: 0.72rem;
+      color: #7f92b0;
+      margin: 8px 0 0;
+    }
     .plan-goal {
       margin: 0 0 10px;
       font-size: 0.88rem;
@@ -816,9 +850,10 @@
         <h2 style="margin:0 0 6px;font-size:1.05rem">Campaign tracker · Google Ads (21-day test)</h2>
         <p class="section-note" style="margin-top:0">
           GA4 paid traffic, landing funnel, and <code>begin_checkout</code> for the live Security+ Google campaign.
-          Use <strong>Last 21 days</strong> for budget projection. Stripe Security+ purchases (above) complete the funnel.
+          <strong>Running spend / clicks</strong> sync from the
+          <a href="#section-campaign-plan">21-day plan</a> daily log when you save a day.
+          Use <strong>Last 21 days</strong> for GA4 alignment. Stripe Security+ purchases (above) complete the funnel.
           Spend and CPC live in <a href="https://ads.google.com/aw/overview?ocid=8235244277&euid=277397985&__u=6466314265&uscid=8235244277&__c=3900876173&authuser=0&workspaceId=0&subid=us-en-awhp-g-aw-c-home-signin-bgc!o2-aluminum%7Cib:2387565277%7Cib:8016481541%7Cib:6079319977%7C-ahpm-0000000209-0000000001%7C-ahpm-0000000179-0000000001" target="_blank" rel="noopener noreferrer">Google Ads</a>.
-          <a href="#section-campaign-plan">21-day plan &amp; daily log →</a>
         </p>
         <div class="campaign-grid" id="campaignMarketingGrid"></div>
         <p id="campaignMarketingStatus" class="status" aria-live="polite"></p>
@@ -1129,6 +1164,76 @@
             var spendProj = Number(p.estimatedSpendProjectionUsd || 0);
             var cpaActual = purchases > 0 ? spendInRange / purchases : null;
             var cpaProj = projPurchases > 0 ? spendProj / projPurchases : null;
+            var pl = c.planLog || null;
+            var planLogHtml = "";
+            if (pl) {
+              planLogHtml =
+                '<div class="campaign-plan-log"><h4>21-day plan log · ' +
+                fmt(pl.daysLogged) +
+                " days saved · D" +
+                fmt(pl.daysElapsed) +
+                "/" +
+                fmt(pl.daysTotal) +
+                "</h4>" +
+                '<p class="campaign-sync-note">Running totals — refreshes when you save the plan daily log.</p>' +
+                '<div class="campaign-metrics">' +
+                [
+                  ["Logged spend", fmtUsd(pl.spendUsd)],
+                  ["Logged clicks", fmt(pl.clicks)],
+                  ["Impressions", fmt(pl.impressions)],
+                  ["Avg CPC", pl.avgCpc != null ? "$" + Number(pl.avgCpc).toFixed(2) : "—"],
+                  ["Landing checkout", fmtPct(pl.landingCheckoutRate)],
+                  ["Click→checkout", fmtPct(pl.clickToCheckoutRate)],
+                ]
+                  .map(function (pair) {
+                    return (
+                      '<div class="campaign-metric"><div class="val">' +
+                      pair[1] +
+                      '</div><div class="lbl">' +
+                      pair[0] +
+                      "</div></div>"
+                    );
+                  })
+                  .join("") +
+                "</div></div>";
+            }
+            var nextHtml = "";
+            if (c.nextDayReview) {
+              var nd = c.nextDayReview;
+              nextHtml =
+                '<div class="campaign-next-day"><h4>Next day · D' +
+                nd.dayNumber +
+                " · " +
+                escapeAttr(nd.date) +
+                "</h4>" +
+                (nd.summary
+                  ? "<p>" + escapeAttr(nd.summary) + "</p>"
+                  : "") +
+                (nd.holdWeek
+                  ? "<p><strong>Hold week:</strong> no budget, RSA, or keyword changes.</p>"
+                  : "") +
+                (nd.keywordReview
+                  ? "<p><strong>Keyword review</strong> — search terms + secplus-keyword-changelog.csv before edits.</p>"
+                  : "") +
+                "<ul>" +
+                (nd.tasks || [])
+                  .map(function (t) {
+                    return (
+                      '<li class="' +
+                      (t.milestone ? "milestone-task" : "") +
+                      '">' +
+                      escapeAttr(t.label) +
+                      "</li>"
+                    );
+                  })
+                  .join("") +
+                "</ul></div>";
+            }
+            var projNote = p.planBased
+              ? "Logged spend through today + $" +
+                Number(c.dailyBudgetUsd || 15).toFixed(0) +
+                "/day for remaining test days. GA4 projection still scales from the date-range selector."
+              : "Log daily spend in the 21-day plan above to drive running totals here.";
 
             return (
               '<article class="campaign-card" data-campaign-id="' +
@@ -1164,12 +1269,14 @@
                 })
                 .join("") +
               "</div>" +
+              planLogHtml +
+              nextHtml +
               '<div class="campaign-projection"><h4>' +
               projDays +
-              "-day budget projection</h4>" +
-              "<p>Linear scale from selected range (" +
-              rangeDays +
-              "d). Enter actual Google spend to refine CPA.</p>" +
+              "-day projection</h4>" +
+              "<p>" +
+              escapeAttr(projNote) +
+              "</p>" +
               '<div class="campaign-projection-grid">' +
               [
                 ["Spend in range", fmtUsd(spendInRange)],
@@ -1206,16 +1313,75 @@
           .join("");
 
         if (statusEl) {
-          statusEl.textContent =
-            "Google Ads only · default range 21 days · " +
-            (data.projectionWindowDays || 21) +
-            "-day projection uses budget × days and scales GA4 + Stripe from the selected range.";
+          statusEl.textContent = data.planLinked
+            ? "Linked to 21-day plan log · running spend/clicks update when you save a day · GA4 from selected range"
+            : "Google Ads · log daily spend in the 21-day plan to sync running totals here";
           statusEl.className = "status ok";
         }
       }
 
       var campaignPlanCache = null;
+      var campaignMarketingCache = null;
+      var stripePurchasesCache = null;
       var selectedPlanDate = null;
+
+      function mergePlanIntoMarketingClient(marketing, plan) {
+        if (!marketing || marketing.error || !plan || plan.error) return marketing;
+        var planCampaignId =
+          (plan.plan && plan.plan.campaignId) ||
+          (plan.campaign && plan.campaign.id) ||
+          "secplus_portal";
+        var totals = plan.totals || {};
+        var progress = plan.progress || {};
+        var dailyBudget = Number((plan.campaign && plan.campaign.dailyBudgetUsd) || 15);
+        var durationDays = Number((plan.plan && plan.plan.durationDays) || 21);
+        var daysElapsed = Number(progress.daysElapsed || 0);
+        var daysRemaining = Math.max(0, durationDays - daysElapsed);
+        var loggedSpend = Number(totals.manualAdsSpendUsd || 0);
+        var loggedClicks = Number(totals.manualAdsClicks || 0);
+        var projectedSpend21d = loggedSpend + daysRemaining * dailyBudget;
+        var campaigns = (marketing.campaigns || []).map(function (c) {
+          if (c.id !== planCampaignId) return c;
+          var projection = c.projection || {};
+          return Object.assign({}, c, {
+            planLog: {
+              startDate: (plan.state && plan.state.startDate) || null,
+              endDate: (plan.state && plan.state.endDate) || null,
+              daysElapsed: daysElapsed,
+              daysTotal: durationDays,
+              daysLogged: Number(totals.daysLogged || progress.daysLogged || 0),
+              spendUsd: loggedSpend,
+              clicks: loggedClicks,
+              impressions: Number(totals.manualAdsImpressions || 0),
+              avgCpc: totals.manualAdsAvgCpc != null ? totals.manualAdsAvgCpc : null,
+              projectedSpend21d: projectedSpend21d,
+              landingCheckoutRate: totals.landingCheckoutRate,
+              checkoutRate: totals.checkoutRate,
+              clickToCheckoutRate: totals.clickToCheckoutRate,
+            },
+            nextDayReview: plan.nextDayReview || null,
+            projection: Object.assign({}, projection, {
+              estimatedSpendInRangeUsd: loggedSpend,
+              estimatedSpendProjectionUsd: projectedSpend21d,
+              planBased: true,
+            }),
+          });
+        });
+        return Object.assign({}, marketing, {
+          campaigns: campaigns,
+          planLinked: true,
+          planCampaignId: planCampaignId,
+        });
+      }
+
+      function syncCampaignTrackerFromPlan() {
+        if (!campaignMarketingCache || !campaignPlanCache) return;
+        campaignMarketingCache = mergePlanIntoMarketingClient(
+          campaignMarketingCache,
+          campaignPlanCache
+        );
+        renderCampaignMarketing(campaignMarketingCache, stripePurchasesCache);
+      }
 
       function planStatusEl() {
         return document.getElementById("campaignPlanStatus");
@@ -1308,6 +1474,8 @@
           .join("");
 
         bindPlanStepActions();
+
+        syncCampaignTrackerFromPlan();
 
         var days = data.calendarDays || [];
         var startIso = state.startDate || plan.defaultStartDate || "";
@@ -1629,6 +1797,7 @@
           .then(function (res) {
             if (!res.ok) throw new Error((res.body && res.body.error) || "Plan failed");
             renderCampaignPlan(res.body.campaignPlan);
+            syncCampaignTrackerFromPlan();
           })
           .catch(function (err) {
             if (st) {
@@ -2205,8 +2374,11 @@
               portal.ok && portal.body && portal.body.purchasesInRange
                 ? portal.body.purchasesInRange
                 : null;
-            renderCampaignMarketing(ga.body.campaignMarketing, stripeData);
+            stripePurchasesCache = stripeData;
+            campaignMarketingCache = ga.body.campaignMarketing;
+            renderCampaignMarketing(campaignMarketingCache, stripeData);
             renderCampaignPlan(ga.body.campaignPlan);
+            syncCampaignTrackerFromPlan();
             renderTrend(ga.body.dailyTrend);
             dashStatus.textContent = "";
             dashStatus.className = "status ok";

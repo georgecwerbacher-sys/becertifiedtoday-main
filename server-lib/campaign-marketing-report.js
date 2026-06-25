@@ -141,3 +141,57 @@ export async function buildCampaignMarketingReport(client, propertyId, range, ra
     landingPages,
   };
 }
+
+/**
+ * Merge 21-day plan manual log into admin-tracked campaigns (running spend/clicks + next-day review).
+ * @param {object|null|undefined} marketingReport
+ * @param {object|null|undefined} planReport
+ */
+export function mergeCampaignPlanIntoMarketing(marketingReport, planReport) {
+  if (!marketingReport || marketingReport.error || !planReport || planReport.error) {
+    return marketingReport;
+  }
+  const planCampaignId = planReport.plan?.campaignId || planReport.campaign?.id || "secplus_portal";
+  const totals = planReport.totals || {};
+  const progress = planReport.progress || {};
+  const nextDayReview = planReport.nextDayReview || null;
+  const dailyBudget = Number(planReport.campaign?.dailyBudgetUsd || 15);
+  const durationDays = Number(planReport.plan?.durationDays || 21);
+  const daysElapsed = Number(progress.daysElapsed || 0);
+  const daysRemaining = Math.max(0, durationDays - daysElapsed);
+  const loggedSpend = Number(totals.manualAdsSpendUsd || 0);
+  const loggedClicks = Number(totals.manualAdsClicks || 0);
+  const projectedSpend21d = loggedSpend + daysRemaining * dailyBudget;
+
+  marketingReport.campaigns = (marketingReport.campaigns || []).map((c) => {
+    if (c.id !== planCampaignId) return c;
+    return {
+      ...c,
+      planLog: {
+        startDate: planReport.state?.startDate || null,
+        endDate: planReport.state?.endDate || null,
+        daysElapsed,
+        daysTotal: durationDays,
+        daysLogged: Number(totals.daysLogged || progress.daysLogged || 0),
+        spendUsd: loggedSpend,
+        clicks: loggedClicks,
+        impressions: Number(totals.manualAdsImpressions || 0),
+        avgCpc: totals.manualAdsAvgCpc != null ? totals.manualAdsAvgCpc : null,
+        projectedSpend21d,
+        landingCheckoutRate: totals.landingCheckoutRate,
+        checkoutRate: totals.checkoutRate,
+        clickToCheckoutRate: totals.clickToCheckoutRate,
+      },
+      nextDayReview,
+      projection: {
+        ...(c.projection || {}),
+        estimatedSpendInRangeUsd: loggedSpend,
+        estimatedSpendProjectionUsd: projectedSpend21d,
+        planBased: true,
+      },
+    };
+  });
+  marketingReport.planLinked = true;
+  marketingReport.planCampaignId = planCampaignId;
+  return marketingReport;
+}

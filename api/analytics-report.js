@@ -14,7 +14,7 @@ import {
   setCampaignPlanStepCompleted,
 } from "../server-lib/campaign-plan-store.js";
 import { getCampaignTestPlan } from "../server-lib/campaign-test-plan-registry.js";
-import { buildCampaignMarketingReport } from "../server-lib/campaign-marketing-report.js";
+import { buildCampaignMarketingReport, mergeCampaignPlanIntoMarketing } from "../server-lib/campaign-marketing-report.js";
 import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
 import {
   analyticsApiReady,
@@ -326,6 +326,11 @@ export default async function handler(req, res) {
       })),
     ]);
 
+    const mergedMarketing = mergeCampaignPlanIntoMarketing(
+      campaignMarketing && !campaignMarketing.error ? campaignMarketing : null,
+      campaignPlan && !campaignPlan.error ? campaignPlan : null
+    );
+
     return res.status(200).json({
       ok: true,
       propertyId: env.propertyId,
@@ -344,8 +349,8 @@ export default async function handler(req, res) {
               error: certHomeLanding?.error || "Cert home landing unavailable",
             },
       campaignMarketing:
-        campaignMarketing && !campaignMarketing.error
-          ? campaignMarketing
+        mergedMarketing && !mergedMarketing.error
+          ? mergedMarketing
           : {
               campaigns: [],
               error: campaignMarketing?.error || "Campaign tracker unavailable",
