@@ -14,7 +14,10 @@ import {
   fetchDailyLandingPageViews,
   gaDateToIso,
 } from "./google-analytics.js";
-import { distributeLandingCheckoutDeduction } from "./campaign-ga-adjustments.js";
+import {
+  distributeLandingCheckoutDeduction,
+  resolveGaAdjustments,
+} from "./campaign-ga-adjustments.js";
 import { buildStripePurchasesReport } from "./stripe-purchases-report.js";
 
 function addDaysIso(isoDate, days) {
@@ -215,12 +218,9 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
   for (let i = 0; i < plan.durationDays; i += 1) {
     planDates.push(addDaysIso(startDate, i));
   }
-  if (state.gaAdjustments?.landingBeginCheckout) {
-    distributeLandingCheckoutDeduction(
-      autoByDate,
-      planDates,
-      state.gaAdjustments.landingBeginCheckout
-    );
+  const gaAdjustments = resolveGaAdjustments(campaignId, state.gaAdjustments);
+  if (gaAdjustments?.landingBeginCheckout) {
+    distributeLandingCheckoutDeduction(autoByDate, planDates, gaAdjustments.landingBeginCheckout);
   }
 
   const calendarDays = [];
@@ -300,7 +300,7 @@ export async function buildCampaignPlanReport({ client, propertyId, stripe, camp
       startDate,
       endDate,
       completedStepIds: state.completedStepIds || [],
-      gaAdjustments: state.gaAdjustments || null,
+      gaAdjustments: gaAdjustments || null,
       updatedAt: state.updatedAt || null,
     },
     calendarDays,

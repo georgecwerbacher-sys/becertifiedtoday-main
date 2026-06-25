@@ -1,7 +1,15 @@
 /**
- * Manual GA4 display adjustments stored on campaign plan state (e.g. owner test checkouts).
+ * Manual GA4 display adjustments (e.g. owner test checkouts).
  * GA4 historical events cannot be deleted; these subtract from admin/tracker totals only.
  */
+
+/** @type {Record<string, { landingBeginCheckout: number, notes?: string }>} */
+export const BUILTIN_GA_ADJUSTMENTS = {
+  secplus_portal: {
+    landingBeginCheckout: 2,
+    notes: "Owner test begin_checkout clicks removed (launch mobile + GA4 test).",
+  },
+};
 
 export function normalizeGaAdjustments(raw) {
   if (!raw || typeof raw !== "object") return null;
@@ -48,4 +56,12 @@ export function adjustLandingBeginCheckoutCount(count, adjustments) {
   const deduction = Number(adjustments?.landingBeginCheckout || 0);
   if (!Number.isFinite(deduction) || deduction <= 0) return raw;
   return Math.max(0, raw - Math.floor(deduction));
+}
+
+/** Plan state overrides built-in defaults for a campaign. */
+export function resolveGaAdjustments(campaignId, stateAdjustments) {
+  const fromState = normalizeGaAdjustments(stateAdjustments);
+  if (fromState) return fromState;
+  const id = String(campaignId || "").trim();
+  return normalizeGaAdjustments(BUILTIN_GA_ADJUSTMENTS[id]) || null;
 }
