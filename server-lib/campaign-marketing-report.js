@@ -2,6 +2,7 @@
  * Merge static campaign registry with GA4 metrics for /admin marketing section.
  */
 import { getAdminTrackedCampaignRegistry } from "./campaign-marketing-registry.js";
+import { adjustLandingBeginCheckoutCount } from "./campaign-ga-adjustments.js";
 import {
   fetchBeginCheckoutByCampaign,
   fetchBeginCheckoutBySourceCampaign,
@@ -163,10 +164,21 @@ export function mergeCampaignPlanIntoMarketing(marketingReport, planReport) {
   const loggedClicks = Number(totals.manualAdsClicks || 0);
   const projectedSpend21d = loggedSpend + daysRemaining * dailyBudget;
 
+  const gaAdjustments = planReport.state?.gaAdjustments || null;
+  const landingDeduction = Number(gaAdjustments?.landingBeginCheckout || 0);
+
   marketingReport.campaigns = (marketingReport.campaigns || []).map((c) => {
     if (c.id !== planCampaignId) return c;
+    const rawLandingCheckout = Number(c.metrics?.landingBeginCheckout || 0);
+    const adjustedLandingCheckout = adjustLandingBeginCheckoutCount(rawLandingCheckout, gaAdjustments);
+    const metrics =
+      landingDeduction > 0 && c.metrics
+        ? { ...c.metrics, landingBeginCheckout: adjustedLandingCheckout }
+        : c.metrics;
     return {
       ...c,
+      metrics,
+      gaAdjustments: gaAdjustments || undefined,
       planLog: {
         startDate: planReport.state?.startDate || null,
         endDate: planReport.state?.endDate || null,

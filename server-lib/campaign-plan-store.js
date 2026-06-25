@@ -4,6 +4,7 @@
  */
 import fs from "fs";
 import path from "path";
+import { normalizeGaAdjustments } from "./campaign-ga-adjustments.js";
 import { resolveGithubRepo } from "./visitor-questions.js";
 
 export const CAMPAIGN_PLAN_DIR_REL = "data/reports/campaign-plan";
@@ -94,6 +95,7 @@ function defaultState(campaignId, defaultStartDate) {
     startDate: defaultStartDate || null,
     completedStepIds: [],
     daily: {},
+    gaAdjustments: null,
     updatedAt: new Date().toISOString(),
   };
 }
@@ -111,6 +113,7 @@ function normalizeState(raw, campaignId, defaultStartDate) {
       ? [...new Set(raw.completedStepIds.map((s) => String(s || "").trim()).filter(Boolean))]
       : [],
     daily: raw.daily && typeof raw.daily === "object" ? { ...raw.daily } : {},
+    gaAdjustments: normalizeGaAdjustments(raw.gaAdjustments),
     updatedAt: typeof raw.updatedAt === "string" ? raw.updatedAt : base.updatedAt,
   };
 }
