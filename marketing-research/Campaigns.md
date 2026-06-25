@@ -43,3 +43,9 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 - Guest page copy sync: `scripts/sync-guest-page-marketing.py`
 - Purchase conversion tag: `public/js/google-ads-purchase-conversion.js`
 - Admin projection: `server-lib/campaign-marketing-report.js`
+
+## CCNA Automation (200-901)
+
+Question and lab hunt checklist (not Google Ads):
+
+- [[../CCNA-Auto/README|CCNA-Auto]] · [[../CCNA-Auto/blueprint-hunt-list|Blueprint hunt list]]

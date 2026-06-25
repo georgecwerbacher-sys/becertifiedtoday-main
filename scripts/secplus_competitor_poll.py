@@ -889,11 +889,15 @@ PARSERS = {
 }
 
 
-def load_pbq_poll_sources(product: str | None = None) -> list[dict]:
-    if not COMPETITOR_SITES.is_dir():
+def load_pbq_poll_sources(
+    product: str | None = None,
+    sites_dir: Path | str | None = None,
+) -> list[dict]:
+    base = Path(sites_dir) if sites_dir else COMPETITOR_SITES
+    if not base.is_dir():
         return []
     sources: list[dict] = []
-    for path in sorted(COMPETITOR_SITES.glob("*.md")):
+    for path in sorted(base.glob("*.md")):
         meta = parse_frontmatter(path)
         if product and meta.get("product") != product:
             continue
@@ -1042,12 +1046,18 @@ if __name__ == "__main__":
         default="SY0-701",
         help="Filter MCQ polls by frontmatter product (default: SY0-701; use CCNA-200-301 for CCNA)",
     )
+    ap.add_argument(
+        "--sites-dir",
+        default="",
+        help="Override competitor sites directory (e.g. data/ccnaauto-question-sourcing/competitor-sites)",
+    )
     args = ap.parse_args()
     product = args.product if args.product not in ("", "all") else None
+    sites_dir = Path(args.sites_dir) if args.sites_dir else None
     if args.pbq:
-        sources = load_pbq_poll_sources(product=product)
+        sources = load_pbq_poll_sources(product=product, sites_dir=sites_dir)
     else:
-        sources = load_poll_sources(product=product)
+        sources = load_poll_sources(product=product, sites_dir=sites_dir)
     label = "PBQ" if args.pbq else "MCQ"
     print(f"[{label}] {len(sources)} enabled source(s)")
     for s in sources:
