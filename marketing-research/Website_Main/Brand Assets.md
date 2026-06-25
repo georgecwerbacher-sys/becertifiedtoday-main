@@ -31,7 +31,9 @@ tags:
 
 Path: `public/images/logo/` · ENCOR duplicate: `public/CCNP-ENCOR-Study/images/logo/`
 
-**Export from Photoshop:** transparent variant = PNG-24 with transparency checked — **not** a black matte. Desktop source: `becertifiedtoday_logo_v2.png` → repo `becertifiedtoday_logo_v2_trans.png`.
+**Export from Photoshop:** transparent variant = PNG-24 with transparency checked — **not** a black matte. Master copies on drive: `…/Images/Website/Logo/`.
+
+**Video / Premiere source library:** [[../videos/Local Asset Library|Local Asset Library]] (TOSHIBA — not in git).
 
 ## JS
 

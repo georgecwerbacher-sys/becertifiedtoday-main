@@ -14,36 +14,37 @@ tags:
 
 **Buffer target:** **$510** cumulative eligible spend.
 
-**Tracker:** [[google-ads-spend-promo-2026.csv]] — updated from billing export **2026-06-24**.
+**Tracker:** [[google-ads-spend-promo-2026.csv]] — billing through **2026-06-24** · overview actuals **2026-06-25**.
 
-**Source billing file:** `Billing activity report.csv` (May 20 – Jun 24, 2026)
+**Overview export:** [[google-ads-overview-2026-06-25/README.txt|google-ads-overview-2026-06-25/]]
 
 ---
 
-## Progress snapshot (through Jun 24, 2026)
+## Progress snapshot (through Jun 25, 2026)
 
 | Metric | Amount |
 |--------|-------:|
-| **Account campaign spend (cumulative)** | **$255.68** |
-| Sec+ campaigns only (all names) | $122.71 |
+| **Account campaign spend (cumulative)** | **$280.26** |
+| Sec+ campaigns only (all names) | **$147.29** (includes Jun 25 **$24.58**) |
 | CCNA wedge lab | $122.07 |
 | Other (CCNA_2, ENCOR-TOP, CCNA_Study_Portal) | $10.90 |
 | Taxes & fees (may not count toward promo) | $0.18 |
-| **Remaining to $500** | **$244.32** |
-| **Remaining to $510** | **$254.32** |
+| **Remaining to $500** | **$219.74** |
+| **Remaining to $510** | **$229.74** |
 
-**Promo progress:** **51%** of $500 · **50%** of $510 buffer.
+**Promo progress:** **56%** of $500 · **55%** of $510 buffer.
 
 You are **well ahead** of where a Jun 24 Sec+-only launch would be — earlier **SEC+** / **Security+** runs and **ccna_wedge_lab** spend already count toward account spend (verify Google’s promo widget uses the same scope).
 
 ---
 
-## Jun 24 — live Sec+ PBQ campaign
+## Jun 24–25 — live Sec+ PBQ campaign
 
 | | |
 |---|---|
 | Campaign | `Security+ SY0-701 · Exam prep · becertifiedtoday` |
 | Jun 24 spend | **$9.63** · **4 clicks** · ~**$2.41** avg CPC |
+| **Jun 25 spend** | **$24.58** · **12 clicks** · **215 impr** · ~**$2.05** avg CPC · [[google-ads-overview-2026-06-25/README.txt\|overview export]] |
 | Jun 23 | Launch evening — **no separate billing line** (likely rolled into Jun 24) |
 
 **ccna_wedge_lab:** last spend **Jun 21** ($1.49) — appears **paused**; if it stays off, forward spend ≈ Sec+ only.
@@ -73,7 +74,8 @@ Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** 
 | Jun 1–5 | $61.08 | Sec+ + early ccna_wedge |
 | Jun 6–21 | $88.51 | Mostly ccna_wedge_lab |
 | Jun 24 | $9.63 | **Current Sec+ PBQ campaign** |
-| **Total** | **$255.68** | |
+| **Jun 25** | **$24.58** | **12 clicks · overview export** |
+| **Total** | **$280.26** | |
 
 ### Sec+ by day (same campaign family, mixed names)
 
@@ -89,6 +91,7 @@ Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** 
 | Jun 10 | $16.92 | 9 |
 | Jun 16 | $6.65 | 3 |
 | **Jun 24** | **$9.63** | **4** |
+| **Jun 25** | **$24.58** | **12** |
 
 ---
 
@@ -96,11 +99,11 @@ Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** 
 
 | Date | Projected cumulative | Event |
 |------|---------------------:|-------|
-| Jun 24 (actual) | $255.68 | Today |
-| Jul 1 | ~$360 | Week 1 review |
-| **~Jul 11** | **~$500** | **Promo threshold** |
-| Jul 14 | ~$555 | 21-day conversion test ends |
-| Jul 19 | ~$630 | Promo deadline |
+| Jun 25 (actual) | **$280.26** | Today |
+| Jul 1 | ~$370 | Week 1 review |
+| **~Jul 11** | **~$520** | **Promo threshold** |
+| Jul 14 | ~$565 | 21-day conversion test ends |
+| Jul 19 | ~$640 | Promo deadline |
 
 ---
 

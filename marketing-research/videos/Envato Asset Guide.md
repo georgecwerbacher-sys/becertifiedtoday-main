@@ -11,6 +11,8 @@ Use your **[Envato Elements](https://elements.envato.com/)** subscription for li
 
 Align assets with **prep / exam practice** tone — not flashy course-intro energy. See [[Production Template]].
 
+**Local review folder:** [[Local Asset Library]] — `/Volumes/TOSHIBA EXT/BeCertifiedToday/Images` (by track: `Sec+/`, `CCNA/`, `ENCOR/`, `Website/`, `Templates/`).
+
 ---
 
 ## What to download (by use)
@@ -28,13 +30,22 @@ Align assets with **prep / exam practice** tone — not flashy course-intro ener
 
 ---
 
+## Inventory CSV
+
+**File:** [[envato-assets.csv]] — track every download (local path on [[Local Asset Library|TOSHIBA drive]], assigned brief, license saved).
+
+Add a row when you pull a new item from Elements; update **License saved** after you stash the certificate in `Templates/licenses/`.
+
+---
+
 ## License hygiene
 
 For each project folder:
 
 1. Download asset → save **license certificate PDF** from Elements
-2. Path: `Videos/Assets/[slug]/envato-licenses/`
-3. Note asset name + URL in video brief **Envato / asset** column
+2. Path: `Templates/licenses/` on drive · per-edit copy: `Videos/Assets/[slug]/envato-licenses/`
+3. Add or update row in [[envato-assets.csv]]
+4. Note asset slug in video brief **Envato / asset** column
 
 Elements license covers YouTube and website embed when subscriber at download time.
 
@@ -53,9 +64,9 @@ Elements license covers YouTube and website embed when subscriber at download ti
 
 ## Suggested starter pack (download once)
 
-Save to `Videos/Assets/_shared/`:
+Save to drive `Templates/` (see [[envato-assets.csv]]):
 
-- [ ] 1 × minimal **end card / logo sting** (3 s)
+- [x] **Quick Photo Ident 2** — logo sting · 10 s · Premiere · [[envato-assets.csv#quick-photo-ident-2|CSV row]] · recolor `#2f66bf` · swap logo to v2 trans
 - [ ] 1 × **lower third** mogrt (Premiere)
 - [ ] 2 × **music** tracks (main + Short)
 - [ ] 1 × **transition** pack (8–12 subtle cuts)

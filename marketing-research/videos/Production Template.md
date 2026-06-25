@@ -30,6 +30,8 @@ Master spec for every video. Duplicate [[_video-template|_video-template]] per p
 
 Save reusable **Essential Graphics** templates in Premiere: `BCT_LowerThird`, `BCT_StepLabel`, `BCT_EndCard`.
 
+**Montage / problem overlays:** icon + optional **NO** badge — see [[Visual Overlay Kit]] · drive icons in [[Local Asset Library]].
+
 ---
 
 ## Video formats

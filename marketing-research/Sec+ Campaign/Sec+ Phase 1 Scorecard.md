@@ -142,7 +142,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 | Search term **≥ 3 clicks** + **begin_checkout** | Add **`[exact]`** |
 | Keyword **≥ 20 clicks**, **0 checkout** | Pause phrase; keep exact if exists |
 | Search term course/free/dump | Campaign or ad group **negative** same day |
-| Generic `"practice questions"` high spend, low checkout | Reduce bid or pause after tier 1 review |
+| Generic `"practice questions"` / `"practice test"` / `"practice exam"` (course-shopper CPC) | **Removed from positives + campaign negatives** (2026-06-25) |
 
 Promote list lives in monthly CSV notes + [[Sec+ Keywords]] export.
 

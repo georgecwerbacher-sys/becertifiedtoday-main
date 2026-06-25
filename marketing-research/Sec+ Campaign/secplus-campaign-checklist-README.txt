@@ -6,9 +6,9 @@ File: marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv
 One campaign · one ad group · $15/day:
   • Setup checklist (pre-launch through negatives)
   • 6 campaign sitelinks (Extensions phase — paste URLs + descriptions)
-  • 67 positive keywords (rank order — paste into Google Ads)
+  • 64 positive keywords (rank order — paste into Google Ads)
   • RSA headlines + descriptions (Security+ PBQ Practice)
-  • 46 campaign negatives + 8 ad group negatives
+  • 59 campaign negatives + 8 ad group negatives
 
 Columns
 -------

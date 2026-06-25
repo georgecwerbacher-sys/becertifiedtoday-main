@@ -97,7 +97,9 @@ The **timed simulation is a core sell**—always mention it with **paid access**
 | **Jordan — burned by PDF** | Realistic practice, not static dump | interactive, exam simulation, not pdf, online portal |
 | **Last-mile reviewer** | Timed run + weak-area loop | timed practice test, mock exam online, adaptive review |
 
-**Avoid bidding alone on:** `security+ question bank`, `security+ practice test` (course-vendor CPC war). Pair with **interactive**, **simulation**, **online**, **timed**, **PBQ**, **not pdf**, **adaptive**, **mobile**, or **work/federal** modifiers.
+**Avoid bidding alone on:** `security+ question bank`, `security+ practice test`, **`"* practice questions"`** (course-vendor CPC war · shoppers comparing Dion/Udemy/exam bundles — not last-mile prep). Pair **timed/sim/PBQ** keywords with **interactive**, **simulation**, **online**, **timed**, **PBQ**, **not pdf**, **adaptive**, **mobile**, or **work/federal** modifiers.
+
+**Removed from live list (2026-06-25):** `"comptia security+ practice questions"`, `"sy0-701 practice questions"`, `"security+ practice questions"` — negated at campaign level. Site sells **readiness practice** after study, not sample tests or course replacement.
 
 See full lists: [[Sec+ Keywords]]
 

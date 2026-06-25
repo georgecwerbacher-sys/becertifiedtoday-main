@@ -80,6 +80,18 @@ Independent prep — not affiliated with CompTIA.
 
 ---
 
+## Visual overlays (consistent with welcome video)
+
+| Beat | Overlay |
+|------|---------|
+| Wrong prep (dump / bootcamp) | Download or PDF icon + **NO** + 2-word label |
+| Sample CTA | Click-to-download icon · no NO · `Free samples` |
+| Step labels | `Step 1 — Read all parts` on V3 |
+
+Full spec: [[../Visual Overlay Kit|Visual Overlay Kit]] · **Flat icons** · `Download Flat Icon/` on drive.
+
+---
+
 ## Related
 
-[[PBQ Video Strategy]] · [[zero-trust-zta-migration-pbq-prep|Zero Trust example brief]]
+[[PBQ Video Strategy]] · [[../Visual Overlay Kit|Visual Overlay Kit]] · [[zero-trust-zta-migration-pbq-prep|Zero Trust example brief]]

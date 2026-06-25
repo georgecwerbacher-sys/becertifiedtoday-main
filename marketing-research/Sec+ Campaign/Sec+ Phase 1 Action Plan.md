@@ -39,17 +39,20 @@ Open **Admin → 21-day plan → click the calendar day** for that day&apos;s ch
 | # | You do | Where |
 |---|--------|--------|
 | 1 | Check off **day checklist** + log **Ads spend + clicks** | [/admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan) |
-| 2 | Export **Search terms** on day 3, 7, 14, 21 → add negatives | Google Ads |
-| 3 | One **landing or RSA change** at a time; check **Landing page change shipped** | Admin daily log |
-| 4 | Month-end: fill **revenue** columns | [[secplus-monthly-scorecard.csv]] |
-| 5 | Reconcile promo spend | Google promo widget vs [[google-ads-spend-promo-2026.csv]] |
+| 2 | **Day 3 done (Jun 25):** Keyword CSV synced + Negatives added checkboxes · overview export in repo | Admin D3 · uncheck **Campaign-level negatives pasted** until Google UI paste complete |
+| 3 | Export **Search terms** on day 7, 14, 21 → add negatives | Google Ads |
+| 4 | One **landing or RSA change** at a time; check **Landing page change shipped** | Admin daily log |
+| 5 | Month-end: fill **revenue** columns | [[secplus-monthly-scorecard.csv]] |
+| 6 | Reconcile promo spend | Google promo widget vs [[google-ads-spend-promo-2026.csv]] |
 
 ---
 
 ## This week (concrete)
 
-- [ ] **Day 3 (~Jun 27):** Search terms CSV → paste or note junk queries to negate
-- [ ] **Log Jun 24–today:** spend **$9.63** Jun 24 + each day since (clicks, impressions, CPC)
+- [x] **Day 3 (Jun 25):** Overview export → repo · practice-questions cut · pending negatives in checklist · logged in [/admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan)
+- [ ] **Paste in Google Ads:** 13 pending campaign negatives + pause 3 removed positives · then check **Campaign-level negatives pasted** in admin setup
+- [ ] **Day 7 (~Jun 29):** Funnel review — hold $15/day unless scorecard tier-1
+- [x] **Log Jun 23–25:** D1–D3 in admin daily log ($0 / $9.63 / $24.58)
 - [ ] **Test purchase path:** ad URL on **phone** → sample → **Get 30-day** → GA4 Realtime `begin_checkout`
 - [ ] **Ads cleanup** if not done: no $9.99/10-day in RSA or sitelinks ([[Sec+ Notes#Remove 10-day from live Google Ads]])
 - [ ] **Confirm** Google promo progress matches ~**$256+** account spend

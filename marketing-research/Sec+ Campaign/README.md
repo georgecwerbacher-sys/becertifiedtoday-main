@@ -24,7 +24,7 @@ tags:
 
 **AdWords checklist:** [[secplus-campaign-checklist.csv]] — paste 67 keywords + negatives + RSA into Google Ads (Numbers). Regenerate: `npm run sync:secplus-checklist`
 
-**Keyword source:** [[secplus-keywords.csv]] · live export [[google-ads-keyword-export-2026-06-23.csv]] · strategy notes: [[Sec+ Keywords#All positive keywords (67)]]
+**Keyword source:** [[secplus-keywords.csv]] · **64** positives (generic practice-questions tier removed 2026-06-25) · live export [[google-ads-keyword-export-2026-06-23.csv]] · overview [[google-ads-overview-2026-06-25/README.txt|2026-06-25]] · strategy notes: [[Sec+ Keywords#All positive keywords (64)]]
 
 ---
 

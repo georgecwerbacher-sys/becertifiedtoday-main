@@ -57,13 +57,22 @@ const SECPLUS_DAY_TASKS = {
   3: [
     {
       id: "d3-search-terms",
-      label: "Export Search terms → add negatives (course, free, bootcamp, video)",
+      label: "Export Search terms → add negatives (course, free, bootcamp, dump, Dion/PDF)",
       syncField: "negativesAdded",
     },
     {
-      id: "d3-keyword-csv",
-      label: "Optional: sync keyword delivery CSV to repo",
+      id: "d3-remove-practice-questions",
+      label: "Remove generic *practice questions* positives; negate exam/test shopper terms (64-keyword list)",
       syncField: "keywordCsvUpdated",
+    },
+    {
+      id: "d3-keyword-csv",
+      label: "Sync secplus-keywords.csv + checklist (npm run sync:secplus-checklist)",
+      syncField: "keywordCsvUpdated",
+    },
+    {
+      id: "d3-overview-export",
+      label: "Save Overview cards CSV zip → google-ads-overview-YYYY-MM-DD/",
     },
   ],
   4: [{ id: "d4-hold", label: "Hold budget, RSA, and keywords — no changes (week 1)" }],
@@ -207,10 +216,14 @@ export const SECPLUS_PORTAL_21D_PLAN = {
       steps: [
         { id: "ag-name", label: "Single ad group enabled: Security+ PBQ Practice" },
         { id: "ag-url", label: "Final URL → comptia-sec+-home.html with UTMs" },
-        { id: "ag-keywords", label: "Keywords pasted from checklist (rank 1–67)" },
+        { id: "ag-keywords", label: "Keywords pasted from checklist (rank 1–64 · PBQ/sim/timed — no generic practice questions)" },
         { id: "ag-rsa", label: "RSA live — H2 pinned Timed 90-Min Exam Sim" },
         { id: "ag-neg-campaign", label: "Campaign-level negatives pasted" },
         { id: "ag-neg-adgroup", label: "Ad group-level negatives pasted" },
+        {
+          id: "ag-practice-q-cut",
+          label: "Generic practice-questions tier removed; exam-shopper negatives added (2026-06-25)",
+        },
       ],
     },
     {
@@ -230,9 +243,9 @@ export const SECPLUS_PORTAL_21D_PLAN = {
       title: "Day 3 · Search terms + landing baseline",
       summary: "Negatives for junk intent; record landing checkout rate vs clicks logged.",
       actions: [
-        "Export Search terms → add negatives (course, video, bootcamp, free)",
-        "Log spend + clicks in daily tracker; note landing checkout rate in admin",
-        "Optional: export keywords CSV → sync repo delivery status",
+        "Export Search terms → add negatives (course, dump, Dion, PDF, generic practice test/exam)",
+        "Remove comptia/sy0/security+ practice questions positives; paste pending campaign negatives",
+        "Log spend + clicks; save Overview export to repo; note landing checkout rate",
       ],
       pullKeywordCsv: true,
     },

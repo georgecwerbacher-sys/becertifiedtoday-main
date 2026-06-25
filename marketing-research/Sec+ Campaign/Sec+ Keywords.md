@@ -17,9 +17,20 @@ tags:
 
 **Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
 
-**Import:** [[secplus-keywords.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Paste block:** [[#All positive keywords (67)]] below.
+**Import:** [[secplus-keywords.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Overview:** [[google-ads-overview-2026-06-25/README.txt|2026-06-25 overview CSVs]] · **Paste block:** [[#All positive keywords (64)]] below.
 
-**Live in Google Ads (2026-06-23):** all **67** positives enabled in `Security+ PBQ Practice`. CCNA `ccna_wedge_lab` is paused — not in this list.
+**Live in Google Ads (2026-06-23):** **64** positives enabled in `Security+ PBQ Practice` (was 67 — **removed generic practice-questions tier** 2026-06-25). CCNA `ccna_wedge_lab` is paused — not in this list.
+
+**Audience filter:** Last-mile prep only — people who **already studied** and need **PBQ / timed sim / readiness**. **Do not** bid on naked `practice questions` / `practice test` / `practice exam` (course-vendor CPC war · wrong intent).
+
+### Google Ads — do now (2026-06-25)
+
+1. **Remove or pause** these three **positive** keywords (if still enabled):
+   - `"comptia security+ practice questions"` — **$9.88 / 5 clicks** Jun 25, no checkout
+   - `"sy0-701 practice questions"`
+   - `"security+ practice questions"`
+2. **Add campaign negatives** from [[#All negatives|pending negatives]] (generic exam + day-3 junk).
+3. **Keep** timed/sim/PBQ keywords — e.g. `[security+ pbq practice]`, `[security+ timed practice test]`, `"security+ practice exam simulation"`.
 
 | Delivery status | Count |
 |-----------------|------:|
@@ -31,14 +42,46 @@ tags:
 
 | Keyword | Match | Impr. | Status |
 |---------|-------|------:|--------|
-| security+ practice questions | Phrase | 23 | Eligible |
+| ~~security+ practice questions~~ | Phrase | 23 | **Removed** — generic exam intent |
 | comptia security+ pbq | Phrase | 17 | Limited · low quality |
 | comptia security+ pbq | Exact | 3 | Limited · low quality |
 | security+ pbq practice | Exact | 3 | Eligible |
-| sy0-701 practice questions | Phrase | 2 | Eligible |
+| sy0-701 practice questions | Phrase | 2 | **Removed** |
 | security+ pbq practice | Phrase | 1 | Eligible |
 
-Full status per keyword: `Google status` column in [[secplus-keywords.csv]].
+**Day 2 (2026-06-25) — overview export:**
+
+| Metric | Value |
+|--------|------:|
+| Spend | **$24.58** |
+| Clicks | **12** · avg CPC **~$2.05** |
+| Impressions | **215** |
+| Conversions | 0 |
+
+**Keywords with spend (matched) — keep vs cut:**
+
+| Keyword | Match | Clicks | Cost | Action |
+|---------|-------|-------:|-----:|--------|
+| ~~comptia security+ practice questions~~ | Phrase | 5 | $9.88 | **Removed + negated** — course/exam CPC war |
+| security+ pbq practice | Exact | 4 | $8.06 | **Keep** — core PBQ intent |
+| security+ timed practice test | Exact | 2 | $4.19 | **Keep** — timed sim / last-mile |
+| security+ performance based questions | Exact | 1 | $2.45 | **Keep** — PBQ intent |
+
+**Search terms — add phrase negatives (paid junk clicks):**
+
+| Search term | Cost | Action |
+|-------------|-----:|--------|
+| jason dion security+ practice exams | $2.25 | `"jason dion"` · tighten `"dion training"` |
+| comptia security+ exam dumps | $1.80 | confirm `"exam dump"` / `"brain dump"` live |
+| comptia security+ sy0 701 exam questions pdf | $2.31 | `"exam questions and answers"` · `"sy0 701 pdf"` |
+| pass4sure security+ pdf | $0 | `"pass4sure"` when seen again |
+| security+ practice exam | $2.37 | `[security+ practice exam]` exact neg · keep `"security+ practice exam simulation"` positive |
+| comptia security+ practice exam | $1.78 | `"comptia security+ practice exam"` phrase neg |
+| comptia sec+ practice exam | $2.41 | `"comptia sec+ practice exam"` phrase neg |
+
+**Blocked as positives (2026-06-25):** generic `"* practice questions"` · `"comptia security+ practice test"` · `"sec+ practice test"` — see [[#All negatives|negatives list]].
+
+Full status per keyword: `Google status` column in [[secplus-keywords.csv]] · day-2 clicks/cost in **Clicks/Cost (2026-06-25)** columns.
 
 **Positioning:** [[Sec+ Positioning]] · **Setup:** [[Sec+ Notes]] · **RSA:** [[Sec+ RSA Copy]]
 
@@ -63,7 +106,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 ---
 
-## All positive keywords (67)
+## All positive keywords (64)
 
 Paste into Google Ads **in this order** (rank 1 = highest intent):
 
@@ -132,9 +175,6 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 "sy0-701 prep"
 "security+ study prep online"
 "security+ practice portal"
-"comptia security+ practice questions"
-"sy0-701 practice questions"
-"security+ practice questions"
 ```
 
 | # | Keyword | Match |
@@ -203,11 +243,10 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 | 62 | sy0-701 prep | Phrase |
 | 63 | security+ study prep online | Phrase |
 | 64 | security+ practice portal | Phrase |
-| 65 | comptia security+ practice questions | Phrase |
-| 66 | sy0-701 practice questions | Phrase |
-| 67 | security+ practice questions | Phrase |
 
-**Not on this list (keep negated):** question bank, 1000 questions, latest sy0-701 questions, `"security+ practice test"`. **Week 2:** `"security+ practice test online"` only if Search Terms convert.
+**Removed 2026-06-25 (negated — do not re-add as positives):** `"comptia security+ practice questions"`, `"sy0-701 practice questions"`, `"security+ practice questions"`. Compete with Dion/Udemy/course bundles; not last-mile PBQ/sim intent.
+
+**Not on this list (keep negated):** question bank, 1000 questions, latest sy0-701 questions, generic practice test/exam/questions cluster — see [[#All negatives]].
 
 ---
 
@@ -220,6 +259,28 @@ Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
 ## All negatives
 
 **Live in Google Ads:** 46 campaign + 8 ad group = **54** total. Export: [[google-ads-negative-export.csv]]
+
+**Pending paste (2026-06-25)** — campaign negatives:
+
+```
+"comptia sec+ practice exam"
+"comptia sec+ practice test"
+"comptia security+ practice exam"
+"comptia security+ practice questions"
+"comptia security+ practice test"
+"exam questions and answers"
+"jason dion"
+"pass4sure"
+"sec+ practice test"
+[security+ practice exam]
+"security+ practice questions"
+"sy0 701 pdf"
+"sy0-701 practice questions"
+```
+
+Regenerate checklist: `npm run sync:secplus-checklist` · paste **Negatives** rows marked `pending` in [[secplus-keywords.csv]] · **remove** the three practice-questions **positives** in Google Ads UI.
+
+**Admin tracker:** after repo sync, check **Keyword CSV synced** + **Negatives added** on [Day 3 in /admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan) · setup step **Generic practice-questions tier removed** under Ad group phase.
 
 Match notation: unquoted = **Broad** · `"quotes"` = **Phrase**
 
@@ -251,13 +312,23 @@ examtopics
 "35 minute free"
 "training course"
 "instructor led"
+"jason dion"
 "brain dump"
+"comptia sec+ practice exam"
+"comptia sec+ practice test"
+"comptia security+ practice exam"
+"comptia security+ practice questions"
+"comptia security+ practice test"
 "exam dump"
+"exam questions and answers"
 "guaranteed pass"
 "pass guarantee"
+"pass4sure"
 "pdf download"
 "professor messer"
 "dion training"
+"sec+ practice test"
+"security+ practice questions"
 "security+ jobs"
 "security+ salary"
 "security+ training"
@@ -266,12 +337,15 @@ examtopics
 "security+ 1000+ questions"
 "sy0-701 v5.0 question bank"
 "latest sy0-701 questions"
+"sy0 701 pdf"
+"sy0-701 practice questions"
 "comptia security+ question bank"
 "ccna 200-301"
 "ccnp encor"
 "pen test+"
 "unauthorized exam content"
 "exam content"
+[security+ practice exam]
 ```
 
 **Ad group level (`Security+ PBQ Practice`):**

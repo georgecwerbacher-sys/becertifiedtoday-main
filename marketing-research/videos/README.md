@@ -22,8 +22,11 @@ Production notes for YouTube and site embeds. Every video supports **test prep a
 | [[_video-template\|_video-template]] | **Duplicate per video** — minute table, script, subtitles |
 | [[Premiere and OBS Setup\|Premiere & OBS Setup]] | Record + edit settings (2026) |
 | [[Envato Asset Guide\|Envato Asset Guide]] | Elements searches, license folder, what to avoid |
+| [[Local Asset Library\|Local Asset Library]] | **TOSHIBA drive** — review folder by track |
+| [[Visual Overlay Kit\|Visual Overlay Kit]] | Icon + **NO** overlays · montage cards · lower thirds (welcome-video look) |
+| [[envato-assets.csv\|envato-assets.csv]] | **Inventory** — one row per Elements download |
 
-**Stack:** Premiere Pro 2026 · OBS · Photoshop · pro mic · [Envato Elements](https://elements.envato.com/)
+**Stack:** Premiere Pro 2026 · OBS · Photoshop · pro mic · [Envato Elements](https://elements.envato.com/) · local drive asset library
 
 ## Folders
 
@@ -36,12 +39,14 @@ Production notes for YouTube and site embeds. Every video supports **test prep a
 
 ## Workflow
 
-1. Duplicate [[_video-template]] → `[track]/[slug].md`
+1. Review or download assets → [[Local Asset Library|TOSHIBA drive]] (`…/Images/[track]/`)
+2. Duplicate [[_video-template]] → `[track]/[slug].md`
 2. Fill **minute-by-minute** table + script + SRT draft
-3. Record in OBS per [[Premiere and OBS Setup]]
-4. Edit in Premiere · export MP4 + SRT
-5. Thumbnail in Photoshop · assets from [[Envato Asset Guide]]
-6. Publish · update brief status + site embed if applicable
+3. Pull approved assets from drive → Premiere `Videos/Assets/[slug]/`
+4. Record in OBS per [[Premiere and OBS Setup]]
+5. Edit in Premiere · export MP4 + SRT
+6. Thumbnail in Photoshop · assets from drive or [[Envato Asset Guide]]
+7. Publish · update brief status + site embed if applicable
 
 ## Status key
 
