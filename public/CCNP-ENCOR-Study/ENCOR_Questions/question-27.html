@@ -300,7 +300,7 @@ D    172.16.1.0/24 [110/7445] via 172.16.250.1, 00:25:22, GigabitEthernet 0/0
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

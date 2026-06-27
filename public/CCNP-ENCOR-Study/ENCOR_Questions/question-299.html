@@ -265,7 +265,7 @@ response = requests.post(url, data=json.dump(payload), headers=myheaders, auth=(
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

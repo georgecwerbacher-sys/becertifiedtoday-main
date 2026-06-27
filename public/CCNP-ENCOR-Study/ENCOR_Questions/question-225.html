@@ -273,7 +273,7 @@ monitor session 2 filter vlan 1-2, 4 – 4094</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

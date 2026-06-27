@@ -274,7 +274,7 @@ Device(config-mon-erspan-src-dst)# no vrf 1</pre></label>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

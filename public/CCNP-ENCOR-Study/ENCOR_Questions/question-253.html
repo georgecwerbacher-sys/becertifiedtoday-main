@@ -275,7 +275,7 @@ SW2(config-mon-rspan-src)#destination remote vlan 50</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

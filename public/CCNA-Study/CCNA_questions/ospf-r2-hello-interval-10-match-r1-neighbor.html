@@ -281,14 +281,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/datacenter-backup-more-specific-route-secondary-circuit.html">Back</a>
-      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/soho-environment-characteristics-choose-two.html">Next</a>
       </div>
     </nav>
@@ -404,6 +404,10 @@ R2(config-if)#ip ospf dead-interval 45</pre>
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       checkBtn.addEventListener("click", function () {
         var sel = document.querySelector('input[name="ospfr2hi1"]:checked');
         answerBox.style.display = "block";
@@ -417,7 +421,7 @@ R2(config-if)#ip ospf dead-interval 45</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

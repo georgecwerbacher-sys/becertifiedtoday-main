@@ -321,7 +321,7 @@ Switch-1(config)#access-list 1 deny 192.168.2.0 0.0.0.255</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 

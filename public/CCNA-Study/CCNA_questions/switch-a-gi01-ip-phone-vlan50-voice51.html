@@ -281,14 +281,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/nat-router1-vlan200-acl-inside-source-overload.html">Back</a>
-      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/r1-floating-static-19216820-via-r3-ospf-area20.html">Next</a>
       </div>
     </nav>
@@ -375,6 +375,10 @@ SwitchA(config-if)#switchport qos trust cos</pre>
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       checkBtn.addEventListener("click", function () {
         var sel = document.querySelector('input[name="swagi0151"]:checked');
         answerBox.style.display = "block";
@@ -388,7 +392,7 @@ SwitchA(config-if)#switchport qos trust cos</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

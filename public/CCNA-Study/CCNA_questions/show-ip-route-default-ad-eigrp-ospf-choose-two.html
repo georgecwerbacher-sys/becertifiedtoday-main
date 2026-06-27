@@ -281,14 +281,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/aa-show-ip-route-192-168-20-1-static-ad.html">Back</a>
-      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/wpa3-implementation-security-protocol-gcmp.html">Next</a>
       </div>
     </nav>
@@ -353,6 +353,10 @@ D    10.255.5.5/32 [90/1] via 10.0.45.5, 00:00:13, GigabitEthernet0/1</pre>
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       function selectedValues() {
         return []
           .slice.call(document.querySelectorAll('input[name="defad1"]:checked'))
@@ -378,7 +382,7 @@ D    10.255.5.5/32 [90/1] via 10.0.45.5, 00:00:13, GigabitEthernet0/1</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

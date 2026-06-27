@@ -281,14 +281,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/wpa2-wpa3-differences-sae-128-192-choose-two.html">Back</a>
-      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/internet-default-route-ad-1-from-10-10-10-32.html">Next</a>
       </div>
     </nav>
@@ -331,6 +331,10 @@
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       function selectedValues() {
         return []
           .slice.call(document.querySelectorAll('input[name="syslogtr1"]:checked'))
@@ -356,7 +360,7 @@
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

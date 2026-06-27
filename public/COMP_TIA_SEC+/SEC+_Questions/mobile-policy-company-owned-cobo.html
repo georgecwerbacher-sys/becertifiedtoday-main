@@ -131,14 +131,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html" aria-label="Security+ training portal">
+    <a class="site-logo-corner" href="/comptia-sec+-home.html" aria-label="Security+ training portal">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/COMP_TIA_SEC+/SEC+_Questions/unauthorized-disclosure-confidentiality.html">Back</a>
-      <a class="nav-link nav-home" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/comptia-sec+-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/COMP_TIA_SEC+/SEC+_Questions/shared-files-malware-rat-infection.html">Next</a>
       </div>
     </nav>
@@ -186,6 +186,10 @@ Which of the following would best meet these requirements?</h1>
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       checkBtn.addEventListener("click", function () {
         var sel = document.querySelector('input[name="secplus_q88"]:checked');
         answerBox.style.display = "block";
@@ -199,7 +203,7 @@ Which of the following would best meet these requirements?</h1>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

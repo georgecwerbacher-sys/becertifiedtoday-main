@@ -741,6 +741,10 @@ def render_page(
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {{
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\\.\\s*/, "");
+      }}
+
       checkBtn.addEventListener("click", function () {{
         var sel = document.querySelector('input[name="{name}"]:checked');
         answerBox.style.display = "block";
@@ -754,7 +758,7 @@ def render_page(
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }}
       }});
 
@@ -829,6 +833,10 @@ def render_page_choose_two(
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {{
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\\.\\s*/, "");
+      }}
+
       function selectedValues() {{
         return []
           .slice.call(document.querySelectorAll('input[name="{name}"]:checked'))
@@ -854,7 +862,7 @@ def render_page_choose_two(
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }}
       }});
 

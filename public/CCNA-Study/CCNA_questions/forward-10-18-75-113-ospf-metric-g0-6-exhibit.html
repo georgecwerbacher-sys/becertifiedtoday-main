@@ -281,14 +281,14 @@
     <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
   </div>
   <div class="question-shell">
-    <a class="site-logo-corner" href="/CCNA-Study/CCNA_Training_Portal.html" aria-label="CCNA training portal">
+    <a class="site-logo-corner" href="/ccna-home.html" aria-label="Return to CCNA home">
       <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
     </a>
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
       <a class="nav-link nav-prev" href="/CCNA-Study/CCNA_questions/vrrp-lan-capabilities-redundancy-load-sharing-choose-two.html">Back</a>
-      <a class="nav-link nav-home" href="/CCNA-Study/CCNA_Training_Portal.html">Home</a>
+      <a class="nav-link nav-home" href="/ccna-home.html">Home</a>
       <a class="nav-link nav-next next-link" href="/CCNA-Study/CCNA_questions/ap-sniffer-mode-packet-analyzer-capture.html">Next</a>
       </div>
     </nav>
@@ -336,6 +336,10 @@ R       10.18.75.113/27 [120/14] via G0/23</pre>
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       checkBtn.addEventListener("click", function () {
         var sel = document.querySelector('input[name="fwd1075"]:checked');
         answerBox.style.display = "block";
@@ -349,7 +353,7 @@ R       10.18.75.113/27 [120/14] via G0/23</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }
       });
 

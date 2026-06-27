@@ -411,6 +411,10 @@ def radio_script(name: str, correct: str, msg: str) -> str:
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {{
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\\.\\s*/, "");
+      }}
+
       checkBtn.addEventListener("click", function () {{
         var sel = document.querySelector('input[name="{name}"]:checked');
         answerBox.style.display = "block";
@@ -424,7 +428,7 @@ def radio_script(name: str, correct: str, msg: str) -> str:
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }}
       }});
 
@@ -449,6 +453,10 @@ def choose_two_script(name: str, correct: list[str], msg: str) -> str:
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+
+      function incorrectMsg() {{
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\\.\\s*/, "");
+      }}
 
       function selectedValues() {{
         return []
@@ -475,7 +483,7 @@ def choose_two_script(name: str, correct: list[str], msg: str) -> str:
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }}
       }});
 

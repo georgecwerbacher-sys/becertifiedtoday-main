@@ -262,7 +262,7 @@ FEC: coerce.hwaddr_unix: set aabb.cc00.2020 for Po2, 1/1</pre>
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
         }
       });
 
