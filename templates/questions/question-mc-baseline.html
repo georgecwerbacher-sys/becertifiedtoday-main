@@ -114,6 +114,11 @@
       var CORRECT_MSG = "REPLACE: Short correct explanation (include letter if useful).";
 
       var answerBox = document.getElementById("answerBox");
+
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
       document.querySelectorAll('input[name="' + INPUT_NAME + '"]').forEach(function (option) {
         option.addEventListener("change", function () {
           answerBox.style.display = "block";
@@ -122,7 +127,7 @@
             answerBox.textContent = "Correct. " + CORRECT_MSG;
           } else {
             answerBox.className = "answer incorrect";
-            answerBox.textContent = "Incorrect.";
+            answerBox.textContent = incorrectMsg();
           }
         });
       });

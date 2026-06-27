@@ -53,7 +53,7 @@
     if (resultEl) {
       resultEl.textContent = allOk
         ? messages.ok || "Correct."
-        : messages.fail || "Incorrect.";
+        : messages.fail || "Incorrect. Review the highlighted slots, then match each token to the category that best describes it.";
     }
 
     return allOk;

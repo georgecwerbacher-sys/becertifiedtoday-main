@@ -16,6 +16,10 @@ NEW_SCRIPT = '''  <script>
       var resetBtn = document.getElementById("resetBtn");
       var answerBox = document.getElementById("answerBox");
 
+      function incorrectMsg() {{
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\\.\\s*/, "");
+      }}
+
       function applyFeedback(value) {{
         answerBox.style.display = "block";
         if (value === CORRECT) {{
@@ -23,7 +27,7 @@ NEW_SCRIPT = '''  <script>
           answerBox.textContent = CORRECT_MSG;
         }} else {{
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Incorrect.";
+          answerBox.textContent = incorrectMsg();
         }}
       }}
 
