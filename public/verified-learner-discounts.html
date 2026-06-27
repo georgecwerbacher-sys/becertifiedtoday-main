@@ -159,6 +159,40 @@
       border: 1px solid #fcd34d;
       text-align: left;
     }
+    .privacy-note {
+      margin: clamp(18px, 3vw, 28px) auto 0;
+      max-width: 54rem;
+      padding: clamp(16px, 3vw, 22px);
+      border-radius: 14px;
+      border: 1px solid #fecaca;
+      background: #fef2f2;
+      box-shadow: 0 4px 18px rgba(127, 29, 29, 0.08);
+      text-align: left;
+    }
+    .privacy-note h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1rem, 2.4vw, 1.2rem);
+      line-height: 1.2;
+      color: #7f1d1d;
+    }
+    .privacy-note p {
+      margin: 0 0 10px;
+      color: #7f1d1d;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .privacy-note p:last-child {
+      margin-bottom: 0;
+    }
+    .privacy-note strong {
+      color: #450a0a;
+    }
+    .privacy-note a {
+      color: #991b1b;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 0.12em;
+    }
     .section-band {
       margin-top: clamp(28px, 4vw, 40px);
       padding: 0;
@@ -431,6 +465,15 @@
       color: var(--page-muted);
       border-top: 1px solid rgba(45, 59, 90, 0.12);
     }
+    footer a.footer-mailto {
+      color: var(--accent);
+      font-weight: 800;
+      text-decoration: none;
+    }
+    footer a.footer-mailto:hover,
+    footer a.footer-mailto:focus-visible {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -461,6 +504,18 @@
         <p class="draft-note" role="status">
           Eligibility verification is being prepared. Standard Security+ 30-day access is available now.
         </p>
+        <section class="privacy-note" aria-labelledby="privacy-note-title">
+          <h2 id="privacy-note-title">Email Privacy and Verification</h2>
+          <p>
+            <strong>Be Certified Today does not collect or sell email addresses.</strong> Payment emails are handled through
+            Stripe checkout. Eligibility emails are used only to verify the discount group you select.
+          </p>
+          <p>
+            If you have an issue using your required school, work, military, government, contractor, or partner email, use
+            <a href="#ask">Ask a question</a>. Include the email required for discount verification and the email where you
+            want the discount code and access link sent.
+          </p>
+        </section>
       </div>
 
       <section class="section-band section-band--dark" aria-labelledby="why-special-title">
@@ -741,8 +796,10 @@
       </p>
     </aside>
 
-    <footer>
+    <footer id="ask">
       <span>&copy; <span id="year">2026</span> Be Certified Today</span>
+      <span aria-hidden="true"> · </span>
+      <a class="footer-mailto" href="#ask" aria-label="Ask a question">Ask a question</a>
     </footer>
   </div>
   <script>
