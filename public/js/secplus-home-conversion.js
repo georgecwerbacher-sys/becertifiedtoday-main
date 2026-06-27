@@ -73,8 +73,8 @@
     "wedge-default": {
       id: "wedge-default",
       adHeadline: "Security+ Practice Test",
-      eyebrow: "CompTIA Security+ SY0-701 · PBQ · timed simulation",
-      headline: "Security+ Exam Prep — 1000+ Questions, 34 PBQs & Timed Sim with Scorecard",
+      eyebrow: "CompTIA Security+ SY0-701",
+      headline: "CompTIA Security+ SY0-701 Exam Prep: 1000+ Questions, PBQs, and Adaptive Study",
       lead: WEDGE_LEAD,
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",

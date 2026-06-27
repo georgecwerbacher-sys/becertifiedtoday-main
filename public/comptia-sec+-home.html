@@ -124,7 +124,15 @@
               "name": "Which exam version are your practice questions based on?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Be Certified Today uses the latest questions available and constantly adds new items. CompTIA's live exam draws from a large item pool; when a major revision to tested objectives is released (such as SY0-701), updated practice is added. Practicing both newer and earlier questions builds broader coverage—the more you work through, the more your confidence and knowledge grow."
+                "text": "Be Certified Today uses the latest questions available and constantly adds new items. CompTIA's live exam draws from a large item pool; when a major revision to tested objectives is released (such as SY0-701), updated practice is added. Practicing both newer and earlier questions builds broader coverage. The more you work through, the more your confidence and knowledge grow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do you verify questions match the current exam?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Each Security+ question and PBQ is tagged to a SY0-701 objective ID and verified on Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 items stay in a separate audit bank, not in active Random and Review pools. SY0-701 Bank Verified 2026-06-27."
               }
             },
             {
@@ -140,7 +148,7 @@
               "name": "How many SY0-701 practice questions are included?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Full 30-day access includes 1000+ interactive questions aligned to CompTIA Security+ SY0-701 objectives version 5.0, plus 34 PBQ practice scenarios (chain labs, hot spots, and IR exhibits) and adaptive review that loops weak domains. This is a full question bank, not a small printable PDF pack."
+                "text": "Full 30-day access includes 1000+ interactive questions aligned to CompTIA Security+ SY0-701 objectives, plus 34 PBQ practice scenarios (chain labs, hot spots, and IR exhibits) and adaptive review that loops weak domains. This is a full question bank, not a small printable PDF pack."
               }
             },
             {
@@ -442,14 +450,17 @@
     .funnel > #purchase {
       order: 2;
     }
-    .funnel > .samples-stack {
+    .funnel > .secplus-home-verify {
       order: 3;
     }
-    .funnel > #secplus-compare {
+    .funnel > .samples-stack {
       order: 4;
     }
-    .funnel > .reviews-section {
+    .funnel > #secplus-compare {
       order: 5;
+    }
+    .funnel > .reviews-section {
+      order: 6;
     }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
@@ -473,6 +484,7 @@
     }
     .secplus-hero-actions .secplus-hero-atf-cta {
       margin-top: 0;
+      margin-bottom: clamp(18px, 3vw, 24px);
     }
     .secplus-hero-device-lead {
       margin: 0 0 clamp(14px, 2.5vw, 18px);
@@ -844,6 +856,83 @@
     }
     .landing-mission-pitch .landing-mission-cta a:hover {
       color: #8b5cf6;
+    }
+    .secplus-home-verify {
+      margin: 0 0 clamp(20px, 3.5vw, 28px);
+      padding: clamp(16px, 2.5vw, 20px) clamp(18px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(91, 33, 182, 0.28);
+      background: #ffffff;
+      max-width: none;
+      box-shadow: 0 1px 3px rgba(59, 7, 100, 0.08);
+    }
+    .secplus-home-verify-eyebrow {
+      margin: 0 0 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5b21b6;
+    }
+    .secplus-home-verify-title {
+      margin: 0 0 10px;
+      font-size: clamp(1.02rem, 2.4vw, 1.15rem);
+      font-weight: 800;
+      line-height: 1.3;
+      color: #3b0764;
+    }
+    .secplus-home-verify-lead {
+      margin: 0 0 12px;
+      font-size: clamp(0.9rem, 2vw, 0.96rem);
+      line-height: 1.55;
+      color: #4c1d95;
+    }
+    .secplus-home-verify-lead strong {
+      color: #3b0764;
+    }
+    .secplus-home-verify-list {
+      margin: 0 0 12px;
+      padding-left: 1.2rem;
+      font-size: clamp(0.86rem, 1.9vw, 0.92rem);
+      line-height: 1.5;
+      color: #4c1d95;
+    }
+    .secplus-home-verify-list li {
+      margin-bottom: 6px;
+    }
+    .secplus-home-verify-list li:last-child {
+      margin-bottom: 0;
+    }
+    .secplus-home-verify-meta {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 14px;
+      font-size: clamp(0.84rem, 1.9vw, 0.9rem);
+      line-height: 1.45;
+      color: #4c1d95;
+    }
+    .secplus-home-verify-date {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(91, 33, 182, 0.35);
+      background: #ffffff;
+      color: #5b21b6;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .secplus-home-verify-link {
+      color: #5b21b6;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 0.12em;
+    }
+    .secplus-home-verify-link:hover {
+      color: #3b0764;
     }
     h1 {
       margin: 0 0 16px;
@@ -2166,7 +2255,7 @@
       margin-top: auto;
     }
     .funnel > #secplus-compare {
-      order: 4;
+      order: 5;
     }
     .landing-gns3-compare {
       margin: 0;
@@ -2900,10 +2989,10 @@
           <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
             <div class="purchase-card-inner">
               <div class="purchase-card-main purchase-card-main--30d" id="secplusPurchaseDefault">
-                <p class="purchase-label">Get Security+ access</p>
-                <h2 class="purchase-heading" id="purchase-fold-title">Get 30-day Security+ access</h2>
+                <p class="purchase-label">Get Security+ Access</p>
+                <h2 class="purchase-heading" id="purchase-fold-title">Get 30-Day Security+ Access</h2>
                 <p class="purchase-lead purchase-lead--tight">
-                  Full SY0-701 library and practice portal for thirty days.
+                  Full SY0-701 library and practice portal for 30 days.
                 </p>
                 <div class="purchase-cta-stack purchase-cta-stack--single">
                   <div class="purchase-primary-cta">
@@ -2912,21 +3001,20 @@
                       aria-label="CompTIA Security+ 30-day all-access pass"
                     >
                       <div class="purchase-track-head">
-                        <p class="purchase-track-title">30-day access</p>
+                        <p class="purchase-track-title">30-Day Access</p>
                         <span class="secplus-live-badge">Live</span>
                       </div>
                       <p class="purchase-price" aria-label="19 dollars and 99 cents for 30 days">
                         $19.99 <span>/ 30 days</span>
                       </p>
                       <p class="purchase-library-highlights" role="note">
-                        <strong>1000+ interactive SY0-701 questions</strong> (SY0-701 objectives),
-                        <strong>34 PBQ practice scenarios</strong> (chain labs, hot spots, and IR exhibits),
-                        <strong>adaptive review</strong>, domain study modes, and the full
+                        <strong>1000+ interactive SY0-701 questions</strong>,
+                        <strong>34 PBQ scenarios</strong> (chain labs, hot spots, and IR exhibits),
+                        <strong>adaptive review</strong>, domain study modes, and a
                         <strong>90-minute timed exam</strong> on phone, tablet, or desktop.
                       </p>
                       <p class="purchase-track-sub">
-                        You unlock the full library for 30 days: verified explanations, progress tracking by domain, and study modes
-                        that loop weak topics until you are ready for test day. This is interactive prep, not a static PDF file.
+                        Verified explanations, progress tracking by domain, and study modes that loop weak topics until you are ready for test day. Interactive prep, not a static PDF.
                       </p>
                       <p class="purchase-track-cta-wrap">
                         <button
@@ -2940,7 +3028,7 @@
                           data-bcc-currency="USD"
                           aria-label="Purchase 30-day Security+ library access for nineteen ninety-nine"
                         >
-                          Get 30-day access
+                          Get 30-Day Access
                         </button>
                       </p>
                       <p class="purchase-access-disclaimer">
@@ -2952,6 +3040,19 @@
               </div>
             </div>
           </section>
+
+          <section class="secplus-home-verify" aria-labelledby="secplus-home-verify-title">
+            <p class="secplus-home-verify-eyebrow">Question Bank Audit</p>
+            <h2 class="secplus-home-verify-title" id="secplus-home-verify-title">Every Item Is Checked Against the Current Security+ Exam</h2>
+            <p class="secplus-home-verify-lead">
+              Many Test Preparation Sites hide what still matches today&apos;s official blueprint. Each question and PBQ here is tagged to a
+              <strong>SY0-701 objective ID</strong>, verified on Tier A sources (CompTIA, NIST, RFCs), and legacy SY0-601 items stay out of active Random and Review pools.
+            </p>
+            <p class="secplus-home-verify-meta">
+              <span class="secplus-home-verify-date">SY0-701 Bank Verified 2026-06-27</span>
+            </p>
+          </section>
+
           <div
             class="secplus-google-paid-callout"
             id="secplusGooglePaidCallout"
@@ -2959,23 +3060,19 @@
             role="note"
           >
             <strong>Already using Messer, Dion, or another course?</strong>
-            This is not another video bootcamp—it is browser PBQ practice plus a
-            <strong>90-minute timed simulation with scorecard review</strong> so you can tell if you are ready before test day.
-            Try the free samples below—MCQ plus a <strong>3-scenario PBQ preview</strong> (dark web IR, WLAN configuration, firewall ACL)—then unlock <strong>30-day full access for $19.99</strong>.
+            This is browser PBQ practice plus a
+            <strong>90-minute timed simulation with scorecard review</strong>, not another video bootcamp.
+            Try the free samples below (MCQ plus a <strong>3-scenario PBQ preview</strong>), then unlock <strong>30-day full access for $19.99</strong>.
           </div>
           <div class="funnel-intro hero-conversion" data-secplus-hl-pending="1">
             <div class="secplus-hero-header">
-              <p class="eyebrow" id="hero-conversion-eyebrow">CompTIA Security+ SY0-701 · exam prep · practice tests · timed simulation</p>
+              <p class="eyebrow" id="hero-conversion-eyebrow">CompTIA Security+ SY0-701</p>
               <p class="landing-tagline">Practice Like Test Day. Walk In Ready.</p>
-              <h1 id="hero-conversion-title">SY0-701 Security+ Exam Prep: 1000+ Questions, Simulations &amp; Adaptive Testing</h1>
+              <h1 id="hero-conversion-title">CompTIA Security+ SY0-701 Exam Prep: 1000+ Questions, PBQs, and Adaptive Study</h1>
               <p class="lead lead--full" id="hero-conversion-lead">
-                You prepare for Security+ SY0-701 in your browser.
-                You get <strong>1000+ interactive questions</strong> aligned to SY0-701 objectives,
-                <strong>34 performance-based scenarios</strong> (chain labs, drag-and-drop, hot spots, and IR exhibits),
-                and <strong>adaptive study modes</strong> that focus your time on weak domains.
-                Practice on your <strong>phone, tablet, or desktop</strong>. No PDFs and no third-party apps.
-                Many federal, DoD, and defense-contractor roles expect Security+ before you start work. Confirm requirements with your manager.
-                Try the free samples below to judge quality, then unlock <strong>30-day full access for $19.99</strong>.
+                Prepare for CompTIA Security+ SY0-701 in your browser: <strong>1000+ interactive questions</strong>,
+                <strong>34 PBQ scenarios</strong>, adaptive study modes, and a <strong>90-minute timed exam</strong>.
+                No PDFs or third-party apps. Try the free samples below, then unlock <strong>30-day access for $19.99</strong>.
               </p>
             </div>
             <div class="secplus-hero-highlights">
@@ -2984,19 +3081,19 @@
               </p>
               <ul class="secplus-value-pillars" aria-label="Security+ library highlights">
                 <li>
-                  <strong>1000+ practice questions</strong>
-                  Large SY0-701 bank with verified explanations aligned to current objectives.
+                  <strong>1000+ Practice Questions</strong>
+                  SY0-701 bank audited against the current exam outline, tagged to objective IDs with verified explanations.
                 </li>
                 <li>
-                  <strong>34 PBQ scenarios &amp; timed exam</strong>
-                  Chain labs, hot spots, and IR exhibits—plus a 90-minute timed simulation with scorecard.
+                  <strong>34 PBQ Scenarios and Timed Exam</strong>
+                  Chain labs, hot spots, and IR exhibits, plus a 90-minute timed simulation with scorecard.
                 </li>
                 <li>
-                  <strong>Adaptive review</strong>
+                  <strong>Adaptive Review</strong>
                   Missed topics loop back. Domain study and progress tracking target weak areas before test day.
                 </li>
                 <li>
-                  <strong>Phone, tablet &amp; desktop</strong>
+                  <strong>Phone, Tablet, and Desktop</strong>
                   Full interactive UI in the browser with touch-friendly drag-and-drop. No app install.
                 </li>
               </ul>
@@ -3006,12 +3103,9 @@
                 <a class="cta-main cta-main--free cta-main--hero-primary" id="hero-conversion-cta-primary" href="#home-secplus-samples-title">Preview free Security+ samples ↓</a>
               </p>
               <ul class="benefits" aria-label="What you get">
-                <li>1000+ interactive questions plus 34 PBQ scenarios (chain labs, hot spots, and IR exhibits).</li>
-                <li>Adaptive review loops weak domains until you are ready for test day.</li>
-                <li>Verified explanations and original practice material. No third-party apps.</li>
-                <li>Phone, tablet, and desktop. Study from duty station, CONUS, or TDY.</li>
+                <li>Study on phone, tablet, or desktop from duty station, CONUS, or TDY.</li>
                 <li>Security+ is common for federal, DoD, and contractor cyber roles. Confirm your requirement.</li>
-                <li>One-time 30-day access. No recurring subscription.</li>
+                <li>One-time 30-day access ($19.99). No subscription.</li>
               </ul>
             </div>
           </div>
@@ -3021,8 +3115,8 @@
               <div class="samples-block-intro">
                 <h2 class="samples-block-title" id="home-secplus-samples-title">Preview Quality on Phone, Tablet, or Desktop</h2>
                 <p class="samples-block-lead">
-                  You get a free MCQ preview plus a <strong>3-scenario PBQ preview</strong> (dark web IR, WLAN configuration, firewall ACL) from the <strong>1000+ question</strong> library and <strong>34-scenario</strong> PBQ set. Same verified explanations and browser UI as paid access.
-                  Open a sample on your phone to confirm layout before you buy. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish Sample</strong>).
+                  Free MCQ preview plus a <strong>3-scenario PBQ preview</strong> from the full library. Same verified explanations and browser UI as paid access.
+                  Open a sample on your phone to confirm layout before you buy.
                 </p>
               </div>
               <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
@@ -3051,7 +3145,7 @@
                 </li>
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
-                    <h3 id="home-secplus-darkweb-title">PBQ Preview — 3 Scenarios</h3>
+                    <h3 id="home-secplus-darkweb-title">PBQ Preview: 3 Scenarios</h3>
                     <p class="format-card-device-note">Touch-friendly on phone &amp; tablet</p>
                     <figure class="format-card-thumb">
                       <img
@@ -3077,10 +3171,10 @@
           </div>
 
           <section class="landing-gns3-compare" id="secplus-compare" aria-labelledby="secplus-compare-title">
-            <h2 id="secplus-compare-title">Browser Exam Prep vs. Static PDFs and Desktop Test-Engine Software</h2>
+            <h2 id="secplus-compare-title">Browser Exam Prep vs. Static PDFs and Desktop Test Engines</h2>
             <p class="landing-gns3-lead">
-              Many Security+ sites sell <strong>printable PDFs</strong> or require <strong>VCE, ETE, or desktop test engines</strong> for practice.
-              Be Certified Today is built for <strong>interactive practice</strong> in the same browser format you use on test day.
+              Many Security+ sites sell <strong>printable PDFs</strong> or require <strong>VCE, ETE, or desktop test engines</strong>.
+              Be Certified Today is a Test Preparation Site built for interactive browser practice on test day.
             </p>
             <div class="landing-gns3-table-wrap">
               <table class="landing-gns3-table" aria-describedby="secplus-compare-caption">
@@ -3126,6 +3220,11 @@
                     <td class="landing-gns3-cell-bct">Living site with continuous question additions</td>
                   </tr>
                   <tr>
+                    <th scope="row">Outdated exam content</th>
+                    <td>PDFs go stale when the blueprint changes; an updated file usually means buying again</td>
+                    <td class="landing-gns3-cell-bct">Tags items to SY0-701 objectives; legacy SY0-601 retired from active pools</td>
+                  </tr>
+                  <tr>
                     <th scope="row">Exam policy</th>
                     <td>Often focuses on memorization-only files</td>
                     <td class="landing-gns3-cell-bct">Exam prep only. Original practice with verified explanations</td>
@@ -3139,16 +3238,14 @@
             <div class="landing-mission-pitch" id="secplus-mission" aria-labelledby="secplus-mission-title">
               <h3 id="secplus-mission-title">Why I built Be Certified Today</h3>
               <p class="landing-mission-lead">
-                I built this for Security+ prep you can trust: current SY0-701 practice with 1000+ questions, 34 PBQ scenarios, adaptive review, and a timed exam —
-                presented the way test day works — with answers verified against official CompTIA objectives.
-                Try free samples first, no account required. When you are ready, unlock the full library for one payment, one period —
-                no membership, no ads inside the portal.
+                I built Be Certified Today for Security+ prep you can trust: SY0-701 practice with verified answers, presented the way test day works.
+                Try free samples first. When you are ready, unlock the full library for one payment and one period, with no membership and no ads in the portal.
               </p>
               <ul class="landing-mission-pillars" aria-label="What I promise">
-                <li><strong>Current material</strong> — aligned to SY0-701 objectives, not a stale PDF or VCE file.</li>
-                <li><strong>Certification-style practice</strong> — timed sim, PBQ chains, hot spots, and adaptive weak-area review.</li>
-                <li><strong>Verified answers</strong> — keys and explanations tied to official sources and original training content.</li>
-                <li><strong>No membership games</strong> — one-time access windows; ad-free study inside the portal.</li>
+                <li><strong>Current Material</strong>: Audited against the SY0-701 exam outline; legacy SY0-601 items kept out of active pools.</li>
+                <li><strong>Certification-Style Practice</strong>: Timed sim, PBQ chains, hot spots, and adaptive weak-area review.</li>
+                <li><strong>Verified Answers</strong>: Keys and explanations tied to official sources.</li>
+                <li><strong>No Membership Games</strong>: One-time access windows and ad-free study in the portal.</li>
               </ul>
               <p class="landing-mission-cta">
                 <a href="#purchase" data-secplus-portal-30d-checkout>Unlock Security+ access when you are ready →</a>
@@ -3251,6 +3348,7 @@
           <h2 id="faq-title">Security+ SY0-701 Exam Prep</h2>
           <p class="formats-lead">
             <strong>Exam prep in your browser.</strong> Not static PDFs or desktop test engines.
+            Questions are tagged to the <strong>SY0-701</strong> outline and verified on official sources.
             <a class="faq-cta-link" href="#secplus-compare">See the comparison table</a>
             or read answers below.
           </p>
@@ -3276,7 +3374,7 @@
                 <summary class="faq-summary">Why did you build Be Certified Today?</summary>
                 <div class="faq-answer">
                   <p>
-                    I know what exam day feels like — the pressure and the worry that your prep is already out of date.
+                    I know what exam day feels like: the pressure and the worry that your prep is already out of date.
                     I built Be Certified Today so you can practice in peace with <strong>current, exam-realistic Security+ SY0-701 prep</strong>,
                     <strong>verified explanations</strong>, and <strong>no membership noise</strong>.
                     My tagline is simple: <strong>Practice Like Test Day. Walk In Ready.</strong>
@@ -3293,9 +3391,9 @@
                 <summary class="faq-summary">Do you sell PDF downloads or printable question banks?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>No.</strong> Many sites sell printable PDFs or “question and answer” files you memorize. Be Certified Today is
-                    <strong>100% interactive</strong> in your browser: <strong>1000+</strong> SY0-701 items with <strong>verified explanations</strong>,
-                    aligned to objectives <strong>version 5.0</strong>. Not static memorization files.
+                    <strong>No.</strong> Many sites sell printable PDFs or question-and-answer files you memorize. Be Certified Today is
+                    <strong>100% interactive</strong> in your browser: <strong>1000+</strong> SY0-701 items with <strong>verified explanations</strong>.
+                    Not static memorization files.
                   </p>
                   <p>
                     <a class="faq-cta-link" href="/secplus-sample?track=questions">Try free sample questions →</a>
@@ -3328,8 +3426,20 @@
                     <strong>major revision</strong> to tested objectives is released (such as SY0-701), updated practice is added to that library.
                   </p>
                   <p>
-                    Practicing <strong>both newer and earlier questions</strong> builds broader coverage&mdash;the more you work through,
+                    Practicing <strong>both newer and earlier questions</strong> builds broader coverage. The more you work through,
                     the more your confidence and knowledge grow.
+                  </p>
+                </div>
+              </details>
+            </li>
+            <li>
+              <details class="faq-details">
+                <summary class="faq-summary">How do you verify questions match the current exam?</summary>
+                <div class="faq-answer">
+                  <p>
+                    Each question and PBQ is tagged to a <strong>SY0-701 objective ID</strong> and verified on Tier A sources (CompTIA, NIST, RFCs).
+                    Legacy <strong>SY0-601</strong> items stay in a separate audit bank, not in active Random and Review pools.
+                    <strong>SY0-701 Bank Verified 2026-06-27.</strong>
                   </p>
                 </div>
               </details>
@@ -3354,9 +3464,8 @@
                 <summary class="faq-summary">How many SY0-701 practice questions are included?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>1000+ interactive questions</strong> in the paid library: recent-style multiple-choice items organized by domain, plus
-                    <strong>34 PBQ practice scenarios</strong> (chain labs, hot spots, and IR exhibits).
-                    That is a full bank for structured study, not a short PDF pack or a recycled file shared across discount sites.
+                    <strong>1000+ interactive questions</strong> in the paid library, plus <strong>34 PBQ scenarios</strong>.
+                    A full bank for structured study, not a short PDF pack or recycled file from discount sites.
                   </p>
                   <p>
                     <a class="faq-cta-link" href="#purchase" data-secplus-portal-30d-checkout>Get 30-day full access · $19.99</a>
@@ -3369,12 +3478,8 @@
                 <summary class="faq-summary">Are performance-based simulations and a timed practice exam included?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>Yes.</strong> PDF-only prep cannot replicate exam-day <strong>performance-based</strong> tasks. Our library includes
-                    <strong>34 practice scenarios</strong> for PBQ-style study—<strong>chain labs</strong>, <strong>drag-and-drop</strong>,
-                    <strong>hot spots</strong>, and <strong>IR report exhibits</strong>—and a
+                    <strong>Yes.</strong> The library includes <strong>34 PBQ scenarios</strong> and a
                     <strong>90-minute timed practice exam</strong> with domain scorecard review.
-                  </p>
-                  <p>
                     Free on this page:
                     <a class="faq-cta-link" href="/secplus-sample?track=sim-dark-web">3-scenario PBQ preview</a>
                     and
@@ -3413,7 +3518,7 @@
                 <summary class="faq-summary">How much does full library access cost?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>$19.99 for 30 days</strong>. One-time payment—no subscription.
+                    <strong>$19.99 for 30 days</strong>. One-time payment. No subscription.
                     One-time purchase, <strong>no subscription</strong>. Includes <strong>1000+ questions</strong>,
                     <strong>34 PBQ practice scenarios</strong>, adaptive review, progress tracking, and the full timed exam. Price is shown before Stripe checkout.
                   </p>
@@ -3459,9 +3564,9 @@
                     at the bottom of this page (or use that link here).
                   </p>
                   <p>
-                    Enter your email and message in the form. We send a <strong>verification link</strong> to that address —
-                    your question is only submitted after you click it. That confirms a real inbox and cuts down on spam.
-                    We reply by email about Security+ SY0-701 prep, samples, or portal access.
+                    Enter your email and message in the form. We send a <strong>verification link</strong> to that address.
+                    Your question is only submitted after you click it. That confirms a real inbox and cuts down on spam.
+                    We reply by email about Security+ prep, samples, or portal access.
                   </p>
                 </div>
               </details>

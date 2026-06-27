@@ -3,12 +3,16 @@
 
 from __future__ import annotations
 
+import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PBQ = ROOT / "public/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production"
 BASE_URL = "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/PBQ_Production"
+BLUEPRINT_701 = ROOT / "public/COMP_TIA_SEC+/data/secplus-blueprint-sy0-701.json"
+SY0_701_PBq_VERIFIED_AT = "2026-06-27"
 
 SCENARIOS = [
     {
@@ -411,7 +415,7 @@ SCENARIOS = [
         "slug": "cryptographic-algorithms-matching",
         "title": "SEC+ Cryptographic Algorithms Matching",
         "body_class": "pbq-crypto-match pbq-protocol-match dragdrop-exercise",
-        "objectives": "1.4 · 1.5 · 2.4",
+        "objectives": "1.4 · 2.4",
         "suite_instructions": "Drag each algorithm into the slot beside the matching application. Every algorithm is used once.",
         "description": "Match ten cryptographic algorithms to their applications and security strengths.",
         "prev": "incident-response-matching",
@@ -905,6 +909,43 @@ def build_suite_instructions(scenario: dict) -> str:
     return "Read the scenario, complete the task below, then use <strong>Check answer</strong>."
 
 
+def load_valid_701_objectives() -> set[str]:
+    data = json.loads(BLUEPRINT_701.read_text(encoding="utf-8"))
+    valid: set[str] = set()
+
+    def walk(nodes: list | None) -> None:
+        for node in nodes or []:
+            oid = node.get("id")
+            if isinstance(oid, str) and re.fullmatch(r"\d+\.\d+", oid):
+                valid.add(oid)
+            walk(node.get("children"))
+
+    for domain in data.get("domains") or []:
+        walk(domain.get("objectives"))
+    return valid
+
+
+def parse_objective_ids(objectives: str) -> list[str]:
+    return re.findall(r"\d+\.\d+", objectives)
+
+
+def validate_scenario_objectives(scenarios: list[dict], valid_701: set[str]) -> None:
+    errors: list[str] = []
+    for scenario in scenarios:
+        objs = scenario.get("objectives")
+        if not objs:
+            errors.append(f"{scenario['slug']}: missing objectives")
+            continue
+        unknown = [oid for oid in parse_objective_ids(str(objs)) if oid not in valid_701]
+        if unknown:
+            errors.append(f"{scenario['slug']}: invalid SY0-701 objectives {', '.join(unknown)}")
+    if errors:
+        print("PBQ scenario objective validation failed:", file=sys.stderr)
+        for err in errors:
+            print(f"  - {err}", file=sys.stderr)
+        raise SystemExit(1)
+
+
 def build_objectives_block(scenario: dict) -> str:
     objs = scenario.get("objectives")
     if not objs:
@@ -912,6 +953,13 @@ def build_objectives_block(scenario: dict) -> str:
     return (
         f'        <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">'
         f"Covers SY0-701 objectives: {objs}</p>\n"
+    )
+
+
+def build_verified_block() -> str:
+    return (
+        f'        <p class="pbq-suite-verified" aria-label="SY0-701 blueprint compliance">'
+        f"SY0-701 outline verified {SY0_701_PBq_VERIFIED_AT}</p>\n"
     )
 
 
@@ -979,7 +1027,7 @@ def build_scenario_page(scenario: dict) -> str:
     <main class="pbq-card pbq-card--suite">
       <header class="pbq-suite-header">
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
-{build_objectives_block(scenario)}        <h1>{build_suite_heading(scenario)}</h1>
+{build_objectives_block(scenario)}{build_verified_block()}        <h1>{build_suite_heading(scenario)}</h1>
 {build_suite_sub(scenario)}        <p class="instructions pbq-instructions">
           {build_suite_instructions(scenario)}
         </p>
@@ -1020,8 +1068,7 @@ def write_redirects() -> None:
 
 
 def main() -> None:
-    import importlib.util
-    import sys
+    validate_scenario_objectives(SCENARIOS, load_valid_701_objectives())
 
     written: list[str] = []
     for scenario in SCENARIOS:
