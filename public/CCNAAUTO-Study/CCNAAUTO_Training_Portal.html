@@ -37,9 +37,10 @@
         </ul>
 
         <p class="portal-note" role="status">
-          <strong>Dedicated CCNAAUTO bank building now.</strong>
-          Use overlap practice below and CCNA domain 6 items until the full library ships.
-          Landing page: <a href="/ccnaauto-home.html">ccnaauto-home.html</a>
+          <strong>CCNAAUTO bank 1 is open.</strong>
+          Questions publish in banks of <strong>100</strong>, mixed to match
+          <strong>v1.1 domain weights</strong> (15% / 20% / 15% / 15% / 20% / 15%).
+          Every item is tagged to an official objective and verified on Cisco Tier A sources—not competitor dumps or forums.
         </p>
 
         <div class="card" id="ccnaauto-domains">
@@ -57,9 +58,45 @@
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
             CCNAAUTO exams mix MCQ, drag-and-drop, and performance-based script or playbook tasks.
-            Start with overlap samples while the dedicated bank grows.
+            The dedicated question bank follows the same site template as CCNA, ENCOR, and Sec+: <strong>100 questions per bank</strong>,
+            domain mix from the official <a href="#ccnaauto-domains">v1.1 exam topics PDF</a>, and objective tags on every item.
           </p>
 
+          <h3 class="section-heading">Practice questions · CCNAAUTO bank</h3>
+          <section class="start-box" aria-label="CCNAAUTO question banks">
+            <p class="study-meta">
+              Target mix per 100-question bank — aligned to Cisco 200-901 CCNAAUTO v1.1 domain weights.
+              When a bank fills, bank 2 opens for questions 101–200.
+            </p>
+            <div id="ccnaauto-bank-weight-table" aria-live="polite"></div>
+            <div class="ccnaauto-practice-subject-filter" id="ccnaauto-practice-subject-filter">
+              <p class="ccnaauto-practice-subject-title">Practice by subject</p>
+              <p class="ccnaauto-practice-subject-lead">
+                Matches the <a href="#ccnaauto-domains">six CCNAAUTO v1.1 domains</a> and their exam percentages.
+                Leave on <strong>All subjects</strong> for numbered banks below, or pick one domain before Random or Review.
+              </p>
+              <label for="ccnaauto-practice-domain-select">Limit session to</label>
+              <select id="ccnaauto-practice-domain-select" class="ccnaauto-practice-domain-select">
+                <option value="">All subjects (entire bank)</option>
+              </select>
+              <p class="ccnaauto-practice-subject-hint">
+                <strong>Random</strong> shuffles once at start.
+                <strong>Review</strong> sends misses to the back of the queue.
+                Keys verified on Cisco documentation and DevNet—not Reddit or third-party dumps.
+              </p>
+            </div>
+            <p
+              id="ccnaauto-practice-banks-summary"
+              class="study-meta"
+              hidden
+              aria-live="polite"
+            ></p>
+            <div class="sim-grid" id="ccnaauto-practice-banks-grid" aria-label="CCNAAUTO practice question banks">
+              <p class="study-meta">Loading practice banks…</p>
+            </div>
+          </section>
+
+          <h3 class="section-heading">Overlap samples (until bank fills)</h3>
           <div class="sim-grid">
             <article class="sim-box">
               <h3>Practice questions · automation overlap</h3>
@@ -110,6 +147,10 @@
       </section>
     </main>
   </div>
+  <script src="/CCNAAUTO-Study/js/ccnaauto-portal-storage.js"></script>
+  <script src="/js/admin-portal-bypass-redeem.js" defer></script>
+  <script src="/js/bcc-question-bank-utils.js"></script>
+  <script src="/CCNAAUTO-Study/js/ccnaauto-practice-hub.js"></script>
   <script src="/CCNAAUTO-Study/js/ccnaauto-blueprint-render.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

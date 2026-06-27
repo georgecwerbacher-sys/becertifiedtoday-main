@@ -580,23 +580,32 @@
           </p>
 
           <h3 class="section-heading">Practice questions</h3>
-          <section class="start-box" aria-label="Question studies (placeholder)">
-            <div class="sim-grid" aria-label="Study groups — placeholder">
+          <section class="start-box" aria-label="Question banks">
+            <p class="study-meta">
+              Site template: banks of <strong>100</strong> questions each, domain mix from the official exam topics PDF
+              (e.g. CCNAAUTO v1.1 → 15% / 20% / 15% / 15% / 20% / 15%). Every question carries blueprint version,
+              objective ID, sub-objective when applicable, and Cisco Tier A verification in the topic map.
+              See <code>templates/question-bank/README.md</code>.
+            </p>
+            <div id="{track}-bank-weight-table" aria-live="polite"></div>
+            <div class="{track}-practice-subject-filter" id="{track}-practice-subject-filter">
+              <p class="{track}-practice-subject-title">Practice by subject</p>
+              <p class="{track}-practice-subject-lead">
+                Matches official domain weights from the exam topics PDF. Leave on <strong>All subjects</strong> for
+                numbered banks, or pick one domain before Random / Review.
+              </p>
+              <label for="{track}-practice-domain-select">Limit session to</label>
+              <select id="{track}-practice-domain-select" class="{track}-practice-domain-select">
+                <option value="">All subjects (entire bank)</option>
+              </select>
+            </div>
+            <p id="{track}-practice-banks-summary" class="study-meta" hidden aria-live="polite"></p>
+            <div class="sim-grid" id="{track}-practice-banks-grid" aria-label="Practice question banks">
               <article class="sim-box">
-                <h4 class="sim-box-title">Sample section 1</h4>
-                <p class="study-meta">Placeholder — random / linear / review launchers for a question range.</p>
+                <h4 class="sim-box-title">Bank 1 · questions 1–100</h4>
+                <p class="study-meta">Wire <code>{track}-practice-hub.js</code> + <code>bcc-question-bank-utils.js</code>.</p>
                 <div class="study-actions">
                   <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Review</button>
-                </div>
-              </article>
-              <article class="sim-box">
-                <h4 class="sim-box-title">Sample section 2</h4>
-                <p class="study-meta">Duplicate cards as needed or drive from a track-specific <code>study-config</code> JSON.</p>
-                <div class="study-actions">
-                  <button type="button" class="start-btn is-placeholder" disabled>Random</button>
-                  <button type="button" class="start-btn is-placeholder" disabled>Linear</button>
                   <button type="button" class="start-btn is-placeholder" disabled>Review</button>
                 </div>
               </article>

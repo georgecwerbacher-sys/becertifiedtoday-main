@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://becertifiedtoday.com/schemas/practice-bank-blueprint.schema.json",
+  "title": "Practice bank blueprint",
+  "type": "object",
+  "required": ["schemaVersion", "exam", "blueprintVersion", "sourcePdf", "bankSize", "domains"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "exam": { "type": "string", "description": "Product id, e.g. CCNAAUTO-200-901" },
+    "blueprintVersion": { "type": "string", "description": "Matches official PDF label, e.g. v1.1" },
+    "sourcePdf": { "type": "string", "description": "Filename of the exam topics PDF" },
+    "bankSize": { "type": "integer", "minimum": 1, "default": 100 },
+    "verificationPolicy": {
+      "type": "object",
+      "properties": {
+        "allowedHostSuffixes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "e.g. cisco.com, developer.cisco.com"
+        },
+        "disallowedSourceTypes": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "weightPercent", "questionsPerBank"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+          "name": { "type": "string" },
+          "weightPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "questionsPerBank": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

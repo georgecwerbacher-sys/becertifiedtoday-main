@@ -1,0 +1,36 @@
+---
+description: Question bank template — 100-question banks, blueprint domain weights, objective tags, Cisco-only verification.
+globs: public/**/data/*-practice-bank-blueprint.json,public/**/data/*-question-topic-map.json,templates/question-bank/**,public/**/js/*-practice-hub.js
+alwaysApply: false
+---
+
+# Question bank template
+
+When adding or editing certification question banks, follow `templates/question-bank/README.md`.
+
+## Required for every published question
+
+1. **Blueprint version** — matches the official exam topics PDF (`v1.1`, `v1.2`, `V_2025`, …).
+2. **Objective** — at least one ID from that PDF (`2.4`, `5.8`, …).
+3. **Sub-objective** — when the PDF lists children (`1.8.c`, `3.9.a`, …).
+4. **Verification** — keys confirmed on **Cisco Tier A** (docs, DevNet, Learning Network). Never Reddit, forums, Discord, or competitor dumps.
+5. **Topic map entry** — schema v2 in `{track}-question-topic-map.json` before the HTML ships.
+
+## Bank sizing and mix
+
+- **100 questions per bank**; bank 2 starts at question 101.
+- Each bank targets **exam domain weights** from `{track}-practice-bank-blueprint.json`.
+- CCNAAUTO v1.1 example: 15 / 20 / 15 / 15 / 20 / 15 per 100 questions.
+
+## After adding questions
+
+```bash
+python3 scripts/build-question-bank-tracker.py --track ccnaauto
+npm run lint:question-urls
+```
+
+Append slug to `{track}-practice-hub.js` `SLUGS` array (or generator equivalent).
+
+## Published HTML
+
+Do not embed non-Cisco `http(s)://` URLs in question pages. See `.cursor/rules/answer-verification-cisco-sources.mdc`.

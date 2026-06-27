@@ -2,7 +2,16 @@
 <!--
   Multiple-choice question baseline — link nav + instant feedback on select.
 
-  Copy to public/CCNA-Study/CCNA_questions/ or public/CCNP-ENCOR-Study/ENCOR_Questions/ as needed.
+  BEFORE PUBLISH — register in {track}-question-topic-map.json (schema v2):
+  - blueprintVersion: matches official PDF (e.g. v1.1)
+  - objectives: ["2.4"]  (required)
+  - subObjectives: ["1.8.c"]  (when PDF lists sub-items)
+  - verification.sources: Cisco Tier A URLs only (cisco.com / DevNet / Learning Network)
+  Do NOT verify keys on Reddit, forums, or competitor practice sites.
+
+  See templates/question-bank/README.md and npm run build:question-bank-tracker
+
+  Copy to public/{Track}-Study/{Track}_Questions/ as needed.
 
   Replace:
   - <title> and <h1> question stem

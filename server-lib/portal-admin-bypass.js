@@ -19,6 +19,11 @@ export const PORTAL_TRACKS = {
     portalPath: "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html",
     productId: "encor-portal-30d",
   },
+  ccnaauto: {
+    label: "CCNA Automation 200-901",
+    portalPath: "/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html",
+    productId: "ccnaauto-portal-30d",
+  },
   secplus: {
     label: "CompTIA Security+ SY0-701",
     portalPath: "/COMP_TIA_SEC+/SEC+_Training_Portal.html",

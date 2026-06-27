@@ -2,7 +2,7 @@
  * POST /api/admin-portal-bypass
  *
  * action "link" (default) — Authorization: Bearer <analytics admin JWT>
- *   Body: { "action": "link", "track": "ccna" | "encor" | "secplus" | "all" }
+ *   Body: { "action": "link", "track": "ccna" | "encor" | "secplus" | "ccnaauto" | "all" }
  *
  * action "redeem" — Body: { "action": "redeem", "token": "<JWT>", "track": optional hint }
  */

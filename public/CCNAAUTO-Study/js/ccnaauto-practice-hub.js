@@ -1,0 +1,284 @@
+(function () {
+  "use strict";
+
+  var UTIL = window.BCC_QUESTION_BANK;
+  var KEY = "ccnaautoPractice";
+  var BANK_SIZE = UTIL.DEFAULT_BANK_SIZE;
+  var FILTER_BANK_ID = "filter";
+  var BLUEPRINT_URL = "/CCNAAUTO-Study/data/ccnaauto-practice-bank-blueprint.json";
+  var TOPIC_MAP_URL = "/CCNAAUTO-Study/data/ccnaauto-question-topic-map.json";
+  var TRACKER_URL = "/CCNAAUTO-Study/data/ccnaauto-question-topic-tracker.json";
+  var QUESTIONS_BASE = "/CCNAAUTO-Study/CCNAAUTO_Questions/";
+
+  window.CCNAAUTO_PRACTICE = window.CCNAAUTO_PRACTICE || {};
+  window.CCNAAUTO_PRACTICE.SLUGS = window.CCNAAUTO_PRACTICE.SLUGS || [];
+  window.CCNAAUTO_PRACTICE._topicAssignments = null;
+  window.CCNAAUTO_PRACTICE._blueprint = null;
+  window.CCNAAUTO_PRACTICE._tracker = null;
+
+  window.CCNAAUTO_PRACTICE._loadPromise = Promise.all([
+    fetch(TOPIC_MAP_URL, { credentials: "same-origin" }).then(function (r) {
+      if (!r.ok) throw new Error("topic map");
+      return r.json();
+    }),
+    fetch(BLUEPRINT_URL, { credentials: "same-origin" }).then(function (r) {
+      if (!r.ok) throw new Error("blueprint");
+      return r.json();
+    }),
+    fetch(TRACKER_URL, { credentials: "same-origin" })
+      .then(function (r) {
+        if (!r.ok) return null;
+        return r.json();
+      })
+      .catch(function () {
+        return null;
+      }),
+  ])
+    .then(function (res) {
+      var map = res[0];
+      window.CCNAAUTO_PRACTICE._topicAssignments =
+        map && map.assignments && typeof map.assignments === "object" ? map.assignments : {};
+      window.CCNAAUTO_PRACTICE._blueprint = res[1];
+      window.CCNAAUTO_PRACTICE._tracker = res[2];
+      return res;
+    })
+    .catch(function () {
+      window.CCNAAUTO_PRACTICE._topicAssignments = false;
+      return false;
+    });
+
+  function allSlugs() {
+    return (window.CCNAAUTO_PRACTICE.SLUGS || []).slice();
+  }
+
+  function getSelectedDomain() {
+    var sel = document.getElementById("ccnaauto-practice-domain-select");
+    if (!sel) return "";
+    var v = String(sel.value || "").trim();
+    return /^[1-6]$/.test(v) ? v : "";
+  }
+
+  function bankSlugsForIndex(bankId) {
+    return UTIL.bankSlugs(allSlugs(), bankId, BANK_SIZE);
+  }
+
+  function start(mode, bankId, domainMajor) {
+    bankId = bankId || "1";
+    var fixed =
+      bankId === FILTER_BANK_ID
+        ? allSlugs()
+        : bankSlugsForIndex(parseInt(String(bankId), 10) || 1);
+    var map = window.CCNAAUTO_PRACTICE._topicAssignments;
+    if (domainMajor) {
+      if (!map || typeof map !== "object") {
+        window.alert("Topic assignments are still loading. Try again in a moment.");
+        return;
+      }
+      fixed = UTIL.filterSlugsByMajor(fixed, map, domainMajor);
+    }
+    if (!fixed.length) {
+      window.alert(
+        "No CCNAAUTO questions in this bank yet—or none match the selected domain. " +
+          "The dedicated bank is building; try overlap samples below."
+      );
+      return;
+    }
+    var order = mode === "linear" ? fixed : UTIL.shuffle(fixed);
+    try {
+      sessionStorage.setItem(
+        KEY,
+        JSON.stringify({ v: 1, mode: mode, bank: bankId, order: order, domain: domainMajor || null })
+      );
+    } catch (e) {}
+    window.location.href = QUESTIONS_BASE + order[0] + ".html#ccnaautoP=0";
+  }
+
+  function startWithOptionalDomain(mode, bankId) {
+    start(mode, bankId, getSelectedDomain() || null);
+  }
+
+  function populateDomainSelect(blueprint) {
+    var sel = document.getElementById("ccnaauto-practice-domain-select");
+    if (!sel || !blueprint || !Array.isArray(blueprint.domains)) return;
+    var current = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    blueprint.domains.forEach(function (d) {
+      var opt = document.createElement("option");
+      var major = String(d.id || "").split(".")[0];
+      opt.value = major;
+      opt.textContent =
+        d.id + " \u2014 " + (d.name || "") + " (" + (d.weightPercent || 0) + "%)";
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  }
+
+  function renderBanksGrid() {
+    var grid = document.getElementById("ccnaauto-practice-banks-grid");
+    var summary = document.getElementById("ccnaauto-practice-banks-summary");
+    if (!grid) return;
+
+    var all = allSlugs();
+    var domain = getSelectedDomain();
+    var map = window.CCNAAUTO_PRACTICE._topicAssignments;
+    var filtered = domain && map ? UTIL.filterSlugsByMajor(all, map, domain) : all;
+    var nBanks = UTIL.practiceBankCount(all.length, BANK_SIZE);
+    var blueprint = window.CCNAAUTO_PRACTICE._blueprint;
+    var pdf = blueprint && blueprint.sourcePdf ? blueprint.sourcePdf : "exam topics PDF";
+    var version = blueprint && blueprint.blueprintVersion ? blueprint.blueprintVersion : "v1.1";
+
+    if (summary) {
+      if (!all.length) {
+        summary.hidden = false;
+        summary.textContent =
+          "Bank 1 is open (0/" +
+          BANK_SIZE +
+          " questions). Target mix follows " +
+          version +
+          " domain weights from " +
+          pdf +
+          ".";
+      } else if (domain) {
+        summary.hidden = false;
+        summary.textContent =
+          filtered.length +
+          " question(s) match domain " +
+          domain +
+          ". Filtered Random/Review uses the full filtered set—not a 100-question bank slice.";
+      } else {
+        summary.hidden = false;
+        summary.textContent =
+          all.length +
+          " question(s) across " +
+          nBanks +
+          " bank(s) of up to " +
+          BANK_SIZE +
+          " each (" +
+          version +
+          " objective tags).";
+      }
+    }
+
+    if (domain) {
+      grid.innerHTML =
+        '<article class="sim-box" aria-labelledby="ccnaauto-filter-bank-title">' +
+        '<h4 class="sim-box-title" id="ccnaauto-filter-bank-title">Filtered set · domain ' +
+        domain +
+        "</h4>" +
+        '<p class="study-meta">' +
+        filtered.length +
+        " matching question(s). Random shuffles once; Review sends misses to the back.</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for filtered domain">' +
+        '<button type="button" class="start-btn" data-ccnaauto-mode="random" data-ccnaauto-bank="filter">Random</button>' +
+        '<button type="button" class="start-btn" data-ccnaauto-mode="review" data-ccnaauto-bank="filter">Review</button>' +
+        "</div></article>";
+      return;
+    }
+
+    if (!all.length) {
+      grid.innerHTML =
+        '<article class="sim-box" aria-labelledby="ccnaauto-bank-title-1">' +
+        '<h4 class="sim-box-title" id="ccnaauto-bank-title-1">Bank 1 · questions 1\u2013100</h4>' +
+        '<p class="study-meta">0 / ' +
+        BANK_SIZE +
+        " published \u2014 building toward " +
+        version +
+        " domain mix (15/20/15/15/20/15 per bank).</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for bank 1">' +
+        '<button type="button" class="start-btn start-btn--muted" disabled>Random</button>' +
+        '<button type="button" class="start-btn start-btn--muted" disabled>Review</button>' +
+        "</div></article>";
+      return;
+    }
+
+    var html = "";
+    for (var b = 1; b <= nBanks; b++) {
+      var inBank = bankSlugsForIndex(b);
+      var startIdx = (b - 1) * BANK_SIZE;
+      var endIdx = Math.min(b * BANK_SIZE, all.length);
+      var slotEnd = b * BANK_SIZE;
+      var rangeLabel = UTIL.formatRange(startIdx + 1, slotEnd);
+      var isPartial = inBank.length > 0 && inBank.length < BANK_SIZE;
+      html +=
+        '<article class="sim-box" data-ccnaauto-bank-index="' +
+        b +
+        '" aria-labelledby="ccnaauto-bank-title-' +
+        b +
+        '">' +
+        '<h4 class="sim-box-title" id="ccnaauto-bank-title-' +
+        b +
+        '">Bank ' +
+        b +
+        " \u00b7 questions " +
+        rangeLabel +
+        "</h4>" +
+        '<p class="study-meta">' +
+        inBank.length +
+        " question(s)" +
+        (isPartial ? " (partial bank)" : "") +
+        " \u00b7 Random or Review for this bank only.</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for bank ' +
+        b +
+        '">' +
+        '<button type="button" class="start-btn" data-ccnaauto-mode="random" data-ccnaauto-bank="' +
+        b +
+        '">Random</button>' +
+        '<button type="button" class="start-btn" data-ccnaauto-mode="review" data-ccnaauto-bank="' +
+        b +
+        '">Review</button>' +
+        "</div></article>";
+    }
+    grid.innerHTML = html;
+  }
+
+  function refreshUI() {
+    var weightRoot = document.getElementById("ccnaauto-bank-weight-table");
+    UTIL.renderDomainWeightTable(
+      weightRoot,
+      window.CCNAAUTO_PRACTICE._tracker,
+      window.CCNAAUTO_PRACTICE._blueprint
+    );
+    populateDomainSelect(window.CCNAAUTO_PRACTICE._blueprint);
+    renderBanksGrid();
+  }
+
+  function bootstrap() {
+    window.CCNAAUTO_PRACTICE._loadPromise.then(function (ok) {
+      if (!ok) {
+        var grid = document.getElementById("ccnaauto-practice-banks-grid");
+        if (grid) {
+          grid.innerHTML =
+            '<p class="study-meta">Could not load CCNAAUTO practice config. Refresh the page.</p>';
+        }
+        return;
+      }
+      refreshUI();
+    });
+  }
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      var t = e.target;
+      if (!t || typeof t.closest !== "function") return;
+      var el = t.closest("[data-ccnaauto-mode]");
+      if (!el || el.disabled) return;
+      var mode = el.getAttribute("data-ccnaauto-mode");
+      var bank = el.getAttribute("data-ccnaauto-bank") || "1";
+      if (mode !== "random" && mode !== "review") return;
+      e.preventDefault();
+      startWithOptionalDomain(mode, bank);
+    },
+    false
+  );
+
+  document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "ccnaauto-practice-domain-select") refreshUI();
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootstrap);
+  } else {
+    bootstrap();
+  }
+})();

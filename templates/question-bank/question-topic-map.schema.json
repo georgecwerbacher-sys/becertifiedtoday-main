@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://becertifiedtoday.com/schemas/question-topic-map.schema.json",
+  "title": "Question topic map",
+  "type": "object",
+  "required": ["schemaVersion", "assignments"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "enum": [1, 2] },
+    "blueprintVersion": { "type": "string" },
+    "sourcePdf": { "type": "string" },
+    "notes": { "type": "string" },
+    "assignments": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Legacy v1: objective ids only"
+          },
+          {
+            "type": "object",
+            "required": ["objectives", "verification"],
+            "properties": {
+              "objectives": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string" }
+              },
+              "subObjectives": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "verification": {
+                "type": "object",
+                "required": ["verifiedAt", "sources"],
+                "properties": {
+                  "verifiedAt": { "type": "string", "format": "date" },
+                  "sources": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": ["type", "title", "url"],
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["cisco-doc", "cisco-learning", "cisco-devnet"]
+                        },
+                        "title": { "type": "string" },
+                        "url": { "type": "string", "format": "uri" }
+                      }
+                    }
+                  },
+                  "notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

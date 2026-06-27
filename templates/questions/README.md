@@ -1,6 +1,16 @@
-# Question link nav template
+# Question templates
 
-Shared **Back / Home / Next** link boxes for practice question pages.
+Shared baselines for practice question pages and the **site-wide question bank model**.
+
+## Question bank template (all tracks)
+
+See **`templates/question-bank/README.md`** for:
+
+- 100-question banks with domain-weight mix from the official exam PDF
+- Topic map schema v2 (objective, sub-objective, Cisco verification)
+- Portal hub wiring (`bcc-question-bank-utils.js`)
+
+## Link nav
 
 ## Files
 

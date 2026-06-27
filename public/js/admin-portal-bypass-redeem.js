@@ -11,6 +11,7 @@
     var p = (location.pathname || "").toLowerCase();
     if (p.indexOf("/ccna-study/") === 0) return "ccna";
     if (p.indexOf("/ccnp-encor-study/") === 0) return "encor";
+    if (p.indexOf("/ccnaauto-study/") === 0) return "ccnaauto";
     if (p.indexOf("/comp_tia_sec+/") === 0) return "secplus";
     return "";
   }
@@ -35,6 +36,9 @@
     }
     if (data.track === "secplus" && typeof window.bccSetSecplusPortalEntitlement === "function") {
       return window.bccSetSecplusPortalEntitlement(exp, cs, data.productId || "secplus-portal-30d");
+    }
+    if (data.track === "ccnaauto" && typeof window.bccSetCcnaautoPortalEntitlement === "function") {
+      return window.bccSetCcnaautoPortalEntitlement(exp, cs, data.productId || "ccnaauto-portal-30d");
     }
     return false;
   }
