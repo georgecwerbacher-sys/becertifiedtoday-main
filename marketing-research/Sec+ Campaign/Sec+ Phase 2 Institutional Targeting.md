@@ -207,9 +207,11 @@ For programs that aid job seekers, email domains vary and some clients only have
    - **Partner referral code** — workforce, veteran employment, or transition programs
    - **ID.me Verified Veteran** (future)
 4. System sends **one-time verification link** to the school/work email **or** validates referral code / ID.me.
-5. After success, user receives **single-use Stripe promotion code** or pre-filled checkout link.
-6. User completes Stripe checkout with the email they want to use for access.
+5. After success, user receives the appropriate verified learner Stripe promotion code or pre-filled checkout link.
+6. User completes Stripe checkout with the email they want to use for access. The discount is tied to that verified checkout email, is not one-time only, and can be used again for eligible Be Certified Today products added later.
 7. Access links for `/COMP_TIA_SEC+/SEC+_Training_Portal.html` go to the checkout email, same as today (`secplus-portal-request-link.html`).
+
+**Code rule:** Approved discount codes are for the verified learner only. Do not share them publicly or treat them as first-visitor coupons.
 
 **Students without `.edu` mail:** Manual queue — enrollment letter or student ID upload (Phase 2b). Do not require `.edu` as portal email.
 

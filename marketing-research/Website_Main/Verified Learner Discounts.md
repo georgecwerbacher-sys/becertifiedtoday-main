@@ -119,9 +119,11 @@ Verification is only for eligibility. It is also not a first-time visitor coupon
 
 1. You choose your group.
 2. You verify with a school, work, government, military, or partner method.
-3. After verification, you get a single-use discount link or code.
-4. At checkout, use the email where you want account and access links.
+3. After verification, you get a verified learner discount link or code.
+4. At checkout, use the email where you want account and access links. The discount code is tied to the Stripe checkout email.
 5. Access links go to the checkout email.
+
+Approved discounts are not one-time only. A verified learner may use the discount again for eligible Be Certified Today products added later, using the same verified checkout email. Approved discount codes should not be shared. Shared codes may fail checkout or be disabled.
 
 ### Internal verification map
 
@@ -334,7 +336,7 @@ Assets can live under `public/images/discounts/` when ready.
 - [x] Decide final URL: `/verified-learner-discounts.html`
 - [x] Build public information page with `index, follow`
 - [x] Build v1 verification form using existing email verification/admin pipeline
-- [ ] Decide Stripe implementation: promo codes vs separate Price IDs
+- [x] Use manual Stripe promotion codes for v1; active product/group codes are tracked in [[Email Verification Setup]]
 - [ ] Add abuse controls: rate limit, one code per verified email, manual review queue
 - [ ] Confirm copy avoids official endorsement language
 - [ ] Keep paid Search RSA discount-free until policy reviewed
@@ -347,9 +349,9 @@ Assets can live under `public/images/discounts/` when ready.
 ## Open questions
 
 1. Final page is site-wide at `/verified-learner-discounts.html`; revisit only if Security+ needs a separate campaign-specific variant later.
-2. Should discounts apply only to Security+ at launch, or all current products?
+2. Student codes are active for Security+ and CCNA; decide next product/group codes as needed.
 3. Do we want ID.me in v1, or start with email and partner codes only?
-4. Should student/educator `.edu` verification create the same discount code, or separate student and educator codes?
+4. Student and educator verification should use separate manually created Stripe codes in v1.
 5. Do we want a public partner inquiry form for workforce programs and schools?
 
 ---

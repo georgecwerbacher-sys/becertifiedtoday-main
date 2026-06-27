@@ -125,7 +125,7 @@
     var lines = [
       "Verified learner discount request",
       "",
-      "Admin action: After this eligibility inbox is verified, review the request and manually create/send the appropriate single-use Stripe discount code if approved. Do not auto-create Stripe codes from this submission.",
+      "Admin action: After this eligibility inbox is verified, review the request and manually create/send the appropriate Stripe discount code if approved. The verified learner discount is not one-time only; it may be reused by the approved learner for eligible products added later, using the same verified checkout email. Do not auto-create Stripe codes from this submission.",
       "",
       "Learner group: " + data.learnerGroup,
       "Verification method: " + (METHOD_COPY[data.verificationMethod] || data.verificationMethod),

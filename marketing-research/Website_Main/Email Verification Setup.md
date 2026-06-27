@@ -40,7 +40,7 @@ Do not over-explain why a learner may use a different checkout email. Keep it pr
 1. Verification is for discount eligibility only.
 2. Standard checkout and access should stay familiar and low friction.
 3. Discounts are not first-time visitor promos, welcome coupons, homepage banners, popups, or broad paid Search CTAs.
-4. Each verified email or partner code should create one single-use discount.
+4. Each verified email or partner code should create a standing verified-learner discount tied to the checkout email.
 5. Personal domains like Gmail, iCloud, Yahoo, and Outlook should not pass automated email verification unless paired with a valid partner code or manual approval.
 6. Store only what is needed to verify and prevent abuse.
 
@@ -170,17 +170,33 @@ V1 is manual. After verification succeeds:
 
 1. Identify the discount category.
 2. Review the structured admin message.
-3. Manually create or retrieve the matching single-use promotion code in Stripe.
+3. Manually create or retrieve the matching promotion code in Stripe.
 4. Send the discount code and access setup to the discount/access email listed by the learner.
+5. Tell the learner the code is tied to the email they use at Stripe checkout and should not be shared.
+6. Tell the learner the approved discount is not one-time only. It can be used again for eligible Be Certified Today products added later, using the same verified checkout email.
 
-Do not expose reusable public codes.
+Do not expose public codes. Reuse is for the verified learner, not for sharing.
+
+### Active manual Stripe promotion codes
+
+Use these only after the eligibility request is verified in the admin queue. Do not add these codes to public HTML, paid Search copy, homepage banners, or payment popups.
+When sending a code, include: "Thank you for the service you provide. This verified learner discount is tied to the email you use at Stripe checkout. It is not a one-time offer, and you may use it again for eligible Be Certified Today products added later. Do not share it. Shared codes may fail checkout or be disabled."
+
+| Product | Group | Coupon / promotion name | Code | Discount | Notes |
+|---------|-------|-------------------------|------|----------|-------|
+| Security+ 30-day access | Student | `Students_Sec+` | `SEC178936543128RANDOM` | 35% | Send only after student eligibility is verified. |
+| Security+ 30-day access | Educator | `EDU_Sec+` | `SEC177966543128RANDOM` | 30% | Send only after educator eligibility is verified. |
+| Security+ 30-day access | Military | `Mil_Sec+` | `SEC187966543128RANDOM` | 40% | Send only after military eligibility is verified. |
+| CCNA access | Student | `Students_CCNA` | `CCNA178936549188RANDOM` | 35% | Send only after student eligibility is verified. |
+| CCNA access | Educator | `EDU_CCNA` | `CCNA177966543128RANDOM` | 30% | Send only after educator eligibility is verified. |
+| CCNA access | Military | `Mil_CCNA` | `CCNA187966543128RANDOM` | 40% | Send only after military eligibility is verified. |
 
 ---
 
 ## Abuse controls
 
 - One active token per email at a time.
-- One redeemed discount per verification email per product period.
+- Track redemptions by verification email and product so misuse can be reviewed without blocking legitimate repeat use.
 - Rate limit by IP and domain.
 - Block disposable email domains.
 - Keep a manual review queue for mismatches.
