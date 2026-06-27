@@ -200,7 +200,7 @@ For programs that aid job seekers, email domains vary and some clients only have
 ### Flow
 
 1. User opens **verified discount** page from organic, email, QR, job center flyer, campus link, or partner referral (not paid Search RSA, first-visitor popup, homepage banner, or generic promo CTA).
-2. User selects category: **Student · Educator · Military · Veteran · Workforce program · First responder · Federal · Contractor**.
+2. User selects category: **Student · Educator · Military · Veteran · Workforce program · First responder · Government employee · Contractor**.
 3. User verifies eligibility:
    - **`.edu`** — student or educator (same domain check; role selected on form)
   - **`.mil` / `.gov`** — military, federal, public service, or government-issued contractor address

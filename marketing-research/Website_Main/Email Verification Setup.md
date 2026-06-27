@@ -52,7 +52,7 @@ Do not over-explain why a learner may use a different checkout email. Keep it pr
 |--------|--------|-------|
 | `.edu` email | Students, educators | Ask learner to choose student or educator on the form. |
 | `.mil` email | Active-duty military, Guard, Reserve | Use for military eligibility. |
-| `.gov` email | Federal, state, local government, first responders | Include agency employees and eligible public safety users. |
+| `.gov` email | Government employees, first responders | Include federal, state, local, agency, and eligible public safety users. |
 | Government-issued contractor mailbox | DoD and federal contractors | Look for allowed domains and markers such as `.ctr`, `.civ`, or `v-`. |
 | Approved contractor domain | Government contractors | Maintain a private allowlist. |
 | Partner referral code | Workforce, veteran, transition, school, and job placement programs | Lets a coordinator verify learners who may not have an institutional email. |
@@ -187,9 +187,17 @@ When sending a code, include: "Thank you for the service you provide. This verif
 | Security+ 30-day access | Student | `Students_Sec+` | `SEC178936543128RANDOM` | 35% | Send only after student eligibility is verified. |
 | Security+ 30-day access | Educator | `EDU_Sec+` | `SEC177966543128RANDOM` | 30% | Send only after educator eligibility is verified. |
 | Security+ 30-day access | Military | `Mil_Sec+` | `SEC187966543128RANDOM` | 40% | Send only after military eligibility is verified. |
+| Security+ 30-day access | Workforce program | `WorkForce_Sec+` | `SEC187961843130RANDOM` | 35% | Send only after workforce-program eligibility is verified. |
+| Security+ 30-day access | First responder | `FirstRes_Sec+` | `SEC186311843130RANDOM` | 30% | Send only after first-responder eligibility is verified. |
+| Security+ 30-day access | Government employee | `Gov_Sec+` | `SEC186387643130RANDOM` | 30% | Send only after government-employee eligibility is verified. |
+| Security+ 30-day access | Government contractor | `GovCon_Sec+` | `SEC186111643130RANDOM` | 25% | Send only after government-contractor eligibility is verified. |
 | CCNA access | Student | `Students_CCNA` | `CCNA178936549188RANDOM` | 35% | Send only after student eligibility is verified. |
 | CCNA access | Educator | `EDU_CCNA` | `CCNA177966543128RANDOM` | 30% | Send only after educator eligibility is verified. |
 | CCNA access | Military | `Mil_CCNA` | `CCNA187966543128RANDOM` | 40% | Send only after military eligibility is verified. |
+| CCNA access | Workforce program | `WorkForce_CCNA` | `CCNA187966591893RANDOM` | 35% | Send only after workforce-program eligibility is verified. |
+| CCNA access | First responder | `FirstRes_CCNA` | `CCNA189766591893RANDOM` | 30% | Send only after first-responder eligibility is verified. |
+| CCNA access | Government employee | `Gov_CCNA` | `CCNA189766588893RANDOM` | 30% | Send only after government-employee eligibility is verified. |
+| CCNA access | Government contractor | `GovCon_CCNA` | `CCNA189766583293RANDOM` | 25% | Send only after government-contractor eligibility is verified. |
 
 ---
 

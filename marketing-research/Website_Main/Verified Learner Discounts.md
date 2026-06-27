@@ -67,7 +67,7 @@ The page should make three points:
 | Field | Value |
 |-------|-------|
 | **Title** | Verified Learner Discounts for Certification Exam Prep \| Be Certified Today |
-| **Meta description** | Verified discounts for students, educators, military, veterans, workforce programs, first responders, federal employees, and government contractors using Be Certified Today exam prep. |
+| **Meta description** | Verified discounts for students, educators, military, veterans, workforce programs, first responders, government employees, and government contractors using Be Certified Today exam prep. |
 | **Canonical** | `https://becertifiedtoday.com/verified-learner-discounts.html` |
 | **Future SEO targets only** | certification exam prep discount, Security+ student discount, Security+ military discount, Security+ veteran discount, Security+ educator discount, Security+ government contractor discount. Do not add these to Google Ads until verification and discounted checkout are live. |
 | **Robots** | `index, follow` |
@@ -85,7 +85,7 @@ The page should make three points:
 | 4 | **Discount chart** | Clear eligibility, discount, price, and verification method. |
 | 5 | **Built for their schedule** | Browser prep, mobile-friendly, timed sim, adaptive review, verified explanations. |
 | 6 | **How verification works** | Eligible email proves discount eligibility. Checkout email receives account and access links. |
-| 7 | **Groups explained** | Students, educators, military, veterans, workforce programs, first responders, federal employees, contractors. |
+| 7 | **Groups explained** | Students, educators, military, veterans, workforce programs, first responders, government employees, contractors. |
 | 8 | **What this is not** | Not official endorsement, not free access, not an exam dump, not a course replacement. |
 | 9 | **CTA** | Send users back to the verification form or standard access. Do not frame discounts as a first-time visitor offer. |
 
@@ -104,7 +104,7 @@ Use this as the source table for the live page.
 | **Military transition programs** | SkillBridge, TAP, VR&E, and similar transition tracks | **40% off** | **$11.99 / 30 days** | Program coordinator, partner code, or approved domain |
 | **Workforce and job-placement programs** | Job centers, retraining programs, apprenticeships, placement nonprofits | **35% off** | **$12.99 / 30 days** | Partner org email, referral code, or enrollment letter |
 | **First responders** | Law enforcement, fire, EMS, public-safety IT, digital forensics adjunct roles | **30% off** | **$13.99 / 30 days** | Agency `.gov` or approved agency domain |
-| **Federal employees** | Civilian federal employees with certification requirements | **30% off** | **$13.99 / 30 days** | `.gov` email |
+| **Government employees** | Federal, state, or local government employees with certification requirements | **30% off** | **$13.99 / 30 days** | `.gov` email |
 | **Government contractors** | Defense and government contractors supporting cyber, IT, and mission systems | **25% off** | **$14.99 / 30 days** | Approved contractor domain or `.mil` contractor mailbox pattern |
 
 **Important copy:** The discount verifies eligibility. It does not change the study portal. Everyone gets the same full Security+ exam prep portal.
@@ -131,7 +131,7 @@ Approved discounts are not one-time only. A verified learner may use the discoun
 |--------|--------|
 | `.edu` email | Students, educators |
 | `.mil` email | Active-duty military, Guard, Reserve |
-| `.gov` email | Federal employees, state/local government, first responders where applicable |
+| `.gov` email | Government employees, first responders where applicable |
 | Government-issued contractor mailbox with `.ctr`, `.civ`, or `v-` marker | DoD and federal contractors |
 | Approved contractor domain | Government contractors |
 | Partner referral code | Workforce programs, veteran programs, transition programs |
@@ -195,7 +195,7 @@ Client-side checks:
 
 Some people need certification because it is more than a resume line.
 
-Students need it to move from class to career. Educators need current practice tools for the people they teach. Military and public-service teams need baseline skills for roles that protect real systems. Veterans and workforce learners need a fair path into better work. Government contractors and federal employees often need Security+ because the job, contract, or mission requires it.
+Students need it to move from class to career. Educators need current practice tools for the people they teach. Military and public-service teams need baseline skills for roles that protect real systems. Veterans and workforce learners need a fair path into better work. Government contractors and government employees often need Security+ because the job, contract, or mission requires it.
 
 That is why Be Certified Today offers verified learner discounts.
 
@@ -203,7 +203,7 @@ That is why Be Certified Today offers verified learner discounts.
 
 These discounts are not about lowering the value of the product. They are about recognizing the role these learners play.
 
-Students and educators help build the next cyber workforce. Military members, first responders, federal employees, and contractors support systems the public depends on. Veterans and workforce learners are often using certification to open a door that should not be blocked by another overpriced course or a stale PDF.
+Students and educators help build the next cyber workforce. Military members, first responders, government employees, and contractors support systems the public depends on. Veterans and workforce learners are often using certification to open a door that should not be blocked by another overpriced course or a stale PDF.
 
 If you are preparing because a degree, role, contract, or transition plan depends on it, you deserve test preparation that is practical, current, and affordable.
 
@@ -267,9 +267,9 @@ Workforce learners are often preparing for a specific outcome: a placement, appr
 
 Public-safety work increasingly touches digital evidence, networks, mobile devices, and incident response. First responders and public-safety IT teams need practical, reliable preparation when Security+ is part of the role or training path.
 
-### Federal employees
+### Government employees
 
-For federal employees, certification may support a role change, return-to-office requirement, cyber workforce alignment, or agency training goal. The portal gives you a private, browser-based way to test readiness without installing software.
+For government employees, certification may support a role change, return-to-office requirement, cyber workforce alignment, or agency training goal. The portal gives you a private, browser-based way to test readiness without installing software.
 
 ### Government contractors
 
