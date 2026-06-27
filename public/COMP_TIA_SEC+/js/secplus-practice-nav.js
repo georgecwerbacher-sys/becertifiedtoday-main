@@ -8,8 +8,9 @@
   var PUBLIC_HOME = "/comptia-sec+-home.html";
   var PORTAL = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
   var TOPIC_MAP_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-map.json";
+  var LEGACY_601_URL = "/COMP_TIA_SEC+/data/secplus-legacy-601-questions.json";
   var SECPLUS_STATIC_SAMPLE_TOTAL = 3;
-  var SECPLUS_VERSION_LABEL = "V_2025";
+  var SECPLUS_VERSION_LABEL = "701";
   var SECPLUS_DOMAIN_NAMES = {
     "1.0": "General Security Concepts",
     "2.0": "Threats, Vulnerabilities, and Mitigations",
@@ -244,12 +245,46 @@
     return window._secplusTopicAssignmentsPromise;
   }
 
+  function getLegacy601Files() {
+    if (window._secplusLegacy601Files) {
+      return Promise.resolve(window._secplusLegacy601Files);
+    }
+    if (!window._secplusLegacy601Promise) {
+      window._secplusLegacy601Promise = fetch(LEGACY_601_URL, { credentials: "same-origin" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("legacy601");
+          return res.json();
+        })
+        .then(function (data) {
+          var set = {};
+          (data && Array.isArray(data.files) ? data.files : []).forEach(function (fileName) {
+            set[String(fileName)] = true;
+          });
+          window._secplusLegacy601Files = set;
+          return set;
+        })
+        .catch(function () {
+          window._secplusLegacy601Files = {};
+          return window._secplusLegacy601Files;
+        });
+    }
+    return window._secplusLegacy601Promise;
+  }
+
+  function resolveExamVersionLabel(slug, legacy601) {
+    if (legacy601 && legacy601[slug + ".html"]) return "601";
+    return SECPLUS_VERSION_LABEL;
+  }
+
   function syncQuestionTopicMeta(slug) {
     if (isStaticSecplusSamplePage()) return;
 
     var versionEl = document.querySelector(".question-topic-meta__version");
     var subjectEl = document.querySelector(".question-topic-meta__subject");
-    if (versionEl) versionEl.textContent = SECPLUS_VERSION_LABEL;
+
+    getLegacy601Files().then(function (legacy601) {
+      if (versionEl) versionEl.textContent = resolveExamVersionLabel(slug, legacy601);
+    });
 
     getTopicAssignments().then(function (assignments) {
       if (!subjectEl || !assignments) return;

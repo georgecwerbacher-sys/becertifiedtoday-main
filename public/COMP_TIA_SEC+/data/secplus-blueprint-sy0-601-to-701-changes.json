@@ -1,0 +1,579 @@
+{
+  "from_version": "SY0-601",
+  "from_label": "CompTIA Security+ SY0-601 (retired 2024-07-31)",
+  "to_version": "SY0-701",
+  "to_label": "CompTIA Security+ SY0-701",
+  "source_legacy_pdf": "comptia-security-sy0-601-exam-objectives-(2-0).pdf",
+  "source_legacy_url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-security-sy0-601-exam-objectives-(2-0).pdf",
+  "source_current_pdf": "CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf",
+  "tier_a_sources": [
+    {
+      "type": "comptia-pdf",
+      "title": "SY0-601 exam objectives PDF",
+      "url": "https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-security-sy0-601-exam-objectives-(2-0).pdf"
+    },
+    {
+      "type": "comptia-pdf",
+      "title": "SY0-701 exam objectives PDF",
+      "url": "https://www.comptia.org/en-us/resources/security-plus-sy0-701-exam-objectives/"
+    },
+    {
+      "type": "comptia-blog",
+      "title": "CompTIA Security+ 601 vs. 701: What's the Difference?",
+      "url": "https://www.comptia.org/en-us/blog/comptia-security-601-vs-701-whats-the-difference/"
+    }
+  ],
+  "comptia_official_comparison": {
+    "url": "https://www.comptia.org/en-us/blog/comptia-security-601-vs-701-whats-the-difference/",
+    "title": "CompTIA Security+ 601 vs. 701: What's the Difference?",
+    "published": "2024-12-18",
+    "highlights": [
+      "SY0-701 has five domains (same count as SY0-601) but 28 objectives vs. 35 on SY0-601.",
+      "About 20% of exam objectives were updated for current trends (automation, zero trust, hybrid/cloud, IoT, OT).",
+      "Security Operations grows from 16% to 28%; Program Management/Oversight grows from 14% to 20%.",
+      "New domain 1.0 General Security Concepts (12%) pulls controls, fundamentals, change management, and crypto basics out of the old 601 mix."
+    ],
+    "domain_table": [
+      {
+        "sy0_601": "Attacks, Threats and Vulnerabilities (24%)",
+        "sy0_701": "Threats, Vulnerabilities and Mitigations (22%)"
+      },
+      {
+        "sy0_601": "Architecture and Design (21%)",
+        "sy0_701": "Security Architecture (18%)"
+      },
+      {
+        "sy0_601": "Implementation (25%)",
+        "sy0_701": "Security Operations (28%)"
+      },
+      {
+        "sy0_601": "Operations and Incident Response (16%)",
+        "sy0_701": "Security Operations (28%)"
+      },
+      {
+        "sy0_601": "Governance, Risk and Compliance (14%)",
+        "sy0_701": "Security Program Management and Oversight (20%)"
+      },
+      {
+        "sy0_601": "(not a separate 601 domain)",
+        "sy0_701": "General Security Concepts (12%)"
+      }
+    ],
+    "sy0_701_domain_focus": [
+      {
+        "id": "1.0",
+        "name": "General Security Concepts",
+        "summary": "Security controls, fundamental concepts, change management, cryptographic solutions."
+      },
+      {
+        "id": "2.0",
+        "name": "Threats, Vulnerabilities, and Mitigations",
+        "summary": "Threat actors, vectors, attack surfaces, vulnerabilities, mitigation, malicious-activity indicators."
+      },
+      {
+        "id": "3.0",
+        "name": "Security Architecture",
+        "summary": "Architecture models, data protection strategies, enterprise infrastructure principles, resilience and recovery."
+      },
+      {
+        "id": "4.0",
+        "name": "Security Operations",
+        "summary": "Day-to-day ops: monitoring, vulnerability management, asset management, IAM, automation/orchestration, incident response."
+      },
+      {
+        "id": "5.0",
+        "name": "Security Program Management and Oversight",
+        "summary": "Governance, risk management, third-party risk, audits/assessments, security awareness, compliance."
+      }
+    ]
+  },
+  "intro": "Structured diff between official CompTIA SY0-601 and SY0-701 exam objectives PDFs, cross-checked against CompTIA's public 601 vs. 701 domain comparison. Use successor701 when triaging legacy-tagged items. Default SY0-701 pools exclude secplus-obsolete-question-archive.json entries.",
+  "domain_renames": [
+    {
+      "sy0_601": "1.0 Attacks, Threats, and Vulnerabilities (24%)",
+      "sy0_701": "2.0 Threats, Vulnerabilities, and Mitigations (22%)",
+      "type": "domain_remap"
+    },
+    {
+      "sy0_601": "2.0 Architecture and Design (21%)",
+      "sy0_701": "3.0 Security Architecture (18%)",
+      "type": "domain_remap"
+    },
+    {
+      "sy0_601": "3.0 Implementation (25%)",
+      "sy0_701": "4.0 Security Operations (28%)",
+      "type": "domain_remap"
+    },
+    {
+      "sy0_601": "4.0 Operations and Incident Response (16%)",
+      "sy0_701": "4.0 Security Operations (28%)",
+      "type": "domain_merge"
+    },
+    {
+      "sy0_601": "5.0 Governance, Risk, and Compliance (14%)",
+      "sy0_701": "5.0 Security Program Management and Oversight (20%)",
+      "type": "domain_remap"
+    },
+    {
+      "sy0_601": "(none)",
+      "sy0_701": "1.0 General Security Concepts (12%)",
+      "type": "domain_new"
+    }
+  ],
+  "weight_changes": [
+    {
+      "domain": "1.0",
+      "sy0_601_percent": 24,
+      "sy0_701_percent": 12,
+      "note": "Split: threats \u2192 2.0; controls/crypto \u2192 new 1.0"
+    },
+    {
+      "domain": "2.0",
+      "sy0_601_percent": 21,
+      "sy0_701_percent": 18,
+      "note": "Architecture and Design \u2192 Security Architecture"
+    },
+    {
+      "domain": "3.0",
+      "sy0_601_percent": 25,
+      "sy0_701_percent": 28,
+      "note": "Implementation absorbed into Security Operations"
+    },
+    {
+      "domain": "4.0",
+      "sy0_601_percent": 16,
+      "sy0_701_percent": 28,
+      "note": "Operations weight doubled; merged with implementation tasks"
+    },
+    {
+      "domain": "5.0",
+      "sy0_601_percent": 14,
+      "sy0_701_percent": 20,
+      "note": "GRC expanded to Program Management and Oversight"
+    }
+  ],
+  "objective_counts": {
+    "sy0_601": 35,
+    "sy0_701": 28,
+    "sy0_601_with_examples": 35,
+    "sy0_601_top_level_examples": 295
+  },
+  "successor_map_601_to_701": {
+    "1.1": "2.2",
+    "1.2": "2.4",
+    "1.3": "2.4",
+    "1.4": "2.4",
+    "1.5": "2.1",
+    "1.6": "2.3",
+    "1.7": "4.3",
+    "1.8": "4.3",
+    "2.1": "3.2",
+    "2.2": "3.1",
+    "2.3": "3.2",
+    "2.4": "4.5",
+    "2.5": "3.4",
+    "2.6": "3.2",
+    "2.7": "1.2",
+    "2.8": "1.4",
+    "3.1": "4.6",
+    "3.2": "4.1",
+    "3.3": "4.6",
+    "3.4": "4.1",
+    "3.5": "4.1",
+    "3.6": "3.1",
+    "3.7": "4.5",
+    "3.8": "4.5",
+    "3.9": "1.4",
+    "4.1": "4.4",
+    "4.2": "4.8",
+    "4.3": "4.9",
+    "4.4": "4.8",
+    "4.5": "4.9",
+    "5.1": "1.1",
+    "5.2": "5.4",
+    "5.3": "5.1",
+    "5.4": "5.2",
+    "5.5": "5.4"
+  },
+  "changes": [
+    {
+      "id": "1.1",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Compare and contrast different types of social engineering techniques.",
+      "sy0_701": "2.2: Explain common threat vectors and attack surfaces.",
+      "successor701": "2.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.2",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, analyze potential indicators to determine the type of attack.",
+      "sy0_701": "2.4: Given a scenario, analyze indicators of malicious activity.",
+      "successor701": "2.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.3",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, analyze potential indicators associated with application attacks.",
+      "sy0_701": "2.4: Given a scenario, analyze indicators of malicious activity.",
+      "successor701": "2.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.4",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, analyze potential indicators associated with network attacks.",
+      "sy0_701": "2.4: Given a scenario, analyze indicators of malicious activity.",
+      "successor701": "2.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.5",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Explain different threat actors, vectors, and intelligence sources.",
+      "sy0_701": "2.1: Compare and contrast common threat actors and motivations.",
+      "successor701": "2.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.6",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the security concerns associated with various types of vulnerabilities.",
+      "sy0_701": "2.3: Explain various types of vulnerabilities.",
+      "successor701": "2.3",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.7",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize the techniques used in security assessments.",
+      "sy0_701": "4.3: Explain various activities associated with vulnerability management.",
+      "successor701": "4.3",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.8",
+      "domain": "1.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the techniques used in penetration testing.",
+      "sy0_701": "4.3: Explain various activities associated with vulnerability management.",
+      "successor701": "4.3",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.1",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the importance of security concepts in an enterprise environment.",
+      "sy0_701": "3.2: Given a scenario, apply security principles to secure enterprise infrastructure.",
+      "successor701": "3.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.2",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize virtualization and cloud computing concepts.",
+      "sy0_701": "3.1: Compare and contrast security implications of different architecture models.",
+      "successor701": "3.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.3",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize secure application development, deployment, and automation concepts.",
+      "sy0_701": "3.2: Given a scenario, apply security principles to secure enterprise infrastructure.",
+      "successor701": "3.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.4",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize authentication and authorization design concepts.",
+      "sy0_701": "4.5: Given a scenario, implement and maintain identity and access management.",
+      "successor701": "4.5",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.5",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement cybersecurity resilience.",
+      "sy0_701": "3.4: Explain the importance of resilience and recovery in security architecture.",
+      "successor701": "3.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.6",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the security implications of embedded and specialized systems.",
+      "sy0_701": "3.2: Given a scenario, apply security principles to secure enterprise infrastructure.",
+      "successor701": "3.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.7",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the importance of physical security controls.",
+      "sy0_701": "1.2: Summarize fundamental security concepts.",
+      "successor701": "1.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "2.8",
+      "domain": "2.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize the basics of cryptographic concepts.",
+      "sy0_701": "1.4: Explain the importance of using appropriate cryptographic solutions.",
+      "successor701": "1.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.1",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement secure protocols.",
+      "sy0_701": "4.6: Given a scenario, modify enterprise capabilities to enhance security.",
+      "successor701": "4.6",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.2",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement host or application security solutions.",
+      "sy0_701": "4.1: Given a scenario, apply common security techniques to computing resources.",
+      "successor701": "4.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.3",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement secure network designs.",
+      "sy0_701": "4.6: Given a scenario, modify enterprise capabilities to enhance security.",
+      "successor701": "4.6",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.4",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, install and configure wireless security settings.",
+      "sy0_701": "4.1: Given a scenario, apply common security techniques to computing resources.",
+      "successor701": "4.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.5",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement secure mobile solutions.",
+      "sy0_701": "4.1: Given a scenario, apply common security techniques to computing resources.",
+      "successor701": "4.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.6",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, apply cybersecurity solutions to the cloud.",
+      "sy0_701": "3.1: Compare and contrast security implications of different architecture models.",
+      "successor701": "3.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.7",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement identity and account management controls.",
+      "sy0_701": "4.5: Given a scenario, implement and maintain identity and access management.",
+      "successor701": "4.5",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.8",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement authentication and authorization solutions.",
+      "sy0_701": "4.5: Given a scenario, implement and maintain identity and access management.",
+      "successor701": "4.5",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "3.9",
+      "domain": "3.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, implement public key infrastructure.",
+      "sy0_701": "1.4: Explain the importance of using appropriate cryptographic solutions.",
+      "successor701": "1.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "4.1",
+      "domain": "4.0",
+      "type": "consolidated",
+      "sy0_601": "Given a scenario, use the appropriate tool to assess organizational security.",
+      "sy0_701": "4.4: Explain security alerting and monitoring concepts and tools.",
+      "successor701": "4.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "4.2",
+      "domain": "4.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize the importance of policies, processes, and procedures for incident response.",
+      "sy0_701": "4.8: Explain appropriate incident response activities.",
+      "successor701": "4.8",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "4.3",
+      "domain": "4.0",
+      "type": "consolidated",
+      "sy0_601": "Given an incident, utilize appropriate data sources to support an investigation.",
+      "sy0_701": "4.9: Given a scenario, use data sources to support an investigation.",
+      "successor701": "4.9",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "4.4",
+      "domain": "4.0",
+      "type": "consolidated",
+      "sy0_601": "Given an incident, apply mitigation techniques or controls to secure an environment.",
+      "sy0_701": "4.8: Explain appropriate incident response activities.",
+      "successor701": "4.8",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "4.5",
+      "domain": "4.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the key aspects of digital forensics.",
+      "sy0_701": "4.9: Given a scenario, use data sources to support an investigation.",
+      "successor701": "4.9",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "5.1",
+      "domain": "5.0",
+      "type": "consolidated",
+      "sy0_601": "Compare and contrast various types of controls.",
+      "sy0_701": "1.1: Compare and contrast various types of security controls.",
+      "successor701": "1.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "5.2",
+      "domain": "5.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the importance of applicable regulations, standards, or frameworks that impact organizational security posture.",
+      "sy0_701": "5.4: Summarize elements of effective security compliance.",
+      "successor701": "5.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "5.3",
+      "domain": "5.0",
+      "type": "consolidated",
+      "sy0_601": "Explain the importance of policies to organizational security.",
+      "sy0_701": "5.1: Summarize elements of effective security governance.",
+      "successor701": "5.1",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "5.4",
+      "domain": "5.0",
+      "type": "consolidated",
+      "sy0_601": "Summarize risk management processes and concepts.",
+      "sy0_701": "5.2: Explain elements of the risk management process.",
+      "successor701": "5.2",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "5.5",
+      "domain": "5.0",
+      "type": "consolidated",
+      "sy0_601": "Explain privacy and sensitive data concepts in relation to security.",
+      "sy0_701": "5.4: Summarize elements of effective security compliance.",
+      "successor701": "5.4",
+      "hunt": "601 objective folded into broader 701 objective. Re-verify key on Tier A sources."
+    },
+    {
+      "id": "1.3",
+      "domain": "1.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain the importance of change management processes and the impact to security.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "2.5",
+      "domain": "2.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain the purpose of mitigation techniques used to secure the enterprise.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "3.3",
+      "domain": "3.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Compare and contrast concepts and strategies to protect data.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "4.2",
+      "domain": "4.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain the security implications of proper hardware, software, and data asset management.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "4.7",
+      "domain": "4.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain the importance of automation and orchestration related to secure operations.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "5.3",
+      "domain": "5.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain the processes associated with third-party risk assessment and management.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "5.5",
+      "domain": "5.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Explain types and purposes of audits and assessments.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    },
+    {
+      "id": "5.6",
+      "domain": "5.0",
+      "type": "new",
+      "sy0_601": null,
+      "sy0_701": "Given a scenario, implement security awareness practices.",
+      "hunt": "701-only objective (not in SY0-601 PDF). Prioritize new stems and verification."
+    }
+  ]
+}

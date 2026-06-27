@@ -1,12 +1,20 @@
 (function () {
   "use strict";
 
+  var UTIL = window.BCC_QUESTION_BANK;
   var KEY = "secplusPractice";
-  var BANK_SIZE = 100;
+  var BANK_SIZE = UTIL ? UTIL.DEFAULT_BANK_SIZE : 100;
+  var FILTER_BANK_ID = "filter";
+  var BLUEPRINT_URL = "/COMP_TIA_SEC+/data/secplus-practice-bank-blueprint.json";
+  var OBJECTIVES_OUTLINE_URL = "/COMP_TIA_SEC+/data/secplus-blueprint-sy0-701.json";
   var TOPIC_MAP_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-map.json";
+  var TRACKER_URL = "/COMP_TIA_SEC+/data/secplus-question-topic-tracker.json";
+  var LEGACY_601_URL = "/COMP_TIA_SEC+/data/secplus-legacy-601-questions.json";
+  var OUTDATED_BANK_ID = "601-outdated";
   var QUESTIONS_BASE = "/COMP_TIA_SEC+/SEC+_Questions/";
 
   function shuffle(arr) {
+    if (UTIL && UTIL.shuffle) return UTIL.shuffle(arr);
     var a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
@@ -1027,24 +1035,87 @@
   ];
 
   window.SECPLUS_PRACTICE._topicAssignments = null;
-  window.SECPLUS_PRACTICE._topicAssignmentsPromise = fetch(TOPIC_MAP_URL, { credentials: "same-origin" })
-    .then(function (res) {
+  window.SECPLUS_PRACTICE._blueprint = null;
+  window.SECPLUS_PRACTICE._tracker = null;
+  window.SECPLUS_PRACTICE._objectivesOutline = null;
+  window.SECPLUS_PRACTICE._legacy601Slugs = [];
+  window.SECPLUS_PRACTICE._legacy601SlugSet = {};
+  window.SECPLUS_PRACTICE._loadPromise = Promise.all([
+    fetch(TOPIC_MAP_URL, { credentials: "same-origin" }).then(function (res) {
       if (!res.ok) throw new Error("topic map http " + res.status);
       return res.json();
-    })
-    .then(function (data) {
-      var a = data && data.assignments;
-      window.SECPLUS_PRACTICE._topicAssignments = a && typeof a === "object" ? a : {};
-      return window.SECPLUS_PRACTICE._topicAssignments;
+    }),
+    fetch(BLUEPRINT_URL, { credentials: "same-origin" }).then(function (res) {
+      if (!res.ok) throw new Error("blueprint");
+      return res.json();
+    }),
+    fetch(TRACKER_URL, { credentials: "same-origin" })
+      .then(function (res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .catch(function () {
+        return null;
+      }),
+    fetch(OBJECTIVES_OUTLINE_URL, { credentials: "same-origin" })
+      .then(function (res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .catch(function () {
+        return null;
+      }),
+    fetch(LEGACY_601_URL, { credentials: "same-origin" })
+      .then(function (res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .catch(function () {
+        return null;
+      }),
+  ])
+    .then(function (res) {
+      var map = res[0];
+      window.SECPLUS_PRACTICE._topicAssignments =
+        map && map.assignments && typeof map.assignments === "object" ? map.assignments : {};
+      window.SECPLUS_PRACTICE._blueprint = res[1];
+      window.SECPLUS_PRACTICE._tracker = res[2];
+      window.SECPLUS_PRACTICE._objectivesOutline = res[3];
+      var legacyPayload = res[4] || {};
+      var legacySlugs = [];
+      if (Array.isArray(legacyPayload.slugs)) {
+        legacySlugs = legacyPayload.slugs.map(String);
+      } else if (Array.isArray(legacyPayload.files)) {
+        legacySlugs = legacyPayload.files.map(function (fileName) {
+          return String(fileName).replace(/\.html$/, "");
+        });
+      }
+      var legacySet = {};
+      legacySlugs.forEach(function (slug) {
+        legacySet[slug] = true;
+      });
+      window.SECPLUS_PRACTICE._legacy601Slugs = legacySlugs;
+      window.SECPLUS_PRACTICE._legacy601SlugSet = legacySet;
+      return true;
     })
     .catch(function () {
       window.SECPLUS_PRACTICE._topicAssignments = false;
       return false;
     });
+  window.SECPLUS_PRACTICE._topicAssignmentsPromise = window.SECPLUS_PRACTICE._loadPromise;
 
   function objectivesForSlug(assignments, slug) {
     if (!assignments || !slug) return null;
-    return assignments[slug + ".html"] || null;
+    var entry = assignments[slug + ".html"];
+    if (!entry) return null;
+    if (UTIL && UTIL.normalizeAssignment) {
+      var norm = UTIL.normalizeAssignment(entry);
+      var all = norm.objectives.concat(norm.subObjectives);
+      return all.length ? all : null;
+    }
+    if (Array.isArray(entry)) return entry.length ? entry : null;
+    if (entry && Array.isArray(entry.objectives)) return entry.objectives;
+    return null;
   }
 
   function slugMatchesMajor(assignments, slug, major) {
@@ -1085,8 +1156,29 @@
     }
   }
 
+  function legacy601SlugSet() {
+    return window.SECPLUS_PRACTICE._legacy601SlugSet || {};
+  }
+
+  function legacy601Slugs() {
+    return window.SECPLUS_PRACTICE._legacy601Slugs || [];
+  }
+
+  function activePracticeSlugs() {
+    var all = window.SECPLUS_PRACTICE.SLUGS || [];
+    var legacy = legacy601SlugSet();
+    if (!Object.keys(legacy).length) return all.slice();
+    return all.filter(function (slug) {
+      return !legacy[slug];
+    });
+  }
+
   function bankSlugs(bankId) {
-    var all = window.SECPLUS_PRACTICE.SLUGS;
+    if (String(bankId) === OUTDATED_BANK_ID) {
+      return legacy601Slugs().slice();
+    }
+    var all = activePracticeSlugs();
+    if (UTIL && UTIL.bankSlugs) return UTIL.bankSlugs(all, bankId, BANK_SIZE);
     var n = parseInt(String(bankId), 10);
     if (!n || n < 1) n = 1;
     var start = (n - 1) * BANK_SIZE;
@@ -1094,27 +1186,179 @@
   }
 
   function practiceBankCount() {
-    var all = window.SECPLUS_PRACTICE.SLUGS;
+    var all = activePracticeSlugs();
+    if (UTIL && UTIL.practiceBankCount) return UTIL.practiceBankCount(all.length, BANK_SIZE);
     if (!all || !all.length) return 1;
     return Math.ceil(all.length / BANK_SIZE);
   }
 
-  function portalAccessActive() {
-    return (
-      typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()
-    );
+  function formatRange(first, last) {
+    if (UTIL && UTIL.formatRange) return UTIL.formatRange(first, last);
+    if (first >= last) return String(first);
+    return String(first) + "\u2013" + String(last);
   }
 
-  function requirePortalAccess() {
-    if (portalAccessActive()) return true;
-    window.location.href = "/comptia-sec+-home.html#purchase";
-    return false;
+  function populateDomainSelect(blueprint) {
+    var sel = document.getElementById("secplus-practice-domain-select");
+    if (!sel || !blueprint || !Array.isArray(blueprint.domains)) return;
+    var current = sel.value;
+    while (sel.options.length > 1) sel.remove(1);
+    blueprint.domains.forEach(function (d) {
+      var opt = document.createElement("option");
+      var major = String(d.id || "").split(".")[0];
+      opt.value = major;
+      opt.textContent =
+        d.id + " \u2014 " + (d.name || "") + " (" + (d.weightPercent || 0) + "%)";
+      sel.appendChild(opt);
+    });
+    if (current) sel.value = current;
+  }
+
+  function renderPracticeBanksGrid() {
+    var grid = document.getElementById("secplus-practice-banks-grid");
+    if (!grid) return;
+
+    var all = activePracticeSlugs();
+    var domain = getSelectedPracticeDomain();
+    var map = window.SECPLUS_PRACTICE._topicAssignments;
+    var filtered =
+      domain && map && UTIL
+        ? UTIL.filterSlugsByMajor(all, map, domain)
+        : domain && map
+          ? filterSlugsByMajor(all, map, domain)
+          : all;
+    var nBanks = practiceBankCount();
+    var blueprint = window.SECPLUS_PRACTICE._blueprint;
+    var tracker = window.SECPLUS_PRACTICE._tracker;
+    var pdf = blueprint && blueprint.sourcePdf ? blueprint.sourcePdf : "SY0-701 exam objectives PDF";
+
+    refreshPortalPracticeBanksSummary(nBanks);
+
+    if (domain) {
+      grid.innerHTML =
+        '<article class="sim-box" aria-labelledby="secplus-filter-bank-title">' +
+        '<h4 class="sim-box-title" id="secplus-filter-bank-title">Filtered set \u00b7 domain ' +
+        domain +
+        "</h4>" +
+        '<p class="study-meta">' +
+        filtered.length +
+        " matching question(s). Random shuffles once; Review sends misses to the back.</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for filtered domain">' +
+        '<button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="filter">Random</button>' +
+        '<button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="filter">Review</button>' +
+        "</div></article>";
+      return;
+    }
+
+    if (!Array.isArray(all) || !all.length) {
+      grid.innerHTML =
+        '<p class="study-meta" data-secplus-practice-banks-error="1">Practice banks could not load. Refresh the page.</p>';
+      return;
+    }
+
+    var html = "";
+    for (var b = 1; b <= nBanks; b++) {
+      var inBank = bankSlugs(String(b));
+      var startIdx = (b - 1) * BANK_SIZE;
+      var endIdx = Math.min(b * BANK_SIZE, all.length);
+      var slotEnd = b * BANK_SIZE;
+      var rangeLabel = formatRange(startIdx + 1, endIdx < slotEnd ? endIdx : slotEnd);
+      var isPartial = inBank.length > 0 && inBank.length < BANK_SIZE;
+      html +=
+        '<article class="sim-box" data-secplus-practice-bank-index="' +
+        b +
+        '" aria-labelledby="secplus-bank-title-' +
+        b +
+        '">' +
+        '<h4 class="sim-box-title" id="secplus-bank-title-' +
+        b +
+        '">Bank ' +
+        b +
+        " \u00b7 questions " +
+        rangeLabel +
+        "</h4>" +
+        '<p class="study-meta">' +
+        inBank.length +
+        " item(s)" +
+        (isPartial ? " (partial bank)" : "") +
+        " \u00b7 Random shuffles once; Review sends misses to the back.</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for bank ' +
+        b +
+        '">' +
+        '<button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="' +
+        b +
+        '">Random</button>' +
+        '<button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="' +
+        b +
+        '">Review</button>' +
+        "</div></article>";
+    }
+
+    var outdated = legacy601Slugs();
+    if (outdated.length) {
+      html +=
+        '<article class="sim-box secplus-practice-bank--601-outdated" data-secplus-practice-bank-index="' +
+        OUTDATED_BANK_ID +
+        '" aria-labelledby="secplus-bank-title-601-outdated">' +
+        '<h4 class="sim-box-title" id="secplus-bank-title-601-outdated">SY0-601 Outdated</h4>' +
+        '<p class="secplus-practice-bank-audit-note">' +
+        "Audit archive: these items carry legacy SY0-601 objective tags that are not on the official SY0-701 study path. " +
+        "They are banked here for future remap or retirement—not mixed into SY0-701 Random/Review pools." +
+        "</p>" +
+        '<p class="study-meta">' +
+        outdated.length +
+        " item(s) \u00b7 reference only \u00b7 Random browse (no Review queue)</p>" +
+        '<div class="study-actions" role="group" aria-label="Practice modes for SY0-601 outdated archive">' +
+        '<button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="' +
+        OUTDATED_BANK_ID +
+        '">Random</button>' +
+        "</div></article>";
+    }
+
+    grid.innerHTML = html;
+
+    var summary = document.getElementById("secplus-practice-banks-summary");
+    if (summary && tracker && tracker.totals) {
+      var mv = tracker.missingVerificationFiles ? tracker.missingVerificationFiles.length : 0;
+      if (mv > 0) {
+        summary.textContent =
+          summary.textContent +
+          " Tier A verification in progress: " +
+          mv +
+          " item(s) pending official source citations.";
+      }
+    }
+  }
+
+  function refreshSecplusPracticeUI() {
+    var weightRoot = document.getElementById("secplus-bank-weight-table");
+    if (UTIL && UTIL.renderSecplusDomainWeightTable) {
+      UTIL.renderSecplusDomainWeightTable(
+        weightRoot,
+        window.SECPLUS_PRACTICE._tracker,
+        window.SECPLUS_PRACTICE._blueprint,
+        window.SECPLUS_PRACTICE._objectivesOutline
+      );
+    } else if (UTIL && UTIL.renderDomainWeightTable) {
+      UTIL.renderDomainWeightTable(
+        weightRoot,
+        window.SECPLUS_PRACTICE._tracker,
+        window.SECPLUS_PRACTICE._blueprint
+      );
+    }
+    populateDomainSelect(window.SECPLUS_PRACTICE._blueprint);
+    renderPracticeBanksGrid();
   }
 
   function start(mode, bankId, domainMajor) {
-    if (!requirePortalAccess()) return;
     bankId = bankId || "1";
-    var fixed = bankSlugs(bankId);
+    if (String(bankId) === OUTDATED_BANK_ID && mode === "review") {
+      mode = "random";
+    }
+    var fixed =
+      bankId === FILTER_BANK_ID
+        ? activePracticeSlugs()
+        : bankSlugs(bankId);
     var map = window.SECPLUS_PRACTICE._topicAssignments;
     if (domainMajor) {
       if (!map || typeof map !== "object") {
@@ -1148,6 +1392,10 @@
   }
 
   function startWithOptionalDomain(mode, bankId) {
+    if (String(bankId) === OUTDATED_BANK_ID) {
+      start(mode, bankId, null);
+      return;
+    }
     var domainMajor = getSelectedPracticeDomain() || null;
     if (!domainMajor) {
       start(mode, bankId, null);
@@ -1183,6 +1431,9 @@
   window.SECPLUS_PRACTICE.practiceBankCount = practiceBankCount;
   window.SECPLUS_PRACTICE.filterSlugsByMajor = filterSlugsByMajor;
   window.SECPLUS_PRACTICE.getSelectedPracticeDomain = getSelectedPracticeDomain;
+  window.SECPLUS_PRACTICE.OUTDATED_BANK_ID = OUTDATED_BANK_ID;
+  window.SECPLUS_PRACTICE.activePracticeSlugs = activePracticeSlugs;
+  window.SECPLUS_PRACTICE.legacy601Slugs = legacy601Slugs;
 
   document.addEventListener(
     "click",
@@ -1201,15 +1452,17 @@
     false
   );
 
-  function refreshPortalPracticeBanksSummary(nBanks) {
-    var all = window.SECPLUS_PRACTICE.SLUGS;
-    var total = Array.isArray(all) ? all.length : 0;
-    if (!nBanks || nBanks < 1) nBanks = practiceBankCount();
-
-    function formatRange(first, last) {
-      if (first >= last) return String(first);
-      return String(first) + "–" + String(last);
+  document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "secplus-practice-domain-select") {
+      refreshSecplusPracticeUI();
     }
+  });
+
+  function refreshPortalPracticeBanksSummary(nBanks) {
+    var all = activePracticeSlugs();
+    var total = Array.isArray(all) ? all.length : 0;
+    var outdatedCount = legacy601Slugs().length;
+    if (!nBanks || nBanks < 1) nBanks = practiceBankCount();
 
     var summary = document.getElementById("secplus-practice-banks-summary");
     if (summary) {
@@ -1217,13 +1470,17 @@
       var bankWord = nBanks === 1 ? "bank" : "banks";
       var summaryText =
         total +
-        " practice question" +
+        " SY0-701 practice question" +
         (total === 1 ? "" : "s") +
         " in " +
         nBanks +
         " " +
         bankWord +
-        " (positions 1–100, 101–200, and so on in hub order). ";
+        " (positions " +
+        formatRange(1, BANK_SIZE) +
+        ", " +
+        formatRange(BANK_SIZE + 1, BANK_SIZE * 2) +
+        ", and so on). ";
       if (lastBankCount > 0 && lastBankCount < BANK_SIZE) {
         summaryText +=
           "The newest bank (positions " +
@@ -1234,24 +1491,36 @@
           (lastBankCount === 1 ? "" : "s") +
           " until the list reaches " +
           BANK_SIZE +
-          "; then the next bank appears automatically. ";
+          "; then the next bank opens. ";
+      }
+      if (outdatedCount > 0) {
+        summaryText +=
+          outdatedCount +
+          " outdated SY0-601 item" +
+          (outdatedCount === 1 ? "" : "s") +
+          " are kept in a separate audit bank below—not counted in SY0-701 weights. ";
       }
       summaryText +=
-        "Each bank has its own Random and Review session. Use Practice by subject to limit a session to one SY0-701 domain before you start.";
+        "Target mix per SY0-701 bank follows domain weights (12/22/18/28/20). Use Practice by subject to filter Random or Review.";
       summary.textContent = summaryText;
       summary.hidden = false;
     }
 
     var grid = document.getElementById("secplus-practice-banks-grid");
     if (grid) {
+      var ariaTotal = total + (outdatedCount > 0 ? outdatedCount : 0);
       grid.setAttribute(
         "aria-label",
         "Practice question banks: " +
           nBanks +
-          " banks of up to " +
+          " SY0-701 banks of up to " +
           BANK_SIZE +
-          " questions each (" +
+          " questions (" +
           total +
+          " active" +
+          (outdatedCount > 0 ? "; " + outdatedCount + " SY0-601 outdated archived" : "") +
+          "; " +
+          ariaTotal +
           " total)"
       );
     }
@@ -1261,112 +1530,14 @@
     var grid = document.getElementById("secplus-practice-banks-grid");
     if (!grid) return;
 
-    var all = window.SECPLUS_PRACTICE.SLUGS;
-    var existing = grid.querySelectorAll("[data-secplus-practice-bank-index]");
-    if (existing.length) {
-      refreshPortalPracticeBanksSummary(existing.length);
-      return;
-    }
-
-    var loadingEl = document.getElementById("secplus-practice-banks-loading");
-    if (loadingEl) loadingEl.remove();
-
-    if (!Array.isArray(all) || !all.length) {
-      if (!grid.querySelector("[data-secplus-practice-banks-error]")) {
-        var err = document.createElement("p");
-        err.className = "study-meta";
-        err.setAttribute("data-secplus-practice-banks-error", "1");
-        err.setAttribute("role", "status");
-        err.textContent =
-          "Practice banks could not load. Refresh the page; if the problem continues, check that secplus-practice-hub.js loaded correctly.";
-        grid.appendChild(err);
+    window.SECPLUS_PRACTICE._loadPromise.then(function (ok) {
+      if (!ok) {
+        grid.innerHTML =
+          '<p class="study-meta">Could not load Security+ practice config. Refresh the page.</p>';
+        return;
       }
-      return;
-    }
-
-    var prior = grid.querySelectorAll("[data-secplus-practice-banks-error]");
-    for (var pe = 0; pe < prior.length; pe++) prior[pe].remove();
-
-    var nBanks = practiceBankCount();
-    var total = all.length;
-
-    function formatRange(first, last) {
-      if (first >= last) return String(first);
-      return String(first) + "–" + String(last);
-    }
-
-    refreshPortalPracticeBanksSummary(nBanks);
-
-    for (var b = 1; b <= nBanks; b++) {
-      var startIdx = (b - 1) * BANK_SIZE;
-      var endIdx = Math.min(b * BANK_SIZE, all.length);
-      var firstNum = startIdx + 1;
-      var slotEnd = b * BANK_SIZE;
-      var countInBank = endIdx > startIdx ? endIdx - startIdx : 0;
-
-      var article = document.createElement("article");
-      article.className = "sim-box";
-      article.setAttribute("data-secplus-practice-bank-index", String(b));
-      article.setAttribute("aria-labelledby", "secplus-bank-title-" + b);
-
-      var isLastBank = b === nBanks;
-      var isPartial = countInBank > 0 && countInBank < BANK_SIZE;
-      if (isLastBank && isPartial) {
-        article.classList.add("secplus-practice-bank--remainder");
-      }
-
-      var h4 = document.createElement("h4");
-      h4.className = "sim-box-title";
-      h4.id = "secplus-bank-title-" + b;
-      var titleInner;
-      if (countInBank === 0) {
-        titleInner = formatRange(firstNum, slotEnd);
-      } else {
-        titleInner = formatRange(firstNum, endIdx);
-      }
-      h4.textContent = "Bank " + String(b) + " · questions " + titleInner;
-      article.appendChild(h4);
-
-      var meta = document.createElement("p");
-      meta.className = "study-meta";
-      meta.textContent =
-        countInBank +
-        " item" +
-        (countInBank === 1 ? "" : "s") +
-        " · Random shuffles once; Review sends misses to the back of the queue.";
-      article.appendChild(meta);
-
-      var actions = document.createElement("div");
-      actions.className = "study-actions";
-      actions.setAttribute("role", "group");
-      actions.setAttribute("aria-label", "Practice modes for bank " + String(b));
-
-      var br = document.createElement("button");
-      br.type = "button";
-      br.className = "start-btn";
-      br.setAttribute("data-secplus-practice", "random");
-      br.setAttribute("data-secplus-practice-bank", String(b));
-      br.textContent = "Random";
-
-      var rev = document.createElement("button");
-      rev.type = "button";
-      rev.className = "start-btn";
-      rev.setAttribute("data-secplus-practice", "review");
-      rev.setAttribute("data-secplus-practice-bank", String(b));
-      rev.textContent = "Review";
-
-      if (countInBank === 0) {
-        br.disabled = true;
-        rev.disabled = true;
-        br.classList.add("is-placeholder");
-        rev.classList.add("is-placeholder");
-      }
-
-      actions.appendChild(br);
-      actions.appendChild(rev);
-      article.appendChild(actions);
-      grid.appendChild(article);
-    }
+      refreshSecplusPracticeUI();
+    });
   }
 
   window.SECPLUS_PRACTICE.injectPortalPracticeBanks = injectPortalPracticeBanks;

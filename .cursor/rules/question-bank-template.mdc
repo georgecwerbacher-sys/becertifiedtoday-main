@@ -1,5 +1,5 @@
 ---
-description: Question bank template — 100-question banks, blueprint domain weights, objective tags, Cisco-only verification.
+description: Question bank template — 100-question banks, blueprint domain weights, objective tags, Tier A verification per track.
 globs: public/**/data/*-practice-bank-blueprint.json,public/**/data/*-question-topic-map.json,templates/question-bank/**,public/**/js/*-practice-hub.js
 alwaysApply: false
 ---
@@ -10,22 +10,30 @@ When adding or editing certification question banks, follow `templates/question-
 
 ## Required for every published question
 
-1. **Blueprint version** — matches the official exam topics PDF (`v1.1`, `v1.2`, `V_2025`, …).
-2. **Objective** — at least one ID from that PDF (`2.4`, `5.8`, …).
+1. **Blueprint version** — matches the official exam topics PDF (`v1.1`, `v5.0`, …).
+2. **Objective** — at least one ID from that PDF (`2.4`, `5.6`, …).
 3. **Sub-objective** — when the PDF lists children (`1.8.c`, `3.9.a`, …).
-4. **Verification** — keys confirmed on **Cisco Tier A** (docs, DevNet, Learning Network). Never Reddit, forums, Discord, or competitor dumps.
+4. **Verification** — keys confirmed on **Tier A sources for that track** (see blueprint `verificationPolicy`). Never Reddit, forums, Discord, or competitor dumps.
 5. **Topic map entry** — schema v2 in `{track}-question-topic-map.json` before the HTML ships.
+
+## Tier A by track
+
+| Track | Allowed verification hosts |
+|-------|---------------------------|
+| CCNA / CCNP / CCNAAUTO | `cisco.com`, `developer.cisco.com`, `learningnetwork.cisco.com` |
+| **Sec+ SY0-701** | `comptia.org`, `learn.comptia.org`, `nist.gov`, `csrc.nist.gov`, `ietf.org`, `rfc-editor.org`, `owasp.org` |
 
 ## Bank sizing and mix
 
 - **100 questions per bank**; bank 2 starts at question 101.
 - Each bank targets **exam domain weights** from `{track}-practice-bank-blueprint.json`.
-- CCNAAUTO v1.1 example: 15 / 20 / 15 / 15 / 20 / 15 per 100 questions.
+- Sec+ SY0-701 v5.0: **12 / 22 / 18 / 28 / 20** per 100 questions.
 
 ## After adding questions
 
 ```bash
 python3 scripts/build-question-bank-tracker.py --track ccnaauto
+python3 scripts/build-question-bank-tracker.py --track secplus
 npm run lint:question-urls
 ```
 
@@ -33,4 +41,4 @@ Append slug to `{track}-practice-hub.js` `SLUGS` array (or generator equivalent)
 
 ## Published HTML
 
-Do not embed non-Cisco `http(s)://` URLs in question pages. See `.cursor/rules/answer-verification-cisco-sources.mdc`.
+Do not embed non-Tier-A `http(s)://` URLs in question pages. Cisco tracks: `.cursor/rules/answer-verification-cisco-sources.mdc`.

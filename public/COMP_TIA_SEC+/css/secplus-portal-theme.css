@@ -1,0 +1,1070 @@
+/* Security+ portal — layout and palette aligned with CCNAAUTO / CCNA training portals */
+.secplus-portal {
+  color-scheme: light dark;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --bg: #0b1020;
+  --surface: #121a2b;
+  --surface-raised: #1a2742;
+  --border: #2d3b5a;
+  --border-accent: #3d6dbb;
+  --text: #e6edf3;
+  --muted: #9fb0cc;
+  --eyebrow: #6b8ab8;
+  --page-bg: #ffffff;
+  --page-text: #0b1020;
+  --page-muted: #475569;
+  --accent: #2f66bf;
+  --accent-border: #4f84d8;
+  --accent-hover: #3a74d4;
+  --link: #2f66bf;
+}
+
+.secplus-portal * {
+  box-sizing: border-box;
+}
+
+body.secplus-portal {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--page-bg);
+  color: var(--page-text);
+  line-height: 1.5;
+  overflow-x: clip;
+}
+
+.secplus-portal .page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.secplus-portal header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px 20px;
+  padding: max(16px, env(safe-area-inset-top)) clamp(20px, 4vw, 40px) 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(8px);
+}
+
+.secplus-portal .brand img {
+  display: block;
+  height: clamp(48px, 10vw, 56px);
+  width: auto;
+}
+
+.secplus-portal main {
+  flex: 1;
+  padding: clamp(20px, 3.5vw, 36px) clamp(20px, 4vw, 40px) clamp(32px, 6vw, 56px);
+}
+
+.secplus-portal .funnel,
+.secplus-portal .hero-content,
+.secplus-portal .formats-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.secplus-portal .eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.secplus-portal h1 {
+  margin: 0 0 14px;
+  font-size: clamp(1.65rem, 4.5vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+.secplus-portal .lead {
+  margin: 0 0 16px;
+  font-size: clamp(0.98rem, 2.2vw, 1.08rem);
+  color: var(--page-muted);
+  max-width: 52rem;
+  line-height: 1.6;
+}
+
+.secplus-portal .benefits {
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.secplus-portal .benefits li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--page-muted);
+  font-size: 0.98rem;
+}
+
+.secplus-portal .benefits li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f84d8, #2f66bf);
+}
+
+.secplus-portal .portal-note {
+  margin: 0 0 28px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px dashed rgba(79, 132, 216, 0.45);
+  background: rgba(47, 102, 191, 0.06);
+  color: var(--page-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.secplus-portal .portal-note strong {
+  color: var(--page-text);
+}
+
+.secplus-portal .portal-note a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.secplus-portal .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(22px, 4vw, 28px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin-bottom: 28px;
+}
+
+.secplus-portal .purchase-card .purchase-label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--eyebrow);
+}
+
+.secplus-portal .purchase-card .purchase-heading {
+  margin: 0 0 12px;
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.secplus-portal .purchase-card .purchase-lead {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.secplus-portal .purchase-card-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(22px, 4vw, 40px);
+}
+
+.secplus-portal .purchase-card-main {
+  flex: 1 1 min(46ch, 100%);
+  min-width: 0;
+}
+
+@media (max-width: 639px) {
+  .secplus-portal .purchase-card-inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.secplus-portal .blueprint-h3 {
+  margin: clamp(22px, 4vw, 28px) 0 10px;
+  font-size: clamp(1.05rem, 2.4vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.secplus-portal .blueprint-h3:first-of-type {
+  margin-top: 0;
+}
+
+.secplus-portal .blueprint-note {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.secplus-portal .blueprint-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 18px;
+}
+
+.secplus-portal .blueprint-domain-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.secplus-portal .blueprint-domain-table th,
+.secplus-portal .blueprint-domain-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.secplus-portal .blueprint-domain-table thead th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom-width: 2px;
+}
+
+.secplus-portal .blueprint-domain-table tbody th[scope="row"] {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.secplus-portal .blueprint-domain-table td:nth-child(2) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #8ab4ff;
+}
+
+.secplus-portal .study-order-list {
+  margin: 0 0 18px;
+  padding-left: 1.25rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.secplus-portal .study-order-list li {
+  margin-bottom: 6px;
+}
+
+.secplus-portal .formats-section {
+  margin-top: clamp(40px, 8vw, 56px);
+  padding-top: clamp(36px, 6vw, 48px);
+  border-top: 1px solid var(--border);
+}
+
+.secplus-portal .formats-head {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--eyebrow);
+}
+
+.secplus-portal .formats-section h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  font-weight: 800;
+}
+
+.secplus-portal .formats-lead {
+  margin: 0 0 20px;
+  color: var(--page-muted);
+  line-height: 1.55;
+  max-width: 72ch;
+}
+
+.secplus-portal .section-heading {
+  margin: 28px 0 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--page-text);
+}
+
+.secplus-portal .formats-section .section-heading:first-of-type {
+  margin-top: 0;
+}
+
+.secplus-portal .start-box {
+  margin-bottom: 24px;
+}
+
+.secplus-portal .placeholder-strip {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px dashed rgba(79, 132, 216, 0.45);
+  background: rgba(47, 102, 191, 0.06);
+  color: var(--page-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.secplus-portal .study-meta {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: var(--page-muted);
+  line-height: 1.5;
+}
+
+.secplus-portal .card .study-meta {
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-practice-banks-summary {
+  margin: 0 0 14px;
+  max-width: 62ch;
+}
+
+.secplus-portal .secplus-practice-subject-filter {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(45, 59, 90, 0.35);
+  background: rgba(18, 26, 43, 0.04);
+}
+
+.secplus-portal .secplus-practice-subject-title {
+  margin: 0 0 6px;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.secplus-portal .secplus-practice-subject-lead {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: var(--page-muted);
+  line-height: 1.45;
+}
+
+.secplus-portal .secplus-practice-subject-filter a {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.secplus-portal .secplus-practice-subject-filter label[for="secplus-practice-domain-select"] {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.secplus-portal .secplus-practice-domain-select {
+  width: 100%;
+  max-width: 36rem;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(45, 59, 90, 0.45);
+  font-size: 0.92rem;
+  background: #fff;
+  color: var(--page-text);
+}
+
+.secplus-portal .secplus-practice-domain-select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.secplus-portal .secplus-practice-subject-hint {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+  color: var(--page-muted);
+  line-height: 1.45;
+}
+
+.secplus-portal .bcc-bank-weight-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+  margin: 0 0 16px;
+}
+
+.secplus-portal .bcc-bank-weight-table th,
+.secplus-portal .bcc-bank-weight-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(45, 59, 90, 0.2);
+  text-align: left;
+  vertical-align: top;
+}
+
+.secplus-portal .bcc-bank-weight-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--page-muted);
+}
+
+.secplus-portal .bcc-bank-domain-id {
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.secplus-portal .bcc-bank-weight-table--expandable .bcc-bank-domain-details,
+.secplus-portal .bcc-bank-weight-table--expandable .bcc-bank-objective-details {
+  margin: 0;
+}
+
+.secplus-portal .bcc-bank-weight-table--expandable summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+}
+
+.secplus-portal .bcc-bank-weight-table--expandable summary::-webkit-details-marker {
+  display: none;
+}
+
+.secplus-portal .bcc-bank-weight-table--expandable summary::before {
+  content: "▸ ";
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.secplus-portal .bcc-bank-weight-table--expandable details[open] > summary::before {
+  content: "▾ ";
+}
+
+.secplus-portal .bcc-bank-objective-tree {
+  margin: 10px 0 0;
+  padding: 0 0 0 4px;
+  border-left: 2px solid rgba(47, 102, 191, 0.25);
+}
+
+.secplus-portal .bcc-bank-objective-details {
+  margin: 0 0 8px 8px;
+}
+
+.secplus-portal .bcc-bank-objective-row {
+  margin: 0 0 8px 8px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--page-muted);
+}
+
+.secplus-portal .bcc-bank-objective-id,
+.secplus-portal .bcc-bank-subobjective-id {
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.secplus-portal .bcc-bank-objective-count,
+.secplus-portal .bcc-bank-subobjective-count {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--page-muted);
+  white-space: nowrap;
+}
+
+.secplus-portal .bcc-bank-subobjective-list {
+  margin: 6px 0 0;
+  padding: 0 0 0 1.1rem;
+  list-style: disc;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--page-muted);
+}
+
+.secplus-portal .bcc-bank-subobjective-item {
+  margin: 0 0 4px;
+}
+
+.secplus-portal .bcc-bank-subobjective-list .bcc-bank-subobjective-list {
+  list-style: circle;
+  margin-top: 4px;
+}
+
+.secplus-portal .sim-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+@media (min-width: 640px) {
+  .secplus-portal .sim-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.secplus-portal .sim-grid--pbq {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+@media (min-width: 900px) {
+  .secplus-portal .sim-grid--pbq {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.secplus-portal #secplus-practice-banks-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.secplus-portal .sim-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface-raised);
+  gap: 10px;
+  min-height: 0;
+}
+
+.secplus-portal .sim-box h4.sim-box-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.secplus-portal .sim-box .study-meta {
+  margin: 0;
+  flex: 1;
+  color: var(--muted);
+}
+
+.secplus-portal .sim-box-thumb {
+  margin: -16px -16px 10px -16px;
+  border-radius: 11px 11px 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(61, 109, 187, 0.65);
+  background: rgba(13, 21, 40, 0.5);
+}
+
+.secplus-portal .sim-box-thumb img {
+  display: block;
+  width: 100%;
+  height: clamp(110px, 24vw, 168px);
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+.secplus-portal .sim-box-practice-wide {
+  grid-column: 1 / -1;
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--601-outdated {
+  border-color: rgba(74, 224, 146, 0.55);
+  background: linear-gradient(
+    165deg,
+    rgba(31, 168, 85, 0.28) 0%,
+    rgba(18, 46, 34, 0.92) 42%,
+    rgba(18, 26, 43, 0.96) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 224, 146, 0.18),
+    0 10px 28px rgba(31, 168, 85, 0.12);
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--601-outdated .sim-box-title {
+  color: #d8ffe8;
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--601-outdated .study-meta {
+  color: #b8dcc8;
+}
+
+.secplus-portal .secplus-practice-bank-audit-note {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px dashed rgba(74, 224, 146, 0.45);
+  background: rgba(31, 168, 85, 0.12);
+  color: #d8ffe8;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--601-outdated .start-btn {
+  border-color: rgba(74, 224, 146, 0.55);
+  background: rgba(31, 168, 85, 0.22);
+  color: #ecfdf3;
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--601-outdated .start-btn:hover {
+  background: rgba(31, 168, 85, 0.34);
+  border-color: rgba(116, 232, 168, 0.75);
+}
+
+.secplus-portal .sim-box.secplus-practice-bank--remainder {
+  border-color: rgba(201, 162, 39, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
+}
+
+.secplus-portal .study-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.secplus-portal .sim-box .study-actions {
+  margin-top: auto;
+}
+
+.secplus-portal .sim-grid--pbq .study-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.secplus-portal .study-actions .start-btn {
+  width: auto;
+  flex: 1 1 7rem;
+  margin-top: 0;
+}
+
+.secplus-portal .sim-grid--pbq .study-actions .start-btn {
+  flex: none;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  font-size: 0.84rem;
+  line-height: 1.25;
+  padding: 8px 10px;
+}
+
+.secplus-portal .sim-box > .start-btn {
+  margin-top: auto;
+}
+
+.secplus-portal .cta-main,
+.secplus-portal .start-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-border);
+  font-size: 0.88rem;
+  font-weight: 800;
+  font: inherit;
+  text-decoration: none;
+  text-align: center;
+  color: #f4f7ff;
+  background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+  box-shadow: 0 4px 18px rgba(47, 102, 191, 0.35);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.secplus-portal .cta-main:hover,
+.secplus-portal .start-btn:hover {
+  filter: brightness(1.07);
+  color: #fff;
+}
+
+.secplus-portal .cta-main:focus-visible,
+.secplus-portal .start-btn:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 3px;
+}
+
+.secplus-portal .cta-main--block {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.secplus-portal button.start-btn:disabled,
+.secplus-portal button.start-btn.is-placeholder,
+.secplus-portal button.cta-main.is-placeholder {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+  box-shadow: none;
+}
+
+.secplus-portal .portal-checkout-activated-banner {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(74, 224, 146, 0.45);
+  background: rgba(31, 168, 85, 0.08);
+  color: var(--page-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.secplus-portal .portal-checkout-activated-banner[hidden] {
+  display: none !important;
+}
+
+.secplus-portal #secplus-portal-paid-content.portal-catalog--locked .start-btn[data-secplus-practice] {
+  opacity: 0.92;
+}
+
+.secplus-portal .portal-sim-verified-wrap,
+.secplus-portal .portal-sim-locked-wrap,
+.secplus-portal #secplus-portal-locked-banner {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px dashed rgba(79, 132, 216, 0.45);
+  background: rgba(47, 102, 191, 0.06);
+}
+
+.secplus-portal .portal-sim-verified-wrap {
+  border-color: rgba(74, 224, 146, 0.45);
+  background: rgba(31, 168, 85, 0.08);
+}
+
+.secplus-portal .portal-sim-verified-wrap p,
+.secplus-portal .portal-sim-locked-wrap p,
+.secplus-portal #secplus-portal-locked-banner p {
+  margin: 0 0 14px;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--page-muted);
+}
+
+.secplus-portal .portal-sim-verified-wrap a:not(.cta-main),
+.secplus-portal .portal-sim-locked-wrap a:not(.cta-main),
+.secplus-portal #secplus-portal-locked-banner a:not(.cta-main) {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.secplus-portal .timed-sim-heading {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--page-text);
+}
+
+.secplus-portal .timed-sim-lead {
+  margin: 0 0 10px;
+  color: var(--page-muted);
+  line-height: 1.5;
+}
+
+.secplus-portal .timed-sim-list {
+  margin: 0 0 12px 1.2rem;
+  padding: 0;
+  color: var(--page-muted);
+  line-height: 1.55;
+}
+
+.secplus-portal .site-disclaimer {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
+  border-top: 1px solid rgba(45, 59, 90, 0.15);
+  text-align: center;
+}
+
+.secplus-portal .site-disclaimer p {
+  margin: 0 0 10px;
+  font-size: clamp(0.78rem, 1.8vw, 0.84rem);
+  line-height: 1.55;
+  color: var(--page-muted);
+}
+
+.secplus-portal .site-disclaimer p:last-child {
+  margin-bottom: 0;
+}
+
+.secplus-portal footer {
+  padding: 16px clamp(20px, 4vw, 24px);
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--page-muted);
+  border-top: 1px solid rgba(45, 59, 90, 0.15);
+}
+
+.secplus-portal footer a.footer-mailto {
+  color: var(--accent);
+  text-decoration: underline;
+  margin-left: 0.35em;
+}
+
+.secplus-portal .card .study-meta code {
+  color: #c8d8f0;
+}
+
+.secplus-portal .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.secplus-portal .secplus-601-701-wrap {
+  margin-bottom: clamp(28px, 5vw, 40px);
+}
+
+.secplus-portal .secplus-601-701-panel {
+  padding: clamp(18px, 3vw, 24px);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: linear-gradient(165deg, var(--surface-raised) 0%, var(--surface) 52%, var(--bg) 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  color: var(--text);
+}
+
+.secplus-portal .secplus-601-701-panel .study-meta {
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-601-701-eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.secplus-portal .secplus-601-701-title {
+  margin: 0 0 12px;
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.secplus-portal .secplus-601-701-lead,
+.secplus-portal .secplus-601-701-source,
+.secplus-portal .secplus-601-701-tracking,
+.secplus-portal .secplus-601-701-foot {
+  margin: 0 0 14px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-601-701-panel strong {
+  color: var(--text);
+}
+
+.secplus-portal .secplus-601-701-source a {
+  color: var(--accent-border);
+  font-weight: 700;
+}
+
+.secplus-portal .secplus-601-701-source a:hover {
+  color: #b8d4ff;
+}
+
+.secplus-portal .secplus-601-701-highlights,
+.secplus-portal .secplus-601-701-removed-list {
+  margin: 0 0 16px;
+  padding-left: 1.25rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.secplus-portal .secplus-601-701-highlights li,
+.secplus-portal .secplus-601-701-removed-list li {
+  margin-bottom: 6px;
+}
+
+.secplus-portal .secplus-601-701-h3 {
+  margin: 20px 0 10px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.secplus-portal .secplus-601-701-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-601-701-table th,
+.secplus-portal .secplus-601-701-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(159, 176, 204, 0.22);
+  text-align: left;
+  vertical-align: top;
+}
+
+.secplus-portal .secplus-601-701-table thead th {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--eyebrow);
+}
+
+.secplus-portal .secplus-601-701-table tbody th {
+  font-weight: 800;
+  color: var(--accent-border);
+  white-space: nowrap;
+}
+
+.secplus-portal .secplus-601-701-table-wrap {
+  overflow-x: auto;
+}
+
+.secplus-portal .secplus-601-701-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(79, 132, 216, 0.22);
+  color: #c8d8f0;
+}
+
+.secplus-portal .secplus-601-701-details {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-601-701-details summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--accent-border);
+  list-style: none;
+}
+
+.secplus-portal .secplus-601-701-details summary:hover {
+  color: #b8d4ff;
+}
+
+.secplus-portal .secplus-601-701-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.secplus-portal .secplus-601-701-details summary::before {
+  content: "▸ ";
+}
+
+.secplus-portal .secplus-601-701-details[open] > summary::before {
+  content: "▾ ";
+}
+
+.secplus-portal .secplus-601-701-details-body {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.secplus-portal .secplus-601-701-id-list {
+  margin: 8px 0 0;
+  padding: 0 0 0 1.1rem;
+  columns: 2;
+  column-gap: 24px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.secplus-portal .secplus-601-701-id-list code {
+  font-size: 0.82rem;
+  color: #c8d8f0;
+}
+
+@media (max-width: 640px) {
+  .secplus-portal .secplus-601-701-id-list {
+    columns: 1;
+  }
+}
+
+.secplus-portal .secplus-verify-process {
+  margin-bottom: clamp(28px, 5vw, 40px);
+  padding: clamp(16px, 3vw, 22px);
+  border-radius: 12px;
+  border: 1px solid rgba(45, 59, 90, 0.28);
+  background: rgba(18, 26, 43, 0.04);
+}
+
+.secplus-portal .secplus-verify-process-eyebrow {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.secplus-portal .secplus-verify-process-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--page-text);
+}
+
+.secplus-portal .secplus-verify-process-lead,
+.secplus-portal .secplus-verify-process-more {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--page-muted);
+}
+
+.secplus-portal .secplus-verify-process-list {
+  margin: 0 0 14px;
+  padding-left: 1.25rem;
+  color: var(--page-muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.secplus-portal .secplus-verify-process-list li {
+  margin-bottom: 6px;
+}
+
+.secplus-portal .secplus-verify-process-more {
+  margin-bottom: 0;
+  padding-top: 4px;
+}
+
+.secplus-portal .secplus-verify-process-more__label {
+  font-weight: 700;
+  color: var(--page-text);
+}
+
+.secplus-portal .secplus-verify-process-soon {
+  color: var(--page-muted);
+  font-style: italic;
+}
+
+.secplus-portal .secplus-verify-process-link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.secplus-portal .secplus-verify-process-link:hover {
+  color: var(--accent-hover);
+}

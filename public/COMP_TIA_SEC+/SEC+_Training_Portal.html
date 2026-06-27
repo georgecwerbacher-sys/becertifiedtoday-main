@@ -15,637 +15,10 @@
     Portal shell aligned with CCNA_Training_Portal.html layout.
     Practice questions are grouped in banks of up to 100 (hub order); simulations and hot spots and timed simulation sections remain placeholders until those tracks launch.
   -->
-  <style>
-    :root {
-      color-scheme: light dark;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      --bg: #0b1020;
-      --surface: #121a2b;
-      --border: #2d3b5a;
-      --text: #e6edf3;
-      --muted: #9fb0cc;
-      --page-bg: #ffffff;
-      --page-text: #0b1020;
-      --page-muted: #475569;
-      --accent: #6d28d9;
-      --accent-border: #8b5cf6;
-      --accent-hover: #7c3aed;
-    }
-    * {
-      box-sizing: border-box;
-    }
-    .visually-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--page-bg);
-      color: var(--page-text);
-      line-height: 1.5;
-    }
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 14px 20px;
-      padding: 16px clamp(20px, 4vw, 40px);
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(8px);
-    }
-    header {
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-      padding: 6px 14px;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
-      line-height: 0;
-    }
-    .brand img {
-      display: block;
-      height: clamp(56px, 12vw, 88px);
-      width: auto;
-      max-width: min(100px, 22vw);
-      object-fit: contain;
-      object-position: left center;
-    }
-    main {
-      flex: 1;
-      display: block;
-      padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 40px);
-    }
-    .hero-content {
-      max-width: 1080px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .funnel {
-      width: 100%;
-      max-width: none;
-    }
-    .eyebrow {
-      margin: 0 0 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9d7bea;
-    }
-    h1 {
-      margin: 0 0 16px;
-      font-size: clamp(1.65rem, 4.2vw, 2.25rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-    }
-    .lead {
-      margin: 0 0 28px;
-      color: var(--page-muted);
-      font-size: 1.08rem;
-      line-height: 1.6;
-    }
-    .benefits {
-      margin: 0 0 28px;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-    .benefits li {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      color: var(--page-muted);
-      font-size: 0.98rem;
-    }
-    .benefits li::before {
-      content: "";
-      flex-shrink: 0;
-      width: 8px;
-      height: 8px;
-      margin-top: 0.45em;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #a78bfa, #6d28d9);
-    }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: clamp(22px, 4vw, 28px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-    .purchase-card .purchase-label {
-      margin: 0 0 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #9d7bea;
-    }
-    .purchase-card .purchase-heading {
-      margin: 0 0 12px;
-      font-size: clamp(1.35rem, 3.5vw, 1.65rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      line-height: 1.2;
-    }
-    .purchase-card .purchase-lead {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 1.02rem;
-      line-height: 1.55;
-      text-align: left;
-    }
-    .purchase-card .purchase-includes {
-      margin: 0 0 18px;
-      padding: 0 0 0 22px;
-      list-style-position: inside;
-      text-align: left;
-      color: var(--page-muted);
-      font-size: 0.98rem;
-      line-height: 1.55;
-    }
-    .purchase-card .purchase-includes li {
-      margin-bottom: 8px;
-    }
-    .purchase-card-inner {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: clamp(22px, 4vw, 40px);
-    }
-    .purchase-card-main {
-      flex: 1 1 min(46ch, 100%);
-      min-width: 0;
-    }
-    @media (max-width: 639px) {
-      .purchase-card-inner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-    .site-disclaimer {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: clamp(20px, 4vw, 28px) clamp(20px, 4vw, 40px);
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-    .site-disclaimer p {
-      margin: 0 0 10px;
-      font-size: clamp(0.78rem, 1.8vw, 0.84rem);
-      line-height: 1.55;
-      color: #6b7f9e;
-    }
-    .site-disclaimer p:last-child {
-      margin-bottom: 0;
-    }
-    .site-disclaimer strong {
-      color: #a4b4d0;
-      font-weight: 700;
-    }
-    footer {
-      padding: 16px clamp(20px, 4vw, 24px);
-      text-align: center;
-      font-size: 0.82rem;
-      color: #5c6d8a;
-      border-top: 1px solid rgba(45, 59, 90, 0.5);
-    }
-    footer a.footer-mailto {
-      color: #8ab4ff;
-      text-decoration: underline;
-      margin-left: 0.35em;
-      -webkit-tap-highlight-color: transparent;
-    }
-    footer a.footer-mailto:hover,
-    footer a.footer-mailto:focus-visible {
-      filter: brightness(1.08);
-    }
-    .formats-section {
-      margin-top: clamp(40px, 8vw, 72px);
-      padding-top: clamp(36px, 6vw, 56px);
-      border-top: 1px solid var(--border);
-    }
-    .formats-inner {
-      max-width: 1080px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .formats-head {
-      margin: 0 0 clamp(10px, 2vw, 14px);
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #9d7bea;
-    }
-    .formats-section h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.35rem, 3.2vw, 1.75rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-    }
-    .formats-lead {
-      margin: 0 0 clamp(24px, 4vw, 32px);
-      max-width: 52ch;
-      color: var(--page-muted);
-      font-size: clamp(0.98rem, 2.2vw, 1.05rem);
-      line-height: 1.6;
-    }
-    .formats-section .section-heading {
-      margin: clamp(28px, 5vw, 36px) 0 12px;
-      font-size: clamp(1.08rem, 2.6vw, 1.22rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--page-text);
-    }
-    .formats-section .section-heading:first-of-type {
-      margin-top: 0;
-    }
-    .placeholder-strip {
-      margin: 0 0 12px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px dashed rgba(139, 92, 246, 0.45);
-      background: rgba(13, 21, 40, 0.45);
-      color: #9fb0cc;
-      font-size: 0.88rem;
-      line-height: 1.45;
-    }
-    .start-box {
-      margin: 0 0 18px;
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid #6d28d9;
-      background: #1e1533;
-    }
-    .sim-grid {
-      display: grid;
-      gap: 14px;
-      margin: 0 0 8px;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-    .sim-grid--pbq {
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    }
-    @media (min-width: 900px) {
-      .sim-grid--pbq {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-    .sim-grid--pbq .study-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .sim-grid--pbq .study-actions .start-btn {
-      flex: none;
-      width: 100%;
-      min-width: 0;
-      min-height: 2.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      font-size: 0.84rem;
-      line-height: 1.25;
-      padding: 8px 10px;
-      box-sizing: border-box;
-    }
-    #secplus-practice-banks-grid {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    }
-    .sim-box {
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid #6d28d9;
-      background: #1e1533;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 0;
-    }
-    .sim-box-title {
-      margin: 0;
-      font-size: 1.02rem;
-      font-weight: 800;
-      line-height: 1.25;
-      color: #ffffff;
-    }
-    .sim-box-thumb {
-      margin: -16px -16px 10px -16px;
-      border-radius: 11px 11px 0 0;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(61, 109, 187, 0.65);
-      background: rgba(13, 21, 40, 0.5);
-    }
-    .sim-box-thumb img {
-      display: block;
-      width: 100%;
-      height: clamp(110px, 24vw, 168px);
-      object-fit: cover;
-      object-position: center 12%;
-    }
-    .study-meta {
-      margin: 0 0 10px;
-      font-size: 0.88rem;
-      color: #9fb0cc;
-    }
-    .secplus-practice-subject-filter {
-      margin: 0 0 18px;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(139, 92, 246, 0.45);
-      background: rgba(13, 21, 40, 0.55);
-    }
-    .secplus-practice-subject-filter .secplus-practice-subject-title {
-      margin: 0 0 6px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .secplus-practice-subject-filter .secplus-practice-subject-lead {
-      margin: 0 0 12px;
-      font-size: 0.86rem;
-      color: #9fb0cc;
-      line-height: 1.5;
-    }
-    a[href="#secplus-practice-subject-filter"],
-    .secplus-practice-subject-filter a {
-      color: #ffffff;
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-    a[href="#secplus-practice-subject-filter"]:visited,
-    .secplus-practice-subject-filter a:visited,
-    a[href="#secplus-practice-subject-filter"]:hover,
-    .secplus-practice-subject-filter a:hover,
-    a[href="#secplus-practice-subject-filter"]:focus-visible,
-    .secplus-practice-subject-filter a:focus-visible {
-      color: #ffffff;
-    }
-    .secplus-practice-subject-filter label[for="secplus-practice-domain-select"] {
-      display: block;
-      margin: 0 0 6px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #9d7bea;
-    }
-    .secplus-practice-domain-select {
-      display: block;
-      width: 100%;
-      max-width: min(100%, 440px);
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-    .secplus-practice-domain-select:focus {
-      outline: 2px solid rgba(139, 92, 246, 0.65);
-      outline-offset: 2px;
-    }
-    .secplus-practice-subject-hint {
-      margin: 10px 0 0;
-      font-size: 0.8rem;
-      color: #7d8ca8;
-      line-height: 1.45;
-    }
-    .study-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    .sim-box .study-actions {
-      margin-top: auto;
-    }
-    .sim-box > .start-btn {
-      margin-top: auto;
-    }
-    .study-actions .start-btn {
-      flex: 1 1 auto;
-      text-align: center;
-      min-width: 7rem;
-    }
-    .start-btn {
-      display: inline-block;
-      text-decoration: none;
-      background: #6d28d9;
-      border: 1px solid #8b5cf6;
-      color: #e6edf3;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 800;
-      font: inherit;
-      cursor: pointer;
-    }
-    button.start-btn:hover:not(:disabled),
-    a.start-btn:hover {
-      background: #7c3aed;
-    }
-    button.start-btn:disabled,
-    button.start-btn.is-placeholder {
-      opacity: 0.55;
-      cursor: not-allowed;
-      background: rgba(109, 40, 217, 0.35);
-    }
-
-    .cta-main {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 14px 24px;
-      border-radius: 12px;
-      border: 1px solid rgba(120, 170, 255, 0.45);
-      font-size: clamp(0.72rem, 1.8vw, 0.95rem);
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-decoration: none;
-      text-align: center;
-      color: #f4f7ff;
-      background: linear-gradient(165deg, #4f8aea 0%, #6d28d9 48%, #244f9a 100%);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.14) inset,
-        0 6px 22px rgba(109, 40, 217, 0.42);
-      transition: filter 0.15s ease, box-shadow 0.15s ease;
-    }
-    .cta-main:hover {
-      color: #fff;
-      filter: brightness(1.07);
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.18) inset,
-        0 8px 28px rgba(109, 40, 217, 0.5);
-    }
-    .cta-main:focus-visible {
-      outline: 2px solid #c4b5fd;
-      outline-offset: 3px;
-    }
-    .cta-main--block {
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .portal-checkout-activated-banner {
-      margin: 0 0 18px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(74, 224, 146, 0.45);
-      background: rgba(31, 168, 85, 0.12);
-      box-shadow: 0 0 0 1px rgba(74, 224, 146, 0.2) inset;
-      color: #c7f2da;
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
-    .portal-checkout-activated-banner[hidden] {
-      display: none !important;
-    }
-    #secplus-portal-paid-content.portal-catalog--locked .start-btn[data-secplus-practice] {
-      opacity: 0.92;
-    }
-    .portal-sim-verified-wrap {
-      margin: 0 0 18px;
-      padding: 18px 20px;
-      border-radius: 12px;
-      border: 1px solid rgba(74, 224, 146, 0.45);
-      background: rgba(31, 168, 85, 0.12);
-      box-shadow: 0 0 0 1px rgba(74, 224, 146, 0.2) inset;
-    }
-    .portal-sim-verified-wrap p {
-      margin: 0 0 14px;
-      color: #c7f2da;
-      line-height: 1.45;
-      font-size: 0.95rem;
-    }
-    .portal-sim-verified-wrap .cta-main {
-      text-align: center;
-    }
-    .portal-sim-locked-wrap {
-      margin: 0 0 8px;
-      padding: 16px 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      background: rgba(15, 23, 42, 0.45);
-    }
-    .portal-sim-locked-wrap .cta-main {
-      text-align: center;
-    }
-
-    .sim-box-practice-wide {
-      grid-column: 1 / -1;
-    }
-    .sim-box.secplus-practice-bank--remainder {
-      border-color: rgba(201, 162, 39, 0.45);
-      box-shadow: inset 0 0 0 1px rgba(201, 162, 39, 0.12);
-    }
-    .secplus-practice-banks-summary {
-      margin: 0 0 14px;
-      max-width: 62ch;
-    }
-    .secplus-practice-banks-summary {
-      color: var(--muted, #9eb4d4);
-    }
-
-    .blueprint-h3 {
-      margin: clamp(22px, 4vw, 28px) 0 10px;
-      font-size: clamp(1.05rem, 2.4vw, 1.2rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-      color: var(--text);
-    }
-    .blueprint-h3:first-of-type {
-      margin-top: clamp(8px, 2vw, 14px);
-    }
-    .blueprint-note {
-      margin: 0 0 14px;
-      font-size: 0.88rem;
-      line-height: 1.55;
-      color: #8899b5;
-    }
-    .blueprint-table-wrap {
-      margin: 0 0 clamp(18px, 3vw, 24px);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(13, 21, 40, 0.35);
-    }
-    .blueprint-domain-table {
-      width: 100%;
-      min-width: 520px;
-      border-collapse: collapse;
-      font-size: clamp(0.86rem, 2vw, 0.95rem);
-    }
-    .blueprint-domain-table th,
-    .blueprint-domain-table td {
-      padding: 12px 14px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-    .blueprint-domain-table th {
-      background: rgba(18, 26, 43, 0.9);
-      font-weight: 800;
-      color: #ddd6fe;
-    }
-    .blueprint-domain-table tbody tr:last-child th,
-    .blueprint-domain-table tbody tr:last-child td {
-      border-bottom: none;
-    }
-    .blueprint-domain-table td:nth-child(2) {
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-      color: #c4b5fd;
-    }
-    .study-order-list {
-      margin: 0 0 18px;
-      padding-left: 1.25rem;
-      color: #b8c3d6;
-      line-height: 1.6;
-    }
-    .study-order-list li {
-      margin-bottom: 6px;
-    }
-    .secplus-practice-domain-select:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-    button.cta-main.is-placeholder {
-      opacity: 0.55;
-      cursor: not-allowed;
-      filter: none;
-      box-shadow: none;
-    }
-  </style>
+  <link rel="stylesheet" href="/COMP_TIA_SEC+/css/secplus-portal-theme.css" />
+  <style>html { -webkit-text-size-adjust: 100%; }</style>
 </head>
-<body>
+<body class="secplus-portal">
   <div class="page">
     <header>
       <a class="brand" href="/comptia-sec+-home.html" aria-label="Be Certified Today — CompTIA Security+ home">
@@ -658,9 +31,8 @@
       </a>
     </header>
     <main id="main">
-      <div class="hero-content">
-        <div class="funnel">
-          <p class="eyebrow">Welcome</p>
+      <div class="funnel">
+        <p class="eyebrow">Welcome</p>
           <h1>Security+ Training Portal</h1>
           <p class="lead">
             Map your prep to the official SY0-701 blueprint, spend time where CompTIA weights the exam, then prove it with
@@ -672,104 +44,44 @@
             <li>Exam-readiness support with a 90-minute timed simulation and repeatable sessions across all five domains.</li>
           </ul>
 
-          <div class="card purchase-card" id="secplus-domains">
-            <div class="purchase-card-inner">
-              <div class="purchase-card-main">
-                <p class="purchase-label">Study path</p>
-                <h2 class="purchase-heading">Security+ SY0-701 blueprint and domain weights</h2>
-                <p class="purchase-lead">
-                  Security+ study lines up with five main knowledge domains. CompTIA publishes the current SY0-701 exam areas
-                  (objectives version 5.0) as general security concepts, threats and vulnerabilities, security architecture,
-                  security operations, and security program management. Official guidance puts the strongest emphasis on
-                  security operations (28%), followed by threats, vulnerabilities, and mitigations (22%) and security
-                  program management and oversight (20%).
-                </p>
-                <h3 class="blueprint-h3">Security+ study sections</h3>
-                <p class="blueprint-note">
-                  Domain weights below come from the CompTIA Security+ SY0-701 exam objectives document—use them to budget
-                  study hours, not as a promise of item counts on your specific attempt. The live exam allows up to
-                  <strong>90 questions</strong> in <strong>90 minutes</strong> (multiple-choice and performance-based).
-                </p>
-                <h3 class="blueprint-h3">Where to aim your reading and practice</h3>
-                <div class="blueprint-table-wrap">
-                  <table class="blueprint-domain-table">
-                    <caption class="visually-hidden">
-                      CompTIA Security+ SY0-701 domain weights and study focus areas
-                    </caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">Section</th>
-                        <th scope="col">Weight</th>
-                        <th scope="col">What to study</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">1.0 General Security Concepts</th>
-                        <td>12%</td>
-                        <td>Security controls, CIA and AAA, zero trust, physical security, cryptography and PKI basics, change management</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2.0 Threats, Vulnerabilities, and Mitigations</th>
-                        <td>22%</td>
-                        <td>Threat actors, attack vectors, malware and network attacks, vulnerability types, mitigation and hardening</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3.0 Security Architecture</th>
-                        <td>18%</td>
-                        <td>Cloud and hybrid architecture, identity and access, secure network design, encryption, secure software and supply chain</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">4.0 Security Operations</th>
-                        <td>28%</td>
-                        <td>Asset and vulnerability management, monitoring and alerting, incident response, automation, SIEM, and log analysis</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">5.0 Security Program Management and Oversight</th>
-                        <td>20%</td>
-                        <td>Governance, risk and compliance, policies and awareness, third-party risk, disaster recovery, privacy, and audit</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <h3 class="blueprint-h3">What to focus on first</h3>
-                <p class="purchase-lead">
-                  Start with general security concepts and threats, vulnerabilities, and mitigations—they build the language for
-                  everything else. Then layer in security architecture, security operations (the largest domain), and program
-                  management for governance, risk, and compliance scenarios.
-                </p>
-                <h3 class="blueprint-h3">Study order suggestion</h3>
-                <ol class="study-order-list">
-                  <li>General security concepts (controls, CIA, AAA, cryptography basics)</li>
-                  <li>Threats, vulnerabilities, and mitigations</li>
-                  <li>Security architecture (identity, cloud, network design)</li>
-                  <li>Security operations (monitoring, IR, automation)</li>
-                  <li>Security program management and oversight</li>
-                </ol>
-                <p class="purchase-lead">
-                  Under time pressure, leaning hardest into <strong>Security Operations</strong> and
-                  <strong>Threats, Vulnerabilities, and Mitigations</strong> before you polish lighter domains mirrors where
-                  CompTIA weights the blueprint.
-                </p>
-              </div>
-            </div>
-          </div>
+          <p class="portal-note" role="status">
+            <strong>Security+ bank 1 is open.</strong>
+            Questions publish in banks of <strong>100</strong>, mixed to match
+            <strong>SY0-701 domain weights</strong> (12% / 22% / 18% / 28% / 20%).
+            Every item is tagged to an official objective and verified on CompTIA Tier A sources—not competitor dumps or forums.
+          </p>
+      </div>
 
+      <div class="funnel secplus-601-701-wrap">
+        <div id="secplus-blueprint-changes-root" class="secplus-601-701-panel" aria-live="polite">
+          <p class="study-meta">Loading SY0-601 → SY0-701 study path comparison…</p>
         </div>
       </div>
 
+      <section class="funnel secplus-verify-process" aria-labelledby="secplus-verify-process-title">
+        <p class="secplus-verify-process-eyebrow">Question bank audit</p>
+        <h2 id="secplus-verify-process-title" class="secplus-verify-process-title">How we clean up and check outdated material</h2>
+        <p class="secplus-verify-process-lead">
+          Large prep sites with hundreds or thousands of items rarely show what still matches today&apos;s official blueprint.
+          This Security+ bank is actively audited: you can see domain targets, legacy gaps, and what we pulled out of the SY0-701 study path.
+        </p>
+        <ul class="secplus-verify-process-list">
+          <li>Compare official CompTIA exam objective PDFs when the blueprint changes (for example SY0-601 to SY0-701).</li>
+          <li>Tag every item to a blueprint version and objective ID, then verify keys on Tier A sources only (CompTIA, NIST, RFCs).</li>
+          <li>Keep retired or mis-tagged items out of weighted Random and Review pools; bank them separately for audit (see the green SY0-601 Outdated box below).</li>
+          <li>Publish domain weight targets and gap counts on this portal so you know what is live versus still in review.</li>
+        </ul>
+        <p class="secplus-verify-process-more">
+          <span class="secplus-verify-process-more__label">Read the full verification workflow:</span>
+          <span class="secplus-verify-process-soon" id="secplus-verify-guide-soon">Guide publishing soon.</span>
+          <!-- When /how-we-verify-questions.html is indexed and in site nav, replace the span above with:
+          <a href="/how-we-verify-questions.html" class="secplus-verify-process-link">How I verify questions</a>
+          -->
+        </p>
+      </section>
+
       <section class="formats-section" aria-labelledby="formats-title">
-        <div class="formats-inner">
-          <div id="secplus-portal-locked-banner" class="portal-sim-locked-wrap" hidden>
-            <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-              <strong>Portal access required.</strong> Purchase 10-day or 30-day library access on
-              <a href="/comptia-sec+-home.html#purchase" style="color:#fff;font-weight:700;">Security+ home</a>
-              to unlock question banks and timed simulation on this browser. Already paid?
-              <a href="/COMP_TIA_SEC+/secplus-portal-request-link.html" style="color:#fff;font-weight:700;">Email me a portal link</a>.
-            </p>
-            <a class="cta-main cta-main--block" href="/comptia-sec+-home.html#purchase">View access options</a>
-          </div>
-          <div id="secplus-portal-paid-content">
+        <div class="funnel">
           <p class="formats-head">Security+ practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
@@ -777,22 +89,28 @@
             Use question banks, simulations and hot spots, and full timed runs in short sessions or longer study blocks—no PDF workbooks,
             only live pages you operate.
           </p>
-          <h3 class="section-heading">Practice Questions</h3>
+          <h3 class="section-heading">Practice questions · Security+ bank</h3>
           <section class="start-box" aria-label="Question studies">
             <p class="study-meta">
               New practice questions are grouped in banks of up to <strong>100</strong> by position in the hub list
               (<strong>1&ndash;100</strong>, <strong>101&ndash;200</strong>, and so on). When a bank fills, another bank is
-              added for the next hundred. Each bank has its own <strong>Random</strong> and <strong>Review</strong> session.
+              added for the next hundred. Each SY0-701 bank has its own <strong>Random</strong> and <strong>Review</strong> session.
+              Outdated SY0-601 items live in a separate green audit bank below.
             </p>
             <p
               id="secplus-practice-banks-summary"
               class="study-meta secplus-practice-banks-summary"
               aria-live="polite"
-            >1005 practice questions in 11 banks (positions 1&ndash;100, 101&ndash;200, and so on in hub order). The newest bank (positions 1001&ndash;1100) has 5 questions until the list reaches 100; then the next bank appears automatically. Each bank has its own Random and Review session. Use Practice by subject to limit a session to one SY0-701 domain before you start.</p>
+            >Loading SY0-701 practice banks…</p>
+            <p class="study-meta">
+              Target mix per 100-question bank, aligned to CompTIA SY0-701 domain weights from the official exam objectives PDF.
+              Expand each domain to see objectives and sub-topics from the PDF; published counts roll up from the question bank.
+            </p>
+            <div id="secplus-bank-weight-table" aria-live="polite"></div>
             <div class="secplus-practice-subject-filter" id="secplus-practice-subject-filter">
               <p class="secplus-practice-subject-title">Practice by subject</p>
               <p class="secplus-practice-subject-lead">
-                Matches the <a href="#secplus-domains">Security+ SY0-701 domain weights</a>. Leave on
+                Matches the <a href="#secplus-bank-weight-table">Security+ SY0-701 domain weights</a>. Leave on
                 <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
                 <strong>Random</strong> or <strong>Review</strong> on a bank below.
               </p>
@@ -803,237 +121,15 @@
                 aria-describedby="secplus-practice-domain-hint"
               >
                 <option value="">All subjects (entire bank)</option>
-                <option value="1">1.0 — General Security Concepts (12%)</option>
-                <option value="2">2.0 — Threats, Vulnerabilities, and Mitigations (22%)</option>
-                <option value="3">3.0 — Security Architecture (18%)</option>
-                <option value="4">4.0 — Security Operations (28%)</option>
-                <option value="5">5.0 — Security Program Management and Oversight (20%)</option>
               </select>
               <p id="secplus-practice-domain-hint" class="secplus-practice-subject-hint">
-                Matches SY0-701 exam objectives (v5.0). Each question shows its mapped domain at the bottom of the page.
+                <strong>Random</strong> shuffles once at start.
+                <strong>Review</strong> sends misses to the back of the queue.
+                Keys verified on CompTIA documentation, NIST, and RFCs—not Reddit or third-party dumps.
               </p>
             </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Practice question banks: 11 banks of up to 100 questions each (1005 total)">
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="1"
-                aria-labelledby="secplus-bank-title-1"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-1">
-                  Bank 1 · questions 1&ndash;100
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 1">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="1">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="1">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="2"
-                aria-labelledby="secplus-bank-title-2"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-2">
-                  Bank 2 · questions 101&ndash;200
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 2">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="2">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="2">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="3"
-                aria-labelledby="secplus-bank-title-3"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-3">
-                  Bank 3 · questions 201&ndash;300
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 3">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="3">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="3">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="4"
-                aria-labelledby="secplus-bank-title-4"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-4">
-                  Bank 4 · questions 301&ndash;400
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 4">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="4">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="4">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="5"
-                aria-labelledby="secplus-bank-title-5"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-5">
-                  Bank 5 · questions 401&ndash;500
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 5">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="5">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="5">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="6"
-                aria-labelledby="secplus-bank-title-6"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-6">
-                  Bank 6 · questions 501&ndash;600
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 6">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="6">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="6">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="7"
-                aria-labelledby="secplus-bank-title-7"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-7">
-                  Bank 7 · questions 601&ndash;700
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 7">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="7">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="7">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="8"
-                aria-labelledby="secplus-bank-title-8"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-8">
-                  Bank 8 · questions 701&ndash;800
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 8">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="8">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="8">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="9"
-                aria-labelledby="secplus-bank-title-9"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-9">
-                  Bank 9 · questions 801&ndash;900
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 9">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="9">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="9">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box"
-                data-secplus-practice-bank-index="10"
-                aria-labelledby="secplus-bank-title-10"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-10">
-                  Bank 10 · questions 901&ndash;1000
-                </h4>
-                <p class="study-meta">
-                  100 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 10">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="10">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="10">
-                    Review
-                  </button>
-                </div>
-              </article>
-              <article
-                class="sim-box secplus-practice-bank--remainder"
-                data-secplus-practice-bank-index="11"
-                aria-labelledby="secplus-bank-title-11"
-              >
-                <h4 class="sim-box-title" id="secplus-bank-title-11">
-                  Bank 11 · questions 1001&ndash;1005
-                </h4>
-                <p class="study-meta">
-                  5 items · Random shuffles once; Review sends misses to the back of the queue.
-                </p>
-                <div class="study-actions" role="group" aria-label="Practice modes for bank 11">
-                  <button type="button" class="start-btn" data-secplus-practice="random" data-secplus-practice-bank="11">
-                    Random
-                  </button>
-                  <button type="button" class="start-btn" data-secplus-practice="review" data-secplus-practice-bank="11">
-                    Review
-                  </button>
-                </div>
-              </article>
+            <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Security+ practice question banks">
+              <p class="study-meta">Loading practice banks…</p>
             </div>
             <noscript>
               <p class="study-meta">
@@ -1137,14 +233,14 @@
 
           <h3 class="section-heading">Test Simulation</h3>
           <section class="start-box" aria-label="Timed test simulation">
-            <p style="margin: 0 0 10px; color: #e6edf3; line-height: 1.4; font-size: 1.05rem; font-weight: 800;">
+            <p class="timed-sim-heading">
               Timed practice test — 90 minutes · multiple-choice and performance-based · one clock
             </p>
-            <p style="margin: 0 0 10px; color: #b8c3d6; line-height: 1.5;">
+            <p class="timed-sim-lead">
               Single mixed session like test day: multiple-choice and performance-based items in random order. Up to
               <strong>90 questions</strong> in <strong>90 minutes</strong> on the live SY0-701 exam.
             </p>
-            <ul style="margin: 0 0 12px 1.2rem; color: #b8c3d6; line-height: 1.55; padding: 0;">
+            <ul class="timed-sim-list">
               <li>
                 <strong>Mixed session each run</strong> — 90 random multiple-choice items from the full bank plus all five simulation and hot-spot pages, shuffled into one continuous order under the same timer.
               </li>
@@ -1156,22 +252,8 @@
               </li>
               <li><strong>Pass or fail at the end.</strong></li>
             </ul>
-            <div id="portal-sim-verified-wrap" class="portal-sim-verified-wrap" hidden>
-              <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                <strong>Verified access</strong> — your active Security+ library pass is on this device. Timed simulation is
-                included with 10-day and 30-day portal access, or use a one-time simulation voucher.
-              </p>
-              <a class="cta-main cta-main--block" href="/COMP_TIA_SEC+/test-simulation-runner.html?portal=1">Begin timed test</a>
-            </div>
-            <div id="portal-sim-locked-wrap" class="portal-sim-locked-wrap">
-              <p style="margin: 0 0 14px; font-size: 0.94rem; line-height: 1.5; color: #b8c3d6;">
-                Purchase portal access or a one-time simulation voucher on
-                <a href="/comptia-sec+-home.html#purchase" style="color:#fff;font-weight:700;">Security+ home</a>.
-              </p>
-              <a class="cta-main cta-main--block" href="/comptia-sec+-home.html#purchase">Get access</a>
-            </div>
+            <a class="cta-main cta-main--block" href="/COMP_TIA_SEC+/test-simulation-runner.html?portal=1">Begin timed test</a>
           </section>
-          </div>
         </div>
       </section>
     </main>
@@ -1200,43 +282,13 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/js/admin-portal-bypass-redeem.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
+  <script src="/js/bcc-question-bank-utils.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-blueprint-changes-render.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-practice-hub.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      function hasPortalAccess() {
-        return (
-          typeof bccSecplusPortalAccessActive === "function" && bccSecplusPortalAccessActive()
-        );
-      }
-
-      function hasTimedSimAccess() {
-        if (hasPortalAccess()) return true;
-        return (
-          typeof secplusTimedSimAccessActive === "function" && secplusTimedSimAccessActive()
-        );
-      }
-
-      function refreshPortalContentGate() {
-        var paid = document.getElementById("secplus-portal-paid-content");
-        var locked = document.getElementById("secplus-portal-locked-banner");
-        if (!paid || !locked) return;
-        var active = hasPortalAccess();
-        paid.hidden = false;
-        locked.hidden = active;
-        paid.classList.toggle("portal-catalog--locked", !active);
-      }
-
-      function refreshPortalSimGate() {
-        var verified = document.getElementById("portal-sim-verified-wrap");
-        var locked = document.getElementById("portal-sim-locked-wrap");
-        if (!verified || !locked) return;
-        if (hasTimedSimAccess()) {
-          verified.hidden = false;
-          locked.hidden = true;
-        } else {
-          verified.hidden = true;
-          locked.hidden = false;
-        }
+      if (window.SECPLUS_BLUEPRINT_CHANGES && typeof window.SECPLUS_BLUEPRINT_CHANGES.load === "function") {
+        window.SECPLUS_BLUEPRINT_CHANGES.load("secplus-blueprint-changes-root");
       }
 
       function fetchVerifyCheckout(sessionId) {
@@ -1291,8 +343,6 @@
         });
       }
       chain.finally(function () {
-        refreshPortalContentGate();
-        refreshPortalSimGate();
         if (window.SECPLUS_PRACTICE && typeof window.SECPLUS_PRACTICE.injectPortalPracticeBanks === "function") {
           window.SECPLUS_PRACTICE.injectPortalPracticeBanks();
         }

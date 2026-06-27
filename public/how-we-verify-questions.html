@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="/js/ga-site-config.js"></script>
+  <script src="/js/analytics-exclude.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
+  <script src="/js/google-tag-gtag.js"></script>
+  <script src="/js/campaign-attribution.js"></script>
+  <script src="/js/install-vercel-analytics.js"></script>
+  <meta charset="UTF-8" />
+  <!-- Draft: switch to index, follow when nav link goes live -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="How I verify certification practice questions: official exam PDFs, blueprint tags, objective mapping, 100-question banks by domain weight, and Tier A vendor docs for accurate test preparation."
+  />
+  <link rel="canonical" href="https://becertifiedtoday.com/how-we-verify-questions.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="How I Verify Certification Practice Questions | Be Certified Today" />
+  <meta
+    property="og:description"
+    content="Official exam PDFs, blueprint comparisons, objective tags, and vendor-verified keys. How I keep practice aligned to what certification exams test today."
+  />
+  <meta property="og:site_name" content="Be Certified Today" />
+  <meta property="og:url" content="https://becertifiedtoday.com/how-we-verify-questions.html" />
+  <meta property="og:image" content="https://becertifiedtoday.com/images/logo/becertifiedtoday_logo_v2_white.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How I Verify Certification Practice Questions" />
+  <meta
+    name="twitter:description"
+    content="Accurate test preparation starts with official exam objectives, Tier A sources, and banks weighted to the blueprint, not stale recall."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <title>How I Verify Certification Practice Questions | Be Certified Today</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Be Certified Today",
+          "url": "https://becertifiedtoday.com/",
+          "description": "Browser-based certification exam preparation with timed simulations, adaptive review, and verified practice for CCNA, CCNP ENCOR, and CompTIA Security+."
+        },
+        {
+          "@type": "WebPage",
+          "name": "How I Verify Certification Practice Questions",
+          "url": "https://becertifiedtoday.com/how-we-verify-questions.html",
+          "description": "Official exam topics PDFs, blueprint version comparison, objective tagging, 100-question banks by domain weight, and Tier A vendor verification for accurate test preparation.",
+          "isPartOf": { "@type": "WebSite", "name": "Be Certified Today", "url": "https://becertifiedtoday.com/" }
+        }
+      ]
+    }
+  </script>
+  <style>
+    :root {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bg: #0b1020;
+      --page-bg: #ffffff;
+      --page-text: #0b1020;
+      --page-muted: #475569;
+      --accent: #2f66bf;
+      --accent-hover: #3a74d4;
+      --accent-border: #4f84d8;
+      --surface: #121a2b;
+      --border: #2d3b5a;
+      --text: #e6edf3;
+      --muted: #9fb0cc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--page-bg);
+      color: var(--page-text);
+      line-height: 1.6;
+      overflow-x: clip;
+    }
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 20px;
+      padding: max(16px, env(safe-area-inset-top, 0px)) clamp(18px, 4vw, 40px) 16px;
+      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--page-text);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+    .brand img { display: block; width: 48px; height: auto; }
+    .header-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .header-nav a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .header-nav a:hover { text-decoration: underline; }
+    .header-nav a[aria-current="page"] {
+      color: var(--page-text);
+      text-decoration: none;
+      cursor: default;
+    }
+    main {
+      flex: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: clamp(28px, 5vw, 40px) clamp(18px, 4vw, 40px) 0;
+      width: 100%;
+    }
+    .page-intro {
+      margin: 0 0 clamp(8px, 2vw, 16px);
+      text-align: center;
+    }
+    .tagline {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0 auto;
+      max-width: 42rem;
+      font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+      color: var(--page-muted);
+    }
+    .draft-note {
+      margin: 16px auto 0;
+      max-width: 42rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #92400e;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      text-align: left;
+    }
+    .draft-note code {
+      font-size: 0.78rem;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .section-band {
+      margin-top: clamp(28px, 4vw, 40px);
+      padding: 0;
+      border: none;
+      background: transparent;
+    }
+    .section-band:first-of-type {
+      margin-top: clamp(20px, 3vw, 28px);
+    }
+    /* Large areas: dark blue panels (format-card style) */
+    .section-band--dark .section-inner {
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(165deg, #152238 0%, var(--surface) 55%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      color: var(--text);
+    }
+    /* Light blue: special highlights only (samples-block-intro) */
+    .highlight-box {
+      padding: clamp(16px, 3vw, 22px);
+      border-radius: 12px;
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+      color: #dbeafe;
+    }
+    .highlight-box h3 {
+      margin: 0 0 8px;
+      color: #ffffff;
+    }
+    .highlight-box p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #dbeafe;
+    }
+    .highlight-box p + p {
+      margin-top: 10px;
+    }
+    .section-band--light {
+      color: var(--page-text);
+    }
+    .section-inner {
+      width: 100%;
+      margin: 0;
+    }
+    .section-band h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .section-band--dark h2 {
+      color: #ffffff;
+      text-align: left;
+    }
+    .section-band--dark .section-inner > p {
+      margin: 0 0 14px;
+      color: var(--text);
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .section-band--dark .section-inner > p:last-child {
+      margin-bottom: 0;
+    }
+    .section-band--light h2 {
+      color: var(--bg);
+      text-align: center;
+      letter-spacing: -0.02em;
+      text-transform: none;
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+    }
+    .section-lead {
+      margin: 0 0 clamp(18px, 3vw, 22px);
+      max-width: 62ch;
+      text-align: left;
+      font-size: clamp(0.92rem, 2.1vw, 0.98rem);
+      line-height: 1.55;
+    }
+    .section-band--dark .section-lead {
+      color: var(--muted);
+      max-width: none;
+    }
+    .section-band--light .section-lead {
+      color: var(--page-muted);
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 40rem;
+    }
+    .section-band--dark .prose-narrow {
+      color: var(--text);
+      max-width: none;
+      margin: 0;
+    }
+    .section-band--dark .prose-narrow p,
+    .section-band--dark .prose-narrow li {
+      color: var(--text);
+    }
+    .section-band--dark .prose-narrow .highlight-box p {
+      color: #dbeafe;
+    }
+    .section-band--dark .prose-narrow code {
+      font-size: 0.88em;
+      color: #e8f0ff;
+      background: rgba(79, 132, 216, 0.18);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .prose-narrow {
+      max-width: 40rem;
+      margin: 0 auto;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .prose-narrow p { margin: 0 0 14px; }
+    .prose-narrow p:last-child { margin-bottom: 0; }
+    .prose-narrow ul {
+      margin: 0 0 14px;
+      padding-left: 1.2rem;
+    }
+    .prose-narrow li { margin-bottom: 8px; }
+    h3 {
+      margin: 0 0 8px;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    p { margin: 0 0 14px; }
+    .step-grid {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      counter-reset: verify-step;
+    }
+    @media (min-width: 560px) {
+      .step-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 900px) {
+      .step-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .step-grid li {
+      counter-increment: verify-step;
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 22px) clamp(18px, 3.5vw, 22px) clamp(18px, 3.5vw, 22px) 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--muted);
+      position: relative;
+    }
+    .step-grid li::before {
+      content: counter(verify-step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #b8d4ff;
+      background: rgba(79, 132, 216, 0.2);
+      border: 1px solid rgba(79, 132, 216, 0.45);
+    }
+    .step-grid strong { color: #e8f0ff; }
+    .tier-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 560px) {
+      .tier-list { grid-template-columns: 1fr 1fr; }
+    }
+    .tier-card {
+      margin: 0;
+      padding: clamp(18px, 3.5vw, 24px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .tier-card h3 { color: #e8f0ff; }
+    .tier-card p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .tier-card--avoid {
+      border-color: rgba(180, 83, 9, 0.45);
+      background: rgba(18, 26, 43, 0.85);
+    }
+    .tier-card--avoid h3 { color: #fcd34d; }
+    .tier-card.highlight-box {
+      border-color: rgba(96, 165, 250, 0.35);
+      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
+      box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+    }
+    .tier-card.highlight-box h3 { color: #ffffff; }
+    .tier-card.highlight-box p { color: #dbeafe; }
+    .section-band--dark .prose-narrow .highlight-box {
+      margin-bottom: 14px;
+    }
+    .exam-table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(45, 59, 90, 0.22);
+      background: #f8fafc;
+      box-shadow: 0 4px 18px rgba(11, 16, 32, 0.06);
+    }
+    .section-band--light .exam-table-wrap {
+      border-color: rgba(45, 59, 90, 0.18);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(45, 59, 90, 0.15);
+      vertical-align: top;
+    }
+    .section-band--light thead th {
+      background: rgba(47, 102, 191, 0.08);
+      color: var(--bg);
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .section-band--light tbody th[scope="row"] {
+      color: var(--page-text);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .section-band--light tbody td { color: var(--page-muted); }
+    tr:last-child th, tr:last-child td { border-bottom: none; }
+    .media-placeholder {
+      margin: clamp(16px, 3vw, 22px) 0 0;
+      border: 2px dashed rgba(79, 132, 216, 0.35);
+      border-radius: 12px;
+      padding: clamp(20px, 3.5vw, 32px);
+      background: rgba(18, 26, 43, 0.45);
+      text-align: center;
+    }
+    .section-band--light .media-placeholder {
+      background: #f8fafc;
+      border-color: rgba(47, 102, 191, 0.35);
+    }
+    .section-band--dark .media-placeholder p {
+      color: var(--muted);
+    }
+    .section-band--dark .media-placeholder .media-spec {
+      color: #9fb0cc;
+    }
+    .media-placeholder .media-id {
+      display: inline-block;
+      margin: 0 0 8px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b8d4ff;
+      background: rgba(79, 132, 216, 0.18);
+      border: 1px solid rgba(79, 132, 216, 0.35);
+    }
+    .section-band--light .media-placeholder .media-id {
+      color: var(--accent);
+      background: rgba(47, 102, 191, 0.1);
+      border-color: rgba(47, 102, 191, 0.25);
+    }
+    .section-band--dark .media-placeholder .media-id {
+      color: #b8d4ff;
+      background: rgba(79, 132, 216, 0.18);
+      border-color: rgba(79, 132, 216, 0.35);
+    }
+    .media-placeholder p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .section-band--light .media-placeholder p { color: var(--page-muted); }
+    .media-placeholder .media-spec {
+      margin-top: 10px;
+      font-size: 0.76rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      color: #64748b;
+    }
+    .media-placeholder--video {
+      border-style: dotted;
+      opacity: 0.92;
+    }
+    .cta-block {
+      margin-top: clamp(28px, 4vw, 40px);
+      margin-bottom: clamp(28px, 4vw, 40px);
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      text-align: center;
+    }
+    .cta-block .section-inner {
+      max-width: 100%;
+      padding: clamp(24px, 4vw, 32px);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(165deg, #152238 0%, var(--surface) 55%);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    }
+    .cta-block h2 {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .cta-block p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+    .cta-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .cta-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      border: 1px solid var(--accent-border);
+      color: #f0f4fc;
+      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
+      box-shadow: 0 4px 18px rgba(47, 102, 191, 0.35);
+    }
+    .cta-links a:hover { filter: brightness(1.06); }
+    .cta-links a.secondary {
+      background: transparent;
+      border-color: rgba(159, 176, 204, 0.45);
+      color: #e6edf3;
+    }
+    .site-disclaimer {
+      padding: 20px clamp(18px, 4vw, 40px);
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--page-muted);
+      background: #f8fafc;
+      border-top: 1px solid rgba(45, 59, 90, 0.12);
+    }
+    .site-disclaimer p { margin: 0 0 10px; }
+    .site-disclaimer p:last-child { margin-bottom: 0; }
+    footer {
+      padding: 16px clamp(18px, 4vw, 40px);
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--page-muted);
+      border-top: 1px solid rgba(45, 59, 90, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a class="brand" href="/" aria-label="Be Certified Today home">
+        <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="48" height="48" alt="" />
+        <span>Be Certified Today</span>
+      </a>
+      <nav class="header-nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/sample?track=ccna-questions">Free samples</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <div class="page-intro">
+        <p class="tagline">Practice Like Test Day. Walk In Ready.</p>
+        <h1>How I verify exam questions</h1>
+        <p class="lead">
+          I built Be Certified Today for accurate test preparation: timed simulation, adaptive review, and exam-style
+          practice in your browser. Every question bank starts from the official exam topics PDF, maps to blueprint
+          objectives, gets verified on credible vendor sources, and stays current when certifications update.
+        </p>
+        <p class="draft-note" role="status">
+          Draft page. Not linked in site navigation yet. Before launch: replace image placeholders, set
+          <code>meta robots</code> to <code>index, follow</code>, and add <strong>How I verify</strong> to the header menu.
+        </p>
+      </div>
+
+      <section class="section-band section-band--dark" aria-labelledby="why-accuracy-title">
+        <div class="section-inner">
+          <h2 id="why-accuracy-title">Why accuracy is the product</h2>
+          <p>
+            If a practice site trains you on the wrong objectives, or keys answers from unreliable sources, it does not
+            prepare you for test day. You lose study time. You lose confidence when the real exam asks something the bank
+            never covered.
+          </p>
+          <p>
+            I treat question quality as engineering, not filler. I anchor to the vendor blueprint, compare PDF versions when
+            they change, verify every key on Tier A documentation, weight banks to domain percentages, and retire items that
+            no longer belong on the current exam. That is how you get practice that behaves like the test you are taking.
+          </p>
+        </div>
+      </section>
+
+      <section class="section-band section-band--light" aria-labelledby="official-pdf-title">
+        <div class="section-inner">
+          <h2 id="official-pdf-title">Start with the official exam topics PDF</h2>
+          <p class="section-lead">
+            Every track on the site names the blueprint version I build against: CCNA V_2025 and V_2026, CCNAAUTO v1.1,
+            Security+ SY0-701 objectives, and so on. The PDF is the contract for what can appear on the exam.
+          </p>
+          <div class="prose-narrow">
+            <p>
+              When I add or revise a question, the first check is simple: does this objective still exist on the current PDF?
+              I paraphrase stems. I do not copy vendor wording verbatim. The skill being tested must map to a line in the
+              official topics document.
+            </p>
+          </div>
+          <figure class="media-placeholder" aria-label="Image placeholder: official exam topics PDF">
+            <span class="media-id">IMG-1</span>
+            <p>
+              <strong>Replace with:</strong> cropped screenshot of the official exam topics PDF (cover plus one domain
+              objective list, e.g. CCNAAUTO v1.1 domain 2.0). Side-by-side layout optional.
+            </p>
+            <p class="media-spec">1200×675 · max display 980px wide · WebP or JPG ≤ 180 KB · /images/verification/</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-band section-band--dark" aria-labelledby="pdf-compare-title">
+        <div class="section-inner">
+          <h2 id="pdf-compare-title">Compare PDF versions when blueprints update</h2>
+          <p class="section-lead">
+            Cisco and CompTIA publish revised exam topics. When they do, I diff the new PDF against the prior version. I track
+            renames, splits, removals, and weight changes. I do not guess from forum chatter.
+          </p>
+          <div class="prose-narrow">
+            <div class="highlight-box">
+              <p>
+                <strong>Example:</strong> CCNA Automation (200-901) moved from blueprint v1.0 to v1.1 with objective renames
+                and dropped items. I record those changes in a structured change log so every affected question is reviewed,
+                rewritten, retagged, or moved out of the active bank.
+              </p>
+            </div>
+            <p>
+              The same discipline applies across tracks. CCNA uses explicit version tags (V_2025 vs V_2026) when Cisco updates
+              the 200-301 blueprint. Security+ follows CompTIA’s published objective domains for SY0-701.
+            </p>
+          </div>
+          <figure class="media-placeholder" aria-label="Image placeholder: blueprint version comparison">
+            <span class="media-id">IMG-2</span>
+            <p>
+              <strong>Replace with:</strong> screenshot of a v1.0 → v1.1 objective diff (rename/removal highlighted). Training
+              portal change log or sanitized internal table. No third-party dump URLs.
+            </p>
+            <p class="media-spec">1200×800 · ≤ 200 KB · /images/verification/</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-band section-band--light" aria-labelledby="tier-a-title">
+        <div class="section-inner">
+          <h2 id="tier-a-title">Verify keys on credible vendor sources</h2>
+          <p class="section-lead">
+            I check correct answers and explanations against official documentation, not forum votes, recall threads, or
+            unvetted third-party sites.
+          </p>
+          <ul class="tier-list">
+            <li class="tier-card highlight-box">
+              <h3>Tier A: use for keys</h3>
+              <p>
+                Cisco documentation, Cisco Learning Network, DevNet (for automation/API items), and CompTIA official learning
+                resources for Security+. These sources define how the vendor expects the topic to be understood.
+              </p>
+            </li>
+            <li class="tier-card tier-card--avoid">
+              <h3>Not used for verification</h3>
+              <p>
+                Exam dumps, braindump forums, Reddit “what was on my test” threads, and anonymous answer keys. They may be
+                wrong, outdated, or misaligned with current objectives. They are not how I build accurate practice.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section-band section-band--dark" aria-labelledby="tag-objectives-title">
+        <div class="section-inner">
+          <h2 id="tag-objectives-title">Tag every question: version, objective, sub-objective</h2>
+          <p class="section-lead">
+            Each practice item carries metadata so I know exactly what it tests and which blueprint it belongs to.
+          </p>
+          <div class="prose-narrow">
+            <ul>
+              <li><strong>Blueprint version:</strong> e.g. <code>v1.1</code>, <code>V_2026</code>, <code>SY0-701</code></li>
+              <li><strong>Objective ID:</strong> domain and line from the exam topics PDF</li>
+              <li><strong>Sub-objective:</strong> when the PDF lists child bullets, I tag those too</li>
+              <li><strong>Verification record:</strong> date checked and Tier A source used (internal topic map; not shown on every question page)</li>
+            </ul>
+            <p>
+              Tagging is what makes domain-weighted banks and obsolete handling possible. Without it, you cannot tell whether
+              a random 100-question set actually matches the exam mix.
+            </p>
+          </div>
+          <figure class="media-placeholder" aria-label="Image placeholder: topic map metadata">
+            <span class="media-id">IMG-3</span>
+            <p>
+              <strong>Replace with:</strong> sanitized screenshot of a topic-map row showing blueprint version, objectives,
+              sub-objectives, and verification sources (Cisco URLs only).
+            </p>
+            <p class="media-spec">1100×620 · ≤ 150 KB · /images/verification/</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-band section-band--light" aria-labelledby="banks-100-title">
+        <div class="section-inner">
+          <h2 id="banks-100-title">Build 100-question banks to domain weights</h2>
+          <p class="section-lead">
+            Full practice banks target 100 questions per bank, with counts per domain matching the official percentage weights
+            on the exam topics PDF, not an arbitrary pile of items.
+          </p>
+          <p class="section-lead" style="margin-top: -12px;">
+            CCNA Automation v1.1 example (percentages from the official blueprint):
+          </p>
+          <div class="exam-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Domain</th>
+                  <th scope="col">Exam weight</th>
+                  <th scope="col">Target per 100 Q</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1.0 Software development and design</th>
+                  <td>15%</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <th scope="row">2.0 Understanding and using APIs</th>
+                  <td>20%</td>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <th scope="row">3.0 Cisco platforms and development</th>
+                  <td>15%</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <th scope="row">4.0 Application deployment and security</th>
+                  <td>15%</td>
+                  <td>15</td>
+                </tr>
+                <tr>
+                  <th scope="row">5.0 Infrastructure and automation</th>
+                  <td>20%</td>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <th scope="row">6.0 Network fundamentals</th>
+                  <td>15%</td>
+                  <td>15</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <figure class="media-placeholder" aria-label="Image placeholder: domain weight table on portal">
+            <span class="media-id">IMG-4</span>
+            <p>
+              <strong>Replace with:</strong> training portal screenshot with domain weight table plus Bank 1 card showing target
+              mix vs published question counts.
+            </p>
+            <p class="media-spec">1200×700 · ≤ 180 KB · /images/verification/</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-band section-band--dark" aria-labelledby="obsolete-title">
+        <div class="section-inner">
+          <h2 id="obsolete-title">Label obsolete questions and keep them out of active banks</h2>
+          <p class="section-lead">
+            When an objective drops from the current blueprint, related questions do not silently stay in rotation. They move to
+            an obsolete archive: documented, tagged, and excluded from default weighted random and review pools for the current
+            exam.
+          </p>
+          <div class="prose-narrow">
+            <p>
+              On CCNA, version filters (V_2025 vs V_2026) let you practice against the blueprint you are sitting. Items that
+              only applied to an older version remain available for historical review if needed, but they are not mixed into
+              current-exam practice as if nothing changed.
+            </p>
+            <p>
+              Obsolete handling is part of honest test prep: you should not drill skills the vendor removed from the objectives
+              while believing you are studying for tomorrow’s exam.
+            </p>
+          </div>
+          <figure class="media-placeholder" aria-label="Image placeholder: obsolete vs active labeling">
+            <span class="media-id">IMG-5</span>
+            <p>
+              <strong>Replace with:</strong> practice UI or doc showing obsolete vs active labeling (version filter or
+              “retired from current bank” indicator).
+            </p>
+            <p class="media-spec">1000×560 · ≤ 120 KB · /images/verification/</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section-band section-band--light" aria-labelledby="workflow-title">
+        <div class="section-inner">
+          <h2 id="workflow-title">The verification workflow, end to end</h2>
+          <p class="section-lead">Seven steps every new or updated question goes through before I ship it in an active bank.</p>
+          <ol class="step-grid">
+            <li><strong>Anchor</strong> to the current official exam topics PDF and note the blueprint version.</li>
+            <li><strong>Compare</strong> PDF versions when the vendor publishes an update; log renames and removals.</li>
+            <li><strong>Author</strong> paraphrased stems and map to objective + sub-objective IDs.</li>
+            <li><strong>Verify</strong> the key and explanation on Tier A vendor documentation.</li>
+            <li><strong>Slot</strong> into a 100-question bank at the correct domain weight.</li>
+            <li><strong>Retire</strong> items tied only to dropped objectives into the obsolete archive.</li>
+            <li><strong>Check</strong> trackers and URL lint so published banks match the blueprint on the portal.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section-band section-band--dark" aria-labelledby="video-title">
+        <div class="section-inner">
+          <h2 id="video-title">Video walkthrough (coming later)</h2>
+          <p class="section-lead">
+            A short screen recording will walk through PDF review, verify on Cisco docs, tag the objective, and slot the bank.
+            Not part of the first publish. Planned for a follow-up and a transparent post on r/RealisticCertPrep when ready.
+          </p>
+          <figure class="media-placeholder media-placeholder--video" aria-label="Video placeholder">
+            <span class="media-id">VID-1</span>
+            <p>
+              <strong>Future embed:</strong> 16:9 walkthrough, ~90 seconds, 1080p source. Reserve this block; no player until
+              the recording is produced.
+            </p>
+            <p class="media-spec">16:9 · 1080p · ≤ 90 s · YouTube or self-hosted when ready</p>
+          </figure>
+        </div>
+      </section>
+
+      <section class="cta-block" aria-labelledby="cta-title">
+        <div class="section-inner">
+          <h2 id="cta-title">Practice that matches what you will be tested on</h2>
+          <p>
+            Try free samples with the same engine as full access. Unlock timed simulation and adaptive review when you are ready
+            to walk in prepared.
+          </p>
+          <div class="cta-links">
+            <a href="/ccna-home.html">CCNA exam prep</a>
+            <a href="/ccnp-home.html">CCNP ENCOR prep</a>
+            <a href="/comptia-sec+-home.html">Security+ prep</a>
+            <a class="secondary" href="/sample?track=ccna-questions">Free samples</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="site-disclaimer" aria-label="Legal disclaimer">
+      <p>
+        Content on this site is for <strong>exam preparation and practice only</strong>. There is
+        <strong>no promise</strong> that any question, lab, or scenario here will appear on a live certification exam,
+        or that using this site alone will prepare you to pass.
+      </p>
+      <p>
+        <strong>Be Certified Today is independent.</strong> It is not sponsored by, endorsed by, accredited by, or affiliated
+        with Cisco Systems, Inc. or CompTIA, Inc. Cisco and Cisco certification names are trademarks of Cisco and/or its
+        affiliates. CompTIA, Security+, and related certification names are trademarks of CompTIA, Inc.
+      </p>
+    </aside>
+
+    <footer>© Be Certified Today</footer>
+  </div>
+</body>
+</html>

@@ -36,7 +36,7 @@ Home page path card: `/` → **Coming Soon in June** (disabled; no public hub li
 
 ## SY0-701 exam domains (reference)
 
-Weights from CompTIA Security+ SY0-701 Exam Objectives v5.0 (`misc/CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf`):
+Weights from CompTIA Security+ SY0-701 Exam Objectives (`misc/CompTIA-Security-Plus-SY0-701-Exam-Objectives.pdf`):
 
 | Domain | Weight |
 |--------|--------|

@@ -19,6 +19,13 @@ TRACKS: dict[str, dict[str, Path | bool]] = {
         "tracker": ROOT / "public/CCNAAUTO-Study/data/ccnaauto-question-topic-tracker.json",
         "recursive": False,
     },
+    "secplus": {
+        "blueprint": ROOT / "public/COMP_TIA_SEC+/data/secplus-practice-bank-blueprint.json",
+        "map": ROOT / "public/COMP_TIA_SEC+/data/secplus-question-topic-map.json",
+        "questions_dir": ROOT / "public/COMP_TIA_SEC+/SEC+_Questions",
+        "tracker": ROOT / "public/COMP_TIA_SEC+/data/secplus-question-topic-tracker.json",
+        "recursive": False,
+    },
 }
 
 

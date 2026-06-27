@@ -107,7 +107,8 @@ Wire-up:
 
 | Command | Purpose |
 |---------|---------|
-| `python3 scripts/build-question-bank-tracker.py --track ccnaauto` | Regenerate `{track}-question-topic-tracker.json` |
+| `python3 scripts/build-question-bank-tracker.py --track secplus` | Regenerate `secplus-question-topic-tracker.json` |
+| `python3 scripts/build-secplus-blueprint-sy0-601.py` | Parse official SY0-601 PDF → `secplus-blueprint-sy0-601.json` |
 | `npm run lint:question-urls` | Block non-Cisco URLs in published question HTML |
 
 ## Adding a new track checklist
@@ -125,5 +126,6 @@ Wire-up:
 |-------|--------|-----------|
 | CCNA | `ccna-practice-100-hub.js` | 200-301 domain weights (legacy v1 map) |
 | ENCOR | `encor-practice-hub.js` | 350-401 v1.2 |
-| Sec+ | `secplus-practice-hub.js` | SY0-701 |
-| **CCNAAUTO** | `ccnaauto-practice-hub.js` | 200-901 v1.1 (first full v2 template) |
+| Sec+ | `secplus-practice-hub.js` | SY0-701 v5.0 (schema v2 pilot: Bank 1) |
+| Sec+ SY0-601 (retired) | — | `secplus-blueprint-sy0-601.json` (full PDF outline) |
+| **CCNAAUTO** | `ccnaauto-practice-hub.js` | `ccnaauto-blueprint-v1.1.json` (first full v2 template) |

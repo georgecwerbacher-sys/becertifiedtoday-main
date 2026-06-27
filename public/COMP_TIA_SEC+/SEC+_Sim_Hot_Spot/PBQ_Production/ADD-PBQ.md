@@ -9,7 +9,7 @@ Checklist for shipping scenario **#8+** into `PBQ_Production/`. Cursor rule: `.c
 ## Phase 0 — Concept (before HTML)
 
 - [ ] Run monthly PBQ sourcing if needed: `npm run secplus:pbq-monthly`
-- [ ] Verify interaction and answer keys on **CompTIA SY0-701 objectives v5.0** and primary refs (NIST, RFC, OWASP, vendor-neutral hardening docs). **Do not use exam dumps.**
+- [ ] Verify interaction and answer keys on **CompTIA SY0-701 objectives** and primary refs (NIST, RFC, OWASP, vendor-neutral hardening docs). **Do not use exam dumps.**
 - [ ] Log accepted concept in `data/secplus-pbq-sourcing/secplus-pbq-not-in-bct.md`
 - [ ] Playbook reference: `data/secplus-pbq-sourcing/`
 

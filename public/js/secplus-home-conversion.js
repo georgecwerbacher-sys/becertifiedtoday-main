@@ -136,7 +136,7 @@
     "question-bank": {
       id: "question-bank",
       adHeadline: "SY0-701 Question Bank",
-      eyebrow: "Security+ question bank · v5.0 objectives",
+      eyebrow: "Security+ question bank · SY0-701 objectives",
       headline: "SY0-701 Question Bank — 1000+ Interactive Security+ Questions",
       lead:
         "Work through a large <strong>SY0-701 question bank</strong> with verified explanations—not static PDF answer keys. " +
