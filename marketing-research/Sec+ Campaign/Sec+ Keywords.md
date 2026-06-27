@@ -361,7 +361,7 @@ Use student, educator, veteran, and career-transition terms:
 "security+ career readiness cyber"
 ```
 
-**Hold discount terms** (`student discount`, `educator discount`, etc.) until `/verified-learner-discounts.html` is published and Stripe promo verification exists.
+**Hold discount terms** (`student discount`, `educator discount`, etc.) until Stripe promo verification and discounted checkout exist.
 
 ### Likely high-conversion targeting pockets
 

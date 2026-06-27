@@ -2,10 +2,10 @@
 type: website
 page: verified-learner-discounts
 site: becertifiedtoday.com
-status: built-draft
+status: live-info-page
 planned_url: https://becertifiedtoday.com/verified-learner-discounts.html
-nav: pending
-seo_index: noindex until discount verification flow exists
+nav: live
+seo_index: index, follow
 tags:
   - marketing
   - becertifiedtoday
@@ -27,7 +27,7 @@ related:
 
 # Verified learner discounts
 
-*Draft page built:* `public/verified-learner-discounts.html` · **Do not add to top nav, sitemap, paid Search sitelinks, or discount keywords until `status: published` and verification is live.**
+*Live informational page:* `public/verified-learner-discounts.html` · linked from the top menu and included in `public/sitemap.xml`. Discount verification and discounted checkout are still not live. Keep this page out of paid Search sitelinks, discount keywords, homepage banners, popups, and broad promo CTAs.
 
 ---
 
@@ -70,8 +70,8 @@ The page should make three points:
 | **Meta description** | Verified discounts for students, educators, military, veterans, workforce programs, first responders, federal employees, and government contractors using Be Certified Today exam prep. |
 | **Canonical** | `https://becertifiedtoday.com/verified-learner-discounts.html` |
 | **Future SEO targets only** | certification exam prep discount, Security+ student discount, Security+ military discount, Security+ veteran discount, Security+ educator discount, Security+ government contractor discount. Do not add these to Google Ads until verification and discounted checkout are live. |
-| **Robots (draft)** | `noindex, nofollow` until verification and Stripe promo flow exist |
-| **Nav placement (later)** | Footer and cert home trust area first. Header later if it becomes a core site page. Label: **Verified discounts** |
+| **Robots** | `index, follow` |
+| **Nav placement** | Header on `/`, `/about.html`, exam home pages. Label: **Verified discounts** |
 
 ---
 
@@ -311,7 +311,7 @@ Assets can live under `public/images/discounts/` when ready.
 ## Launch checklist
 
 - [x] Decide final URL: `/verified-learner-discounts.html`
-- [x] Build draft public page with `noindex, nofollow`
+- [x] Build public information page with `index, follow`
 - [ ] Build verification form or placeholder waitlist
 - [ ] Decide Stripe implementation: promo codes vs separate Price IDs
 - [ ] Add abuse controls: rate limit, one code per verified email, manual review queue
@@ -319,13 +319,13 @@ Assets can live under `public/images/discounts/` when ready.
 - [ ] Keep paid Search RSA discount-free until policy reviewed
 - [ ] Add page to footer only after verification works
 - [ ] Set robots to `index, follow` only after launch
-- [ ] Add sitemap entry when live
+- [x] Add sitemap entry
 
 ---
 
 ## Open questions
 
-1. Should the live page be site-wide (`/verified-learner-discounts.html`) or Security+ specific (`/comptia-sec+-verified-discount.html`)?
+1. Final page is site-wide at `/verified-learner-discounts.html`; revisit only if Security+ needs a separate campaign-specific variant later.
 2. Should discounts apply only to Security+ at launch, or all current products?
 3. Do we want ID.me in v1, or start with email and partner codes only?
 4. Should student/educator `.edu` verification create the same discount code, or separate student and educator codes?

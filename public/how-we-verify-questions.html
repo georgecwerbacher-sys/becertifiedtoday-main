@@ -8,8 +8,7 @@
   <script src="/js/campaign-attribution.js"></script>
   <script src="/js/install-vercel-analytics.js"></script>
   <meta charset="UTF-8" />
-  <!-- Draft: switch to index, follow when nav link goes live -->
-  <meta name="robots" content="noindex, nofollow" />
+  <meta name="robots" content="index, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
@@ -130,7 +129,7 @@
     }
     .page-intro {
       margin: 0 0 clamp(8px, 2vw, 16px);
-      text-align: center;
+      text-align: left;
     }
     .tagline {
       margin: 0 0 8px;
@@ -148,13 +147,13 @@
       line-height: 1.2;
     }
     .lead {
-      margin: 0 auto;
+      margin: 0;
       max-width: 42rem;
       font-size: clamp(0.95rem, 2.2vw, 1.05rem);
       color: var(--page-muted);
     }
     .draft-note {
-      margin: 16px auto 0;
+      margin: 16px 0 0;
       max-width: 42rem;
       padding: 10px 14px;
       border-radius: 8px;
@@ -239,7 +238,7 @@
     }
     .section-band--light h2 {
       color: var(--bg);
-      text-align: center;
+      text-align: left;
       letter-spacing: -0.02em;
       text-transform: none;
       font-size: clamp(1.1rem, 2.8vw, 1.35rem);
@@ -257,9 +256,9 @@
     }
     .section-band--light .section-lead {
       color: var(--page-muted);
-      text-align: center;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: left;
+      margin-left: 0;
+      margin-right: 0;
       max-width: 40rem;
     }
     .section-band--dark .prose-narrow {
@@ -283,7 +282,7 @@
     }
     .prose-narrow {
       max-width: 40rem;
-      margin: 0 auto;
+      margin: 0;
       font-size: 0.95rem;
       line-height: 1.6;
     }
@@ -430,7 +429,7 @@
       border-radius: 12px;
       padding: clamp(20px, 3.5vw, 32px);
       background: rgba(18, 26, 43, 0.45);
-      text-align: center;
+      text-align: left;
     }
     .section-band--light .media-placeholder {
       background: #f8fafc;
@@ -471,16 +470,21 @@
       line-height: 1.5;
       color: var(--muted);
     }
+    .media-placeholder img {
+      display: block;
+      width: 100%;
+      max-width: 980px;
+      height: auto;
+      margin: 0;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(11, 16, 32, 0.18);
+    }
     .section-band--light .media-placeholder p { color: var(--page-muted); }
     .media-placeholder .media-spec {
       margin-top: 10px;
       font-size: 0.76rem;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
       color: #64748b;
-    }
-    .media-placeholder--video {
-      border-style: dotted;
-      opacity: 0.92;
     }
     .cta-block {
       margin-top: clamp(28px, 4vw, 40px);
@@ -489,7 +493,7 @@
       border: none;
       background: transparent;
       color: var(--text);
-      text-align: center;
+      text-align: left;
     }
     .cta-block .section-inner {
       max-width: 100%;
@@ -515,7 +519,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .cta-links a {
       display: inline-flex;
@@ -568,6 +572,8 @@
       <nav class="header-nav" aria-label="Site">
         <a href="/">Home</a>
         <a href="/about.html">About</a>
+        <a href="/how-we-verify-questions.html" aria-current="page">Always verified Questions</a>
+        <a href="/verified-learner-discounts.html">Verified discounts</a>
         <a href="/sample?track=ccna-questions">Free samples</a>
       </nav>
     </header>
@@ -580,10 +586,6 @@
           Be Certified Today is a Test Preparation Site built for accurate test preparation: timed simulation, adaptive review,
           and exam-style practice in your browser. Every question bank starts from the official exam topics PDF, maps to blueprint
           objectives, is verified on credible vendor sources, and stays current when certifications update.
-        </p>
-        <p class="draft-note" role="status">
-          Draft page. Not linked in site navigation yet. Before launch: replace image placeholders, set
-          <code>meta robots</code> to <code>index, follow</code>, and add <strong>How I verify</strong> to the header menu.
         </p>
       </div>
 
@@ -617,13 +619,16 @@
               official topics document.
             </p>
           </div>
-          <figure class="media-placeholder" aria-label="Image placeholder: official exam topics PDF">
-            <span class="media-id">IMG-1</span>
-            <p>
-              <strong>Replace with:</strong> cropped screenshot of the official exam topics PDF (cover plus one domain
-              objective list, e.g. CCNAAUTO v1.1 domain 2.0). Side-by-side layout optional.
-            </p>
-            <p class="media-spec">1200×675 · max display 980px wide · WebP or JPG ≤ 180 KB · /images/verification/</p>
+          <figure class="media-placeholder" aria-label="CCNAAUTO v1.1 objectives matched against Cisco training overview">
+            <img
+              src="/images/verification/ccnaauto-objectives-verification.png"
+              width="1024"
+              height="576"
+              alt="CCNAAUTO v1.1 objectives shown beside the Cisco Automating Networks Using Cisco Platforms training overview."
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="media-spec">Example verification capture: site objective map beside Cisco training overview.</p>
           </figure>
         </div>
       </section>
@@ -638,9 +643,9 @@
           <div class="prose-narrow">
             <div class="highlight-box">
               <p>
-                <strong>Example:</strong> CCNA Automation (200-901) moved from blueprint v1.0 to v1.1 with objective renames
-                and dropped items. I record those changes in a structured change log so every affected question is reviewed,
-                rewritten, retagged, or moved out of the active bank.
+                <strong>Example:</strong> Security+ moved from SY0-601 to SY0-701 with domain changes, renamed objectives,
+                and topics that no longer belong in the active path. I record those changes so every affected question is
+                reviewed, rewritten, retagged, or moved into the outdated archive.
               </p>
             </div>
             <p>
@@ -651,8 +656,8 @@
           <figure class="media-placeholder" aria-label="Image placeholder: blueprint version comparison">
             <span class="media-id">IMG-2</span>
             <p>
-              <strong>Replace with:</strong> screenshot of a v1.0 → v1.1 objective diff (rename/removal highlighted). Training
-              portal change log or sanitized internal table. No third-party dump URLs.
+              <strong>Replace with:</strong> Security+ sample showing SY0-601 to SY0-701 objective comparison, retired topics,
+              or the internal change log used to decide whether an item stays active, gets rewritten, or moves to the archive.
             </p>
             <p class="media-spec">1200×800 · ≤ 200 KB · /images/verification/</p>
           </figure>
@@ -703,13 +708,16 @@
               a random 100-question set actually matches the exam mix.
             </p>
           </div>
-          <figure class="media-placeholder" aria-label="Image placeholder: topic map metadata">
-            <span class="media-id">IMG-3</span>
-            <p>
-              <strong>Replace with:</strong> sanitized screenshot of a topic-map row showing blueprint version, objectives,
-              sub-objectives, and verification sources (Cisco URLs only).
-            </p>
-            <p class="media-spec">1100×620 · ≤ 150 KB · /images/verification/</p>
+          <figure class="media-placeholder" aria-label="Active Security+ question compared with an outdated archived item">
+            <img
+              src="/images/verification/question-tagging-active-vs-outdated.png"
+              width="1024"
+              height="576"
+              alt="Side-by-side Security+ question examples showing an active SY0-701 tagged item and an outdated SY0-601 item marked as not part of the current active path."
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="media-spec">Example tagging control: active items carry current blueprint metadata, while outdated items stay out of the active path.</p>
           </figure>
         </div>
       </section>
@@ -767,13 +775,16 @@
               </tbody>
             </table>
           </div>
-          <figure class="media-placeholder" aria-label="Image placeholder: domain weight table on portal">
-            <span class="media-id">IMG-4</span>
-            <p>
-              <strong>Replace with:</strong> training portal screenshot with domain weight table plus Bank 1 card showing target
-              mix vs published question counts.
-            </p>
-            <p class="media-spec">1200×700 · ≤ 180 KB · /images/verification/</p>
+          <figure class="media-placeholder" aria-label="CCNAAUTO bank domain target table and subject filter">
+            <img
+              src="/images/verification/ccnaauto-bank-domain-targets.png"
+              width="1024"
+              height="576"
+              alt="CCNAAUTO practice bank table showing exam weights, target questions per bank, published counts, gaps, and a subject filter aligned to the six domains."
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="media-spec">Example bank control: domain weights, target counts, gap tracking, and subject filtering.</p>
           </figure>
         </div>
       </section>
@@ -797,13 +808,16 @@
               while believing you are studying for tomorrow’s exam.
             </p>
           </div>
-          <figure class="media-placeholder" aria-label="Image placeholder: obsolete vs active labeling">
-            <span class="media-id">IMG-5</span>
-            <p>
-              <strong>Replace with:</strong> practice UI or doc showing obsolete vs active labeling (version filter or
-              “retired from current bank” indicator).
-            </p>
-            <p class="media-spec">1000×560 · ≤ 120 KB · /images/verification/</p>
+          <figure class="media-placeholder" aria-label="SY0-601 outdated archive separated from active Security+ banks">
+            <img
+              src="/images/verification/obsolete-bank-archive.png"
+              width="1024"
+              height="576"
+              alt="Security+ practice bank cards showing active banks and a green SY0-601 outdated archive card kept separate from SY0-701 random and review pools."
+              loading="lazy"
+              decoding="async"
+            />
+            <p class="media-spec">Example archive control: outdated SY0-601 items remain available for reference, not mixed into active SY0-701 review.</p>
           </figure>
         </div>
       </section>
@@ -821,24 +835,6 @@
             <li><strong>Retire</strong> items tied only to dropped objectives into the obsolete archive.</li>
             <li><strong>Check</strong> trackers and URL lint so published banks match the blueprint on the portal.</li>
           </ol>
-        </div>
-      </section>
-
-      <section class="section-band section-band--dark" aria-labelledby="video-title">
-        <div class="section-inner">
-          <h2 id="video-title">Video Walkthrough (Coming Later)</h2>
-          <p class="section-lead">
-            A short screen recording will walk through PDF review, verify on Cisco docs, tag the objective, and slot the bank.
-            Not part of the first publish. Planned for a follow-up and a transparent post on r/RealisticCertPrep when ready.
-          </p>
-          <figure class="media-placeholder media-placeholder--video" aria-label="Video placeholder">
-            <span class="media-id">VID-1</span>
-            <p>
-              <strong>Future embed:</strong> 16:9 walkthrough, ~90 seconds, 1080p source. Reserve this block; no player until
-              the recording is produced.
-            </p>
-            <p class="media-spec">16:9 · 1080p · ≤ 90 s · YouTube or self-hosted when ready</p>
-          </figure>
         </div>
       </section>
 

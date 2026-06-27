@@ -2,10 +2,10 @@
 type: website
 page: question-verification
 site: becertifiedtoday.com
-status: draft
+status: published
 planned_url: https://becertifiedtoday.com/how-we-verify-questions.html
-nav: pending
-seo_index: noindex until nav launch
+nav: live
+seo_index: index, follow
 tags:
   - marketing
   - becertifiedtoday
@@ -24,7 +24,7 @@ reddit:
 
 # How I verify exam questions
 
-*Draft page:* `public/how-we-verify-questions.html` · **Do not add to top nav or sitemap until `status: published`.**
+*Live page:* `public/how-we-verify-questions.html` · linked from the top menu and included in `public/sitemap.xml`.
 
 ---
 
@@ -61,8 +61,8 @@ I built Be Certified Today for **test preparation**: timed simulation, adaptive 
 | **Meta description** | How I verify certification practice questions: official exam PDFs, blueprint tags, objective mapping, 100-question banks by domain weight, and Tier A vendor docs for accurate test preparation. |
 | **Canonical** | `https://becertifiedtoday.com/how-we-verify-questions.html` |
 | **Primary keywords** | verified certification practice questions, exam objectives alignment, official exam topics PDF, accurate test preparation |
-| **Robots (draft)** | `noindex, nofollow` (flip to `index, follow` when nav goes live) |
-| **Nav placement (later)** | Header on `/`, `/about.html`, exam home pages. Label: **How I verify** |
+| **Robots** | `index, follow` |
+| **Nav placement** | Header on `/`, `/about.html`, exam home pages. Label: **Always verified Questions** |
 
 ---
 
@@ -127,8 +127,8 @@ When page is **indexed** and nav is live:
 
 - [ ] Replace all `media-placeholder` blocks with optimized images
 - [ ] Set `meta robots` to `index, follow`
-- [ ] Add `<a href="/how-we-verify-questions.html">How I verify</a>` to site header nav (`index.html`, `about.html`, exam homes)
-- [ ] Add URL to `public/sitemap.xml` (run `npm run sync:sitemap` if scripted)
+- [x] Add `<a href="/how-we-verify-questions.html">Always verified Questions</a>` to site header nav (`index.html`, `about.html`, exam homes)
+- [x] Add URL to `public/sitemap.xml`
 - [ ] Update frontmatter `status: published` here
 - [ ] Optional: FAQ schema in JSON-LD if adding FAQ section
 

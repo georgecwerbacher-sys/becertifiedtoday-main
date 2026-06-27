@@ -22,7 +22,7 @@ tags:
 
 The next paid build is the **US-only three-campaign plan** in [[Sec+ Three-Campaign US Plan]]: core exam prep, military/government/8140, and student/workforce at **$20/day each**. Admin dashboard and keyword CSV are **unchanged** until tracking catches up.
 
-**Site alignment (2026-06-27):** `/comptia-sec+-home.html` leads with **SY0-701 exam prep** (1000+ questions, timed sim, adaptive review, verification block). `/how-we-verify-questions.html` is the trust anchor when linked from nav (draft until launch).
+**Site alignment (2026-06-27):** `/comptia-sec+-home.html` leads with **SY0-701 exam prep** (1000+ questions, timed sim, adaptive review, verification block). `/how-we-verify-questions.html` is the live trust anchor in the top menu.
 
 Related: [[Sec+ Positioning]] · [[Sec+ CAE College Target List]] · [[Sec+ Keywords#Phase 2 keyword tiers (institutional — not live yet)]] · [[Sec+ RSA Copy]] · [[Extensions]]
 
@@ -178,7 +178,7 @@ If the email does not match `.gov`, `.mil`, a known contractor/civilian/vendor m
 
 **Stripe (when engineering ships):** Promotion codes or Price IDs per category — e.g. `secplus_portal_30d_student`, `secplus_portal_30d_educator`, `secplus_portal_30d_veteran`, `secplus_portal_30d_workforce`, `secplus_portal_30d_military`. **Do not** expose codes in Google Ads RSA.
 
-**Landing:** `/verified-learner-discounts.html` — draft public page exists with `noindex, nofollow`; keep out of top nav, sitemap, paid Search sitelinks, and discount keywords until verification and discounted checkout are live. After launch, use it only for verified eligibility paths such as partner links, campus outreach, workforce programs, QR/email campaigns, and direct learner verification.
+**Landing:** `/verified-learner-discounts.html` — live informational page exists with `index, follow` and top-menu placement. Keep it out of paid Search sitelinks and discount keywords until verification and discounted checkout are live. Use it only for verified eligibility paths such as partner links, campus outreach, workforce programs, QR/email campaigns, and direct learner verification.
 
 ### Workforce partner model (referral codes)
 
@@ -280,7 +280,7 @@ Pull from `/how-we-verify-questions.html`:
 
 ## Organic & partnership checklist (no admin dashboard changes)
 
-- [ ] Launch `/how-we-verify-questions.html` (index, nav link from cert home)
+- [x] Launch `/how-we-verify-questions.html` (index, nav link from cert home)
 - [ ] Verified discount page + verification API (`.edu`, `.mil`, `.gov`, partner codes)
 - [ ] Workforce partner spreadsheet (job centers, veteran orgs, retraining nonprofits)
 - [ ] One-page PDF for **campus career services**, **MWR**, and **American Job Centers** (QR → discount verify)

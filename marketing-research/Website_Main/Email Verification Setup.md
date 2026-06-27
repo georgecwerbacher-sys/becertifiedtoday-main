@@ -217,7 +217,8 @@ Avoid showing full raw tokens or unnecessary learner documents.
 - [ ] Add manual review path
 - [ ] Test `.edu`, `.mil`, `.gov`, contractor pattern, partner code, and rejected personal-domain cases
 - [ ] Keep `/verified-learner-discounts.html` out of paid Search sitelinks and homepage promo CTAs
-- [ ] Switch page from `noindex` only when the flow is ready
+- [x] Keep the informational page indexed and live in top navigation
+- [ ] Launch the actual verification form only when email verification and Stripe discount handling are ready
 
 ---
 
