@@ -11,13 +11,13 @@ tags:
 
 # Sec+ Keywords
 
-**Build:** three US-only Search campaigns — [[Sec+ Three-Campaign US Plan]]  
-**Budget:** **$20/day each** · **$60/day total** · max CPC $2.75  
-**utm_campaigns:** `secplus_core_us` · `secplus_gov_us` · `secplus_workforce_us`
+**Build:** one US-only Search campaign with three ad groups — [[Sec+ One-Campaign Ad Group Plan]]  
+**Budget:** **$25/day shared** · max CPC $2.75  
+**utm_campaign:** `secplus_portal` · **utm_content:** `core-exam-prep` · `mil-gov-8140` · `student-workforce`
 
 **Primary job:** *Am I ready for SY0-701?* — **Test Preparation Site** (timed mock, verified bank, adaptive review) plus work-required intent (DoD, military, contractor, college).
 
-**Three-campaign split:** [[#Three US campaign keyword split]] — use separate US-only campaigns at $20/day each; keep the 64-keyword CSV as the baseline history until the sync script supports campaign tiers.
+**Ad group split:** [[#One-campaign ad group keyword split]] — use one Search campaign and split keywords by intent into three ad groups. Let Google determine spend split from the shared $25/day campaign budget.
 
 **Bid rule:** Do not tune keyword bids during the first week unless traffic is clearly junk. After 7 days, adjust bids from keyword results: CPC, search terms, `begin_checkout`, and purchases.
 
@@ -103,7 +103,7 @@ The old single-campaign URL remains useful for comparing historical data:
 https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 ```
 
-New three-campaign URLs live in [[Sec+ Three-Campaign US Plan#Budget structure]].
+New ad group URLs live in [[Sec+ One-Campaign Ad Group Plan#Final URLs]].
 
 **Match notation:** `[brackets]` = Exact · `"quotes"` = Phrase
 
@@ -253,11 +253,11 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 
 ---
 
-## Three US campaign keyword split
+## One-campaign ad group keyword split
 
-Use this split for [[Sec+ Three-Campaign US Plan]]. Start phrase-heavy, then promote search terms with checkout to `[exact]`.
+Use this split for [[Sec+ One-Campaign Ad Group Plan]]. Start phrase-heavy, then promote search terms with checkout to `[exact]`.
 
-### Campaign 1 — `secplus_core_us`
+### Ad group 1 — `Core Exam Prep`
 
 Use readiness, simulation, anti-PDF, and post-course intent:
 
@@ -290,7 +290,7 @@ Use readiness, simulation, anti-PDF, and post-course intent:
 "sy0-701 timed mock exam"
 ```
 
-### Campaign 2 — `secplus_gov_us`
+### Ad group 2 — `Military Gov 8140`
 
 Use existing DoD / work-required terms plus Phase 2 institutional terms:
 
@@ -331,7 +331,7 @@ Use existing DoD / work-required terms plus Phase 2 institutional terms:
 "security+ baseline certification"
 ```
 
-### Campaign 3 — `secplus_workforce_us`
+### Ad group 3 — `Student Workforce`
 
 Use student, educator, veteran, and career-transition terms:
 
@@ -367,12 +367,12 @@ Use student, educator, veteran, and career-transition terms:
 
 Prioritize these after the first week if checkout signal appears:
 
-| Campaign | Pocket | Why it may convert |
+| Ad group | Pocket | Why it may convert |
 |----------|--------|--------------------|
-| `secplus_core_us` | “timed exam”, “exam simulation”, “readiness check”, “after course” | Already studied and wants confidence before scheduling |
-| `secplus_gov_us` | DoD 8140, federal employee, contractor required, base 60-mile radii | Job/contract requirement creates urgency |
-| `secplus_workforce_us` | 60-mile radius around CAE colleges, veterans, workforce/job placement | Credential tied to graduation, placement, or re-entry |
-| All campaigns | “not PDF”, “browser”, “no download”, “adaptive review” | Differentiates from stale PDFs and desktop engines |
+| `Core Exam Prep` | “timed exam”, “exam simulation”, “readiness check”, “after course” | Already studied and wants confidence before scheduling |
+| `Military Gov 8140` | DoD 8140, federal employee, contractor required, military/public-sector terms | Job/contract requirement creates urgency |
+| `Student Workforce` | students, educators, veterans, workforce/job placement | Credential tied to graduation, placement, or re-entry |
+| All ad groups | “not PDF”, “browser”, “no download”, “adaptive review” | Differentiates from stale PDFs and desktop engines |
 
 ### URL exclusions / final URL guardrails
 

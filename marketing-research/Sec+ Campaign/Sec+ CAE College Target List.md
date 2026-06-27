@@ -14,7 +14,7 @@ tags:
 
 # Sec+ CAE College Target List — Security+ mapped programs
 
-**Use with:** [[Sec+ Google Ads Build Checklist#4. Create Campaign 3 — Student / Workforce]] · [[Sec+ Phase 2 Institutional Targeting]]
+**Use with:** [[Sec+ Google Ads Build Checklist#2. Create Ad Groups]] · [[Sec+ Phase 2 Institutional Targeting]]
 
 This is a user-supplied list of larger **CAE-designated** schools, ordered from largest total student enrollment to smallest, filtered for AAS/BS tracks that map to CompTIA Security+ requirements or competencies.
 
@@ -26,7 +26,7 @@ This is a user-supplied list of larger **CAE-designated** schools, ordered from 
 
 | Use | How |
 |-----|-----|
-| **Google Ads geo targeting** | Target students and educators within a **60-mile radius** of each priority school inside `secplus_workforce_us` |
+| **Google Ads geo targeting** | Future layer: target students and educators within a **60-mile radius** of each priority school after the `Student Workforce` ad group proves checkout signal |
 | **Outreach** | Contact cyber/IT program chairs, career services, continuing education, workforce training, and veterans offices |
 | **Discount plan** | Offer verified student / educator discount via `.edu`; workforce/veteran program codes where relevant |
 | **Content angle** | “Security+ prep for degree, capstone, and job-placement requirements” — avoid naming a school unless verified |
@@ -74,11 +74,11 @@ This is a user-supplied list of larger **CAE-designated** schools, ordered from 
 
 ## 60-mile radius targeting
 
-For the `secplus_workforce_us` campaign, target **students and educators within a 60-mile radius** of each priority school campus or service area.
+For the `Student Workforce` ad group, use these schools as future **60-mile radius** geo tests only after the one-campaign build has enough checkout signal.
 
 **Google Ads setup:**
 
-1. Campaign: `Security+ SY0-701 · Student Workforce · US`
+1. Campaign: `Security+ SY0-701 · US Search`
 2. Locations → Advanced search → Radius
 3. Enter each school campus city/address
 4. Set radius to **60 miles**
@@ -93,7 +93,7 @@ For the `secplus_workforce_us` campaign, target **students and educators within 
 
 ## Geo targeting clusters
 
-Use these as research buckets for building **60-mile radius targets** in the `secplus_workforce_us` campaign.
+Use these as research buckets for future **60-mile radius targets** if the `Student Workforce` ad group earns geo testing.
 
 | Cluster | Schools |
 |---------|---------|

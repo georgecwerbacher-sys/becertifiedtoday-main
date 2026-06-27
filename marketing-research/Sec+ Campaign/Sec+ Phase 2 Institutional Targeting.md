@@ -20,7 +20,7 @@ tags:
 
 **Status:** Planning · **Does not replace Phase 1 tracking yet**
 
-The next paid build is the **US-only three-campaign plan** in [[Sec+ Three-Campaign US Plan]]: core exam prep, military/government/8140, and student/workforce at **$20/day each**. Admin dashboard and keyword CSV are **unchanged** until tracking catches up.
+The next paid build is the **US-only one-campaign plan** in [[Sec+ One-Campaign Ad Group Plan]]: one Search campaign with core exam prep, military/government/8140, and student/workforce ad groups at **$25/day shared**. Admin tracking stays on `secplus_portal`; ad group learning is separated with `utm_content`.
 
 **Site alignment (2026-06-27):** `/comptia-sec+-home.html` leads with **SY0-701 exam prep** (1000+ questions, timed sim, adaptive review, verification block). `/how-we-verify-questions.html` is the live trust anchor in the top menu.
 
@@ -63,7 +63,7 @@ Programs that treat Security+ as a **graduation, capstone, or internship gate**,
 
 - **60-mile radius** around campuses with published Security+ requirements (students + educators)
 - College towns: e.g. San Antonio, Colorado Springs, Huntsville, Augusta, Dayton, Pensacola (cyber + military overlap)
-- For the `secplus_workforce_us` campaign, use [[Sec+ CAE College Target List#60-mile radius targeting]]
+- For the `Student Workforce` ad group, use [[Sec+ CAE College Target List#60-mile radius targeting]] only after checkout signal justifies geo testing.
 
 ### 2. Career & workforce programs
 
@@ -267,15 +267,15 @@ Pull from `/how-we-verify-questions.html`:
 
 | Item | Phase 1 (now) | Phase 2 (after funnel proof) |
 |------|---------------|------------------------------|
-| `utm_campaign` | `secplus_portal` baseline | New: `secplus_core_us`, `secplus_gov_us`, `secplus_workforce_us` |
-| Daily budget | $15 baseline | **$20/day each** · **$60/day total** |
+| `utm_campaign` | `secplus_portal` baseline | Keep `secplus_portal`; compare ad groups with `utm_content` |
+| Daily budget | $15 baseline | **$25/day shared campaign budget** |
 | Bidding | Baseline max CPC | Hold keyword bids for 7 days; adjust after week 1 based on keyword results |
-| Campaign count | One live baseline | Three Search campaigns so each track has its own budget |
-| Keyword CSV / 64 positives | Unchanged | Split by intent manually until generator supports campaign tiers |
+| Campaign count | One live baseline | One Search campaign with three ad groups |
+| Keyword CSV / 64 positives | Unchanged | Split by intent manually until generator supports ad group tiers |
 | RSA pins | PBQ-heavy | Shift to **exam prep + timed sim** pins per [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] |
 | Sitelinks | PBQ samples prominent | Rebalance per [[Extensions#Phase 2 sitelinks (paste when ready)]] |
-| Geo | Legacy baseline may include Tier A countries | **United States only** · bid modifiers on base/college/federal/workforce clusters |
-| Schedule | All day or default | Before work, lunch, after work, weekends ([[Sec+ Three-Campaign US Plan#Ad schedule — when target buyers search]]) |
+| Geo | Legacy baseline may include Tier A countries | **United States only** first; add base/college/federal/workforce geo only after signal |
+| Schedule | All day or default | Before work, lunch, after work, weekends ([[Sec+ One-Campaign Ad Group Plan#Ad Schedule]]) |
 | Discount | Not in ads | **Never** in RSA; separate verified-discount URL |
 
 ---

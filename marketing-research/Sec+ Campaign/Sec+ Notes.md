@@ -1,7 +1,7 @@
 ---
 type: campaign-steps
 product: secplus
-campaign: Security+ SY0-701 · Exam prep · becertifiedtoday
+campaign: Security+ SY0-701 · US Search
 tags:
   - marketing
   - google-ads
@@ -9,137 +9,170 @@ tags:
   - checklist
 ---
 
-# Sec+ Notes — how to set up the campaign
+# Sec+ Notes — Step-by-Step Campaign Setup
 
-**Build:** three US-only Search campaigns · see [[Sec+ Three-Campaign US Plan]]  
-**Budget:** **$20.00/day each** · **$60/day total** · max CPC **$2.75**  
-**utm_campaigns:** `secplus_core_us` · `secplus_gov_us` · `secplus_workforce_us`
+**Build:** one US-only Search campaign with three ad groups · see [[Sec+ One-Campaign Ad Group Plan]]  
+**Budget:** **$25/day shared campaign budget** · max CPC **$2.75**  
+**Tracking:** `utm_campaign=secplus_portal`; use `utm_content` to identify each ad group.
 
-**Checklist CSV:** [[secplus-campaign-checklist.csv]] remains the baseline import. For three-campaign rollout, copy relevant keyword/RSA rows into each campaign manually until the sync script supports campaign tiers.
-
----
-
-## Reference voice (read before building ads)
-
-[[Sec+ Positioning#Canonical reference|Canonical reference]] — **Test Preparation Site**: 1000+ verified SY0-701 questions, **90-min timed sim + scorecard**, adaptive review, **34 PBQs**. **$19.99/30d**. Institutional audiences: [[Sec+ Phase 2 Institutional Targeting]].
-
-Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
+**Checklist CSV:** [[secplus-campaign-checklist.csv]]
 
 ---
 
-## Before you open Google Ads
+## 0. Before You Open Google Ads
 
-- [ ] Stripe $19.99 / 30-day product live
-- [ ] Checkout on cert home (desktop + phone)
-- [ ] MCQ + 3-scenario PBQ preview reachable from landing (dark web IR, WLAN configuration, firewall ACL)
-- [ ] GA4 `begin_checkout` imported as Primary
-- [ ] Keyword Planner worksheet — [[Sec+ Keywords#Keyword Planner worksheet]]
-- [ ] RSA reviewed against [[Sec+ Positioning]]
-
----
-
-## Phase 1 — Three US campaign shells
-
-1. Build three campaigns from [[Sec+ Three-Campaign US Plan#Budget structure]]:
-   - `Security+ SY0-701 · Core Exam Prep · US`
-   - `Security+ SY0-701 · Military Gov 8140 · US`
-   - `Security+ SY0-701 · Student Workforce · US`
-2. Budget **$20.00/day per campaign** · Search only · partners off
-3. Bidding: Maximize clicks · max CPC **$2.75** · hold keyword bids for 7 days
-4. Geo: **United States only** · **Presence** only
-5. Ad schedule: before work, lunch, after work, weekends — [[Sec+ Three-Campaign US Plan#Ad schedule — when target buyers search]]
-6. utm_campaign by campaign:
-   - Core: **`secplus_core_us`**
-   - Gov: **`secplus_gov_us`**
-   - Workforce: **`secplus_workforce_us`**
-7. AI Max / URL expansion: **Off**
-8. Paste **6 sitelinks** — checklist **Extensions** rows or [[Extensions]]
-9. Add URL exclusions if Google prompts — [[Sec+ Google Ads Build Checklist#9. URL exclusions / expansion guardrails]]
+- [ ] Stripe $19.99 / 30-day product is live.
+- [ ] `/comptia-sec+-home.html` opens on desktop and phone.
+- [ ] Purchase button starts Stripe checkout.
+- [ ] GA4 `begin_checkout` fires from the purchase path.
+- [ ] GA4 `begin_checkout` is imported into Google Ads as a Primary conversion.
+- [ ] RSA copy reviewed against [[Sec+ Positioning]].
+- [ ] Keyword split reviewed in [[Sec+ Keywords#One-campaign ad group keyword split]].
 
 ---
 
-## Phase 2 — Campaign message tracks
+## 1. Create the Campaign
 
-Each campaign may use one simple ad group at launch. Keep the RSA aligned to the audience; do not split more than needed during the first week.
+1. Create a new **Search** campaign.
+2. Name it:
 
-| Campaign | Ad group | Display path | Final URL UTM content |
-|----------|----------|--------------|-----------------------|
-| Core Exam Prep | `SY0-701 Exam Prep` | `Security+` / `Exam-Prep` | `core-exam-prep` |
-| Military Gov 8140 | `Security+ 8140 Prep` | `Security+` / `DoD-8140` | `mil-gov-8140` |
-| Student Workforce | `Security+ Career Prep` | `Security+` / `Career-Prep` | `student-workforce` |
-
-Core final URL:
-
-```
-https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_core_us&utm_content=core-exam-prep
+```text
+Security+ SY0-701 · US Search
 ```
 
-Full URLs: [[Sec+ Three-Campaign US Plan#Budget structure]]
+3. Set daily budget:
 
-Keywords: split from [[Sec+ Keywords]] by intent. RSA: [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]]
+```text
+$25.00/day
+```
 
-**Landing offer:** **30-day · $19.99** on cert home.
-
----
-
-## Legacy cleanup (done)
-
-10-day / $9.99 tier removed from site and campaign docs. If old RSA or sitelinks still show in Google Ads UI, replace with [[Sec+ RSA Copy]] and [[Extensions]] Phase 1 sitelinks.
-
----
-
-## Landing conversion (track hardest)
-
-**Page:** `/comptia-sec+-home.html` · **Admin:** 21-day plan → landing checkout rate · paid → checkout · click → checkout
-
-After every ad click, optimize **post-click** before cutting keywords:
-
-| Check | Fix |
-|-------|-----|
-| Message match (RSA ↔ hero ↔ purchase block) | [[Sec+ RSA Copy]] · [[Sec+ Positioning]] |
-| Mobile checkout + sticky path to `#purchase` | Test on phone from live ad URL |
-| Samples → purchase path (3-scenario PBQ preview) | Free proof visible above fold for Google paid |
-| One change per week max | Check **Landing page change shipped** in admin daily log |
-| Checkout &lt; 2% with ≥ 50 paid sessions | **Landing first** — not keyword overhaul |
-
-**Budget follows converters after week 1:** hold keyword bids for the first 7 days, then pause phrase keywords with **≥ 20 clicks, 0 checkout**; promote search terms with **≥ 3 clicks + checkout** to `[exact]`.
-
-Scorecard gates: [[Sec+ Phase 1 Scorecard]].
+4. Set bidding:
+   - **Maximize clicks**
+   - max CPC **$2.75**
+   - hold keyword bids for 7 days
+5. Turn **Search partners Off**.
+6. Turn **Display Network Off**.
+7. Keep **AI Max / URL expansion Off**.
+8. Set language to **English**.
 
 ---
 
-## Phase 3 — Negatives
+## 2. Set Location Targeting
 
-- Campaign: [[Sec+ Keywords#Campaign negatives]]
-- Ad group: [[Sec+ Keywords#Ad group negatives]]
-- Add the Phase 2 course/PDF/dump negative expansion from [[Sec+ Keywords#All negatives]] before enabling the three campaigns.
+1. Target **United States only**.
+2. Set location option to **Presence: people in or regularly in targeted locations**.
+3. Do not use “presence or interest.”
+4. Do not add base, campus, or workforce radius targeting at launch unless a later review proves the need.
 
----
-
-## Phase 3b — URL exclusions
-
-Keep AI Max and URL expansion **Off**. If Google asks for URL exclusions, exclude admin, restore, sample, CCNA, CCNP, and generic question pages per [[Sec+ Google Ads Build Checklist#9. URL exclusions / expansion guardrails]].
+Start simple: national US reach, tight keywords, strong negatives. Add geo layers only after the ad groups show useful checkout signal.
 
 ---
 
-## Phase 4 — Launch check
+## 3. Apply the Starting Schedule
 
-- [ ] Three campaigns created as **paused drafts**
-- [ ] US only + Presence only on all three
-- [ ] Shared ad schedule applied on all three
-- [ ] 6 sitelinks pasted — checklist **Extensions** rows or [[Extensions]]
-- [ ] Final URLs open cert home with correct UTMs
-- [ ] GA4 `begin_checkout` on test purchase click
-- [ ] Mobile checkout on cert home
+Use this schedule from [[Sec+ One-Campaign Ad Group Plan#Ad Schedule]]:
+
+| Day | Run time | Bid adjustment |
+|-----|----------|----------------|
+| Monday-Friday | 6:00 AM-9:00 AM | 0% |
+| Monday-Friday | 11:00 AM-2:00 PM | 0% |
+| Monday-Thursday | 5:00 PM-11:30 PM | +15% |
+| Friday | 5:00 PM-10:00 PM | 0% |
+| Saturday-Sunday | 9:00 AM-11:00 PM | 0% |
+| Overnight | Pause or -90% |
+
+Do not keep narrowing schedule in week 1 unless the data is clearly junk.
 
 ---
 
-## Week 1
+## 4. Create Three Ad Groups
+
+| Ad group | Final URL |
+|----------|-----------|
+| `Core Exam Prep` | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=core-exam-prep` |
+| `Military Gov 8140` | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=mil-gov-8140` |
+| `Student Workforce` | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=student-workforce` |
+
+Use one responsive search ad per ad group at launch. Keep the base proof consistent: **SY0-701 exam prep, 1000+ verified questions, 90-minute timed sim, adaptive review, 34 PBQs, $19.99/30 days**.
+
+---
+
+## 5. Paste Keywords by Ad Group
+
+Use [[Sec+ Keywords#One-campaign ad group keyword split]].
+
+Start phrase-heavy where intent is still exploratory, and keep exact match for the highest-intent simulation/readiness and 8140 terms. Do not add discount, free, dump, voucher, or generic course keywords.
+
+---
+
+## 6. Paste RSA Copy
+
+Use [[Sec+ RSA Copy]].
+
+Pin only the stable basics:
+
+- H1: `SY0-701 Exam Prep Online`
+- H2: `Timed 90-Min Exam Sim`
+
+Keep the rest unpinned so Google can learn message fit by ad group.
+
+---
+
+## 7. Add Sitelinks
+
+Paste sitelinks at the campaign level from [[Extensions]].
+
+Use `utm_campaign=secplus_portal` on every sitelink. Use `utm_content` to identify the sitelink, not the ad group.
+
+---
+
+## 8. Add Negatives Before Launch
+
+Paste campaign-level negatives from [[Sec+ Keywords#All negatives]].
+
+Priority blocks:
+
+- free
+- course / bootcamp / instructor-led
+- dump / braindump / actual exam / answer key
+- PDF / ebook / book / download
+- voucher / coupon / discount
+- competitor/course-vendor terms that already brought low-quality traffic
+
+---
+
+## 9. URL Exclusions
+
+Keep AI Max and URL expansion **Off**. If Google asks for URL exclusions, exclude admin, restore, sample, CCNA, CCNP, and generic question pages per [[Extensions#URL exclusions]].
+
+---
+
+## 10. Launch Check
+
+- [ ] One campaign exists: `Security+ SY0-701 · US Search`
+- [ ] Campaign budget is **$25/day**
+- [ ] US only + Presence only
+- [ ] Search partners Off
+- [ ] Display Network Off
+- [ ] AI Max / URL expansion Off
+- [ ] Three ad groups created
+- [ ] Correct `utm_content` on each ad group final URL
+- [ ] Campaign-level sitelinks added
+- [ ] Campaign-level negatives added
+- [ ] Test click reaches cert home
+- [ ] Purchase button triggers GA4 `begin_checkout`
+- [ ] Mobile checkout tested
+
+---
+
+## Week 1 Operating Rule
 
 | Day | Action |
 |-----|--------|
-| 1 | Enable Core Exam Prep first if you want controlled spend |
-| 3 | Search terms → negatives |
-| 7 | Keyword review by campaign — adjust bids based on keyword results, search terms, checkout quality |
+| 1 | Launch the full campaign with all three ad groups active |
+| 3 | Review search terms; add negatives only |
+| 7 | Review ad group, keyword, search term, CPC, checkout, and purchase data |
+
+Do not split into separate campaigns in week 1. Split later only if an ad group proves it needs its own budget, geo strategy, schedule, bidding strategy, landing page, or materially different ROI.
 
 [[README|← Sec+ Campaign folder]]

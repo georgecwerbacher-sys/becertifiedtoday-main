@@ -51,17 +51,16 @@ You are **well ahead** of where a Jun 24 Sec+-only launch would be — earlier *
 
 ---
 
-## Revised budget advice — **three campaigns at $20/day each**
+## Revised Budget Advice — **one campaign at $25/day**
 
 Earlier math assumed **~$0** spent by Jun 24. With **$255.68** already in:
 
 | Daily budget (Sec+ only, ccna paused) | Cross **$500** | Cross **$510** | By Jul 19 |
 |--------------------------------------|----------------|----------------|----------------------|
-| $15/day legacy single-campaign pace | ~Jul 11 | ~Jul 12 | $630 cumulative ✓ |
-| $20/day single-campaign pace | ~Jul 4 | ~Jul 5 | $755 ✓ |
-| **$60/day three-campaign pace** | **~Jun 29–30** | **~Jun 30** | **~$1,720 cumulative ✓** |
+| $15/day legacy pace | ~Jul 11 | ~Jul 12 | $630 cumulative ✓ |
+| **$25/day current one-campaign pace** | **~Jul 4** | **~Jul 5** | **~$880 cumulative ✓** |
 
-**Current plan:** run the three Sec+ campaigns at **$20/day each** (**$60/day total**) and use the promo credit to extend runway after the $500 threshold clears.
+**Current plan:** run one Sec+ Search campaign at **$25/day** with three ad groups and use the promo credit to extend runway after the $500 threshold clears.
 
 Hold keyword bids for the first **7 days**; adjust after week 1 based on keyword-level results.
 
@@ -96,15 +95,15 @@ Hold keyword bids for the first **7 days**; adjust after week 1 based on keyword
 
 ---
 
-## Milestones (projected at $60/day, ccna paused)
+## Milestones (projected at $25/day, ccna paused)
 
 | Date | Projected cumulative | Event |
 |------|---------------------:|-------|
 | Jun 25 (actual) | **$280.26** | Today |
-| **~Jun 30** | **~$520** | **Promo threshold** |
-| Jul 1 | ~$580 | Week 1 review |
-| Jul 14 | ~$1,360 | 21-day conversion test ends |
-| Jul 19 | ~$1,660–1,720 | Promo deadline |
+| **~Jul 4** | **~$505** | **Promo threshold** |
+| Jul 5 | ~$530 | $510 buffer clears |
+| Jul 14 | ~$755 | 21-day conversion test checkpoint |
+| Jul 19 | ~$880 | Promo deadline |
 
 ---
 

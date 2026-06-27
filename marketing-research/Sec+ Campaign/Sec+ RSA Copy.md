@@ -12,7 +12,7 @@ tags:
 
 Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
-**Build:** three US-only Search campaigns at **$20/day each** — [[Sec+ Three-Campaign US Plan]]. Legacy `Security+ PBQ Practice` copy remains as baseline history only.
+**Build:** one US-only Search campaign with three ad groups at **$25/day shared** — [[Sec+ One-Campaign Ad Group Plan]]. Legacy `Security+ PBQ Practice` copy remains as baseline history only.
 
 **Landing offer:** **30-day · $19.99** on cert home. Verified learner discount (students, educators, veterans, workforce) on a **separate URL** — not in RSA.
 
@@ -20,13 +20,13 @@ Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
 **Google Ads policy:** Do **not** use *walk in ready*, *like test day*, *real exam*, *actual exam*, or *same as test day* in RSA.
 
-**Positioning:** [[Sec+ Positioning]] · US plan: [[Sec+ Three-Campaign US Plan]] · Institutional: [[Sec+ Phase 2 Institutional Targeting]] · Keywords: [[Sec+ Keywords]] · Checklist: [[secplus-campaign-checklist.csv]]
+**Positioning:** [[Sec+ Positioning]] · US plan: [[Sec+ One-Campaign Ad Group Plan]] · Institutional: [[Sec+ Phase 2 Institutional Targeting]] · Keywords: [[Sec+ Keywords]] · Checklist: [[secplus-campaign-checklist.csv]]
 
 ---
 
 ## Baseline ad group — Security+ PBQ Practice
 
-**Legacy pins in Google Ads** (keep for history; do not use for the new three-campaign build without adapting):
+**Legacy pins in Google Ads** (keep for history; do not use for the new three-ad-group build without adapting):
 
 **Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `Timed 90-Min Exam Sim`
 
@@ -34,7 +34,7 @@ Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
 ### Phase 2 — exam prep lead (paste when ready)
 
-Use these pins in each of the three US campaigns, with the campaign-specific final URLs from [[Sec+ Three-Campaign US Plan#Budget structure]].
+Use these pins in each of the three ad groups, with final URLs from [[Sec+ One-Campaign Ad Group Plan#Final URLs]].
 
 | Pin | Headline | Chars |
 |-----|----------|-------|

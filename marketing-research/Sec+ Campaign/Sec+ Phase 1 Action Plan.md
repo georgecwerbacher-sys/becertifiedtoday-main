@@ -12,7 +12,7 @@ tags:
 
 **Purpose:** [[Sec+ Phase 1 Purpose]] · **Numbers:** [[Sec+ Phase 1 Scorecard]] · **Landing ops:** [[Sec+ Notes#Landing conversion (track hardest)]] · **Phase 2:** [[Sec+ Phase 2 Institutional Targeting]]
 
-This is the project runbook — not competitor research. You sell **browser exam prep for $19.99/30d** (timed sim, verified bank, adaptive review). Phase 2 moves to **three US-only Google campaigns at $20/day each**: core exam prep, military/government, and student/workforce ([[Sec+ Three-Campaign US Plan]]). Admin tracking is not changed yet.
+This is the project runbook — not competitor research. You sell **browser exam prep for $19.99/30d** (timed sim, verified bank, adaptive review). Phase 2 moves to **one US-only Google Search campaign at $25/day** with three ad groups: core exam prep, military/government, and student/workforce ([[Sec+ One-Campaign Ad Group Plan]]). Admin tracking stays on `secplus_portal`; ad group learning is separated with `utm_content`.
 
 ---
 
@@ -20,7 +20,7 @@ This is the project runbook — not competitor research. You sell **browser exam
 
 | Piece | Status |
 |-------|--------|
-| Google Ads Sec+ | Baseline live · next build = **3 US-only campaigns × $20/day** |
+| Google Ads Sec+ | Baseline live · next build = **1 US-only campaign · 3 ad groups · $25/day** |
 | Landing | 30-day only · samples on page |
 | Tracking | GA4 + admin 21-day plan · **landing checkout rate** added |
 | Billing / promo | ~**$256 / $500** toward credit · [[Google Ads Spend Promo]] |
@@ -28,7 +28,7 @@ This is the project runbook — not competitor research. You sell **browser exam
 | PayPal | Not live yet — add when ready (counts all-in) |
 | Membership / funnel pages | **Not built** — see experiment menu below |
 
-**Blocker:** Admin still reads the baseline flow. If the three-campaign plan launches before admin is expanded, reconcile by `utm_campaign` manually in Google Ads / GA4 notes.
+**Tracking note:** Keep `utm_campaign=secplus_portal` so admin history stays clean. Use `utm_content` and Google Ads ad group reporting to compare Core, Gov, and Workforce.
 
 ---
 
@@ -50,8 +50,8 @@ Open **Admin → 21-day plan → click the calendar day** for that day&apos;s ch
 ## This week (concrete)
 
 - [ ] **Paste in Google Ads:** 13 pending campaign negatives + pause 3 removed positives · then check **Campaign-level negatives pasted** in admin setup
-- [ ] **Three-campaign draft:** build paused campaigns from [[Sec+ Three-Campaign US Plan]]
-- [ ] **Ad schedule:** US-only · before work / lunch / after work / weekends on all three campaigns
+- [ ] **One-campaign build:** build `Security+ SY0-701 · US Search` from [[Sec+ One-Campaign Ad Group Plan]]
+- [ ] **Ad schedule:** US-only · before work / lunch / after work / weekends on the campaign
 - [ ] **Day 7 keyword review:** adjust keyword bids based on results; pause weak track before changing landing
 - [ ] **Test purchase path:** ad URL on **phone** → sample → **Get 30-day** → GA4 Realtime `begin_checkout`
 - [ ] **Phase 2 prep (no admin change):** read [[Sec+ Phase 2 Institutional Targeting]] · draft verified discount page copy (students, educators, veterans, workforce)
@@ -104,13 +104,13 @@ Do **not** stack these in one week. Mark in admin notes which test is live.
 | Experiment | Effort | Risk | Hold until |
 |------------|--------|------|------------|
 | **Verified learner discount** | High | Stripe promo + `.edu`/partner verify | [[Sec+ Phase 2 Institutional Targeting]] — engineering |
-| **Three US campaigns** | Medium | $20/day each track | [[Sec+ Three-Campaign US Plan]]; launch paused drafts first |
-| **Institutional keyword tier** | Medium | Track-level intent | Split manually by campaign until CSV generator supports tiers |
+| **Three ad groups** | Medium | Shared $25/day lets Google find output without fragmenting data | [[Sec+ One-Campaign Ad Group Plan]]; launch all three ad groups together |
+| **Institutional keyword tier** | Medium | Track-level intent | Split manually by ad group until CSV generator supports tiers |
 | **Geo bid adjustments (US bases/campuses)** | Low | Local intent | US only; log in admin notes |
 | **College outreach list** | Medium | Time, not ad spend | Organic / email first |
 | **Membership / progress accounts** | High | Distraction from paid test | Stable scorecard; checkout proven |
 | **Separate funnel landing pages** | High | Splits data, hurts Quality Score if misaligned | You want A/B with enough volume (500+ sessions/mo) |
-| **Second Google ad group** | Medium | Budget split risk | Tier 1 keyword winners exist |
+| **Separate campaign split** | Medium | Budget fragmentation risk | Only after an ad group proves it needs its own budget, geo, schedule, or landing page |
 | **Paid Reddit** | Medium | New channel | Google stable per [[Sec+ Phase 1 Purpose]] |
 
 ---

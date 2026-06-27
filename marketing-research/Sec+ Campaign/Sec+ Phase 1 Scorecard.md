@@ -21,7 +21,7 @@ tags:
 
 | Priority | Metric | Target | Action when weak |
 |----------|--------|--------|------------------|
-| 1 | **Ads clicks** | Maximize within $20/day per campaign · CPC ≤ $2.75 | Improve RSA/CTR; don’t cut budget pre-maturely |
+| 1 | **Ads clicks** | Maximize within $25/day shared campaign budget · CPC ≤ $2.75 | Improve RSA/CTR; don’t cut budget prematurely |
 | 2 | **Landing checkout rate** | **Primary** — `begin_checkout` on cert home ÷ landing views | Fix landing before keyword cuts |
 | 3 | **Paid → checkout** | **≥ 2%** month · **≥ 3%** strong | RSA message match · mobile checkout |
 | 4 | **Click → checkout** | Log Ads clicks daily; trend up | Align ad promise with landing |
@@ -39,7 +39,7 @@ tags:
 | **21-day sprint** (tactical) | Validate funnel + keywords | Checkout signal + clean search terms — **not** monthly break-even |
 | **Monthly** (strategic) | Paid spend vs all-in revenue | ≤ **20% loss** or cut back; trend toward **stable** |
 
-Do **not** judge the first 7 days against monthly break-even. At **$60/day total**, a 21-day run can spend **~$1,260**, so keyword quality and checkout signal matter before purchase volume fully settles.
+Do **not** judge the first 7 days against monthly break-even. At **$25/day**, a 21-day run can spend **~$525**, so keyword quality and checkout signal matter before purchase volume fully settles.
 
 ---
 
@@ -49,11 +49,11 @@ Fill [[secplus-monthly-scorecard.csv]] at month-end.
 
 | Metric | Target | Cut-back / review |
 |--------|--------|-------------------|
-| **Paid ad spend** | **~$1,800/month** if all three campaigns run full month | — |
+| **Paid ad spend** | **~$750/month** at $25/day | — |
 | **All-in Sec+ revenue** (Stripe + PayPal + organic) | Match paid spend | — |
 | **Net (revenue − paid spend)** | **≥ −20% of spend** | **&lt; −20%** → cutback playbook |
 | **Loss %** | **≤ 20%** | **&gt; 20%** two weeks in a row → cutback |
-| **Purchases (all-in)** | **~90** = break-even at $1,800 · **~72** = OK loss band | Below trend with clean traffic → deep review |
+| **Purchases (all-in)** | **~38** = break-even at $750 · **~30** = OK loss band | Below trend with clean traffic → deep review |
 | **Paid purchases** | Track separately | — |
 | **Organic purchases** | Track separately | Counts toward $500 revenue |
 | **Paid sessions** (GA4) | Trend up | Flat 30 days + rising spend → message/keyword issue |
@@ -79,7 +79,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 
 ## 21-day sprint goals (Jun 23 launch → ~Jul 14)
 
-**Spend expectation:** up to **~$1,260** at $60/day for 21 days if all three campaigns run the full sprint.
+**Spend expectation:** up to **~$525** at $25/day for 21 days.
 
 | Metric | Minimum “continue” | Strong signal |
 |--------|-------------------|---------------|
@@ -95,7 +95,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 - **≥ $150** spend and **0** `begin_checkout`, **or**
 - **≥ $250** spend and **0** purchases
 
-**21-day pass (continue $20/day per campaign into next month):**
+**21-day pass (continue $25/day shared campaign into next month):**
 
 - Checkout rate **≥ 2%** with **≥ 5** checkouts, **or**
 - **≥ 2** purchases with search terms mostly on-target

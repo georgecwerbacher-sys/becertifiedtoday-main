@@ -11,8 +11,8 @@ tags:
 
 # Sec+ Phase 1 — purpose & budget rules
 
-**Status:** Active · **Channel:** Google Search only · **US-only three-campaign build**  
-**Offer:** 30-day · **$19.99** · three campaigns at **$20/day each** (**$60/day total**) — see [[Sec+ Three-Campaign US Plan]] and [[Google Ads Spend Promo]]
+**Status:** Active · **Channel:** Google Search only · **US-only one-campaign build**  
+**Offer:** 30-day · **$19.99** · one campaign with three ad groups at **$25/day shared** — see [[Sec+ One-Campaign Ad Group Plan]] and [[Google Ads Spend Promo]]
 
 Related: [[Sec+ Positioning]] · [[Sec+ Notes]] · [[Google Ads Spend Promo]] · [[README]]
 
@@ -30,10 +30,10 @@ New site · **6–12 months without a profit target.** Prove **Sec+ paid acquisi
 
 | Line | Rule |
 |------|------|
-| **Spend target** | **~$1,800/month** if all three campaigns run at $20/day for a full month |
-| **Revenue target** | **~$1,800/month all-in income** to match spend |
+| **Spend target** | **~$750/month** at $25/day |
+| **Revenue target** | **~$750/month all-in income** to match spend |
 | **Break-even** | Spend ≈ revenue in the same calendar month |
-| **Acceptable loss** | Up to **~20%** on the monthly spend target → **~$360 loss** on $1,800 spend |
+| **Acceptable loss** | Up to **~20%** on the monthly spend target → **~$150 loss** on $750 spend |
 | **Cut back** | Sustained loss **> ~20%** → reduce budget, keywords, or pause until funnel fixes |
 | **Profit** | Not required for **6–12 months** |
 
@@ -54,13 +54,13 @@ Organic revenue **counts toward the $500/month income side** of the scorecard. S
 
 ## Sec+ conversion math (@ $19.99)
 
-Rough purchase counts vs **~$1,800/month** ad spend at three campaigns × $20/day:
+Rough purchase counts vs **~$750/month** ad spend at $25/day:
 
 | Outcome | Purchases/month | Revenue |
 |---------|----------------:|--------:|
-| Break-even | **~90** | ~$1,800 |
-| 20% loss OK | **~72** | ~$1,440 |
-| Cut-back review | **&lt; ~72** with spend still ~$1,800 | &lt; ~$1,440 |
+| Break-even | **~38** | ~$760 |
+| 20% loss OK | **~30** | ~$600 |
+| Cut-back review | **&lt; ~30** with spend still ~$750 | &lt; ~$600 |
 
 Early months will be below these counts; success in Phase 1 is **trend + keyword/checkout clarity**, not hitting 25 sales immediately.
 
@@ -89,7 +89,7 @@ When stable:
 |------|--------|
 | **Products** | **Sec+ only** for paid ads |
 | **Other campaigns** | **No** CCNA, ENCOR, Reddit **paid** unless **recommended within budget** for Sec+ conversion improvement |
-| **Campaigns** | Three US-only Search campaigns: core, gov, workforce — each **$20/day** |
+| **Campaigns** | One US-only Search campaign with three ad groups: core, gov, workforce — **$25/day shared** |
 | **Keyword evolution** | Double down on **high-value, converting** terms; negatives on course/free/dump intent |
 | **Promo credit** | Spend **$500** before **Jul 19, 2026** → **$1k credit** extends paid runway (~30 days at current pace) — see [[Google Ads Spend Promo]] |
 
@@ -119,7 +119,7 @@ When stable:
 
 **Order of optimization** — budget and keywords serve the bottom of this funnel:
 
-1. **Clicks** — Maximize **qualified** clicks within **$20/day per campaign** and **$2.75 max CPC** (Maximize clicks bidding). CTR and impression share matter; junk clicks hurt landing metrics.
+1. **Clicks** — Maximize **qualified** clicks within the **$25/day shared campaign budget** and **$2.75 max CPC** (Maximize clicks bidding). CTR and impression share matter; junk clicks hurt landing metrics.
 2. **Landing** — **Hardest tracked layer.** Improve `comptia-sec+-home.html` until **landing checkout rate** and **paid → checkout** rise. Log every landing change in admin daily log.
 3. **Checkout → purchase** — Stripe/PayPal completion; fix friction before cutting keywords that reach checkout.
 4. **Keywords / budget** — Hold keyword bids for **7 days**, then shift spend toward search terms and keywords with **clicks + checkout**; pause high-click / zero-checkout phrases.

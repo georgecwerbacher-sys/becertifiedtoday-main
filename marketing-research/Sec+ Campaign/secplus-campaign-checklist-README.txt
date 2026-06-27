@@ -3,46 +3,42 @@ Security+ Google Ads — AdWords checklist (Apple Numbers)
 
 File: marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv
 
-Three US-only campaigns · one intent-matched ad group each · $20/day each:
-  • Setup checklist (pre-launch through negatives)
-  • 6 campaign sitelinks (Extensions phase — paste URLs + descriptions)
-  • 64 positive keywords (rank order — paste into Google Ads)
-  • RSA headlines + descriptions (Security+ PBQ Practice)
-  • 59 campaign negatives + 8 ad group negatives
+Current build:
+  • 1 US-only Search campaign
+  • 3 intent-matched ad groups
+  • $25/day shared campaign budget
+  • Google determines spend split based on ad group output
+  • Campaign UTM: secplus_portal
+  • Ad group UTMs: core-exam-prep / mil-gov-8140 / student-workforce
 
 Columns
 -------
   Done      — set to TRUE when complete (or convert to checkbox in Numbers)
-  Section   — Setup | Headline | Description | Ops
-  Phase     — Pre-launch, Campaign, Extensions, Ad group, Negatives, Launch, Week 1, etc.
+  Section   — Setup | Ops
+  Phase     — Pre-launch, Campaign, Locations, Ad group, Keywords, RSA, etc.
   Step      — step number within that phase
-  Task      — what to do (Add exact keyword, Campaign negative phrase, …)
-  Value     — paste value, URL, keyword, headline, or description text
-  Ad group  — Security+ PBQ Practice or Campaign
-  Notes     — rank, pins, char counts
+  Task      — what to do
+  Value     — paste value, URL, keyword source, headline source, or note
+  Ad group  — Campaign / Core Exam Prep / Military Gov 8140 / Student Workforce
+  Notes     — setup guardrails and review rules
 
 Open in Numbers
 ---------------
 1. Numbers → File → Open → secplus-campaign-checklist.csv
 2. Select Done column → Format → Checkbox (optional)
-3. Filter Section = Setup and Phase = Ad group to paste keywords only
-4. Filter Section = Setup and Phase = Extensions for sitelinks
-5. Filter Section = Setup and Phase = Negatives for negatives
-6. File → Save to create a .numbers file
-
-Regenerate after keyword CSV edits
-----------------------------------
-  npm run sync:secplus-checklist
-
-Source keywords: marketing-research/Sec+ Campaign/secplus-keywords.csv
+3. Filter Section = Setup and Phase = Campaign to build the campaign
+4. Filter Phase = Ad group to build the three ad groups
+5. Filter Phase = Extensions for sitelinks
+6. Filter Phase = Negatives for negatives
+7. File → Save to create a .numbers file
 
 Campaign summary
 ----------------
-Campaigns:  Core Exam Prep · US / Military Gov 8140 · US / Student Workforce · US
-Budget:     $20.00/day each · $60/day total · max CPC $2.75
-Bid rule:   Hold keyword bids 7 days; adjust after week 1 from keyword results
-Ad groups:  One intent-matched ad group per campaign
+Campaign:   Security+ SY0-701 · US Search
+Budget:     $25.00/day shared · max CPC $2.75
+Bid rule:   Hold budget, structure, and keyword bids 7 days
+Ad groups:  Core Exam Prep / Military Gov 8140 / Student Workforce
 Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
-UTM:        secplus_core_us / secplus_gov_us / secplus_workforce_us
+UTM:        utm_campaign=secplus_portal; distinguish ad groups with utm_content
 
 Full reference: marketing-research/Sec+ Campaign/Sec+ Notes.md
