@@ -479,23 +479,13 @@
       text-align: left;
     }
     .secplus-hero-actions {
-      max-width: 52rem;
-      text-align: left;
+      max-width: none;
+      width: 100%;
+      text-align: center;
     }
     .secplus-hero-actions .secplus-hero-atf-cta {
       margin-top: 0;
       margin-bottom: clamp(18px, 3vw, 24px);
-    }
-    .secplus-hero-device-lead {
-      margin: 0 0 clamp(14px, 2.5vw, 18px);
-      max-width: 52ch;
-      font-size: clamp(0.92rem, 2.1vw, 1rem);
-      line-height: 1.55;
-      color: var(--page-muted);
-    }
-    .secplus-hero-device-lead strong {
-      color: var(--page-text);
-      font-weight: 700;
     }
     .secplus-value-pillars {
       margin: 0;
@@ -561,6 +551,21 @@
     }
     .secplus-hero-atf-cta a.cta-main:hover {
       color: #fff;
+    }
+    .secplus-hero-atf-cta a.cta-main--hero-primary {
+      border-color: rgba(96, 165, 250, 0.35);
+      color: #ffffff;
+      background: linear-gradient(165deg, #1e3a8a 0%, #1d4ed8 52%, #2563eb 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.14) inset,
+        0 8px 24px rgba(29, 78, 216, 0.22);
+    }
+    .secplus-hero-atf-cta a.cta-main--hero-primary:hover {
+      color: #fff;
+      filter: brightness(1.08);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18) inset,
+        0 10px 28px rgba(29, 78, 216, 0.32);
     }
     .bcc-last-chance-bar {
       position: fixed;
@@ -3076,9 +3081,6 @@
               </p>
             </div>
             <div class="secplus-hero-highlights">
-              <p class="secplus-hero-device-lead">
-                <strong>Same UI on phone, tablet, and desktop.</strong> You tap answers, drag-and-drop PBQs, and run timed tests in your browser.
-              </p>
               <ul class="secplus-value-pillars" aria-label="Security+ library highlights">
                 <li>
                   <strong>1000+ Practice Questions</strong>
@@ -3102,11 +3104,6 @@
               <p class="secplus-hero-atf-cta">
                 <a class="cta-main cta-main--free cta-main--hero-primary" id="hero-conversion-cta-primary" href="#home-secplus-samples-title">Preview free Security+ samples ↓</a>
               </p>
-              <ul class="benefits" aria-label="What you get">
-                <li>Study on phone, tablet, or desktop from duty station, CONUS, or TDY.</li>
-                <li>Security+ is common for federal, DoD, and contractor cyber roles. Confirm your requirement.</li>
-                <li>One-time 30-day access ($19.99). No subscription.</li>
-              </ul>
             </div>
           </div>
 
