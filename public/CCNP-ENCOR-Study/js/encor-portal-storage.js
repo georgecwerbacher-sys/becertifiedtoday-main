@@ -36,17 +36,15 @@
   }
 
   function isEncorPortalProductId(productId) {
-    return productId === "encor-portal-30d" || productId === "encor-portal-10d";
+    return productId === "encor-portal-30d";
   }
 
   function tierToProductId(tier) {
-    if (tier === "10d") return "encor-portal-10d";
     if (tier === "30d") return "encor-portal-30d";
     return null;
   }
 
   function productIdFromAmountCentsEncor(amount) {
-    if (amount === 999) return "encor-portal-10d";
     if (amount === 1999 || amount === 1499) return "encor-portal-30d";
     return null;
   }
@@ -158,8 +156,7 @@
     var exp =
       typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
         ? data.accessExpiresAt
-        : Date.now() +
-          (productId === "encor-portal-10d" ? 10 : 30) * 86400000;
+        : Date.now() + 30 * 86400000;
     if (exp <= Date.now()) {
       return false;
     }

@@ -50,7 +50,7 @@ A timed exam-style run under real pressure—mixed item types, the pace of the a
 
 ### A sprint, not a dump—and not a course
 
-Instead of buying a stale PDF for **$99.99**, you can unlock full access for **$9.99 / 10 days** or **$19.99 / 30 days** (Security+ and CCNA; ENCOR primary offer is **$19.99 / 30 days**). **One payment. No membership game.** That includes **1,000+ current-version questions** where applicable, verified explanations, PBQ or lab scenarios, timed sim, and adaptive review in one portal.
+Instead of buying a stale PDF for **$99.99**, you can unlock full access for a defined **30-day study window**. **One payment. No membership game.** That includes **1,000+ current-version questions** where applicable, verified explanations, PBQ or lab scenarios, timed sim, and adaptive review in one portal.
 
 ### Mobile-friendly practice
 
@@ -94,7 +94,7 @@ Free samples use the **same UI and testing engine** as paid access. Judge qualit
 1. **Material aligned to current objectives** — not last year’s PDF.
 2. **Practice that behaves like test day** — interactive, timed, mixed item types.
 3. **Adaptive review** — weak areas and missed questions get another turn.
-4. **Clear pricing** — one-time access for 10 or 30 days; no subscription nag.
+4. **Clear pricing** — one-time 30-day access; no subscription nag.
 5. **A quiet portal** — no third-party ads inside the study library.
 6. **Confidence when it counts** — walk in **prepared, not guessing**.
 
@@ -102,7 +102,7 @@ Free samples use the **same UI and testing engine** as paid access. Judge qualit
 
 ## One sentence
 
-Interactive certification prep in your browser—timed simulation, adaptive review, and exam-style scenarios—for **$9.99 / 10 days**, not a **$99 PDF**.
+Interactive certification prep in your browser—timed simulation, adaptive review, and exam-style scenarios—for a clear 30-day access period, not a **$99 PDF**.
 
 ---
 

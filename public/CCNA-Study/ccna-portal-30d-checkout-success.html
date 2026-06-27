@@ -180,7 +180,6 @@
 
       function purchaseValueForProduct(productId) {
         if (productId === "ccna-test-simulation") return 9.99;
-        if (productId === "ccna-portal-10d") return 9.99;
         if (productId === "ccna-portal-30d") return 19.99;
         return undefined;
       }
@@ -214,7 +213,7 @@
             return;
           }
 
-          var productLabel = data.productId === "ccna-portal-10d" ? "10-day" : "30-day";
+          var productLabel = "30-day";
           if (data.accessExpired) {
             showError(
               "This purchase's " + productLabel + " window has ended. If you need access again, purchase a new pass from CCNA home."
@@ -222,7 +221,7 @@
             return;
           }
 
-          if (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d") {
+          if (data.productId !== "ccna-portal-30d") {
             showError(
               "This checkout session is not for library access. Use the correct return link from your purchase email, or open the timed test runner if you bought the one-time simulation."
             );

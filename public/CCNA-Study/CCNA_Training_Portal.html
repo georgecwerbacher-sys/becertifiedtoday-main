@@ -1184,8 +1184,7 @@
       function trackPortalAdsPurchase(sessionId, productId) {
         if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function" || !sessionId) return;
         var value;
-        if (productId === "ccna-portal-10d") value = 9.99;
-        else if (productId === "ccna-portal-30d") value = 19.99;
+        if (productId === "ccna-portal-30d") value = 19.99;
         var opts = { currency: "USD" };
         if (typeof value === "number") opts.value = value;
         window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
@@ -1197,7 +1196,7 @@
         if (
           !res.ok ||
           !data.ok ||
-          (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d")
+          data.productId !== "ccna-portal-30d"
         ) {
           return false;
         }

@@ -78,13 +78,13 @@
     if (!res.ok || !data.ok) {
       return false;
     }
-    if (data.productId !== "ccna-portal-30d" && data.productId !== "ccna-portal-10d") {
+    if (data.productId !== "ccna-portal-30d") {
       return false;
     }
     var exp =
       typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
         ? data.accessExpiresAt
-        : Date.now() + (data.productId === "ccna-portal-10d" ? 10 : 30) * 86400000;
+        : Date.now() + 30 * 86400000;
     if (exp <= Date.now()) {
       return false;
     }

@@ -543,14 +543,6 @@
   };
 
   var CCNA_PORTAL_CHECKOUT = {
-    "10d": {
-      url: "https://buy.stripe.com/00wcN458x6Szglq6Ruc3m04",
-      id: "ccna_portal_10d",
-      name: "CCNA 10-day access",
-      value: "9.99",
-      label: "Get 10-day access · $9.99",
-      sub: "10 days · one-time",
-    },
     "30d": {
       url: "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03",
       id: "ccna_portal_30d",
@@ -620,7 +612,7 @@
     var product = CCNA_PORTAL_CHECKOUT[tier];
     if (!product || !btn) return;
     btn.type = "button";
-    btn.className = "cisco-ccna-offer-tier-btn" + (tier === "10d" ? " cisco-ccna-offer-tier-btn--featured" : "");
+    btn.className = "cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured";
     btn.textContent = product.label;
     btn.setAttribute("data-ccna-portal-checkout-tier", tier);
     btn.addEventListener("click", function (ev) {
@@ -697,18 +689,12 @@
       lead +
       "</p>" +
       '<p class="cisco-ccna-offer-tagline">Practice Like Test Day. Walk In Ready.</p>' +
-      '<div class="cisco-ccna-offer-tiers" aria-label="CCNA access options">' +
+      '<div class="cisco-ccna-offer-tiers" aria-label="CCNA access option">' +
       '<div class="cisco-ccna-offer-tier cisco-ccna-offer-tier--featured">' +
-      '<p class="cisco-ccna-offer-tier-label">10-day full access</p>' +
-      '<p class="cisco-ccna-offer-tier-price">$9.99 <span>/ 10 days</span></p>' +
-      '<p class="cisco-ccna-offer-tier-note">One-time · no subscription</p>' +
-      '<button type="button" class="cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured" data-tier="10d"></button>' +
-      "</div>" +
-      '<div class="cisco-ccna-offer-tier">' +
       '<p class="cisco-ccna-offer-tier-label">30-day full access</p>' +
       '<p class="cisco-ccna-offer-tier-price">$19.99 <span>/ 30 days</span></p>' +
-      '<p class="cisco-ccna-offer-tier-note">Same library · longer study window</p>' +
-      '<button type="button" class="cisco-ccna-offer-tier-btn" data-tier="30d"></button>' +
+      '<p class="cisco-ccna-offer-tier-note">One-time · no subscription</p>' +
+      '<button type="button" class="cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured" data-tier="30d"></button>' +
       "</div>" +
       "</div>" +
       '<div class="cisco-ccna-offer-actions">' +
@@ -719,7 +705,6 @@
     document.body.appendChild(root);
     document.body.classList.add("cisco-ccna-offer-open");
 
-    wireCcnaPortalCheckoutBtn(root.querySelector('[data-tier="10d"]'), "10d", session);
     wireCcnaPortalCheckoutBtn(root.querySelector('[data-tier="30d"]'), "30d", session);
 
     var panel = root.querySelector(".cisco-ccna-offer-panel");

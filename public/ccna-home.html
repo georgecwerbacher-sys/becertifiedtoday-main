@@ -30,7 +30,6 @@
           var productId = pair.data.productId;
           var value;
           if (productId === "ccna-test-simulation") value = 9.99;
-          else if (productId === "ccna-portal-10d") value = 9.99;
           else if (productId === "ccna-portal-30d") value = 19.99;
           var opts = { currency: "USD" };
           if (typeof value === "number") opts.value = value;
@@ -44,7 +43,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="Browser CCNA 200-301 labs, timed simulation, drag-and-drop, and verified explanations. Free samples. 10-day access $9.99."
+    content="Browser CCNA 200-301 labs, timed simulation, drag-and-drop, and verified explanations. Free samples. 30-day access $19.99."
   />
   <meta
     name="keywords"
@@ -55,7 +54,7 @@
   <meta property="og:title" content="CCNA Browser Labs &amp; Timed Sim | No GNS3 | Be Certified Today" />
   <meta
     property="og:description"
-    content="Browser CCNA labs, 120-min timed simulation, and verified answers—no GNS3. Free samples. 10-day full access $9.99."
+    content="Browser CCNA labs, 120-min timed simulation, and verified answers—no GNS3. Free samples. 30-day full access $19.99."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/ccna-home.html" />
@@ -81,7 +80,7 @@
   <meta name="twitter:title" content="CCNA Browser Labs &amp; Timed Sim | No GNS3 | Be Certified Today" />
   <meta
     name="twitter:description"
-    content="Browser CCNA labs, 120-min timed simulation, verified answers—no GNS3. Free samples. 10-day access $9.99."
+    content="Browser CCNA labs, 120-min timed simulation, verified answers—no GNS3. Free samples. 30-day access $19.99."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
   <title>CCNA Browser Labs &amp; Timed Sim | No GNS3 | Be Certified Today</title>
@@ -1275,17 +1274,6 @@
     }
     .purchase-fold--single-offer .purchase-cta-stack--single {
       max-width: 520px;
-    }
-    html.ccna-landing-portal-10d #ccnaPurchase30d,
-    html.ccna-landing-portal-10d .home-pricing-card--featured,
-    html.ccna-landing-portal-10d .purchase-alt-tier-note {
-      display: none !important;
-    }
-    html.ccna-landing-portal-10d .home-pricing-grid {
-      grid-template-columns: 1fr;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .purchase-alt-tier-note {
       margin: 14px 0 0;
@@ -2947,7 +2935,7 @@
             </p>
             <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead">
               Courses and videos done—next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site.
-              <strong>Practice for test day here</strong> from <strong>$9.99/10 days</strong> or <strong>$19.99/30 days</strong> (less than $1/day).
+              <strong>Practice for test day here</strong> with <strong>30-day access for $19.99</strong> (less than $1/day).
               <strong>Preview NGTE below</strong>—no payment, same test-day experience as full access—then unlock the library with one payment.
             </p>
             <div class="landing-hero-highlights">
@@ -2970,7 +2958,7 @@
                 </li>
               </ul>
               <p class="hero-atf-upgrade">
-                Ready for full access? <a href="#purchase">Get 10-day CCNA access · $9.99</a>
+                Ready for full access? <a href="#purchase">Get 30-day CCNA access · $19.99</a>
               </p>
             </div>
             <ul class="hero-atf-trust" aria-label="Quick facts">
@@ -3063,44 +3051,9 @@
           <section class="home-pricing-section purchase-fold" id="purchase" aria-labelledby="ccna-pricing-heading">
             <div class="home-pricing-inner">
               <h2 id="ccna-pricing-heading" class="home-pricing-choose-heading">Choose your access</h2>
-              <p class="home-pricing-choose-lead">One-time payment. Same full library on both plans. No auto-renew.</p>
+              <p class="home-pricing-choose-lead">One-time payment. Full library access for 30 days. No auto-renew.</p>
 
               <div class="home-pricing-grid">
-                <article
-                  class="home-pricing-card purchase-track-box purchase-track-box--ten-day"
-                  id="ccnaPurchaseDefault"
-                  aria-label="10-day CCNA access"
-                >
-                  <p class="home-pricing-tier">10-Day Sprint</p>
-                  <p class="home-pricing-price" aria-label="9 dollars and 99 cents for 10 days">$9.99</p>
-                  <p class="home-pricing-daily">Less than <strong>$1.00/day</strong></p>
-                  <p class="home-pricing-period">one-time · 10 days of full library access</p>
-                  <ul class="home-pricing-features">
-                    <li><strong>10 days</strong> of full library access</li>
-                    <li>800+ questions · V_2025 &amp; V_2026</li>
-                    <li>Browser CLI labs (VLAN, routing &amp; more)</li>
-                    <li>Drag-and-drop practice sets</li>
-                    <li>120-minute timed simulation</li>
-                    <li>Progress tracking on phone &amp; desktop</li>
-                    <li>Study paths by <strong>CCNA 200-301</strong> domain weights</li>
-                    <li>Adaptive testing option for more precise learning</li>
-                    <li>Verified Cisco explanations</li>
-                  </ul>
-                  <button
-                    type="button"
-                    class="home-pricing-cta"
-                    id="ccnaPortal10dPurchaseBtn"
-                    data-ccna-portal-10d-checkout
-                    data-bcc-item-id="ccna_portal_10d"
-                    data-bcc-item-name="CCNA 10-day access"
-                    data-bcc-value="9.99"
-                    data-bcc-currency="USD"
-                    aria-label="Purchase 10-day CCNA library access for nine ninety-nine"
-                  >
-                    Get 10-day access
-                  </button>
-                </article>
-
                 <article
                   class="home-pricing-card home-pricing-card--featured"
                   id="ccnaPurchase30d"
@@ -3120,7 +3073,7 @@
                     <li>Progress tracking on phone &amp; desktop</li>
                     <li>Study paths by <strong>CCNA 200-301</strong> domain weights</li>
                     <li>Adaptive testing option for more precise learning</li>
-                    <li><strong>33% less</strong> than three 10-day passes</li>
+                    <li>Verified Cisco explanations</li>
                   </ul>
                   <button
                     type="button"
@@ -3139,7 +3092,7 @@
               </div>
 
               <p class="home-pricing-footnote">
-                Same full library on both plans. One-time payment—no auto-renew. Access is tied to this browser.
+                One-time payment—no auto-renew. Access is tied to this browser.
                 Eligible student, educator, military, government, first responder, contractor, workforce, or veteran-program learner?
                 <a href="/verified-learner-discounts.html">Request a verified learner discount before checkout</a>.
               </p>
@@ -3599,7 +3552,6 @@
       </div>
     </div>
   </div>
-  <script src="/js/ccna-portal-10d-landing.js" defer></script>
   <script src="/js/ccna-home-conversion.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
@@ -3644,9 +3596,6 @@
 
       function openGate() {
         if (!gateRoot || !gatePanel || gateOpen) return;
-        if (typeof window.bccClose10dOfferForPortalGate === "function") {
-          window.bccClose10dOfferForPortalGate();
-        }
         gateOpen = true;
         prevOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";

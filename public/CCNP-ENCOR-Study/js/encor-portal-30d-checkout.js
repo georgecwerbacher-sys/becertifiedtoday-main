@@ -1,25 +1,17 @@
 /**
- * Stripe Payment Links for CCNP ENCOR 10-day and 30-day full library access.
+ * Stripe Payment Link for CCNP ENCOR 30-day full library access.
  *
  * Stripe Dashboard → each Payment Link → After payment → custom redirect URL:
  *   https://becertifiedtoday.com/CCNP-ENCOR-Study/ENCOR_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}
  *
- * Optional metadata on the link: productId = encor-portal-10d or encor-portal-30d
+ * Optional metadata on the link: productId = encor-portal-30d
  */
 (function () {
   var LINKS = {
-    "10d": "https://buy.stripe.com/cNidR81Wlel13yEdfSc3m05",
     "30d": "https://buy.stripe.com/cNidR80Sh0ubc5aejWc3m00",
   };
 
   var PRODUCTS = {
-    "10d": {
-      id: "encor_portal_10d",
-      name: "CCNP ENCOR 10-day access",
-      value: "9.99",
-      defaultLabel: "Get 10-day access",
-      labelKey: "encorPortal10dCheckoutLabel",
-    },
     "30d": {
       id: "encor_portal_30d",
       name: "CCNP ENCOR 30-day access",
@@ -58,9 +50,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-encor-portal-10d-checkout]").forEach(function (btn) {
-      wireCheckout(btn, "10d");
-    });
     document.querySelectorAll("[data-encor-portal-30d-checkout]").forEach(function (btn) {
       wireCheckout(btn, "30d");
     });
