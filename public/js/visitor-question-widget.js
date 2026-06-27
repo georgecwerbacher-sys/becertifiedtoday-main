@@ -11,6 +11,7 @@
     var p = (location.pathname || "").toLowerCase();
     if (p.indexOf("comptia-sec") !== -1 || p.indexOf("/comp_tia_sec+/") !== -1) return "secplus";
     if (p.indexOf("ccnp-encor") !== -1 || p.indexOf("/ccnp-encor-study/") !== -1) return "encor";
+    if (p.indexOf("ccnaauto") !== -1 || p.indexOf("/ccnaauto-study/") !== -1) return "ccnaauto";
     if (p.indexOf("ccna") !== -1 || p.indexOf("/ccna-study/") !== -1) return "ccna";
     return "general";
   }
