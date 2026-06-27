@@ -4,37 +4,59 @@
   if (!cfg || !hero) return;
 
   var videoEl = document.getElementById("hero-intro-video");
-  var imageEl = hero.querySelector(".hero-banner__image");
-  if (!videoEl || !imageEl) return;
+  if (!videoEl) return;
 
   var sessionKey = cfg.sessionKey || "bct_index_intro_seen";
   var title = cfg.title || "Welcome to Be Certified Today";
   var youtubeId = cfg.youtubeId ? String(cfg.youtubeId).trim() : "";
   var localSrc = cfg.localSrc ? String(cfg.localSrc).trim() : "";
 
-  function showImageOnly() {
+  function seekToLastFrame() {
+    try {
+      var d = videoEl.duration;
+      if (Number.isFinite(d) && d > 0) {
+        videoEl.currentTime = Math.max(0, d - 0.04);
+      }
+    } catch (e) {}
+  }
+
+  /** Pause on the final logo frame — keep video visible, no static header image. */
+  function freezeIntro() {
     hero.classList.add("is-intro-done");
-    videoEl.hidden = true;
+    videoEl.hidden = false;
+    seekToLastFrame();
     videoEl.pause();
-    imageEl.hidden = false;
     try {
       sessionStorage.setItem(sessionKey, "1");
     } catch (e) {}
   }
 
+  function whenMetadataReady(fn) {
+    if (videoEl.readyState >= 1) {
+      fn();
+      return;
+    }
+    videoEl.addEventListener("loadedmetadata", fn, { once: true });
+  }
+
   if (sessionStorage.getItem(sessionKey) === "1") {
-    showImageOnly();
+    videoEl.autoplay = false;
+    videoEl.preload = "auto";
+    whenMetadataReady(freezeIntro);
     return;
   }
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    showImageOnly();
+    videoEl.autoplay = false;
+    whenMetadataReady(freezeIntro);
     return;
   }
 
   function bindEnd(el) {
-    el.addEventListener("ended", showImageOnly, { once: true });
-    el.addEventListener("error", showImageOnly, { once: true });
+    el.addEventListener("ended", freezeIntro, { once: true });
+    el.addEventListener("error", function () {
+      whenMetadataReady(freezeIntro);
+    }, { once: true });
   }
 
   if (youtubeId) {
@@ -50,15 +72,18 @@
     iframe.allow =
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     iframe.allowFullscreen = true;
-    hero.insertBefore(iframe, imageEl);
-    imageEl.hidden = true;
-    /* YouTube iframe has no reliable ended event — fall back to image after typical intro length. */
-    setTimeout(showImageOnly, 150000);
+    hero.appendChild(iframe);
+    setTimeout(function () {
+      hero.classList.add("is-intro-done");
+      try {
+        sessionStorage.setItem(sessionKey, "1");
+      } catch (e) {}
+    }, 150000);
     return;
   }
 
   if (!localSrc) {
-    showImageOnly();
+    freezeIntro();
     return;
   }
 
@@ -84,13 +109,12 @@
     videoEl.volume = 0;
   });
 
-  imageEl.hidden = true;
   bindEnd(videoEl);
 
   var playAttempt = videoEl.play();
   if (playAttempt && typeof playAttempt.catch === "function") {
     playAttempt.catch(function () {
-      showImageOnly();
+      whenMetadataReady(freezeIntro);
     });
   }
 })();
