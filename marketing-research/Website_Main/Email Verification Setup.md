@@ -2,7 +2,7 @@
 type: website
 page: email-verification-setup
 site: becertifiedtoday.com
-status: planning
+status: v1-live-reuses-question-verification
 tags:
   - marketing
   - becertifiedtoday
@@ -17,6 +17,15 @@ related:
 # Email verification setup
 
 Purpose: set up a simple eligibility check for verified learner discounts without making the site feel complicated or suspicious.
+
+V1 implementation: `/verified-learner-discounts.html` now has a visible verified discount request form. It reuses the existing Ask-a-question email verification/admin pipeline:
+
+1. The form posts to `/api/sample-lead` with `action: "request_question_verification"` and `product: "secplus"`.
+2. The existing Resend email sends the verification link to the eligibility email.
+3. The existing `/verify-question.html` confirmation flow stores the verified request in the visitor-question admin queue.
+4. Admin manually reviews the structured request and manually creates/sends the Stripe discount code if approved.
+
+Stripe promotion-code creation is deliberately not automated in v1.
 
 The public message should stay simple:
 
@@ -55,13 +64,13 @@ Do not over-explain why a learner may use a different checkout email. Keep it pr
 
 1. Learner opens `/verified-learner-discounts.html`.
 2. Learner selects an eligible group.
-3. Learner enters a school, work, military, government, contractor, or partner email.
-4. System checks the domain or partner code.
+3. Learner enters a school, work, military, government, contractor, partner, or manual-review eligibility email.
+4. Browser validation checks the selected method against the email pattern where possible.
 5. If eligible, system sends a one-time verification link to that email.
 6. Learner clicks the verification link.
-7. System creates a single-use Stripe promotion code or checkout link.
-8. Learner checks out using the email they want for account and access links.
-9. Stripe metadata records the verification group and source.
+7. The verified request enters the existing admin queue.
+8. Admin manually creates and sends the Stripe discount code and access setup if approved.
+9. Learner checks out using the email they want for account and access links.
 10. The normal portal access flow continues from checkout.
 
 Keep the public copy short. The page does not need to explain every backend step.
@@ -73,13 +82,14 @@ Keep the public copy short. The page does not need to explain every backend step
 Required:
 
 - Learner group
-- Verification email or partner code
+- Verification method
+- Eligibility email
+- Discount/access email
 - Consent checkbox for eligibility check
 
 Optional:
 
 - Organization name
-- Role selection for `.edu` users: student, educator, staff, program lead
 - Notes for manual review
 
 Do not ask for documents in v1 unless manual review is active.
@@ -129,14 +139,12 @@ Do not publish the full contractor allowlist on the public site.
 
 ## Verification token
 
-When the email passes the first check:
+V1 reuses the existing visitor-question verification token. When the form passes the first browser-side check:
 
-1. Create a random one-time token.
-2. Store a hash of the token, not the raw token.
-3. Set expiration to 15 to 30 minutes.
-4. Rate limit sends by email, IP, and domain.
-5. Send a plain email with one verification link.
-6. Mark token as used after click.
+1. Create the existing signed verification token.
+2. Set expiration to 24 hours, matching Ask-a-question.
+3. Send one verification link through the existing Resend setup.
+4. Store the request only after the learner clicks the verification link.
 
 Suggested email subject:
 
@@ -158,17 +166,12 @@ This link expires soon and can only be used once.
 
 ## Stripe discount creation
 
-After verification succeeds:
+V1 is manual. After verification succeeds:
 
 1. Identify the discount category.
-2. Create or retrieve the matching single-use promotion code.
-3. Attach metadata:
-   - `verification_group`
-   - `verification_domain`
-   - `verification_method`
-   - `partner_code` when present
-4. Redirect to Stripe Checkout or show the code.
-5. Mark the verification record as redeemed after successful checkout webhook.
+2. Review the structured admin message.
+3. Manually create or retrieve the matching single-use promotion code in Stripe.
+4. Send the discount code and access setup to the discount/access email listed by the learner.
 
 Do not expose reusable public codes.
 
@@ -202,23 +205,25 @@ Minimum useful fields:
 
 Avoid showing full raw tokens or unnecessary learner documents.
 
+V1 stores these fields inside the structured message in the existing visitor-question admin queue rather than adding a new database table.
+
 ---
 
 ## Launch checklist
 
-- [ ] Build verification form
+- [x] Build verification form
 - [ ] Create allowed domain and partner code config
-- [ ] Create email token table or storage
-- [ ] Add rate limits
-- [ ] Send verification email
-- [ ] Connect verified result to Stripe promotion code or checkout link
-- [ ] Add Stripe metadata
-- [ ] Add webhook to mark redemption
-- [ ] Add manual review path
-- [ ] Test `.edu`, `.mil`, `.gov`, contractor pattern, partner code, and rejected personal-domain cases
+- [x] Reuse existing visitor-question email token flow
+- [ ] Add dedicated rate limits
+- [x] Send verification email through existing Resend setup
+- [x] Keep Stripe discount code creation manual in v1
+- [ ] Add Stripe metadata if automation is built later
+- [ ] Add webhook to mark redemption if automation is built later
+- [x] Add manual review path through existing admin queue
+- [x] Test `.edu`, `.mil`, `.gov`, contractor pattern, partner/manual review, and rejected personal-domain cases at the client-validation level
 - [ ] Keep `/verified-learner-discounts.html` out of paid Search sitelinks and homepage promo CTAs
 - [x] Keep the informational page indexed and live in top navigation
-- [ ] Launch the actual verification form only when email verification and Stripe discount handling are ready
+- [x] Launch v1 verification form with manual Stripe handling
 
 ---
 

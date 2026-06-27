@@ -193,6 +193,142 @@
       text-decoration: underline;
       text-underline-offset: 0.12em;
     }
+    .verified-discount-request {
+      margin: 0 0 clamp(28px, 4vw, 40px);
+    }
+    .verified-discount-request .section-inner {
+      padding: clamp(18px, 3.5vw, 26px);
+      border-radius: 16px;
+      border: 1px solid rgba(47, 102, 191, 0.28);
+      background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+      box-shadow: 0 8px 26px rgba(47, 102, 191, 0.12);
+    }
+    .verified-discount-request h2 {
+      margin: 0 0 8px;
+      color: var(--bg);
+      font-size: clamp(1.12rem, 2.8vw, 1.5rem);
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+    }
+    .verified-discount-request p {
+      margin: 0;
+      color: var(--page-muted);
+      font-size: 0.94rem;
+    }
+    .verified-discount-form {
+      margin-top: 18px;
+    }
+    .verified-discount-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 760px) {
+      .verified-discount-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .verified-discount-field--wide {
+        grid-column: 1 / -1;
+      }
+    }
+    .verified-discount-form label {
+      display: block;
+      margin: 0 0 6px;
+      color: #1e293b;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+    .verified-discount-form input,
+    .verified-discount-form select,
+    .verified-discount-form textarea {
+      width: 100%;
+      border: 1px solid rgba(45, 59, 90, 0.22);
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--page-text);
+      font: inherit;
+      padding: 11px 12px;
+      box-shadow: 0 1px 0 rgba(11, 16, 32, 0.03);
+    }
+    .verified-discount-form textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+    .verified-discount-help {
+      display: block;
+      margin-top: 6px;
+      color: #64748b;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    .verified-discount-consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 16px 0 0;
+      color: #334155;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .verified-discount-consent input {
+      width: auto;
+      margin: 4px 0 0;
+      flex-shrink: 0;
+    }
+    .verified-discount-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .verified-discount-actions button {
+      min-height: 44px;
+      border: 1px solid var(--accent-border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      background: linear-gradient(165deg, var(--accent-hover) 0%, var(--accent) 100%);
+      color: #f4f7ff;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.86rem;
+      font-weight: 850;
+      letter-spacing: 0.02em;
+      box-shadow: 0 4px 18px rgba(47, 102, 191, 0.26);
+    }
+    .verified-discount-actions button:hover,
+    .verified-discount-actions button:focus-visible {
+      filter: brightness(1.06);
+    }
+    .verified-discount-actions button:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+    .verified-discount-status {
+      margin: 0;
+      flex: 1 1 18rem;
+      min-height: 1.4em;
+      color: var(--page-muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .verified-discount-status.ok {
+      color: #166534;
+      font-weight: 700;
+    }
+    .verified-discount-status.err {
+      color: #991b1b;
+      font-weight: 700;
+    }
+    .verified-discount-hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
     .section-band {
       margin-top: clamp(28px, 4vw, 40px);
       padding: 0;
@@ -501,7 +637,7 @@
           and government contractors who use certification to meet real school, service, job, and mission requirements.
         </p>
         <p class="draft-note" role="status">
-          Eligibility verification is being prepared. Standard Security+ 30-day access is available now.
+          Eligibility verification requests are available now. Standard Security+ 30-day access is also available.
         </p>
         <section class="privacy-note" aria-labelledby="privacy-note-title">
           <h2 id="privacy-note-title">Email Privacy and Verification</h2>
@@ -516,6 +652,77 @@
           </p>
         </section>
       </div>
+
+      <section class="verified-discount-request" aria-labelledby="verified-discount-request-title">
+        <div class="section-inner">
+          <h2 id="verified-discount-request-title">Request a Verified Learner Discount</h2>
+          <p>
+            Use the email that proves eligibility for verification. Use the discount/access email for the address where you want
+            the discount code and access setup sent after review.
+          </p>
+          <form id="verifiedDiscountRequestForm" class="verified-discount-form" novalidate>
+            <div class="verified-discount-grid">
+              <div class="verified-discount-field">
+                <label for="verifiedDiscountGroup">Learner group</label>
+                <select id="verifiedDiscountGroup" name="learner_group" required>
+                  <option value="">Select a learner group</option>
+                  <option>Student</option>
+                  <option>Educator</option>
+                  <option>Active-duty military, Guard, or Reserve</option>
+                  <option>Veteran</option>
+                  <option>Military transition program</option>
+                  <option>Workforce or job-placement program</option>
+                  <option>First responder or public safety</option>
+                  <option>Federal employee</option>
+                  <option>Government contractor</option>
+                  <option>Other / manual review</option>
+                </select>
+              </div>
+              <div class="verified-discount-field">
+                <label for="verifiedDiscountMethod">Verification method</label>
+                <select id="verifiedDiscountMethod" name="verification_method" required>
+                  <option value="">Select a method</option>
+                  <option value="edu">School email (.edu)</option>
+                  <option value="mil">Military email (.mil)</option>
+                  <option value="gov">Government email (.gov)</option>
+                  <option value="contractor_mailbox">Government-issued contractor mailbox</option>
+                  <option value="employer_domain">Approved contractor/employer domain</option>
+                  <option value="partner_code">Partner or program code</option>
+                  <option value="manual_review">Manual review</option>
+                </select>
+                <span id="verifiedDiscountMethodHint" class="verified-discount-help"></span>
+              </div>
+              <div class="verified-discount-field">
+                <label for="verifiedDiscountEligibilityEmail">Eligibility email</label>
+                <input id="verifiedDiscountEligibilityEmail" name="eligibility_email" type="email" autocomplete="email" required maxlength="254" placeholder="you@school.edu" />
+                <span class="verified-discount-help">This inbox must receive and click the verification email.</span>
+              </div>
+              <div class="verified-discount-field">
+                <label for="verifiedDiscountAccessEmail">Discount/access email</label>
+                <input id="verifiedDiscountAccessEmail" name="access_email" type="email" autocomplete="email" required maxlength="254" placeholder="where to send the code and access setup" />
+                <span class="verified-discount-help">This can be a different email than your eligibility inbox.</span>
+              </div>
+              <div class="verified-discount-field verified-discount-field--wide">
+                <label for="verifiedDiscountOrganization">Organization or program (optional)</label>
+                <input id="verifiedDiscountOrganization" name="organization" type="text" maxlength="160" placeholder="School, agency, unit, employer, partner, or program name" />
+              </div>
+              <div class="verified-discount-field verified-discount-field--wide">
+                <label for="verifiedDiscountNotes">Notes (optional)</label>
+                <textarea id="verifiedDiscountNotes" name="notes" maxlength="700" placeholder="Add a partner code, coordinator name, role, or anything needed for manual review."></textarea>
+              </div>
+            </div>
+            <label class="verified-discount-consent">
+              <input type="checkbox" name="consent" required />
+              <span>I want Be Certified Today to email a verification link to my eligibility email for discount review.</span>
+            </label>
+            <input class="verified-discount-hp" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <div class="verified-discount-actions">
+              <button type="submit">Send verification email</button>
+              <p id="verifiedDiscountStatus" class="verified-discount-status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </section>
 
       <section class="section-band section-band--dark" aria-labelledby="why-special-title">
         <div class="section-inner">
@@ -772,13 +979,13 @@
 
       <section class="cta-block" aria-labelledby="cta-title">
         <div class="section-inner">
-          <h2 id="cta-title">Eligibility-Based Discounts Are Coming Soon</h2>
+          <h2 id="cta-title">Use the Verification Form When You Are Ready</h2>
           <p>
-            The discount flow is not live yet. When it is ready, discounts will follow the verified learner guidelines on this page.
-            They will not be used as a general first-time visitor offer, popup, homepage banner, or broad coupon CTA.
+            Discount requests follow the verified learner guidelines on this page. They are not used as a general first-time
+            visitor offer, popup, homepage banner, or broad coupon CTA.
           </p>
           <div class="cta-links">
-            <a href="/comptia-sec+-home.html">Return to Security+ exam prep</a>
+            <a href="#verified-discount-request-title">Request verification</a>
             <a class="secondary" href="/comptia-sec+-home.html#purchase">View standard 30-day access</a>
           </div>
         </div>
@@ -804,6 +1011,7 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+  <script src="/js/verified-discount-request.js" defer></script>
   <script src="/js/visitor-question-widget.js" defer></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 type: website
 page: verified-learner-discounts
 site: becertifiedtoday.com
-status: live-info-page
+status: live-v1-verification-form
 planned_url: https://becertifiedtoday.com/verified-learner-discounts.html
 nav: live
 seo_index: index, follow
@@ -27,7 +27,7 @@ related:
 
 # Verified learner discounts
 
-*Live informational page:* `public/verified-learner-discounts.html` · linked from the top menu and included in `public/sitemap.xml`. Discount verification and discounted checkout are still not live. Keep this page out of paid Search sitelinks, discount keywords, homepage banners, popups, and broad promo CTAs.
+*Live page:* `public/verified-learner-discounts.html` · linked from the top menu and included in `public/sitemap.xml`. V1 discount verification is live as an email-verification request form. Discounted checkout is still manual: after a verified request reaches admin review, create/send the Stripe discount code manually. Keep this page out of paid Search sitelinks, discount keywords, homepage banners, popups, and broad promo CTAs.
 
 ---
 
@@ -80,13 +80,14 @@ The page should make three points:
 | # | Section | Message |
 |---|---------|---------|
 | 1 | **Hero** | Verified discounts for people whose certification supports service, education, workforce entry, or job readiness. |
-| 2 | **Why these groups matter** | Their roles affect public systems, students, communities, and career mobility. |
-| 3 | **Discount chart** | Clear eligibility, discount, price, and verification method. |
-| 4 | **Built for their schedule** | Browser prep, mobile-friendly, timed sim, adaptive review, verified explanations. |
-| 5 | **How verification works** | Eligible email proves discount eligibility. Checkout email receives account and access links. |
-| 6 | **Groups explained** | Students, educators, military, veterans, workforce programs, first responders, federal employees, contractors. |
-| 7 | **What this is not** | Not official endorsement, not free access, not an exam dump, not a course replacement. |
-| 8 | **CTA** | Explain that eligibility-based discounts are coming soon. Do not frame discounts as a first-time visitor offer. |
+| 2 | **Verified request form** | Learner selects group/method, verifies eligibility email, and lists the discount/access email for follow-up. |
+| 3 | **Why these groups matter** | Their roles affect public systems, students, communities, and career mobility. |
+| 4 | **Discount chart** | Clear eligibility, discount, price, and verification method. |
+| 5 | **Built for their schedule** | Browser prep, mobile-friendly, timed sim, adaptive review, verified explanations. |
+| 6 | **How verification works** | Eligible email proves discount eligibility. Checkout email receives account and access links. |
+| 7 | **Groups explained** | Students, educators, military, veterans, workforce programs, first responders, federal employees, contractors. |
+| 8 | **What this is not** | Not official endorsement, not free access, not an exam dump, not a course replacement. |
+| 9 | **CTA** | Send users back to the verification form or standard access. Do not frame discounts as a first-time visitor offer. |
 
 ---
 
@@ -163,6 +164,26 @@ DoD and federal examples:
 - `@gsa.gov`
 
 **Reject for automated verification:** personal domains such as `gmail.com`, `icloud.com`, `yahoo.com`, or `outlook.com`, unless paired with a valid partner code or manual approval.
+
+### Live v1 form fields
+
+The live form posts to `/api/sample-lead` with `action: "request_question_verification"` and `product: "secplus"`. It reuses the Ask-a-question verification link and admin queue. The structured admin message includes:
+
+- Learner group
+- Verification method
+- Eligibility email, which must click the verification link
+- Discount/access email, where the approved discount code and access setup should be sent
+- Organization/program, optional
+- Notes, optional
+- Page path
+- Admin instruction that Stripe discount-code creation remains manual
+
+Client-side checks:
+
+- `.edu`, `.mil`, and `.gov` methods require the matching suffix.
+- Government-issued contractor mailbox accepts `.mil`/`.gov` addresses with `.ctr`, `.civ`, or `v-` markers, or non-personal employer domains for review.
+- Approved contractor/employer domain rejects common personal email domains.
+- Partner/program code and manual review allow personal domains, but copy makes clear the request is reviewed before approval.
 
 ---
 
@@ -256,7 +277,7 @@ Contractors often need certification because the contract requires it. The disco
 
 ## CTA copy
 
-### Primary CTA (future, eligibility path only)
+### Primary CTA (eligibility path only)
 
 **Verify eligibility for a learner discount**
 
@@ -312,7 +333,7 @@ Assets can live under `public/images/discounts/` when ready.
 
 - [x] Decide final URL: `/verified-learner-discounts.html`
 - [x] Build public information page with `index, follow`
-- [ ] Build verification form or placeholder waitlist
+- [x] Build v1 verification form using existing email verification/admin pipeline
 - [ ] Decide Stripe implementation: promo codes vs separate Price IDs
 - [ ] Add abuse controls: rate limit, one code per verified email, manual review queue
 - [ ] Confirm copy avoids official endorsement language
