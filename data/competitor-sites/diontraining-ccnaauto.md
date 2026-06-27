@@ -6,12 +6,15 @@ url: https://www.diontraining.com/
 product: CCNAAUTO-200-901
 category: practice_samples
 research_date: 2026-06-25
+login_required: true
+sign_on_notes: Full practice packs are paid; free blog samples do not require sign-on
 question_poll:
   enabled: true
   tier: b
   id: diontraining-ccnaauto-practice
   sample_url: https://www.diontraining.com/search?q=ccna+automation&type=product
   parser: generic_mcq
+  login_required: false
   version_note: 200-901 v1.1
   topic_notes: Tier B — Shopify practice exam packs when CCNAAUTO SKU exists; verify on Cisco Tier A
 pbq_poll:

@@ -163,4 +163,4 @@ These CCNA objectives overlap CCNAAUTO hunt scope. Existing BCT slugs tagged `6.
 4. **RESTCONF/NETCONF output** (5.10) — CLI/XML exhibit transcripts
 5. **Terraform IaC** (5.6) — v1.1 net-new vs CCNA V_2025 bank
 
-After each monthly run, link net-new items here from [[Hunt/ccnaauto/README|ccnaauto hunt runs]] (`Hunt/ccnaauto/YYYY-MM-DD/`).
+After each monthly run, link net-new items here from [[hunt-results/README|hunt results]] (`hunt-results/YYYY-MM-DD.md`).

@@ -6,6 +6,8 @@ url: https://www.exam-labs.com/dumps/200-901
 product: CCNAAUTO-200-901
 category: syndicated_marketplace
 research_date: 2026-06-27
+login_required: true
+sign_on_notes: Full dump downloads require paid membership
 question_poll:
   enabled: false
   tier: c

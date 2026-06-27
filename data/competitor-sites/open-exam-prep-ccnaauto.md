@@ -6,6 +6,7 @@ url: https://open-exam-prep.com/practice/devnet-associate
 product: CCNAAUTO-200-901
 category: practice_samples
 research_date: 2026-06-27
+login_required: false
 question_poll:
   enabled: false
   tier: b

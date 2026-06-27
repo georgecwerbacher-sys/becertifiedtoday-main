@@ -13,7 +13,18 @@ Filter notes where frontmatter has `product: CCNAAUTO-200-901` (filenames `*-ccn
 
 **Manual search:** use [[#Places to search|Places to search]] for URLs not yet in the poll registry. Paraphrase only; verify every key on Cisco Tier A.
 
-Latest hunt: [[hunt-results/2026-06-25|2026-06-25]] — 32 MCQ (CertiMaan) · labs/PBQ signals from all three active sources.
+Latest hunt: [[hunt-results/2026-06-25|2026-06-25]] — 32 MCQ (CertiMaan) · labs/PBQ signals · merged runs deduped
+
+## Hunt capture
+
+Poll + export workflow — sources tracked in this list:
+
+1. **Active polls** — `npm run ccnaauto:hunt` writes **one results doc per run** (`hunt-results/YYYY-MM-DD.md`) with all MCQ + labs/PBQ inline. **Images are captured only when the stem references an exhibit** (refer to the exhibit, topology, etc.) — not decorative page art.
+2. **Sign-on** — if `login_required: true` on the competitor note (`data/competitor-sites/*-ccnaauto.md`), each question block includes `- [ ] Sign-on completed (required for this source)`.
+3. **Places to search** — URLs in the table below for manual scan; enable poll in a competitor note or capture in the next results run.
+4. **Verify** — paraphrase only; confirm every key on Cisco Tier A / DevNet docs before BCT draft.
+
+Backlog URLs: enable poll in competitor note, smoke test, then flip `enabled: true` in this table.
 
 ## Active (polls on)
 
@@ -87,4 +98,4 @@ Other exams use the **same folder** with different `product:` values:
 | CCNAAUTO | `CCNAAUTO-200-901` | `*-ccnaauto.md` |
 | ENCOR | `ENCOR-350-401` | `*-encor.md` |
 
-Back: [[README|CCNA-Auto]] · [[hunt-inventory|Hunt results]] · [[../Competitors|Competitors MOC]]
+Back: [[README|CCNA-Auto]] · [[hunt-results/README|Hunt results]] · [[../Competitors|Competitors MOC]]

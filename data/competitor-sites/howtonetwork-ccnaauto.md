@@ -6,6 +6,7 @@ url: https://www.howtonetwork.com/free/devnet-associate/
 product: CCNAAUTO-200-901
 category: practice_samples
 research_date: 2026-06-25
+login_required: false
 question_poll:
   enabled: true
   tier: b

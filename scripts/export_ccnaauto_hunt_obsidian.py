@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export CCNAAUTO 200-901 hunt rows to Obsidian under CCNA-Auto/hunt-results/."""
+"""Export CCNAAUTO 200-901 hunt rows to one Obsidian doc per run under CCNA-Auto/hunt-results/."""
 from __future__ import annotations
 
 import argparse
@@ -14,12 +14,20 @@ MCQ_RUNS = ROOT / "data" / "ccnaauto-question-sourcing" / "runs"
 LABS_RUNS = ROOT / "data" / "ccnaauto-question-sourcing" / "labs" / "runs"
 OUT_BASE = ROOT / "CCNA-Auto" / "hunt-results"
 CONFIG = ROOT / "data" / "ccnaauto-question-sourcing" / "config" / "ccnaauto-web-sources.json"
+VAULT_PREFIX = "CCNA-Auto/hunt-results"
 EXAM = "CCNAAUTO-200-901"
 VERSION_DIR = "v1.1"
 LABS_DIR = "labs"
 
 sys.path.insert(0, str(ROOT / "scripts"))
+from ccnaauto_competitor_list import load_competitor_site_meta, login_required_for_source  # noqa: E402
 from ccnaauto_exam_guard import EXAM as GUARD_EXAM, is_ccnaauto_hunt_row  # noqa: E402
+from hunt_note_exhibits import (  # noqa: E402
+    exhibit_warning,
+    format_exhibit_cli_block,
+    format_exhibit_image_block,
+    resolve_exhibit,
+)
 from net_new_markdown import version_line  # noqa: E402
 
 
@@ -69,41 +77,68 @@ def blueprint_label(row: dict, blueprint_by_source: dict[str, str]) -> str:
     return rev or "200-901 v1.1"
 
 
-def item_filename(prefix: str, index: int, stem: str) -> str:
-    return f"{prefix}{index:03d}-{slugify(stem)}"
+def review_checklist(*, login_required: bool, sign_on_notes: str, exhibit_status: str) -> list[str]:
+    lines: list[str] = []
+    if login_required:
+        hint = f" — {sign_on_notes}" if sign_on_notes else ""
+        lines.append(f"- [ ] Sign-on completed (required for this source{hint})")
+    lines.append("- [ ] Verified vs Cisco Tier A / DevNet docs")
+    if exhibit_status == "missing-image":
+        lines.append("- [ ] Exhibit image captured above")
+    elif exhibit_status == "missing-cli":
+        lines.append("- [ ] Exhibit (CLI / code transcript) captured above")
+    elif exhibit_status in {"cli", "image"}:
+        lines.append("- [ ] Exhibit verified above")
+    lines.append("- [ ] Draft original stem in `public/CCNAAUTO-Study/` (planned)")
+    return lines
 
 
-def write_mcq_note(path: Path, *, index: int, row: dict, run_id: str, blueprint_by_source: dict[str, str]) -> str:
+def render_mcq_section(
+    *,
+    index: int,
+    row: dict,
+    run_id: str,
+    blueprint_by_source: dict[str, str],
+    site_meta: dict[str, dict],
+    run_dir: Path,
+) -> tuple[list[str], str, str, str, list[Path]]:
     revision = blueprint_label(row, blueprint_by_source)
     source_url = row.get("source_url", "") or ""
-    stem = (row.get("stem") or "").strip()
-    fname = item_filename("Q", index, stem)
-    rel = f"{run_id}/{VERSION_DIR}/{fname}"
-
+    stem, exhibit_text, exhibit_status, image_paths = resolve_exhibit(row, run_dir)
+    login_required, sign_on_notes = login_required_for_source(
+        str(row.get("source_id", "")), site_meta
+    )
     lines = [
-        "---",
-        "type: hunt-candidate",
-        f"exam: {GUARD_EXAM}",
-        f"run: {run_id}",
-        f"version_folder: {VERSION_DIR}",
-        f"source_id: {row.get('source_id', '')}",
-        f"source_question_id: {row.get('source_question_id', '')}",
-        f"bct_match_score: {row.get('bct_match_score', '')}",
-        f"blueprint: {revision or 'v1.1'}",
-        "status: review",
-        "---",
-        "",
-        f"# Question {index}",
+        f"### Question {index}",
         "",
     ]
     if row.get("topic_notes"):
         lines.extend([f"**Topic:** {row['topic_notes']}", ""])
+    if login_required:
+        note = sign_on_notes or "Sign-on or paid access required on competitor site."
+        lines.extend([f"> [!note] Sign-on required — {note}", ""])
+
+    lines.extend(exhibit_warning(exhibit_status, source_url, f"{VAULT_PREFIX}/{run_id}"))
+
+    for image_path in image_paths:
+        image_rel = f"{run_id}/images/{image_path.name}"
+        lines.extend(format_exhibit_image_block(
+            image_path,
+            image_rel=image_rel,
+            vault_path=f"{VAULT_PREFIX}/{image_rel}",
+        ))
+
+    if exhibit_text:
+        lines.extend(format_exhibit_cli_block(exhibit_text))
+
     lines.extend([stem, ""])
+
     for letter in "abcdef":
         choice = row.get(f"choice_{letter}")
         if choice:
             lines.append(f"- {choice}")
     lines.append("")
+
     if row.get("stated_answer"):
         lines.extend([f"**Stated answer (external):** {row['stated_answer']}", ""])
     if revision:
@@ -115,40 +150,40 @@ def write_mcq_note(path: Path, *, index: int, row: dict, run_id: str, blueprint_
         "",
         f"**BCT match score:** {row.get('bct_match_score', '—')}",
         "",
-        "- [ ] Verified vs Cisco Tier A / DevNet docs",
-        "- [ ] Draft original stem in `public/CCNAAUTO-Study/` (planned)",
-        "",
-        f"[[../../{run_id}|Back to run index]] · [[../../README|All runs]]",
-        "",
     ])
-    path.write_text("\n".join(lines), encoding="utf-8")
-    return rel
+    lines.extend(review_checklist(
+        login_required=login_required,
+        sign_on_notes=sign_on_notes,
+        exhibit_status=exhibit_status,
+    ))
+    lines.extend(["", "---", ""])
+
+    ex_flag = "login" if login_required else exhibit_status
+    return lines, stem or row.get("stem", ""), row.get("source_id", ""), ex_flag, image_paths
 
 
-def write_lab_note(path: Path, *, index: int, row: dict, run_id: str) -> str:
+def render_lab_section(
+    *,
+    index: int,
+    row: dict,
+    run_id: str,
+    site_meta: dict[str, dict],
+) -> tuple[list[str], str, str]:
     stem = (row.get("stem") or "").strip()
-    fname = item_filename("L", index, stem)
-    rel = f"{run_id}/{LABS_DIR}/{fname}"
     source_url = row.get("source_url", "") or ""
     interaction = (row.get("interaction_notes") or row.get("pbq_type") or "").strip()
     blob = f"{interaction} {stem}"
     style = "drag-and-drop" if re.search(r"drag", blob, re.I) else "labs-sim"
-
+    login_required, sign_on_notes = login_required_for_source(
+        str(row.get("source_id", "")), site_meta
+    )
     lines = [
-        "---",
-        "type: hunt-labs-candidate",
-        f"exam: {GUARD_EXAM}",
-        f"run: {run_id}",
-        f"content_type: {style}",
-        f"source_id: {row.get('source_id', '')}",
-        f"source_question_id: {row.get('source_question_id', '')}",
-        f"bct_match_score: {row.get('bct_match_score', '')}",
-        "status: review",
-        "---",
-        "",
-        f"# Labs / PBQ {index}",
+        f"### Labs / PBQ {index}",
         "",
     ]
+    if login_required:
+        note = sign_on_notes or "Sign-on or paid access required on competitor site."
+        lines.extend([f"> [!note] Sign-on required — {note}", ""])
     if row.get("topic_notes"):
         lines.extend([f"**Topic:** {row['topic_notes']}", ""])
     if interaction:
@@ -159,39 +194,53 @@ def write_lab_note(path: Path, *, index: int, row: dict, run_id: str) -> str:
         "",
         f"**BCT match score:** {row.get('bct_match_score', '—')}",
         "",
+    ])
+    if login_required:
+        lines.append(
+            f"- [ ] Sign-on completed (required for this source"
+            f"{(' — ' + sign_on_notes) if sign_on_notes else ''})"
+        )
+    lines.extend([
         "- [ ] Verified vs Cisco Tier A",
-        "- [ ] Capture exhibit / script if competitor page has one",
+        "- [ ] Exhibit / script captured above (screenshot or transcript)",
         "- [ ] Draft lab or drag-and-drop in CCNAAUTO bank",
         "",
-        f"[[../../{run_id}|Back to run index]] · [[../../README|All runs]]",
+        "---",
         "",
     ])
-    path.write_text("\n".join(lines), encoding="utf-8")
-    return rel, style
+    return lines, stem, style
 
 
-def write_run_index(
+def write_consolidated_run_doc(
     path: Path,
     *,
     run_id: str,
     mcq_rows: list[dict],
-    mcq_links: list[tuple[str, str, str]],
+    mcq_meta: list[tuple[str, str, str]],
     lab_rows: list[dict],
-    lab_links: list[tuple[str, str, str, str]],
+    lab_meta: list[tuple[str, str]],
     mcq_discovered: int,
     mcq_dup: int,
     labs_discovered: int,
     labs_dup: int,
+    mcq_sections: list[list[str]],
+    lab_sections: list[list[str]],
 ) -> None:
-    dnd_count = sum(1 for _, _, _, style in lab_links if style == "drag-and-drop")
+    dnd_count = sum(1 for _, style in lab_meta if style == "drag-and-drop")
+    login_count = sum(1 for _, _, ex in mcq_meta if ex == "login")
+    exhibit_counts: dict[str, int] = {}
+    for _, _, ex in mcq_meta:
+        exhibit_counts[ex] = exhibit_counts.get(ex, 0) + 1
+
     lines = [
         "---",
-        "type: hunt-index",
+        "type: hunt-results",
         f"exam: {GUARD_EXAM}",
         f"run: {run_id}",
         f"mcq_net_new_count: {len(mcq_rows)}",
         f"labs_net_new_count: {len(lab_rows)}",
         f"drag_drop_signals: {dnd_count}",
+        f"login_required_count: {login_count}",
         f"mcq_discovered_count: {mcq_discovered}",
         f"mcq_likely_duplicate_count: {mcq_dup}",
         f"labs_discovered_count: {labs_discovered}",
@@ -201,51 +250,80 @@ def write_run_index(
         "",
         f"# CCNAAUTO 200-901 hunt — {run_id}",
         "",
-        "Competitor net-new vs interim BCT automation overlap. **Verify on Cisco Tier A** before bank draft.",
+        "All net-new MCQ and labs/PBQ signals in **this file**. **Verify on Cisco Tier A** before bank draft.",
+        "Sources: [[../competitor-list|competitor-list]]",
         "",
         f"- MCQ net-new: **{len(mcq_rows)}** (discovered {mcq_discovered}, likely dup {mcq_dup})",
         f"- Labs / PBQ net-new: **{len(lab_rows)}** (discovered {labs_discovered}, likely dup {labs_dup})",
         f"- Drag-and-drop signals: **{dnd_count}**",
+        f"- Sign-on required: **{login_count}** MCQ sources",
+        "",
+        "**Exhibits:** " + ", ".join(f"{k} **{v}**" for k, v in sorted(exhibit_counts.items())),
         "",
         f"Data: `data/ccnaauto-question-sourcing/runs/{run_id}-net-new.csv` · "
         f"`data/ccnaauto-question-sourcing/labs/runs/{run_id}-net-new.csv`",
         "",
-        f"## MCQ — [[{run_id}/{VERSION_DIR}|v1.1 folder]]",
+        "## MCQ table of contents",
         "",
     ]
-    for rel, stem, source_id in mcq_links:
-        note = rel.split("/")[-1]
+    for i, (stem, source_id, ex_status) in enumerate(mcq_meta, 1):
         short = stem[:72] + ("…" if len(stem) > 72 else "")
-        lines.append(f"- [[{rel}|{note}]] — {short} (`{source_id}`)")
-    lines.extend(["", "## Labs / PBQ / D&D signals", ""])
-    for rel, stem, source_id, style in lab_links:
-        note = rel.split("/")[-1]
+        ex_bit = f" · exhibit:{ex_status}" if ex_status not in ("none", "") else ""
+        lines.append(f"- [[#Question {i}|Q{i:03d}]]{ex_bit} — {short} (`{source_id}`)")
+    lines.extend(["", "## MCQ questions", ""])
+    for section in mcq_sections:
+        lines.extend(section)
+
+    lines.extend(["", "## Labs / PBQ table of contents", ""])
+    for i, (stem, style) in enumerate(lab_meta, 1):
         short = stem[:72] + ("…" if len(stem) > 72 else "")
         tag = " · D&D" if style == "drag-and-drop" else ""
-        lines.append(f"- [[{rel}|{note}]]{tag} — {short} (`{source_id}`)")
+        lines.append(f"- [[#Labs / PBQ {i}|L{i:03d}]]{tag} — {short}")
+    lines.extend(["", "## Labs / PBQ / D&D signals", ""])
+    for section in lab_sections:
+        lines.extend(section)
+
     lines.extend([
         "",
-        "Back: [[../README|All runs]] · [[../hunt-inventory|Hunt inventory]]",
+        "Back: [[README|All runs]] · [[../competitor-list|Competitor list]]",
         "",
     ])
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def cleanup_legacy_per_question_files(run_dir: Path) -> None:
+    for sub in (VERSION_DIR, LABS_DIR):
+        folder = run_dir / sub
+        if not folder.is_dir():
+            continue
+        for md in folder.glob("*.md"):
+            md.unlink(missing_ok=True)
+        if folder.is_dir() and not any(folder.iterdir()):
+            folder.rmdir()
+
+
 def update_readme(run_id: str, mcq_count: int, lab_count: int) -> None:
     readme = OUT_BASE / "README.md"
-    link = f"- [[{run_id}|{run_id}]] — {mcq_count} MCQ · {lab_count} labs/PBQ"
+    link = f"- [[{run_id}|{run_id}]] — {mcq_count} MCQ · {lab_count} labs/PBQ (single doc)"
     if not readme.is_file():
         readme.write_text(
             "\n".join([
                 "---", "type: hunt-folder", f"exam: {GUARD_EXAM}", "---", "",
                 "# CCNAAUTO 200-901 hunt results", "",
-                "Full question text lives here (main Obsidian vault). Rerun: `npm run ccnaauto:hunt`", "",
+                "One **results doc per run** — all questions, choices, and exhibits in `YYYY-MM-DD.md`.",
+                "Sources: [[../competitor-list|competitor-list]]. Rerun: `npm run ccnaauto:hunt`", "",
                 "## Runs", "", link, "",
             ]),
             encoding="utf-8",
         )
         return
     text = readme.read_text(encoding="utf-8")
+    text = re.sub(
+        r"One note per question[^\n]*\n",
+        "One **results doc per run** — all questions, choices, and exhibits in `YYYY-MM-DD.md`.\n",
+        text,
+        count=1,
+    )
     if f"[[{run_id}|{run_id}]]" not in text:
         if "## Runs" in text:
             text = text.replace("## Runs\n", f"## Runs\n\n{link}\n", 1)
@@ -261,6 +339,15 @@ def update_readme(run_id: str, mcq_count: int, lab_count: int) -> None:
     readme.write_text(text, encoding="utf-8")
 
 
+def cleanup_stale_exhibit_images(run_dir: Path, kept: set[Path]) -> None:
+    images_dir = run_dir / "images"
+    if not images_dir.is_dir():
+        return
+    for path in images_dir.iterdir():
+        if path.is_file() and path.resolve() not in kept:
+            path.unlink(missing_ok=True)
+
+
 def export_run(run_id: str | None = None) -> int:
     mcq_run = run_id or latest_run_id(MCQ_RUNS)
     if not mcq_run:
@@ -273,57 +360,67 @@ def export_run(run_id: str | None = None) -> int:
     mcq_discovered, mcq_dup = load_run_meta(MCQ_RUNS, mcq_run, len(mcq_rows))
     labs_discovered, labs_dup = load_run_meta(LABS_RUNS, lab_run, len(lab_rows))
     blueprint_by_source = load_blueprint_map()
+    site_meta = load_competitor_site_meta()
 
     run_dir = OUT_BASE / mcq_run
-    mcq_dir = run_dir / VERSION_DIR
-    labs_dir = run_dir / LABS_DIR
-    mcq_dir.mkdir(parents=True, exist_ok=True)
-    labs_dir.mkdir(parents=True, exist_ok=True)
+    run_dir.mkdir(parents=True, exist_ok=True)
 
-    mcq_links: list[tuple[str, str, str]] = []
+    mcq_sections: list[list[str]] = []
+    mcq_meta: list[tuple[str, str, str]] = []
+    kept_images: set[Path] = set()
     for i, row in enumerate(mcq_rows, 1):
-        rel = write_mcq_note(
-            mcq_dir / f"{item_filename('Q', i, row.get('stem', ''))}.md",
+        section, stem, source_id, ex_flag, image_paths = render_mcq_section(
             index=i,
             row=row,
             run_id=mcq_run,
             blueprint_by_source=blueprint_by_source,
+            site_meta=site_meta,
+            run_dir=run_dir,
         )
-        mcq_links.append((rel, row.get("stem", ""), row.get("source_id", "")))
+        mcq_sections.append(section)
+        mcq_meta.append((stem, source_id, ex_flag))
+        kept_images.update(p.resolve() for p in image_paths)
 
-    lab_links: list[tuple[str, str, str, str]] = []
+    lab_sections: list[list[str]] = []
+    lab_meta: list[tuple[str, str]] = []
     for i, row in enumerate(lab_rows, 1):
-        rel, style = write_lab_note(
-            labs_dir / f"{item_filename('L', i, row.get('stem', ''))}.md",
+        section, stem, style = render_lab_section(
             index=i,
             row=row,
             run_id=mcq_run,
+            site_meta=site_meta,
         )
-        lab_links.append((rel, row.get("stem", ""), row.get("source_id", ""), style))
+        lab_sections.append(section)
+        lab_meta.append((stem, style))
 
-    write_run_index(
-        OUT_BASE / f"{mcq_run}.md",
+    cleanup_stale_exhibit_images(run_dir, kept_images)
+    out_path = OUT_BASE / f"{mcq_run}.md"
+    write_consolidated_run_doc(
+        out_path,
         run_id=mcq_run,
         mcq_rows=mcq_rows,
-        mcq_links=mcq_links,
+        mcq_meta=mcq_meta,
         lab_rows=lab_rows,
-        lab_links=lab_links,
+        lab_meta=lab_meta,
         mcq_discovered=mcq_discovered,
         mcq_dup=mcq_dup,
         labs_discovered=labs_discovered,
         labs_dup=labs_dup,
+        mcq_sections=mcq_sections,
+        lab_sections=lab_sections,
     )
+    cleanup_legacy_per_question_files(run_dir)
     update_readme(mcq_run, len(mcq_rows), len(lab_rows))
 
     print(
-        f"[export_ccnaauto] {mcq_run}: {len(mcq_rows)} MCQ -> CCNA-Auto/hunt-results/{mcq_run}/{VERSION_DIR}/ · "
-        f"{len(lab_rows)} labs -> CCNA-Auto/hunt-results/{mcq_run}/{LABS_DIR}/"
+        f"[export_ccnaauto] {mcq_run}: {len(mcq_rows)} MCQ + {len(lab_rows)} labs -> "
+        f"{VAULT_PREFIX}/{mcq_run}.md"
     )
     return 0
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Export CCNAAUTO hunt CSV rows to Obsidian CCNA-Auto/hunt-results/")
+    ap = argparse.ArgumentParser(description="Export CCNAAUTO hunt CSV rows to one Obsidian doc per run")
     ap.add_argument("--date", help="Run id YYYY-MM-DD (default: latest net-new CSV)")
     args = ap.parse_args()
     return export_run(args.date)
