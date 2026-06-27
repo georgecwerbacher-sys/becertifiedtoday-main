@@ -51,18 +51,19 @@ You are **well ahead** of where a Jun 24 Sec+-only launch would be — earlier *
 
 ---
 
-## Revised budget advice — **keep $15/day**
+## Revised budget advice — **three campaigns at $20/day each**
 
 Earlier math assumed **~$0** spent by Jun 24. With **$255.68** already in:
 
-| Daily budget (Sec+ only, ccna paused) | Cross **$500** | Cross **$510** | By Jul 19 at $15/day |
+| Daily budget (Sec+ only, ccna paused) | Cross **$500** | Cross **$510** | By Jul 19 |
 |--------------------------------------|----------------|----------------|----------------------|
-| **$15/day** | ~**Jul 11** | ~**Jul 12** | **$630** cumulative ✓ |
-| $20/day | ~Jul 4 | ~Jul 5 | $755 ✓ |
+| $15/day legacy single-campaign pace | ~Jul 11 | ~Jul 12 | $630 cumulative ✓ |
+| $20/day single-campaign pace | ~Jul 4 | ~Jul 5 | $755 ✓ |
+| **$60/day three-campaign pace** | **~Jun 29–30** | **~Jun 30** | **~$1,720 cumulative ✓** |
 
-**Recommendation:** **Stay at $15/day** for the 21-day conversion test. You should **clear $500 with room to spare** before Jul 19 without raising budget.
+**Current plan:** run the three Sec+ campaigns at **$20/day each** (**$60/day total**) and use the promo credit to extend runway after the $500 threshold clears.
 
-Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** (e.g. old campaigns excluded) and you fall behind their progress bar.
+Hold keyword bids for the first **7 days**; adjust after week 1 based on keyword-level results.
 
 ---
 
@@ -95,15 +96,15 @@ Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** 
 
 ---
 
-## Milestones (projected at $15/day, ccna paused)
+## Milestones (projected at $60/day, ccna paused)
 
 | Date | Projected cumulative | Event |
 |------|---------------------:|-------|
 | Jun 25 (actual) | **$280.26** | Today |
-| Jul 1 | ~$370 | Week 1 review |
-| **~Jul 11** | **~$520** | **Promo threshold** |
-| Jul 14 | ~$565 | 21-day conversion test ends |
-| Jul 19 | ~$640 | Promo deadline |
+| **~Jun 30** | **~$520** | **Promo threshold** |
+| Jul 1 | ~$580 | Week 1 review |
+| Jul 14 | ~$1,360 | 21-day conversion test ends |
+| Jul 19 | ~$1,660–1,720 | Promo deadline |
 
 ---
 
@@ -124,7 +125,7 @@ Only bump to **$20/day** if Google’s promo tracker shows **ineligible spend** 
 
 ## Do not
 
-- Raise budget to $20/day **only** for the promo — **$15/day is enough** at current pace
+- Tune keyword bids before one full week of data
 - Assume this CSV overrides Google’s promo meter — **widget is authoritative**
 - Forget to **pause ccna_wedge_lab** if you want spend concentrated on Sec+ learning
 

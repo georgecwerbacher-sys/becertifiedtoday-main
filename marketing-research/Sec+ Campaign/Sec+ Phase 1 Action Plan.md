@@ -10,9 +10,9 @@ tags:
 
 # Sec+ Phase 1 — what we need from you
 
-**Purpose:** [[Sec+ Phase 1 Purpose]] · **Numbers:** [[Sec+ Phase 1 Scorecard]] · **Landing ops:** [[Sec+ Notes#Landing conversion (track hardest)]]
+**Purpose:** [[Sec+ Phase 1 Purpose]] · **Numbers:** [[Sec+ Phase 1 Scorecard]] · **Landing ops:** [[Sec+ Notes#Landing conversion (track hardest)]] · **Phase 2:** [[Sec+ Phase 2 Institutional Targeting]]
 
-This is the project runbook — not competitor research. Competitors sell dumps ($49–99 one-time) and courses ($300+). You sell **browser PBQ + timed sim for $19.99/30d**. That gap is the ad angle; we optimize **after the click** until checkout data says otherwise.
+This is the project runbook — not competitor research. You sell **browser exam prep for $19.99/30d** (timed sim, verified bank, adaptive review). Phase 2 moves to **three US-only Google campaigns at $20/day each**: core exam prep, military/government, and student/workforce ([[Sec+ Three-Campaign US Plan]]). Admin tracking is not changed yet.
 
 ---
 
@@ -20,7 +20,7 @@ This is the project runbook — not competitor research. Competitors sell dumps 
 
 | Piece | Status |
 |-------|--------|
-| Google Ads Sec+ | Live · $15/day · PBQ ad group |
+| Google Ads Sec+ | Baseline live · next build = **3 US-only campaigns × $20/day** |
 | Landing | 30-day only · samples on page |
 | Tracking | GA4 + admin 21-day plan · **landing checkout rate** added |
 | Billing / promo | ~**$256 / $500** toward credit · [[Google Ads Spend Promo]] |
@@ -28,7 +28,7 @@ This is the project runbook — not competitor research. Competitors sell dumps 
 | PayPal | Not live yet — add when ready (counts all-in) |
 | Membership / funnel pages | **Not built** — see experiment menu below |
 
-**Blocker:** Not enough **post-click** data yet. First job is **clicks logged + landing checkout rate**, not new products.
+**Blocker:** Admin still reads the baseline flow. If the three-campaign plan launches before admin is expanded, reconcile by `utm_campaign` manually in Google Ads / GA4 notes.
 
 ---
 
@@ -49,13 +49,14 @@ Open **Admin → 21-day plan → click the calendar day** for that day&apos;s ch
 
 ## This week (concrete)
 
-- [x] **Day 3 (Jun 25):** Overview export → repo · practice-questions cut · pending negatives in checklist · logged in [/admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan)
 - [ ] **Paste in Google Ads:** 13 pending campaign negatives + pause 3 removed positives · then check **Campaign-level negatives pasted** in admin setup
-- [ ] **Day 7 (~Jun 29):** Funnel review — hold $15/day unless scorecard tier-1
-- [x] **Log Jun 23–25:** D1–D3 in admin daily log ($0 / $9.63 / $24.58)
+- [ ] **Three-campaign draft:** build paused campaigns from [[Sec+ Three-Campaign US Plan]]
+- [ ] **Ad schedule:** US-only · before work / lunch / after work / weekends on all three campaigns
+- [ ] **Day 7 keyword review:** adjust keyword bids based on results; pause weak track before changing landing
 - [ ] **Test purchase path:** ad URL on **phone** → sample → **Get 30-day** → GA4 Realtime `begin_checkout`
-- [ ] **Ads cleanup** if not done: no $9.99/10-day in RSA or sitelinks ([[Sec+ Notes#Remove 10-day from live Google Ads]])
-- [ ] **Confirm** Google promo progress matches ~**$256+** account spend
+- [ ] **Phase 2 prep (no admin change):** read [[Sec+ Phase 2 Institutional Targeting]] · draft verified discount page copy (students, educators, veterans, workforce)
+- [ ] **Launch verify page:** index `/how-we-verify-questions.html` + link from cert home when ready
+- [ ] **Confirm** Google promo progress toward $500 spend ([[Google Ads Spend Promo]])
 
 ---
 
@@ -91,19 +92,25 @@ Do **not** stack these in one week. Mark in admin notes which test is live.
 
 | Experiment | Effort | What we learn | Your action |
 |------------|--------|---------------|-------------|
+| **RSA Phase 2 paste** | Low | Exam prep message vs PBQ wedge | [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] |
+| **Sitelinks Phase 2** | Low | Bank/verify vs PBQ-only extensions | [[Extensions#Phase 2 sitelinks (paste when ready)]] |
 | **PayPal** | Medium | Payment friction | Implement; tag revenue in monthly CSV |
 | **Price test ($24.99 or $17.99)** | Medium | Willingness to pay | **One price** for 30 days min; track checkout + purchase |
-| **Dedicated wedge section** | Medium | PBQ intent conversion | Anchor block `#home-secplus-samples-title` → purchase (not new domain) |
+| **Verification page live** | Low | Trust for DoD/college traffic | Link `/how-we-verify-questions.html` from cert home |
 | **Light “progress” copy** | Low | Trust without building accounts | “Scorecard + weak domains” in hero — no membership yet |
 
 ### Tier C — after stable month or strong checkout (not now)
 
 | Experiment | Effort | Risk | Hold until |
 |------------|--------|------|------------|
+| **Verified learner discount** | High | Stripe promo + `.edu`/partner verify | [[Sec+ Phase 2 Institutional Targeting]] — engineering |
+| **Three US campaigns** | Medium | $20/day each track | [[Sec+ Three-Campaign US Plan]]; launch paused drafts first |
+| **Institutional keyword tier** | Medium | Track-level intent | Split manually by campaign until CSV generator supports tiers |
+| **Geo bid adjustments (US bases/campuses)** | Low | Local intent | US only; log in admin notes |
+| **College outreach list** | Medium | Time, not ad spend | Organic / email first |
 | **Membership / progress accounts** | High | Distraction from paid test | Stable scorecard; checkout proven |
 | **Separate funnel landing pages** | High | Splits data, hurts Quality Score if misaligned | You want A/B with enough volume (500+ sessions/mo) |
-| **10-day tier return** | Medium | Message conflict with ads | Only if data shows price objection, not trust |
-| **Second Google ad group** | Medium | Budget split at $15/day | Tier 1 keyword winners exist |
+| **Second Google ad group** | Medium | Budget split risk | Tier 1 keyword winners exist |
 | **Paid Reddit** | Medium | New channel | Google stable per [[Sec+ Phase 1 Purpose]] |
 
 ---
@@ -130,13 +137,23 @@ No new analytics required for Tier A — use existing admin metrics.
 
 ## Competitor context (minimal)
 
-- **Dumps / ExamTopics:** cheap, high intent, wrong buyer for you — stay negated.
-- **Boson / sim vendors:** higher price, desktop sim — your wedge is **browser PBQ + $19.99 sprint**.
-- **Courses (Udemy, Dion):** negated in Search; organic Reddit can mention “already studied, need PBQ prep.”
+- **Dumps / ExamTopics:** cheap, high intent, wrong buyer — stay negated.
+- **Boson / sim vendors:** higher price, desktop sim — your wedge is **browser exam prep + $19.99 sprint**.
+- **Courses (Udemy, Dion):** negated in Search; organic can mention “already studied, need timed sim prep.”
 
-You are **not** competing on “most questions.” Ads + landing must say **ready for PBQ + timed sim**, not cheapest bank.
+Ads + landing must lead with **exam prep + timed sim + verified bank**, not cheapest question count or free samples.
 
 ---
+
+## Phase 2 preview (planning only — no admin change)
+
+When Phase 1 checkout is proven:
+
+1. **Institutional targeting** — [[Sec+ Phase 2 Institutional Targeting]]
+2. **Verified learner discount** — students, educators, veterans, workforce programs; `.edu`/partner verification; checkout email receives account and access links
+3. **RSA + sitelinks** — exam prep lead ([[Sec+ RSA Copy]], [[Extensions]])
+4. **Geo bid adjustments** — US bases, federal hubs, college towns, workforce metros
+5. **Keyword tier** — institutional phrases appended, not replacing base 64
 
 ## What I will drive in repo (you don’t need to ask)
 

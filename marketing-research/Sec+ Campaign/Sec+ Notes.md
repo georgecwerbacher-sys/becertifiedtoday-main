@@ -11,17 +11,17 @@ tags:
 
 # Sec+ Notes — how to set up the campaign
 
-**Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
-**Ad group:** **`Security+ PBQ Practice`** (only)  
-**Budget:** **$15.00/day** · max CPC **$2.75** · **utm_campaign:** `secplus_portal`
+**Build:** three US-only Search campaigns · see [[Sec+ Three-Campaign US Plan]]  
+**Budget:** **$20.00/day each** · **$60/day total** · max CPC **$2.75**  
+**utm_campaigns:** `secplus_core_us` · `secplus_gov_us` · `secplus_workforce_us`
 
-**Checklist CSV:** [[secplus-campaign-checklist.csv]] (AdWords paste rows) · **Keyword source:** [[secplus-keywords.csv]] · regenerate: `npm run sync:secplus-checklist`
+**Checklist CSV:** [[secplus-campaign-checklist.csv]] remains the baseline import. For three-campaign rollout, copy relevant keyword/RSA rows into each campaign manually until the sync script supports campaign tiers.
 
 ---
 
 ## Reference voice (read before building ads)
 
-[[Sec+ Positioning#Canonical reference (future use)|Canonical reference]] — exam-realistic browser prep, **34 PBQs**, **90-min timed sim + scorecard** with paid access, **$19.99/30d** only.
+[[Sec+ Positioning#Canonical reference|Canonical reference]] — **Test Preparation Site**: 1000+ verified SY0-701 questions, **90-min timed sim + scorecard**, adaptive review, **34 PBQs**. **$19.99/30d**. Institutional audiences: [[Sec+ Phase 2 Institutional Targeting]].
 
 Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 
@@ -38,49 +38,53 @@ Keywords and RSA: [[Sec+ Keywords]] · [[Sec+ RSA Copy]]
 
 ---
 
-## Phase 1 — Campaign shell
+## Phase 1 — Three US campaign shells
 
-1. Campaign name: **`Security+ SY0-701 · Exam prep · becertifiedtoday`**
-2. Budget **$15.00/day** · Search only · partners off
-3. Bidding: Maximize clicks · max CPC **$2.75**
-4. Geo: US, CA, UK, AU · **Presence** only
-5. utm_campaign: **`secplus_portal`** on all ads
-6. AI Max / URL expansion: **Off**
-7. Paste **6 sitelinks** — checklist **Extensions** rows or [[Extensions]]
-
----
-
-## Phase 2 — Ad group: Security+ PBQ Practice
-
-1. Ad group name: **`Security+ PBQ Practice`**
-2. Display path: `Security+` / `PBQ-Practice`
-3. Final URL:
-
-```
-https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
-```
-
-4. Keywords: paste **Ad group** rows from [[secplus-campaign-checklist.csv]] (rank 1–67) — or regenerate from [[secplus-keywords.csv]] with `npm run sync:secplus-checklist`
-5. RSA: [[Sec+ RSA Copy#Ad group Security+ PBQ Practice]]
-6. Pin H1 `Security+ PBQ Practice` · H2 `Timed 90-Min Exam Sim` (Google Ads — see [[Sec+ RSA Copy]])
-
-**Landing offer:** **30-day · $19.99 only** on cert home (10-day offer removed sitewide).
+1. Build three campaigns from [[Sec+ Three-Campaign US Plan#Budget structure]]:
+   - `Security+ SY0-701 · Core Exam Prep · US`
+   - `Security+ SY0-701 · Military Gov 8140 · US`
+   - `Security+ SY0-701 · Student Workforce · US`
+2. Budget **$20.00/day per campaign** · Search only · partners off
+3. Bidding: Maximize clicks · max CPC **$2.75** · hold keyword bids for 7 days
+4. Geo: **United States only** · **Presence** only
+5. Ad schedule: before work, lunch, after work, weekends — [[Sec+ Three-Campaign US Plan#Ad schedule — when target buyers search]]
+6. utm_campaign by campaign:
+   - Core: **`secplus_core_us`**
+   - Gov: **`secplus_gov_us`**
+   - Workforce: **`secplus_workforce_us`**
+7. AI Max / URL expansion: **Off**
+8. Paste **6 sitelinks** — checklist **Extensions** rows or [[Extensions]]
+9. Add URL exclusions if Google prompts — [[Sec+ Google Ads Build Checklist#9. URL exclusions / expansion guardrails]]
 
 ---
 
-## Remove 10-day from live Google Ads
+## Phase 2 — Campaign message tracks
 
-If the RSA or extensions still show **$9.99 / 10-day**:
+Each campaign may use one simple ad group at launch. Keep the RSA aligned to the audience; do not split more than needed during the first week.
 
-1. **Campaign → Assets → Sitelinks** — delete **10-Day Access · $9.99**; keep **30-Day Access · $19.99** ([[Extensions]]).
-2. **Ad group `Security+ PBQ Practice` → Ads** — edit RSA:
-   - **Unpin / delete** headline `$9.99 · 10-Day Access` or `$9.99 for 10-Day Access`
-   - **Pin H2** → `Timed 90-Min Exam Sim` (not price)
-   - Keep headline `30-Day Access · $19.99` in the unpinned pool
-   - Replace any description with `$9.99/10d` using the 4 descriptions in [[Sec+ RSA Copy#Descriptions (≤90 chars)]]
-3. **Campaign settings → Products or services** — remove **Security+ 10-Day Exam Prep Access**; keep 30-day entry only.
-4. If ad group **`secplus_portal_10d`** still exists — **pause or remove** it (live campaign is **`Security+ PBQ Practice`** only).
-5. Test click → cert home shows **Get 30-day access · $19.99** only → GA4 Realtime shows `secplus_portal_30d` on `begin_checkout`.
+| Campaign | Ad group | Display path | Final URL UTM content |
+|----------|----------|--------------|-----------------------|
+| Core Exam Prep | `SY0-701 Exam Prep` | `Security+` / `Exam-Prep` | `core-exam-prep` |
+| Military Gov 8140 | `Security+ 8140 Prep` | `Security+` / `DoD-8140` | `mil-gov-8140` |
+| Student Workforce | `Security+ Career Prep` | `Security+` / `Career-Prep` | `student-workforce` |
+
+Core final URL:
+
+```
+https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_core_us&utm_content=core-exam-prep
+```
+
+Full URLs: [[Sec+ Three-Campaign US Plan#Budget structure]]
+
+Keywords: split from [[Sec+ Keywords]] by intent. RSA: [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]]
+
+**Landing offer:** **30-day · $19.99** on cert home.
+
+---
+
+## Legacy cleanup (done)
+
+10-day / $9.99 tier removed from site and campaign docs. If old RSA or sitelinks still show in Google Ads UI, replace with [[Sec+ RSA Copy]] and [[Extensions]] Phase 1 sitelinks.
 
 ---
 
@@ -98,7 +102,7 @@ After every ad click, optimize **post-click** before cutting keywords:
 | One change per week max | Check **Landing page change shipped** in admin daily log |
 | Checkout &lt; 2% with ≥ 50 paid sessions | **Landing first** — not keyword overhaul |
 
-**Budget follows converters:** pause phrase keywords with **≥ 20 clicks, 0 checkout**; promote search terms with **≥ 3 clicks + checkout** to `[exact]`.
+**Budget follows converters after week 1:** hold keyword bids for the first 7 days, then pause phrase keywords with **≥ 20 clicks, 0 checkout**; promote search terms with **≥ 3 clicks + checkout** to `[exact]`.
 
 Scorecard gates: [[Sec+ Phase 1 Scorecard]].
 
@@ -108,14 +112,23 @@ Scorecard gates: [[Sec+ Phase 1 Scorecard]].
 
 - Campaign: [[Sec+ Keywords#Campaign negatives]]
 - Ad group: [[Sec+ Keywords#Ad group negatives]]
+- Add the Phase 2 course/PDF/dump negative expansion from [[Sec+ Keywords#All negatives]] before enabling the three campaigns.
+
+---
+
+## Phase 3b — URL exclusions
+
+Keep AI Max and URL expansion **Off**. If Google asks for URL exclusions, exclude admin, restore, sample, CCNA, CCNP, and generic question pages per [[Sec+ Google Ads Build Checklist#9. URL exclusions / expansion guardrails]].
 
 ---
 
 ## Phase 4 — Launch check
 
-- [ ] One ad group enabled: **`Security+ PBQ Practice`**
+- [ ] Three campaigns created as **paused drafts**
+- [ ] US only + Presence only on all three
+- [ ] Shared ad schedule applied on all three
 - [ ] 6 sitelinks pasted — checklist **Extensions** rows or [[Extensions]]
-- [ ] Final URL opens cert home with correct UTMs
+- [ ] Final URLs open cert home with correct UTMs
 - [ ] GA4 `begin_checkout` on test purchase click
 - [ ] Mobile checkout on cert home
 
@@ -125,7 +138,8 @@ Scorecard gates: [[Sec+ Phase 1 Scorecard]].
 
 | Day | Action |
 |-----|--------|
+| 1 | Enable Core Exam Prep first if you want controlled spend |
 | 3 | Search terms → negatives |
-| 7 | CPA review — hold $15/day or adjust max CPC |
+| 7 | Keyword review by campaign — adjust bids based on keyword results, search terms, checkout quality |
 
 [[README|← Sec+ Campaign folder]]

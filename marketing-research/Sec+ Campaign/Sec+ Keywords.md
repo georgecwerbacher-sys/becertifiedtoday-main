@@ -11,11 +11,15 @@ tags:
 
 # Sec+ Keywords
 
-**Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
-**Ad group:** **`Security+ PBQ Practice`** (only)  
-**Budget:** $15.00/day · max CPC $2.75 · **utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
+**Build:** three US-only Search campaigns — [[Sec+ Three-Campaign US Plan]]  
+**Budget:** **$20/day each** · **$60/day total** · max CPC $2.75  
+**utm_campaigns:** `secplus_core_us` · `secplus_gov_us` · `secplus_workforce_us`
 
-**Primary job:** *Am I ready for the test?* — ordered **most → least** important (PBQ test-day → timed mock → work deadline → portal prep).
+**Primary job:** *Am I ready for SY0-701?* — **Test Preparation Site** (timed mock, verified bank, adaptive review) plus work-required intent (DoD, military, contractor, college).
+
+**Three-campaign split:** [[#Three US campaign keyword split]] — use separate US-only campaigns at $20/day each; keep the 64-keyword CSV as the baseline history until the sync script supports campaign tiers.
+
+**Bid rule:** Do not tune keyword bids during the first week unless traffic is clearly junk. After 7 days, adjust bids from keyword results: CPC, search terms, `begin_checkout`, and purchases.
 
 **Import:** [[secplus-keywords.csv]] · **Change log:** [[secplus-keyword-changelog.csv]] · **Live export:** [[google-ads-keyword-export-2026-06-23.csv]] (2026-06-23) · **Overview:** [[google-ads-overview-2026-06-25/README.txt|2026-06-25 overview CSVs]] · **Paste block:** [[#All positive keywords (64)]] below.
 
@@ -91,16 +95,15 @@ Full status per keyword: `Google status` column in [[secplus-keywords.csv]] · d
 
 ---
 
-## Ad group — `Security+ PBQ Practice`
+## Baseline landing URL (legacy)
 
-**Landing:**
+The old single-campaign URL remains useful for comparing historical data:
 
 ```
 https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
 ```
 
-**Display path:** `Security+` / `PBQ-Practice`  
-**Pin H1:** `Security+ PBQ Practice` · **Pin H2:** `Timed 90-Min Exam Sim` (Google Ads — no price pin)
+New three-campaign URLs live in [[Sec+ Three-Campaign US Plan#Budget structure]].
 
 **Match notation:** `[brackets]` = Exact · `"quotes"` = Phrase
 
@@ -250,6 +253,217 @@ Paste into Google Ads **in this order** (rank 1 = highest intent):
 
 ---
 
+## Three US campaign keyword split
+
+Use this split for [[Sec+ Three-Campaign US Plan]]. Start phrase-heavy, then promote search terms with checkout to `[exact]`.
+
+### Campaign 1 — `secplus_core_us`
+
+Use readiness, simulation, anti-PDF, and post-course intent:
+
+```
+[security+ exam simulation online]
+[security+ timed practice test]
+[security+ mock exam online]
+"security+ exam simulation online"
+"security+ timed practice test online"
+"security+ mock exam online"
+"security+ realistic practice test"
+"security+ practice exam simulation"
+"security+ timed exam prep"
+"90 minute security+ practice test"
+"security+ timed exam simulation"
+"security+ exam prep online"
+"sy0-701 prep"
+"security+ study prep online"
+"security+ practice portal"
+"security+ browser exam simulator"
+"security+ online exam simulator"
+"security+ adaptive review"
+"security+ scorecard review"
+"security+ readiness check"
+"security+ last minute exam prep"
+"security+ after course practice"
+"security+ not a pdf"
+"security+ no download practice"
+"sy0-701 objective based prep"
+"sy0-701 timed mock exam"
+```
+
+### Campaign 2 — `secplus_gov_us`
+
+Use existing DoD / work-required terms plus Phase 2 institutional terms:
+
+```
+[security+ 8140]
+[dod security+ certification]
+"security+ required for job"
+"security+ certification job requirement"
+"security+ work requirement"
+"security+ 8140"
+"dod security+ certification"
+"security+ dod certification"
+"8140 security+ prep"
+"security+ dod 8140 prep"
+"comptia security+ for dod"
+"sy0-701 dod requirement"
+"security+ government contractor"
+"security+ federal contractor exam"
+"security+ for government job"
+"security+ clearance certification"
+"security+ contractor certification"
+"security+ for military"
+"security+ army mos"
+"security+ air force cyber"
+"security+ navy credential"
+"security+ for police"
+"security+ state government job"
+"security+ local government cyber"
+"security+ 8140 baseline certification"
+"dod 8140 security+ exam prep"
+"security+ federal employee"
+"security+ contractor required"
+"security+ dod contractor required"
+"security+ government employee cert"
+"security+ return to office"
+"security+ for federal employees"
+"security+ for dod contractors"
+"security+ baseline certification"
+```
+
+### Campaign 3 — `secplus_workforce_us`
+
+Use student, educator, veteran, and career-transition terms:
+
+```
+"security+ required for graduation"
+"security+ capstone requirement"
+"security+ cybersecurity degree"
+"security+ college requirement"
+"security+ for college students"
+"comptia security+ student prep"
+"security+ community college cyber"
+"security+ for veterans"
+"security+ skillbridge prep"
+"security+ wioa training"
+"security+ job center cert"
+"security+ retraining program"
+"security+ career change cyber"
+"security+ vr&e"
+"security+ tap transition"
+"security+ required for college"
+"security+ for cybersecurity students"
+"security+ for it students"
+"security+ educator prep"
+"security+ veterans cyber jobs"
+"security+ workforce development"
+"security+ job placement cyber"
+"security+ career readiness cyber"
+```
+
+**Hold discount terms** (`student discount`, `educator discount`, etc.) until `/verified-learner-discounts.html` is published and Stripe promo verification exists.
+
+### Likely high-conversion targeting pockets
+
+Prioritize these after the first week if checkout signal appears:
+
+| Campaign | Pocket | Why it may convert |
+|----------|--------|--------------------|
+| `secplus_core_us` | “timed exam”, “exam simulation”, “readiness check”, “after course” | Already studied and wants confidence before scheduling |
+| `secplus_gov_us` | DoD 8140, federal employee, contractor required, base 60-mile radii | Job/contract requirement creates urgency |
+| `secplus_workforce_us` | 60-mile radius around CAE colleges, veterans, workforce/job placement | Credential tied to graduation, placement, or re-entry |
+| All campaigns | “not PDF”, “browser”, “no download”, “adaptive review” | Differentiates from stale PDFs and desktop engines |
+
+### URL exclusions / final URL guardrails
+
+AI Max and URL expansion should stay **Off**. If Google asks for URL exclusions or if any automated asset expansion is enabled later, exclude:
+
+```text
+/admin
+/admin/
+/COMP_TIA_SEC+/secplus-portal-request-link.html
+/COMP_TIA_SEC+/secplus-portal-restore-access.html
+/verify-question.html
+/how-we-verify-questions.html
+/secplus-sample
+/sample
+/CCNA-Study/
+/CCNP-ENCOR-Study/
+/question-
+```
+
+Use `/how-we-verify-questions.html` only as a planned sitelink after it is indexed and linked intentionally; do not let URL expansion choose it as a primary landing page.
+
+---
+
+## Phase 2 keyword tiers (institutional — not live yet)
+
+**Do not paste into Google Ads until Phase 1 checkout data is stable.** Append as new rows in [[secplus-keywords.csv]] with tier column `institutional` when ready — keeps base 64 intact for admin comparison.
+
+**Military / installation intent:**
+
+```
+"security+ for military"
+"security+ army mos"
+"security+ air force cyber"
+"security+ navy credential"
+"security+ before pcs"
+"security+ while deployed"
+```
+
+**College / degree gate:**
+
+```
+"security+ required for graduation"
+"security+ capstone requirement"
+"security+ cybersecurity degree"
+"security+ college requirement"
+```
+
+**Students & educators:**
+
+```
+"security+ for college students"
+"comptia security+ student prep"
+"security+ community college cyber"
+```
+
+**Veterans & workforce / job programs:**
+
+```
+"security+ for veterans"
+"security+ skillbridge prep"
+"security+ wioa training"
+"security+ job center cert"
+"security+ retraining program"
+"security+ career change cyber"
+"security+ vr&e"
+"security+ tap transition"
+```
+
+**First responder / state & local:**
+
+```
+"security+ for police"
+"security+ fire department it"
+"security+ state government job"
+"security+ local government cyber"
+```
+
+**Federal / contractor (extends existing 8140 cluster):**
+
+```
+"security+ gs job requirement"
+"security+ federal internship"
+"security+ cleared contractor"
+```
+
+**Match:** Phrase first; promote to `[exact]` only after ≥3 clicks + checkout. **Negate** `free`, `course`, `bootcamp` as today.
+
+Institutional playbook: [[Sec+ Phase 2 Institutional Targeting]]
+
+---
+
 ## Keyword Planner worksheet
 
 Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
@@ -332,8 +546,28 @@ examtopics
 "35 minute free"
 "training course"
 "instructor led"
+"in person"
+"live class"
+"online course"
+"video course"
+"course coupon"
+"coupon code"
+"discount code"
+"exam voucher"
+"voucher"
+"certmaster"
+"measureup"
+"testout"
+"skillsoft"
+"pluralsight"
+"linkedin learning"
 "jason dion"
 "brain dump"
+"braindump"
+"dumps"
+"test dump"
+"exam answers"
+"answer key"
 "comptia sec+ practice exam"
 "comptia sec+ practice test"
 "comptia security+ practice exam"
@@ -345,6 +579,17 @@ examtopics
 "pass guarantee"
 "pass4sure"
 "pdf download"
+"pdf"
+"ebook"
+"book"
+"study guide pdf"
+"torrent"
+"vce"
+"ete"
+"vumingo"
+"avanset"
+"quizlet"
+"flashcards"
 "professor messer"
 "dion training"
 "sec+ practice test"

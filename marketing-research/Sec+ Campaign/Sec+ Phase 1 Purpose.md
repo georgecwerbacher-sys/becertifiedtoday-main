@@ -11,8 +11,8 @@ tags:
 
 # Sec+ Phase 1 — purpose & budget rules
 
-**Status:** Active · **Channel:** Google Search only (`secplus_portal`) until **stable**  
-**Offer:** 30-day · **$19.99** · ad group **`Security+ PBQ Practice`** · **$15/day** (see [[Google Ads Spend Promo]])
+**Status:** Active · **Channel:** Google Search only · **US-only three-campaign build**  
+**Offer:** 30-day · **$19.99** · three campaigns at **$20/day each** (**$60/day total**) — see [[Sec+ Three-Campaign US Plan]] and [[Google Ads Spend Promo]]
 
 Related: [[Sec+ Positioning]] · [[Sec+ Notes]] · [[Google Ads Spend Promo]] · [[README]]
 
@@ -30,10 +30,10 @@ New site · **6–12 months without a profit target.** Prove **Sec+ paid acquisi
 
 | Line | Rule |
 |------|------|
-| **Spend target** | **~$500/month** on paid campaigns (refresh each month while learning) |
-| **Revenue target** | **~$500/month all-in income** to match spend |
+| **Spend target** | **~$1,800/month** if all three campaigns run at $20/day for a full month |
+| **Revenue target** | **~$1,800/month all-in income** to match spend |
 | **Break-even** | Spend ≈ revenue in the same calendar month |
-| **Acceptable loss** | Up to **~20%** on the monthly spend target → **~$100 loss** on $500 spend |
+| **Acceptable loss** | Up to **~20%** on the monthly spend target → **~$360 loss** on $1,800 spend |
 | **Cut back** | Sustained loss **> ~20%** → reduce budget, keywords, or pause until funnel fixes |
 | **Profit** | Not required for **6–12 months** |
 
@@ -48,19 +48,19 @@ Organic revenue **counts toward the $500/month income side** of the scorecard. S
 ### Spend includes
 
 - **Google Ads** (Sec+ campaign now)
-- Future paid channels only after stable, within the same **~$500/month** envelope unless revenue supports more
+- Future paid channels only after stable; Sec+ Google is the active learning budget
 
 ---
 
 ## Sec+ conversion math (@ $19.99)
 
-Rough purchase counts vs **~$450–500/month** ad spend at $15/day:
+Rough purchase counts vs **~$1,800/month** ad spend at three campaigns × $20/day:
 
 | Outcome | Purchases/month | Revenue |
 |---------|----------------:|--------:|
-| Break-even | **~25** | ~$500 |
-| 20% loss OK | **~20** | ~$400 |
-| Cut-back review | **&lt; ~20** with spend still ~$450+ | &lt; ~$400 |
+| Break-even | **~90** | ~$1,800 |
+| 20% loss OK | **~72** | ~$1,440 |
+| Cut-back review | **&lt; ~72** with spend still ~$1,800 | &lt; ~$1,440 |
 
 Early months will be below these counts; success in Phase 1 is **trend + keyword/checkout clarity**, not hitting 25 sales immediately.
 
@@ -71,7 +71,7 @@ Early months will be below these counts; success in Phase 1 is **trend + keyword
 **Stable** = either:
 
 1. **Pattern of growth** — revenue or checkouts trending up month over month, **or**
-2. **Break-even with ad spend** — ~$500 revenue vs ~$500 paid spend in a month
+2. **Break-even with ad spend** — revenue roughly matches paid spend in a month
 
 When stable:
 
@@ -89,7 +89,7 @@ When stable:
 |------|--------|
 | **Products** | **Sec+ only** for paid ads |
 | **Other campaigns** | **No** CCNA, ENCOR, Reddit **paid** unless **recommended within budget** for Sec+ conversion improvement |
-| **Ad groups** | **One** live group: `Security+ PBQ Practice` — no splits unless data supports it and stays within ~$500/month |
+| **Campaigns** | Three US-only Search campaigns: core, gov, workforce — each **$20/day** |
 | **Keyword evolution** | Double down on **high-value, converting** terms; negatives on course/free/dump intent |
 | **Promo credit** | Spend **$500** before **Jul 19, 2026** → **$1k credit** extends paid runway (~30 days at current pace) — see [[Google Ads Spend Promo]] |
 
@@ -97,7 +97,7 @@ When stable:
 
 ## Operating rhythm
 
-1. **Week 1–2 (Sec+ Google):** Hold structure; day 3 search terms; day 7 review checkout rate / max CPC — [[Sec+ Notes]]
+1. **Week 1 (Sec+ Google):** Hold structure and keyword bids; day 3 search terms; day 7 keyword result review — [[Sec+ Notes]]
 2. **Monthly:** Compare **all-in revenue** vs **paid spend**; loss ≤ 20% or cut back
 3. **Organic (parallel, not replacing paid test):** Reddit, forums — track organic sales toward the same $500 income goal
 4. **Admin / CSV:** Log spend in [[google-ads-spend-promo-2026.csv]]; reconcile with Google promo widget
@@ -108,10 +108,10 @@ When stable:
 
 | Signal | Action |
 |--------|--------|
-| Loss ≤ 20% of monthly spend target | Continue; refine keywords/negatives |
+| Loss ≤ 20% of monthly spend target | Continue; refine keywords/negatives after week 1 |
 | Loss &gt; 20% sustained | Cut budget or pause; fix landing/checkout/message |
 | Stable (growth or break-even) | Plan CCNA/ENCOR/Reddit paid; full business P&amp;L accountability |
-| Strong organic revenue | Reinvest in paid within refreshed ~$500/month cash cap |
+| Strong organic revenue | Reinvest in paid while keeping loss within the current scorecard cap |
 
 ---
 
@@ -119,10 +119,10 @@ When stable:
 
 **Order of optimization** — budget and keywords serve the bottom of this funnel:
 
-1. **Clicks** — Maximize **qualified** clicks within **$15/day** and **$2.75 max CPC** (Maximize clicks bidding). CTR and impression share matter; junk clicks hurt landing metrics.
+1. **Clicks** — Maximize **qualified** clicks within **$20/day per campaign** and **$2.75 max CPC** (Maximize clicks bidding). CTR and impression share matter; junk clicks hurt landing metrics.
 2. **Landing** — **Hardest tracked layer.** Improve `comptia-sec+-home.html` until **landing checkout rate** and **paid → checkout** rise. Log every landing change in admin daily log.
 3. **Checkout → purchase** — Stripe/PayPal completion; fix friction before cutting keywords that reach checkout.
-4. **Keywords / budget** — Shift spend toward search terms and keywords with **clicks + checkout**; pause high-click / zero-checkout phrases.
+4. **Keywords / budget** — Hold keyword bids for **7 days**, then shift spend toward search terms and keywords with **clicks + checkout**; pause high-click / zero-checkout phrases.
 
 **Admin metrics (21-day plan):** landing checkout rate · paid → checkout · click → checkout (when Ads clicks logged).
 

@@ -3,7 +3,7 @@ Security+ Google Ads — AdWords checklist (Apple Numbers)
 
 File: marketing-research/Sec+ Campaign/secplus-campaign-checklist.csv
 
-One campaign · one ad group · $15/day:
+Three US-only campaigns · one intent-matched ad group each · $20/day each:
   • Setup checklist (pre-launch through negatives)
   • 6 campaign sitelinks (Extensions phase — paste URLs + descriptions)
   • 64 positive keywords (rank order — paste into Google Ads)
@@ -38,10 +38,11 @@ Source keywords: marketing-research/Sec+ Campaign/secplus-keywords.csv
 
 Campaign summary
 ----------------
-Campaign:   Security+ SY0-701 · Exam prep · becertifiedtoday
-Budget:     $15.00/day · max CPC $2.75
-Ad group:   Security+ PBQ Practice (only)
+Campaigns:  Core Exam Prep · US / Military Gov 8140 · US / Student Workforce · US
+Budget:     $20.00/day each · $60/day total · max CPC $2.75
+Bid rule:   Hold keyword bids 7 days; adjust after week 1 from keyword results
+Ad groups:  One intent-matched ad group per campaign
 Landing:    https://becertifiedtoday.com/comptia-sec+-home.html
-UTM:        utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge
+UTM:        secplus_core_us / secplus_gov_us / secplus_workforce_us
 
 Full reference: marketing-research/Sec+ Campaign/Sec+ Notes.md

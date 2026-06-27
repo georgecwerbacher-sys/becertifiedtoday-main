@@ -21,7 +21,7 @@ tags:
 
 | Priority | Metric | Target | Action when weak |
 |----------|--------|--------|------------------|
-| 1 | **Ads clicks** | Maximize within $15/day · CPC ≤ $2.75 | Improve RSA/CTR; don’t cut budget pre-maturely |
+| 1 | **Ads clicks** | Maximize within $20/day per campaign · CPC ≤ $2.75 | Improve RSA/CTR; don’t cut budget pre-maturely |
 | 2 | **Landing checkout rate** | **Primary** — `begin_checkout` on cert home ÷ landing views | Fix landing before keyword cuts |
 | 3 | **Paid → checkout** | **≥ 2%** month · **≥ 3%** strong | RSA message match · mobile checkout |
 | 4 | **Click → checkout** | Log Ads clicks daily; trend up | Align ad promise with landing |
@@ -37,9 +37,9 @@ tags:
 | Horizon | Job | Success = |
 |---------|-----|-----------|
 | **21-day sprint** (tactical) | Validate funnel + keywords | Checkout signal + clean search terms — **not** monthly break-even |
-| **Monthly** (strategic) | $500 spend vs $500 all-in revenue | ≤ **20% loss** or cut back; trend toward **stable** |
+| **Monthly** (strategic) | Paid spend vs all-in revenue | ≤ **20% loss** or cut back; trend toward **stable** |
 
-Do **not** judge the 21-day test against **25 purchases/month** — at **$15/day** you only spend **~$315** in 21 days.
+Do **not** judge the first 7 days against monthly break-even. At **$60/day total**, a 21-day run can spend **~$1,260**, so keyword quality and checkout signal matter before purchase volume fully settles.
 
 ---
 
@@ -49,11 +49,11 @@ Fill [[secplus-monthly-scorecard.csv]] at month-end.
 
 | Metric | Target | Cut-back / review |
 |--------|--------|-------------------|
-| **Paid ad spend** | **~$450–500** | — |
-| **All-in Sec+ revenue** (Stripe + PayPal + organic) | **~$500** | — |
-| **Net (revenue − paid spend)** | **≥ −$100** (~20% of $500) | **&lt; −$100** → cutback playbook |
+| **Paid ad spend** | **~$1,800/month** if all three campaigns run full month | — |
+| **All-in Sec+ revenue** (Stripe + PayPal + organic) | Match paid spend | — |
+| **Net (revenue − paid spend)** | **≥ −20% of spend** | **&lt; −20%** → cutback playbook |
 | **Loss %** | **≤ 20%** | **&gt; 20%** two weeks in a row → cutback |
-| **Purchases (all-in)** | **~25** = break-even · **~20** = OK loss band | **&lt; 15** with ~$450 spend → deep review |
+| **Purchases (all-in)** | **~90** = break-even at $1,800 · **~72** = OK loss band | Below trend with clean traffic → deep review |
 | **Paid purchases** | Track separately | — |
 | **Organic purchases** | Track separately | Counts toward $500 revenue |
 | **Paid sessions** (GA4) | Trend up | Flat 30 days + rising spend → message/keyword issue |
@@ -79,7 +79,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 
 ## 21-day sprint goals (Jun 23 launch → ~Jul 14)
 
-**Spend expectation:** ~**$315** max at $15/day (partial launch week 1).
+**Spend expectation:** up to **~$1,260** at $60/day for 21 days if all three campaigns run the full sprint.
 
 | Metric | Minimum “continue” | Strong signal |
 |--------|-------------------|---------------|
@@ -95,7 +95,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 - **≥ $150** spend and **0** `begin_checkout`, **or**
 - **≥ $250** spend and **0** purchases
 
-**21-day pass (continue $15/day into next month):**
+**21-day pass (continue $20/day per campaign into next month):**
 
 - Checkout rate **≥ 2%** with **≥ 5** checkouts, **or**
 - **≥ 2** purchases with search terms mostly on-target
@@ -107,7 +107,7 @@ Organic marketing (Reddit, forums) **counts on revenue side only** until stable;
 | Week | Check | Action if miss |
 |------|-------|----------------|
 | **1** | Ads serving · GA4 checkout on test click · search terms day 3 | Fix tracking / RSA before more spend |
-| **2** | Checkout rate direction · avg CPC ≤ $2.75 | Tune max CPC, not keywords yet |
+| **2** | Checkout rate direction · avg CPC ≤ $2.75 | Adjust keyword bids from week-1 results |
 | **3** | Any purchase or checkout trend up | Add exact keywords from search terms |
 | **4** | Document 3 best terms + 3 negatives | Update [[secplus-keywords.csv]] |
 
