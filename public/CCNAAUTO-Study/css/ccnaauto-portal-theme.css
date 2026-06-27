@@ -1,0 +1,419 @@
+/* CCNA Automation portal — matches CCNA / ENCOR training portal blues */
+.ccnaauto-portal {
+  color-scheme: light dark;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --bg: #0b1020;
+  --surface: #121a2b;
+  --surface-raised: #1a2742;
+  --border: #2d3b5a;
+  --border-accent: #3d6dbb;
+  --text: #e6edf3;
+  --muted: #9fb0cc;
+  --eyebrow: #6b8ab8;
+  --page-bg: #ffffff;
+  --page-text: #0b1020;
+  --page-muted: #475569;
+  --accent: #2f66bf;
+  --accent-border: #4f84d8;
+  --accent-hover: #3a74d4;
+  --link: #2f66bf;
+}
+
+.ccnaauto-portal * {
+  box-sizing: border-box;
+}
+
+body.ccnaauto-portal {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--page-bg);
+  color: var(--page-text);
+  line-height: 1.5;
+  overflow-x: clip;
+}
+
+.ccnaauto-portal .page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.ccnaauto-portal header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 20px;
+  padding: max(16px, env(safe-area-inset-top)) clamp(20px, 4vw, 40px) 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(8px);
+}
+
+.ccnaauto-portal .header-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+
+.ccnaauto-portal a.header-nav-link {
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ccnaauto-portal a.header-nav-link:hover {
+  text-decoration: underline;
+}
+
+.ccnaauto-portal a.portal-header-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-border);
+  background: rgba(47, 102, 191, 0.14);
+  color: var(--page-text);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+
+.ccnaauto-portal a.portal-header-btn:hover {
+  background: rgba(47, 102, 191, 0.24);
+  color: #000;
+}
+
+.ccnaauto-portal .brand img {
+  display: block;
+  height: clamp(48px, 10vw, 56px);
+  width: auto;
+}
+
+.ccnaauto-portal main {
+  flex: 1;
+  padding: clamp(20px, 3.5vw, 36px) clamp(20px, 4vw, 40px) clamp(32px, 6vw, 56px);
+}
+
+.ccnaauto-portal .funnel,
+.ccnaauto-portal .hero-content {
+  max-width: 1080px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.ccnaauto-portal .eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+}
+
+.ccnaauto-portal .landing-tagline {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--page-muted);
+}
+
+.ccnaauto-portal h1 {
+  margin: 0 0 14px;
+  font-size: clamp(1.65rem, 4.5vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+
+.ccnaauto-portal .lead {
+  margin: 0 0 16px;
+  font-size: clamp(0.98rem, 2.2vw, 1.08rem);
+  color: var(--page-muted);
+  max-width: 52rem;
+  line-height: 1.6;
+}
+
+.ccnaauto-portal .benefits {
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.ccnaauto-portal .benefits li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: var(--page-muted);
+  font-size: 0.98rem;
+}
+
+.ccnaauto-portal .benefits li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f84d8, #2f66bf);
+}
+
+.ccnaauto-portal .hero-atf-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.ccnaauto-portal .hero-atf-trust li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(79, 132, 216, 0.45);
+  background: rgba(47, 102, 191, 0.08);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.ccnaauto-portal .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(22px, 4vw, 28px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  margin-bottom: 28px;
+}
+
+.ccnaauto-portal .card h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.ccnaauto-portal .study-meta {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.ccnaauto-portal .samples-block-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.2rem, 3vw, 1.45rem);
+  font-weight: 800;
+}
+
+.ccnaauto-portal .samples-block-lead,
+.ccnaauto-portal .blueprint-section-lead,
+.ccnaauto-portal .formats-lead {
+  margin: 0 0 20px;
+  color: var(--page-muted);
+  max-width: 48rem;
+  line-height: 1.55;
+}
+
+.ccnaauto-portal .formats-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .ccnaauto-portal .formats-grid--tri {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ccnaauto-portal .format-card,
+.ccnaauto-portal .sim-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-accent);
+  background: var(--surface-raised);
+  gap: 10px;
+}
+
+.ccnaauto-portal .format-card h3,
+.ccnaauto-portal .sim-box h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.ccnaauto-portal .format-card p,
+.ccnaauto-portal .sim-box .study-meta {
+  margin: 0;
+  flex: 1;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.ccnaauto-portal .format-card-device-note {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--eyebrow);
+  letter-spacing: 0.03em;
+}
+
+.ccnaauto-portal .cta-main,
+.ccnaauto-portal .start-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--accent-border);
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  text-align: center;
+  color: #f4f7ff;
+  background: linear-gradient(165deg, #4f8aea 0%, #2f66bf 48%, #244f9a 100%);
+  box-shadow: 0 4px 18px rgba(47, 102, 191, 0.35);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ccnaauto-portal .format-card .cta-main {
+  margin-top: auto;
+}
+
+.ccnaauto-portal .cta-main:hover,
+.ccnaauto-portal .start-btn:hover {
+  filter: brightness(1.07);
+  color: #fff;
+}
+
+.ccnaauto-portal .cta-main:focus-visible,
+.ccnaauto-portal .start-btn:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 3px;
+}
+
+.ccnaauto-portal .start-btn--muted {
+  border-color: rgba(100, 116, 139, 0.55);
+  background: rgba(51, 65, 85, 0.65);
+  color: #94a3b8;
+  cursor: default;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.ccnaauto-portal .coming-soon-banner,
+.ccnaauto-portal .portal-note {
+  margin: 28px 0 0;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px dashed rgba(79, 132, 216, 0.45);
+  background: rgba(13, 21, 40, 0.55);
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.ccnaauto-portal .coming-soon-banner strong,
+.ccnaauto-portal .portal-note strong {
+  color: var(--text);
+}
+
+.ccnaauto-portal .coming-soon-banner a,
+.ccnaauto-portal .portal-note a {
+  color: #8ab4ff;
+  font-weight: 700;
+}
+
+.ccnaauto-portal .blueprint-section {
+  margin-top: 40px;
+}
+
+.ccnaauto-portal .blueprint-section h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.15rem, 2.8vw, 1.35rem);
+  font-weight: 800;
+}
+
+.ccnaauto-portal .blueprint-loading {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.ccnaauto-portal .formats-section {
+  margin-top: clamp(40px, 8vw, 56px);
+  padding-top: clamp(36px, 6vw, 48px);
+  border-top: 1px solid var(--border);
+}
+
+.ccnaauto-portal .formats-section h2 {
+  margin: 0 0 12px;
+  font-size: clamp(1.25rem, 3vw, 1.55rem);
+  font-weight: 800;
+}
+
+.ccnaauto-portal .sim-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+@media (min-width: 640px) {
+  .ccnaauto-portal .sim-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.ccnaauto-portal .sim-box .start-btn {
+  width: 100%;
+  margin-top: auto;
+}
+
+.ccnaauto-portal .card .study-meta code {
+  color: #c8d8f0;
+}
+
+.ccnaauto-portal .page-footer {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(45, 59, 90, 0.15);
+  font-size: 0.88rem;
+  color: var(--page-muted);
+}
+
+.ccnaauto-portal .page-footer a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.ccnaauto-portal .visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

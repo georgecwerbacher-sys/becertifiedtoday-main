@@ -1,12 +1,14 @@
 {
   "exam": "CCNAAUTO-200-901",
   "hunt_enabled": true,
-  "poll_registry": "data/ccnaauto-question-sourcing/competitor-sites",
+  "poll_registry": "data/competitor-sites",
   "poll_product": "CCNAAUTO-200-901",
   "tier_a_fetch": [],
-  "notes": "Cisco official (Tier A) — verify keys on Cisco documentation, Learning Network, and DevNet before BCT HTML. Enable question_poll in competitor-sites/*-ccnaauto.md; run npm run ccnaauto:monthly.",
+  "notes": "Cisco official (Tier A) — verify keys on Cisco documentation, Learning Network, and DevNet before BCT HTML. Enable question_poll in data/competitor-sites/*-ccnaauto.md (product CCNAAUTO-200-901); run npm run ccnaauto:monthly.",
+  "reject_source_markers": ["200-301", "ccna-hunt-import", "CCNA-200-301"],
   "bct_compare": {
     "topic_map_path": "public/CCNA-Study/data/ccna-question-topic-map.json",
+    "notes": "Interim dedupe against CCNA 200-301 automation overlap until public/CCNAAUTO-Study/ exists.",
     "objective_prefixes": ["6."],
     "slug_keywords": [
       "ansible",

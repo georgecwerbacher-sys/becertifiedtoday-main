@@ -30,7 +30,7 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 |--------|----------------|
 | `Sec+ Campaign/` | Google Ads copy, checklist CSV, keywords |
 | `videos/` | YouTube + site embed briefs by track |
-| `competitor-sites/` | `data/competitor-sites/` |
+| `competitor-sites/` | `data/competitor-sites/` — **all** hunt polls (Sec+, CCNA, CCNAAUTO, ENCOR) |
 | `weekly-reports/` | `data/reports/weekly/` |
 
 ## Quick commands

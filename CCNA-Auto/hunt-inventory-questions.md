@@ -5,151 +5,45 @@ category: mcq
 generated: 2026-06-25
 ---
 
-# Hunt inventory — MCQ questions
+# CCNAAUTO 200-901 — hunt MCQs
 
-BCT bank: **119** · Hunt net-new: **6**
+Run: [[hunt-results/2026-06-25|Run 2026-06-25]] · **32** questions
 
 Back: [[hunt-inventory|Inventory]] · [[blueprint-hunt-list|Blueprint]]
 
 ---
 
-## BCT bank
-
-Preview: `http://localhost:3000/CCNA-Study/CCNA_questions/{{slug}}.html`
-
-| Title | Slug | Objectives |
-|---|---|---|
-| AI/ML application in network operations | ai-ml-proactive-unusual-traffic-patterns | 6.0 |
-| AI in traffic analysis | ai-network-traffic-analysis-anomaly-detection | 6.0 |
-| Ansible inventory | ansible-inventory-defines-target-devices | 6.0 |
-| Ansible features (choose two) | ansible-network-automation-features-choose-two | 6.0 |
-| Ansible for VLAN config (choose two) | ansible-playbook-task-vlan-config | 2.0, 6.0 |
-| Ansible module transport | ansible-ssh-push-modules-to-nodes | 6.0 |
-| Ansible vs Terraform primary difference | ansible-vs-terraform-agentless-provisioning | 6.0 |
-| AP discovery request to AP-Manager | ap-join-wlc-discovery-request-ap-manager | 6.0 |
-| API keys and rate limiting | api-keys-rate-limiting-identify-clients | 6.0 |
-| Automation data models | automation-data-models-vendor-agnostic-complexity | 6.0 |
-| Chef pull model | chef-agent-pulls-cookbook-configuration-from-server | 6.0 |
-| Cloud: rapid elasticity | cloud-rapid-elasticity-capacity-demand | 1.2, 6.0 |
-| Cloud vs on-premises advantage | cloud-services-scalability-without-physical-infrastructure | 1.2, 6.0 |
-| Off-the-shelf switches in SDN | commodity-switches-data-plane-forwarding | 1.0, 6.0 |
-| Container virtualization | container-virtualization-os-level-description | 6.0 |
-| Controller-based vs traditional (choose two) | controller-based-architecture-advantages-choose-two | 6.0 |
-| Controller-based network characteristics (choose two) | controller-based-network-characteristics-choose-two | 6.0 |
-| Controller-based vs traditional planes | controller-based-vs-traditional-control-plane | 6.0 |
-| CRUD UPDATE: PUT and PATCH (choose two) | crud-update-http-put-patch-choose-two | 6.0, 6.5 |
-| DNA Center inventory defaults (choose two) | dna-center-add-device-two-events | 6.2 |
-| DNA Center API JSON health and issues | dna-center-api-json-health-issues-exhibit | 6.0, 6.2 |
-| DNA Center APIs vs traditional campus management | dna-center-apis-vs-traditional-manual-gathering | 6.0 |
-| DNA Center network assurance advantage | dna-center-assurance-correlates-protocol-insights | 6.0 |
-| DNA Center wired and wireless management | dna-center-centralized-wired-wireless-management | 6.0, 6.2 |
-| Cisco DNA Center controller purpose | dna-center-controller-purpose-manage-deploy | 6.2 |
-| DNA Center Intent API | dna-center-intent-api-rest-put | 6.2, 6.5 |
-| DNA Center intent-based networking with AI/ML | dna-center-intent-based-ai-ml-assurance | 6.0, 6.2 |
-| DNA Center lifecycle management | dna-center-lifecycle-management-patches-updates | 6.0 |
-| DNA Center northbound REST API | dna-center-northbound-rest-api | 6.0, 6.2, 6.5 |
-| DNA Center Overall Health | dna-center-overall-health-dashboard | 6.2 |
-| Cisco DNA Center functionality | dna-center-sdn-automation-controller-function | 6.0 |
-| DNA Center: faster campus deployment | dna-center-single-pane-faster-deployment | 6.2 |
-| DNA Center vs traditional campus management | dna-center-traditional-campus-centralized-management | 6.2 |
-| Generative AI in NetOps | generative-ai-network-operations-synthetic-configs | 6.0 |
-| Generative AI vs predictive AI in NetOps | generative-vs-predictive-ai-network-operations | 6.0 |
-| HTTP GET and CRUD | http-get-crud-operation | 6.5 |
-| HTTP PUT method | http-put-method-update-resource | 6.0 |
-| ML anomaly detection for unknown IDS attacks | ids-ml-anomaly-detection-unknown-attacks | 1.11, 6.0 |
-| Count JSON objects (aaaUser roles) | json-aaa-user-nested-roles-object-count | 6.0 |
-| JSON array type | json-array-red-one-string-elements | 6.0 |
-| JSON syntax (missing brace) | json-cisco-devices-missing-closing-brace | 6.0 |
-| JSON object (interfaces list) | json-interfaces-ethernet-object-type-shown | 6.0 |
-| JSON line 2 is an object | json-line2-device-entry-is-object | 6.0 |
-| JSON line 3 is an object | json-line3-load-balancer-entry-is-object | 6.0 |
-| JSON: warning in wheels array | json-mycar-wheels-warning-in-array | 6.5 |
-| JSON default encoding (RFC 4627) | json-rfc4627-default-encoding-utf8 | 6.0 |
-| JSON value (R20 in device list) | json-router-r20-property-is-value | 6.0 |
-| JSON: strings inside arrays | json-routers-switches-array-elements-are-values | 6.5 |
-| JSON fundamentals | json-structured-data-includes-arrays | 6.0 |
-| JSON key vs value (switch) | json-switch-property-name-is-key | 6.0 |
-| JSON: count arrays | json-test-questions-three-arrays-count | 6.0 |
-| JSON objects, keys, and lists | json-test-schema-objects-keys-lists | 6.0 |
-| ML for unusual network activity | ml-algorithms-model-network-behavior-unusual-activity | 6.0 |
-| ML and intrusion detection | ml-ids-identifies-intrusion-patterns | 5.0, 6.0 |
-| ML for network security | ml-network-security-real-time-threat-detection | 6.0 |
-| NETCONF filter to limit reply | netconf-xml-filter-get-config | 6.5 |
-| Network automation benefits (choose two) | network-automation-benefits-choose-two | 6.0 |
-| Why implement network automation | network-automation-consistent-configuration-state | 6.0 |
-| Drivers for automation (choose two) | network-automation-drivers-choose-two | 6.0 |
-| Consider automation (manual errors) | network-automation-manual-errors-inconsistencies-consideration | 6.0 |
-| Automated network management benefit | network-automation-reduce-config-inconsistencies | 6.0 |
-| Automation reduces downtime | network-automation-reduce-downtime-templates-testing | 6.0 |
-| Northbound API function | northbound-api-function-sdn-controller-applications | 6.0 |
-| Northbound REST API for SDN | northbound-rest-api-application-facing-http | 6.0 |
-| Controller to applications | northbound-rest-sdn-applications | 2.0, 6.0 |
-| Predictive AI bandwidth forecasting use case | predictive-ai-forecast-bandwidth-congestion | 6.0 |
-| Predictive AI and load balancing | predictive-ai-load-balancing-traffic-spikes | 4.0, 6.0 |
-| Puppet: manifests and modules | puppet-manifests-modules-paradigm | 6.2 |
-| REST Accept header | rest-api-accept-header | 2.0, 6.0 |
-| REST API encoding methods (choose two) | rest-api-encoding-methods-json-xml-choose-two | 6.0 |
-| REST GET to retrieve interface list | rest-api-get-interfaces-json-xml | 6.0, 6.5 |
-| REST API HTTP 401 response | rest-api-http-401-authentication-required | 6.0, 6.5 |
-| REST API HTTP method to create | rest-api-http-post-create-resource | 6.0, 6.5 |
-| REST API JSON interface status exhibit | rest-api-json-interfaces-operational-loopback-ip | 6.0, 6.5 |
-| REST API PUT to update VLAN description | rest-api-put-update-vlan-description-200 | 6.0, 6.5 |
-| REST API HTTP methods | rest-api-supported-methods-get-put-post-delete | 6.0 |
-| HTTP 200 for successful REST | rest-http-200-successful-request | 6.0 |
-| REST uses HTTP messages | rest-http-messages-transfer-applications | 6.0 |
-| REST HTTP methods (choose two) | rest-http-methods-get-post-choose-two | 6.0, 6.5 |
-| HTTP status classes: errors (choose two) | rest-http-status-classes-errors-4xx-5xx | 6.0, 6.5 |
-| REST HTTP verbs to create (choose two) | rest-http-verbs-create-resource-choose-two | 6.0, 6.5 |
-| REST URI purpose | rest-uri-identifies-target-resource | 6.0 |
-| SDN automation benefits (choose two) | sdn-automation-improvements-choose-two | 6.0 |
-| SDN control plane forwarding decisions | sdn-control-plane-forwarding-decisions-centralized | 6.0, 6.2 |
-| Control plane to data plane boundary | sdn-control-to-infrastructure-boundary | 6.0 |
-| SDN controller plane | sdn-controller-centralizes-control-plane | 6.0 |
-| SDN control plane centralization | sdn-controller-centralizes-routing-decision | 6.0 |
-| SDN controller changes the network | sdn-controller-dynamic-changes-southbound-api | 2.0, 6.0 |
-| SDN controller function | sdn-controller-function-making-routing-decisions | 6.0 |
-| SDN controller functions (choose two) | sdn-controller-functions-choose-two | 6.0 |
-| SDN controller sets policies | sdn-controller-packet-handling-policies | 6.0 |
-| SDN controller role | sdn-controller-role-central-point | 6.0 |
-| Data plane handles forwarding | sdn-data-plane-forwarding-router | 1.0, 3.0, 6.0 |
-| Disaggregation in controller networks | sdn-disaggregation-control-data-plane | 6.0 |
-| SDN northbound APIs (choose two) | sdn-northbound-apis-soap-rest-choose-two | 6.0 |
-| SDN data plane | sdn-plane-forwards-user-traffic | 1.0, 6.0 |
-| SDN security vs traditional | sdn-security-unified-control-policies | 5.0, 6.0 |
-| SDN control/data plane advantage | sdn-separate-control-data-plane-advantage | 6.0 |
-| Southbound API interaction | sdn-southbound-api-controller-to-infrastructure | 2.0, 6.0 |
-| Southbound API flow control | sdn-southbound-api-flow-control-switching-fabric | 6.0 |
-| Southbound API | sdn-southbound-api-purpose | 2.0, 6.0 |
-| Southbound protocol for forwarding | sdn-southbound-openflow-forwarding | 6.0 |
-| Southbound API role (OpenFlow and NETCONF) | sdn-southbound-openflow-netconf-role | 6.0, 6.2 |
-| SNMP traps vs polling | snmp-traps-vs-polling-push-pull | 6.0 |
-| Southbound APIs (choose two) | southbound-apis-openflow-netconf-choose-two | 6.0 |
-| Southbound interface: controller to devices | southbound-interface-controller-device-programs | 6.0 |
-| Terraform plan and apply behavior | terraform-plan-apply-create-modify-resources | 6.0 |
-| CCNA V_2025 — Terraform declarative IaC and provider plugins | terraform-provider-plugins-ccna-v1-1 | 6.0 |
-| TFTP in network operations | tftp-function-ios-image-firmware-upgrade | 4.0, 6.0 |
-| Statement describing virtual machines | virtual-machines-guest-os-service-statement | 1.0, 6.0 |
-| Virtualization on one server | virtualization-multiple-os-single-physical-server | 1.0, 6.0 |
-| Valid reason to deploy a VM for a network service | vm-network-service-hardware-utilization | 1.0, 6.0 |
-| Wireless LAN controller role | wireless-controller-enterprise-role | 2.0, 6.0 |
-| WLC LAG channel-group mode | wlc-distribution-lag-channel-group-active | 2.0, 6.0 |
-| WLC maximum Telnet sessions | wlc-maximum-concurrent-telnet-sessions-five | 5.0, 6.0 |
-| Multiple AP-Manager interfaces | wlc-multiple-ap-manager-fewest-aps-join | 5.0, 6.0 |
-| Wireless controller service | wlc-service-manages-interference-dense-network | 5.0, 6.0 |
-| WLC SIP CAC next steps (choose two) | wlc-sip-cac-media-snooping-platinum-qos | 6.0 |
-| WPA3-Personal PSK cipher | wpa3-personal-psk-ccmp128-cipher | 5.0, 6.0 |
-
----
-
-## Hunt net-new
-
-From [[Hunt/ccna/2026-06-25|CCNA hunt 2026-06-25]] · verify Cisco Tier A
-
-| Link | Ver. | Source | Stem |
+| Note | Stem | Source | Q ID |
 |---|---|---|---|
-| [[Hunt/ccna/2026-06-25/V_2025/Q014-select-all-statements-which-represents-iaas-solu]] | V_2025 | howtonetwork-ccna-walkthrough | Select all statements which represents IAAS solutions provided by Cisco? |
-| [[Hunt/ccna/2026-06-25/V_2025/Q078-in-a-controller-based-network-architecture-the-c]] | V_2025 | howtonetwork-ccna-walkthrough | In a controller-based network architecture, the controller needs to communicate to the networking devices. What is the n |
-| [[Hunt/ccna/2026-06-25/V_2025/Q079-the-sdn-solution-architecture-has-three-layers-w]] | V_2025 | howtonetwork-ccna-walkthrough | The SDN solution architecture has three layers. Which of the following protocols run in the Control Plane layer? |
-| [[Hunt/ccna/2026-06-25/V_2025/Q085-which-of-the-following-agentless-automation-tool]] | V_2025 | howtonetwork-ccna-walkthrough | Which of the following agentless automation tool uses SSH to connect to the network devices? |
-| [[Hunt/ccna/2026-06-25/V_2025/Q086-which-automation-tool-uses-only-a-server-client]] | V_2025 | howtonetwork-ccna-walkthrough | Which automation tool uses only a server-client architecture based in a pull deployment model, where the clients check r |
-| [[Hunt/ccna/2026-06-25/V_2025/Q088-a-company-uses-cisco-meraki-cloud-managed-access]] | V_2025 | openexamprep-ccna | A company uses Cisco Meraki cloud-managed access points and switches. What is a key advantage of cloud-managed network d |
+| [[hunt-results/2026-06-25/v1.1/Q001-which-rest-architectural-constraint-indicates-th|Q001-which-rest-architectural-constraint-indicates-th]] | Which REST architectural constraint indicates that no client context should be stored on the server between requests? | certimaan-ccnaauto-samples | 1 |
+| [[hunt-results/2026-06-25/v1.1/Q002-which-two-statement-describe-the-role-of-an-arti|Q002-which-two-statement-describe-the-role-of-an-arti]] | Which two statement describe the role of an artifact repository in a CI/CD pipeline? | certimaan-ccnaauto-samples | 2 |
+| [[hunt-results/2026-06-25/v1.1/Q003-which-product-provides-network-controller-level|Q003-which-product-provides-network-controller-level]] | Which product provides network controller-level management features? | certimaan-ccnaauto-samples | 3 |
+| [[hunt-results/2026-06-25/v1.1/Q004-what-are-two-characteristics-of-bare-metal-envir|Q004-what-are-two-characteristics-of-bare-metal-envir]] | What are two characteristics of Bare Metal environments that are related to application deployment? | certimaan-ccnaauto-samples | 4 |
+| [[hunt-results/2026-06-25/v1.1/Q005-which-statement-about-authentication-a-restconf|Q005-which-statement-about-authentication-a-restconf]] | Which statement about authentication a RESTCONF API session with a router that runs Cisco IOS XE software is true? | certimaan-ccnaauto-samples | 5 |
+| [[hunt-results/2026-06-25/v1.1/Q006-what-is-the-outcome-of-executing-this-command|Q006-what-is-the-outcome-of-executing-this-command]] | What is the outcome of executing this command? | certimaan-ccnaauto-samples | 7 |
+| [[hunt-results/2026-06-25/v1.1/Q007-which-task-is-performed-because-the-test-driven|Q007-which-task-is-performed-because-the-test-driven]] | Which task is performed because the test-driven development approach is being used? | certimaan-ccnaauto-samples | 8 |
+| [[hunt-results/2026-06-25/v1.1/Q008-which-platform-has-an-api-that-be-used-to-obtain|Q008-which-platform-has-an-api-that-be-used-to-obtain]] | Which platform has an API that be used to obtain a list of vulnerable software on user devices? | certimaan-ccnaauto-samples | 9 |
+| [[hunt-results/2026-06-25/v1.1/Q009-which-principle-is-a-value-from-the-manifesto-fo|Q009-which-principle-is-a-value-from-the-manifesto-fo]] | Which principle is a value from the manifesto for Agile software development? | certimaan-ccnaauto-samples | 10 |
+| [[hunt-results/2026-06-25/v1.1/Q010-when-using-the-bash-shell-how-it-the-output-of-t|Q010-when-using-the-bash-shell-how-it-the-output-of-t]] | When using the Bash shell, how it the output of the devnet command saved to a tile named “output.txt”? | certimaan-ccnaauto-samples | 11 |
+| [[hunt-results/2026-06-25/v1.1/Q011-which-action-does-the-git-command-git-merge-allo|Q011-which-action-does-the-git-command-git-merge-allo]] | Which action does the Git command git merge allow the development to perform? | certimaan-ccnaauto-samples | 12 |
+| [[hunt-results/2026-06-25/v1.1/Q012-which-ci-cd-tool-is-an-automation-tool-used-to-b|Q012-which-ci-cd-tool-is-an-automation-tool-used-to-b]] | Which CI/CD tool is an automation tool used to build, test, and deploy software? | certimaan-ccnaauto-samples | 13 |
+| [[hunt-results/2026-06-25/v1.1/Q013-which-mechanism-is-used-to-consume-a-restful-api|Q013-which-mechanism-is-used-to-consume-a-restful-api]] | Which mechanism is used to consume a RESTful API design when large amounts of data are returned? | certimaan-ccnaauto-samples | 14 |
+| [[hunt-results/2026-06-25/v1.1/Q014-what-is-the-benefit-of-edge-computing|Q014-what-is-the-benefit-of-edge-computing]] | What is the benefit of edge computing? | certimaan-ccnaauto-samples | 16 |
+| [[hunt-results/2026-06-25/v1.1/Q015-which-line-is-an-example-of-the-start-of-a-chunk|Q015-which-line-is-an-example-of-the-start-of-a-chunk]] | Which line is an example of the start of a chunk from a unified diff? | certimaan-ccnaauto-samples | 17 |
+| [[hunt-results/2026-06-25/v1.1/Q016-what-are-two-advantages-of-the-model-view-contro|Q016-what-are-two-advantages-of-the-model-view-contro]] | What are two advantages of the Model-view-controller software design pattern? | certimaan-ccnaauto-samples | 18 |
+| [[hunt-results/2026-06-25/v1.1/Q017-which-pai-is-used-to-obtain-data-voicemail-ports|Q017-which-pai-is-used-to-obtain-data-voicemail-ports]] | Which PAI is used to obtain data voicemail ports? | certimaan-ccnaauto-samples | 19 |
+| [[hunt-results/2026-06-25/v1.1/Q018-what-are-two-security-benefits-of-a-docker-based|Q018-what-are-two-security-benefits-of-a-docker-based]] | What are two security benefits of a Docker-based application? | certimaan-ccnaauto-samples | 20 |
+| [[hunt-results/2026-06-25/v1.1/Q019-which-two-elements-are-foundational-principles-o|Q019-which-two-elements-are-foundational-principles-o]] | Which two elements are foundational principles of DevOps? | certimaan-ccnaauto-samples | 21 |
+| [[hunt-results/2026-06-25/v1.1/Q020-package-updates-from-a-local-server-fail-to-down|Q020-package-updates-from-a-local-server-fail-to-down]] | Package updates from a local server fail to download. However, the same updates work when a much slower external reposit | certimaan-ccnaauto-samples | 23 |
+| [[hunt-results/2026-06-25/v1.1/Q021-in-python-which-expression-checks-whether-the-sc|Q021-in-python-which-expression-checks-whether-the-sc]] | In python, which expression checks whether the script returns a success status code when the Requests library is used? | certimaan-ccnaauto-samples | 25 |
+| [[hunt-results/2026-06-25/v1.1/Q022-what-are-two-benefit-of-managing-network-configu|Q022-what-are-two-benefit-of-managing-network-configu]] | What are two benefit of managing network configuration via APIs? | certimaan-ccnaauto-samples | 26 |
+| [[hunt-results/2026-06-25/v1.1/Q023-which-two-encoding-formats-do-yang-interfaces-su|Q023-which-two-encoding-formats-do-yang-interfaces-su]] | Which two encoding formats do YANG interfaces support? | certimaan-ccnaauto-samples | 27 |
+| [[hunt-results/2026-06-25/v1.1/Q024-which-way-should-be-used-to-safely-the-api-keys|Q024-which-way-should-be-used-to-safely-the-api-keys]] | Which way should be used to safely the API keys? | certimaan-ccnaauto-samples | 28 |
+| [[hunt-results/2026-06-25/v1.1/Q025-which-platform-is-run-directly-using-a-hyperviso|Q025-which-platform-is-run-directly-using-a-hyperviso]] | Which platform is run directly using a hypervisor? | certimaan-ccnaauto-samples | 29 |
+| [[hunt-results/2026-06-25/v1.1/Q026-a-developer-is-writing-an-application-that-a-res|Q026-a-developer-is-writing-an-application-that-a-res]] | A developer is writing an application that a REST API and the application requires a valid from the API which element of | certimaan-ccnaauto-samples | 30 |
+| [[hunt-results/2026-06-25/v1.1/Q027-on-which-network-plane-is-routing-protocol-traff|Q027-on-which-network-plane-is-routing-protocol-traff]] | On which network plane is routing protocol traffic handled? | certimaan-ccnaauto-samples | 31 |
+| [[hunt-results/2026-06-25/v1.1/Q028-which-two-statements-about-json-and-xml-are-true|Q028-which-two-statements-about-json-and-xml-are-true]] | Which two statements about JSON and XML are true? | certimaan-ccnaauto-samples | 33 |
+| [[hunt-results/2026-06-25/v1.1/Q029-which-action-resolves-a-401-error-in-response-to|Q029-which-action-resolves-a-401-error-in-response-to]] | Which action resolves a 401 error in response to an HTTP GET that is issued to retrieve statement using RESTCONF on a CS | certimaan-ccnaauto-samples | 34 |
+| [[hunt-results/2026-06-25/v1.1/Q030-a-developer-is-reviewing-a-code-that-was-written|Q030-a-developer-is-reviewing-a-code-that-was-written]] | A developer is reviewing a code that was written by a colleague. It runs fine, but there are many lines of code to do a  | certimaan-ccnaauto-samples | 38 |
+| [[hunt-results/2026-06-25/v1.1/Q031-which-type-of-threat-occur-when-an-attacker-can|Q031-which-type-of-threat-occur-when-an-attacker-can]] | Which type of threat occur when an attacker can send hostile data to an interpreter within an application? | certimaan-ccnaauto-samples | 39 |
+| [[hunt-results/2026-06-25/v1.1/Q032-what-should-a-ci-cd-pipeline-aim-to-achieve|Q032-what-should-a-ci-cd-pipeline-aim-to-achieve]] | What should a CI/CD pipeline aim to achieve? | certimaan-ccnaauto-samples | 40 |

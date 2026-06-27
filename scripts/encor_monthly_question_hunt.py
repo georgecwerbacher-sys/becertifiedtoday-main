@@ -106,7 +106,7 @@ def load_source_config() -> dict:
 
 def poll_sites_dir(cfg: dict | None = None) -> Path:
     product_cfg = cfg or load_source_config()
-    rel = product_cfg.get("poll_registry", "data/encor-question-sourcing/competitor-sites")
+    rel = product_cfg.get("poll_registry", "data/competitor-sites")
     return ROOT / rel
 
 
@@ -368,7 +368,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     sources = load_poll_sources(product=product, sites_dir=poll_sites_dir(cfg))
     if not sources:
         print(
-            f"[collect] no enabled polls for product={product} — set question_poll.enabled in data/encor-question-sourcing/competitor-sites/*-encor.md",
+            f"[collect] no enabled polls for product={product} — set question_poll.enabled in data/competitor-sites/*-encor.md",
             file=sys.stderr,
         )
     polled = poll_all_sources(sources=sources)
@@ -385,7 +385,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
 
     if not all_rows:
         print(
-            "[collect] no questions — enable question_poll in data/encor-question-sourcing/competitor-sites/*-encor.md or add --import.",
+            "[collect] no questions — enable question_poll in data/competitor-sites/*-encor.md or add --import.",
             file=sys.stderr,
         )
         return 1, run_id

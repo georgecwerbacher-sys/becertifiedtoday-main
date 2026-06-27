@@ -330,6 +330,24 @@
       color: #e9d5ff;
       pointer-events: none;
     }
+    .path-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .path-card .cta--ccnaauto {
+      border-color: rgba(45, 212, 191, 0.55);
+      background: linear-gradient(165deg, rgba(20, 184, 166, 0.95) 0%, rgba(13, 116, 110, 0.98) 100%);
+      box-shadow: 0 4px 18px rgba(13, 148, 136, 0.35);
+      color: #f0fdfa;
+    }
+    .path-card .cta--ccnaauto:hover {
+      filter: brightness(1.06);
+    }
+    .path-card .cta--ccnaauto:focus-visible {
+      outline-color: #5eead4;
+    }
     .why-choose-section {
       margin-top: clamp(32px, 5vw, 48px);
       margin-left: calc(50% - 50vw);
@@ -574,14 +592,22 @@
             <span class="badge">Associate</span>
             <h2 id="path-ccna-title">CCNA</h2>
             <p>
-              CCNA 200-301 exam prep in your browser—labs, drag-and-drop, timed simulation, and free NGTE samples on the CCNA page.
+              CCNA 200-301 and CCNA Automation 200-901 exam prep in your browser—labs, drag-and-drop, timed simulation, and free samples.
             </p>
-            <a
-              class="cta"
-              id="path-ccna"
-              href="/ccna-home.html#home-ccna-samples-title"
-              >CCNA exam prep &amp; samples</a
-            >
+            <div class="path-card-actions">
+              <a
+                class="cta"
+                id="path-ccna"
+                href="/ccna-home.html#home-ccna-samples-title"
+                >CCNA 200-301 exam prep</a
+              >
+              <a
+                class="cta cta--ccnaauto"
+                id="path-ccnaauto"
+                href="/ccnaauto-home.html#home-ccnaauto-samples-title"
+                >CCNA Automation 200-901</a
+              >
+            </div>
           </article>
         </li>
         <li>

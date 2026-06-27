@@ -1,0 +1,289 @@
+.ccnaauto-blueprint {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ccnaauto-bp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.ccnaauto-bp-tool-btn {
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(13, 148, 136, 0.45);
+  background: #fff;
+  color: #0f766e;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.ccnaauto-bp-tool-btn:hover {
+  background: rgba(13, 148, 136, 0.08);
+}
+.ccnaauto-bp-tool-btn:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: 2px;
+}
+.ccnaauto-bp-domain {
+  border-radius: 12px;
+  border: 1px solid rgba(45, 59, 90, 0.16);
+  background: #f8fafc;
+  overflow: hidden;
+}
+.ccnaauto-bp-domain-summary,
+.ccnaauto-bp-sub-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+.ccnaauto-bp-domain-summary {
+  padding: 14px 16px;
+  background: #f1f5f9;
+  border-bottom: 1px solid transparent;
+}
+.ccnaauto-bp-domain[open] > .ccnaauto-bp-domain-summary {
+  border-bottom-color: rgba(45, 59, 90, 0.12);
+}
+.ccnaauto-bp-domain-summary::-webkit-details-marker,
+.ccnaauto-bp-sub-summary::-webkit-details-marker {
+  display: none;
+}
+.ccnaauto-bp-chevron {
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid #0f766e;
+  border-bottom: 2px solid #0f766e;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+  margin-top: -0.15rem;
+}
+.ccnaauto-bp-chevron--domain {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+details[open] > summary .ccnaauto-bp-chevron {
+  transform: rotate(45deg);
+  margin-top: 0.1rem;
+}
+.ccnaauto-bp-domain-title {
+  flex: 1 1 12rem;
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+}
+.ccnaauto-bp-weight {
+  font-weight: 700;
+  color: #0d9488;
+}
+.ccnaauto-bp-domain-count,
+.ccnaauto-bp-sub-count {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #0f766e;
+  background: rgba(13, 148, 136, 0.12);
+  border: 1px solid rgba(13, 148, 136, 0.25);
+}
+.ccnaauto-bp-domain-body {
+  padding: 14px 16px 16px;
+}
+.ccnaauto-bp-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+.ccnaauto-bp-obj {
+  margin: 0 0 10px;
+  padding-left: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #334155;
+}
+.ccnaauto-bp-obj--parent {
+  margin-bottom: 12px;
+}
+.ccnaauto-bp-sub-details {
+  border-radius: 8px;
+  border: 1px solid rgba(45, 59, 90, 0.12);
+  background: #fff;
+}
+.ccnaauto-bp-sub-summary {
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+.ccnaauto-bp-sub-details[open] > .ccnaauto-bp-sub-summary {
+  border-bottom: 1px solid rgba(45, 59, 90, 0.1);
+}
+.ccnaauto-bp-summary-text {
+  flex: 1 1 10rem;
+  color: #334155;
+}
+.ccnaauto-bp-id {
+  display: inline-block;
+  min-width: 3.2rem;
+  font-weight: 800;
+  color: #0f766e;
+  font-variant-numeric: tabular-nums;
+}
+.ccnaauto-bp-sub {
+  margin: 0;
+  padding: 10px 12px 10px 1.25rem;
+  list-style: none;
+  border-left: 2px solid rgba(13, 148, 136, 0.35);
+  margin-left: 12px;
+}
+.ccnaauto-bp-sub .ccnaauto-bp-obj {
+  font-size: 0.86rem;
+  margin-bottom: 8px;
+}
+.ccnaauto-bp-sub .ccnaauto-bp-obj:last-child {
+  margin-bottom: 0;
+}
+.ccnaauto-bp-sub .ccnaauto-bp-id {
+  min-width: 3.6rem;
+}
+.ccnaauto-bp-error {
+  color: #b45309;
+  font-size: 0.9rem;
+}
+.ccnaauto-bp-changes {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(45, 59, 90, 0.15);
+}
+.ccnaauto-bp-changes-panel {
+  border-radius: 12px;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  background: #fffbeb;
+  overflow: hidden;
+}
+.ccnaauto-bp-changes-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.92rem;
+  color: #78350f;
+}
+.ccnaauto-bp-changes-summary::-webkit-details-marker {
+  display: none;
+}
+.ccnaauto-bp-changes-body {
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(180, 83, 9, 0.2);
+}
+.ccnaauto-bp-changes-intro {
+  margin: 14px 0 16px;
+  font-size: 0.88rem;
+  color: #92400e;
+  line-height: 1.45;
+}
+.ccnaauto-bp-term-block {
+  margin-bottom: 14px;
+}
+.ccnaauto-bp-term-label {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #92400e;
+}
+.ccnaauto-bp-term-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ccnaauto-bp-term {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.ccnaauto-bp-term--out {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+.ccnaauto-bp-term--new {
+  color: #0f766e;
+  background: #ccfbf1;
+  border: 1px solid #99f6e4;
+}
+.ccnaauto-bp-changes-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(45, 59, 90, 0.14);
+  background: #fff;
+}
+.ccnaauto-bp-changes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.ccnaauto-bp-changes-table th,
+.ccnaauto-bp-changes-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(45, 59, 90, 0.1);
+  text-align: left;
+  vertical-align: top;
+}
+.ccnaauto-bp-changes-table thead th {
+  background: #fef3c7;
+  color: #78350f;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ccnaauto-bp-changes-table tbody th {
+  white-space: nowrap;
+  color: #0f766e;
+}
+.ccnaauto-bp-change-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.ccnaauto-bp-change-type--wording {
+  color: #1e40af;
+  background: #dbeafe;
+}
+.ccnaauto-bp-change-type--rename {
+  color: #7c2d12;
+  background: #ffedd5;
+}
+.ccnaauto-bp-change-type--content {
+  color: #991b1b;
+  background: #fee2e2;
+}
+.ccnaauto-bp-change-type--removed {
+  color: #581c87;
+  background: #f3e8ff;
+}

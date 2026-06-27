@@ -1,0 +1,330 @@
+/* Blueprint blocks inside CCNA Automation portal (dark blue theme) */
+.ccnaauto-portal .ccnaauto-blueprint {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-tool-btn {
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border-accent, #3d6dbb);
+  background: rgba(13, 21, 40, 0.55);
+  color: #c8d8f0;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ccnaauto-portal .ccnaauto-bp-tool-btn:hover {
+  background: rgba(47, 102, 191, 0.28);
+  color: #fff;
+}
+
+.ccnaauto-portal .ccnaauto-bp-tool-btn:focus-visible {
+  outline: 2px solid #9ec0ff;
+  outline-offset: 2px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain {
+  border-radius: 12px;
+  border: 1px solid var(--border-accent, #3d6dbb);
+  background: var(--surface-raised, #1a2742);
+  overflow: hidden;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-summary,
+.ccnaauto-portal .ccnaauto-bp-sub-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-summary {
+  padding: 14px 16px;
+  background: rgba(13, 21, 40, 0.65);
+  border-bottom: 1px solid transparent;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain[open] > .ccnaauto-bp-domain-summary {
+  border-bottom-color: rgba(61, 109, 187, 0.45);
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-summary::-webkit-details-marker,
+.ccnaauto-portal .ccnaauto-bp-sub-summary::-webkit-details-marker {
+  display: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-chevron {
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid #8ab4ff;
+  border-bottom: 2px solid #8ab4ff;
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+  margin-top: -0.15rem;
+}
+
+.ccnaauto-portal .ccnaauto-bp-chevron--domain {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+
+.ccnaauto-portal details[open] > summary .ccnaauto-bp-chevron {
+  transform: rotate(45deg);
+  margin-top: 0.1rem;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-title {
+  flex: 1 1 12rem;
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.ccnaauto-portal .ccnaauto-bp-weight {
+  font-weight: 700;
+  color: #8ab4ff;
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-count,
+.ccnaauto-portal .ccnaauto-bp-sub-count {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #c8d8f0;
+  background: rgba(47, 102, 191, 0.22);
+  border: 1px solid rgba(79, 132, 216, 0.45);
+}
+
+.ccnaauto-portal .ccnaauto-bp-domain-body {
+  padding: 14px 16px 16px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-obj {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--muted, #9fb0cc);
+}
+
+.ccnaauto-portal .ccnaauto-bp-obj--parent {
+  margin-bottom: 12px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub-details {
+  border-radius: 8px;
+  border: 1px solid rgba(61, 109, 187, 0.45);
+  background: rgba(11, 16, 32, 0.55);
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub-summary {
+  padding: 10px 12px;
+  font-size: 0.88rem;
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub-details[open] > .ccnaauto-bp-sub-summary {
+  border-bottom: 1px solid rgba(61, 109, 187, 0.35);
+}
+
+.ccnaauto-portal .ccnaauto-bp-summary-text {
+  flex: 1 1 10rem;
+  color: var(--muted, #9fb0cc);
+}
+
+.ccnaauto-portal .ccnaauto-bp-id {
+  display: inline-block;
+  min-width: 3.2rem;
+  font-weight: 800;
+  color: #8ab4ff;
+  font-variant-numeric: tabular-nums;
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub {
+  margin: 0;
+  padding: 10px 12px 10px 1.25rem;
+  list-style: none;
+  border-left: 2px solid rgba(79, 132, 216, 0.45);
+  margin-left: 12px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub .ccnaauto-bp-obj {
+  font-size: 0.86rem;
+  margin-bottom: 8px;
+}
+
+.ccnaauto-portal .ccnaauto-bp-sub .ccnaauto-bp-id {
+  min-width: 3.6rem;
+}
+
+.ccnaauto-portal .ccnaauto-bp-error {
+  color: #fbbf24;
+  font-size: 0.9rem;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes {
+  margin-top: 20px;
+  padding-top: 4px;
+  border-top: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-panel {
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: rgba(13, 21, 40, 0.75);
+  overflow: hidden;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.92rem;
+  color: #fde68a;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-summary::-webkit-details-marker {
+  display: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-body {
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-intro {
+  margin: 14px 0 16px;
+  font-size: 0.88rem;
+  color: var(--muted, #9fb0cc);
+  line-height: 1.45;
+}
+
+.ccnaauto-portal .ccnaauto-bp-term-label {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--eyebrow, #6b8ab8);
+}
+
+.ccnaauto-portal .ccnaauto-bp-term-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.ccnaauto-portal .ccnaauto-bp-term {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.ccnaauto-portal .ccnaauto-bp-term--out {
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.45);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.ccnaauto-portal .ccnaauto-bp-term--new {
+  color: #bfdbfe;
+  background: rgba(30, 58, 138, 0.45);
+  border: 1px solid rgba(96, 165, 250, 0.35);
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-accent, #3d6dbb);
+  background: rgba(11, 16, 32, 0.65);
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-table th,
+.ccnaauto-portal .ccnaauto-bp-changes-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(61, 109, 187, 0.25);
+  text-align: left;
+  vertical-align: top;
+  color: var(--muted, #9fb0cc);
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-table thead th {
+  background: rgba(47, 102, 191, 0.22);
+  color: #c8d8f0;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ccnaauto-portal .ccnaauto-bp-changes-table tbody th {
+  white-space: nowrap;
+  color: #8ab4ff;
+}
+
+.ccnaauto-portal .ccnaauto-bp-change-type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.ccnaauto-portal .ccnaauto-bp-change-type--wording {
+  color: #bfdbfe;
+  background: rgba(30, 64, 175, 0.45);
+}
+
+.ccnaauto-portal .ccnaauto-bp-change-type--rename {
+  color: #fed7aa;
+  background: rgba(124, 45, 18, 0.45);
+}
+
+.ccnaauto-portal .ccnaauto-bp-change-type--content {
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.45);
+}
+
+.ccnaauto-portal .ccnaauto-bp-change-type--removed {
+  color: #e9d5ff;
+  background: rgba(88, 28, 135, 0.45);
+}

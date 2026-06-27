@@ -7,9 +7,11 @@ tags:
 
 # Competitors
 
-Security+ (SY0-701) prep sites — used for positioning and monthly question polls.
+**Master poll registry for all hunts** — Sec+, CCNA 200-301, CCNAAUTO 200-901, ENCOR 350-401. One folder: [[competitor-sites/README|competitor-sites]] (`data/competitor-sites/`).
 
-Registry: [[competitor-sites/README|competitor-sites README]] · Poll script: `scripts/secplus_competitor_poll.py`
+Each note sets `product:` in YAML; monthly scripts filter by exam (`--product CCNA-200-301`, `CCNAAUTO-200-901`, etc.).
+
+Poll script: `scripts/secplus_competitor_poll.py`
 
 ## Security+ (SY0-701)
 
@@ -36,3 +38,19 @@ Registry: [[competitor-sites/README|competitor-sites README]] · Poll script: `s
 ```bash
 npm run secplus:monthly
 ```
+
+## CCNA (200-301)
+
+Notes: `*-ccna.md` · `npm run ccna:monthly` · [[competitor-sites/howtonetwork-ccna|howtonetwork-ccna]] · [[competitor-sites/certimaan-ccna|certimaan-ccna]]
+
+## CCNAAUTO (200-901)
+
+Notes: `*-ccnaauto.md` · `npm run ccnaauto:hunt` · [[../CCNA-Auto/competitor-list|CCNA-Auto filter table]]
+
+**Active polls:** [[competitor-sites/certimaan-ccnaauto|certimaan-ccnaauto]] · [[competitor-sites/diontraining-ccnaauto|diontraining-ccnaauto]] · [[competitor-sites/howtonetwork-ccnaauto|howtonetwork-ccnaauto]]
+
+**Backlog:** [[competitor-sites/examtopics-ccnaauto|examtopics-ccnaauto]] · [[competitor-sites/open-exam-prep-ccnaauto|open-exam-prep-ccnaauto]] · [[competitor-sites/exam-labs-ccnaauto|exam-labs-ccnaauto]]
+
+## ENCOR (350-401)
+
+Notes: `*-encor.md` · `npm run encor:monthly` · [[competitor-sites/certimaan-encor|certimaan-encor]] · [[competitor-sites/examtopics-encor|examtopics-encor]]

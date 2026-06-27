@@ -11,25 +11,40 @@ aliases:
 
 Blueprint checklist and objective tracking for **200-901 CCNAAUTO v1.1** (CCNA Automation).
 
+**Hunt scope:** CCNAAUTO **200-901** competitor polls only — not CCNA 200-301.
+
+## Hunt results (Obsidian)
+
+- [[hunt-inventory|Hunt inventory]] — summary counts
+- **[[hunt-results/README|Scraped questions (full text)]]** — per-question notes with stems and choices
+- [[hunt-inventory-questions|Questions index]] · [[hunt-inventory-labs|Labs & PBQ]] · [[hunt-inventory-drag-drop|Drag-and-drop]]
+- Dedupe reference only: [[bct-overlap-reference|BCT overlap (CCNA bank)]]
+
+## Competitors (edit me)
+
+Same master list as Sec+, CCNA 200-301, and ENCOR: **`marketing-research/competitor-sites/`** (`data/competitor-sites/`).
+
+- [[competitor-list|CCNAAUTO 200-901 rows]] — active + backlog table for this exam
+- [[../competitor-sites/README|Full competitor registry]] (`data/competitor-sites/`)
+
 ## Checklist
 
+- [[exam-objectives|Official exam objectives]] — v1.1 CCNAAUTO + v1.0 DEVASC PDFs
 - [[blueprint-hunt-list|Blueprint hunt list — 200-901 v1.1]]
-
-## Hunt inventory
-
-- [[hunt-inventory|Inventory index]] — MCQ, drag-and-drop, labs from BCT bank + competitor hunt
-- [[hunt-inventory-questions|Questions]] · [[hunt-inventory-drag-drop|Drag-and-drop]] · [[hunt-inventory-labs|Labs & sim]]
-
-## Competitor sources
-
-- [[competitor-hunt-sources|Competitor hunt list]] — Dion Training, HowToNetwork, CertiMaan (poll registry)
-
-Mark **MCQ** and **Lab** columns as you find competitor samples or draft BCT items. Verify every answer on Cisco Tier A before bank draft.
 
 ## Hunt workflow
 
-Monthly collect/compare lives in [[Hunt/ccnaauto/README|ccnaauto hunt index]] (runs, source catalogs, npm commands).
+Rerun everything (poll → compare → Obsidian export → inventory):
+
+```bash
+npm run ccnaauto:hunt
+```
+
+Or step by step:
 
 - MCQ: `npm run ccnaauto:monthly`
-- Labs / sim: `npm run ccnaauto:labs-monthly`
-- Regenerate Obsidian inventory: `npm run ccnaauto:inventory`
+- Labs / PBQ / D&D signals: `npm run ccnaauto:labs-monthly`
+- Export to `Hunt/ccnaauto/`: `npm run ccnaauto:export`
+- Refresh `CCNA-Auto/hunt-inventory*.md`: `npm run ccnaauto:inventory`
+
+Verify every answer on **Cisco Tier A** before bank draft.

@@ -5,26 +5,15 @@ category: labs
 generated: 2026-06-25
 ---
 
-# Hunt inventory — labs and sim
+# CCNAAUTO 200-901 — hunt labs / PBQ
 
-BCT automation CLI labs: **0** · Hunt net-new: **5**
+Run: [[hunt-results/2026-06-25|Run 2026-06-25]] · **2** items (excludes drag-and-drop signals)
 
-Back: [[hunt-inventory|Inventory]] · [[blueprint-hunt-list|Blueprint]]
-
----
-
-## BCT bank
-
-No CCNA automation CLI labs in bank yet.
+Back: [[hunt-inventory|Inventory]] · [[hunt-inventory-drag-drop|Drag-and-drop]]
 
 ---
 
-## Hunt net-new
-
-| Stem | Source | Run |
-|---|---|---|
-| drag-and-drop questions, and lab simulations with our Premium Membership | 9tut-ccna-engine-pbq | 2026-06-25 |
-| drag-and-drop exercises, and simulations, which test both theoretical understanding and practical skills | crucialexams-ccna-pbq | 2026-06-25 |
-| drag and drop, simulation, type in, and fill in the blank | exam-labs-ccna-pbq | 2026-06-25 |
-| Page mentions Security+ PBQ / drag-and-drop / simulation practice (simulation, simulator) | examcollection-ccna-pbq | 2026-06-25 |
-| drag-and-drop, and simulation/simlet items | openexamprep-ccna-pbq | 2026-06-25 |
+| Note | Stem | Source | Type |
+|---|---|---|---|
+| [[hunt-results/2026-06-25/labs/L002-site-advertises-1-performance-based-question-s-p|L002-site-advertises-1-performance-based-question-s-p]] | Site advertises 1 performance-based question(s) (PBQ) for 200-901 v1.1 | diontraining-ccnaauto-pbq | labs-sim |
+| [[hunt-results/2026-06-25/labs/L003-stated-count-on-page-1-pbqs-200-901-v1-1|L003-stated-count-on-page-1-pbqs-200-901-v1-1]] | Stated count on page: 1 PBQs (200-901 v1.1) | diontraining-ccnaauto-pbq | labs-sim |

@@ -9,7 +9,15 @@ Add one `.md` file per site. The monthly hunt scripts read **YAML frontmatter**:
 
 Script: `scripts/secplus_competitor_poll.py` · MCQ: `secplus_monthly_question_hunt.py` · PBQ: `secplus_monthly_pbq_hunt.py`
 
-**CCNA 200-301:** site notes use `product: CCNA-200-301` and filenames `*-ccna.md` (plus [[9tut|9tut]]). MCQ: `npm run ccna:monthly` (`question_poll`) · Labs/sim: `npm run ccna:labs-monthly` (`pbq_poll`) · Catalogs: [[../../11-question-sourcing/ccna/ccna-200-301-web-sources|MCQ]] · [[../../11-question-sourcing/ccna/ccna-labs-sim-web-sources|labs/sim]].
+**CCNA 200-301:** `product: CCNA-200-301` · filenames `*-ccna.md` · `npm run ccna:monthly` / `npm run ccna:labs-monthly`
+
+**CCNAAUTO 200-901:** `product: CCNAAUTO-200-901` · filenames `*-ccnaauto.md` · `npm run ccnaauto:monthly` / `npm run ccnaauto:labs-monthly`
+
+**ENCOR 350-401:** `product: ENCOR-350-401` · filenames `*-encor.md` · `npm run encor:monthly`
+
+**Security+ SY0-701:** `product: SY0-701` (or SY0-701 in version_note) · base site notes · `npm run secplus:monthly` / `npm run secplus:pbq-monthly`
+
+All hunts read **this folder only** (`data/competitor-sites/`). Obsidian: `marketing-research/competitor-sites/`.
 
 ## Add a new site
 

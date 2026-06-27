@@ -18,6 +18,7 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+from ccnaauto_exam_guard import EXAM, filter_ccnaauto_rows
 from net_new_markdown import write_net_new_md as write_net_new_review_md
 from secplus_competitor_poll import load_poll_sources, poll_all_sources
 
@@ -176,7 +177,7 @@ def load_source_config() -> dict:
 
 def poll_sites_dir(cfg: dict | None = None) -> Path:
     product_cfg = cfg or load_source_config()
-    rel = product_cfg.get("poll_registry", "data/ccnaauto-question-sourcing/competitor-sites")
+    rel = product_cfg.get("poll_registry", "data/competitor-sites")
     return ROOT / rel
 
 
@@ -359,14 +360,14 @@ def net_new_md_settings(cfg: dict | None = None) -> dict:
     md = dict(product_cfg.get("net_new_markdown") or {})
     return {
         "exam": product_cfg.get("exam", POLL_PRODUCT),
-        "title": md.get("title", "CCNA 200-301 net-new candidates"),
+        "title": md.get("title", "CCNAAUTO 200-901 net-new candidates"),
         "intro": md.get(
             "intro",
-            "Collected from competitors, compared to BCT CCNA bank. "
+            "Collected from CCNAAUTO 200-901 competitors, compared to interim automation overlap bank. "
             "**Verify answers on Cisco Tier A** before drafting original stems.",
         ),
         "verify_tier": md.get("verify_tier", "Cisco Tier A"),
-        "draft_target": md.get("draft_target", "gen_ccna_chain_pages.py"),
+        "draft_target": md.get("draft_target", "public/CCNAAUTO-Study/ (planned)"),
         "blueprint_by_source": md.get("blueprint_by_source") or {},
     }
 
@@ -397,7 +398,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     sources = load_poll_sources(product=product, sites_dir=poll_sites_dir(cfg))
     if not sources:
         print(
-            f"[collect] no enabled polls for product={product} — set question_poll.enabled in data/ccnaauto-question-sourcing/competitor-sites/*-ccnaauto.md",
+            f"[collect] no enabled polls for product={product} — set question_poll.enabled in data/competitor-sites/*-ccnaauto.md",
             file=sys.stderr,
         )
     polled = poll_all_sources(sources=sources)
@@ -412,9 +413,13 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
         print(f"[collect] import: {len(manual)} rows from {imp.name}")
         all_rows.extend(manual)
 
+    all_rows = filter_ccnaauto_rows(all_rows)
+
     if not all_rows:
         print(
-            "[collect] no questions — enable question_poll in data/ccnaauto-question-sourcing/competitor-sites/*-ccnaauto.md or add --import.",
+            "[collect] no CCNAAUTO 200-901 questions — enable question_poll in "
+            "data/competitor-sites/*-ccnaauto.md "
+            "(product CCNAAUTO-200-901, not CCNA-200-301) or add --import.",
             file=sys.stderr,
         )
         return 1, run_id
@@ -424,7 +429,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     paths["meta"].write_text(
         json.dumps(
             {
-                "exam": "CCNAAUTO-200-901",
+                "exam": EXAM,
                 "run_id": run_id,
                 "phase": "collect",
                 "count": len(all_rows),

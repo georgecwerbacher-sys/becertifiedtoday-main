@@ -7,7 +7,7 @@ product: CCNAAUTO-200-901
 category: practice_samples
 research_date: 2026-06-25
 question_poll:
-  enabled: false
+  enabled: true
   tier: b
   id: diontraining-ccnaauto-practice
   sample_url: https://www.diontraining.com/search?q=ccna+automation&type=product
@@ -15,7 +15,7 @@ question_poll:
   version_note: 200-901 v1.1
   topic_notes: Tier B — Shopify practice exam packs when CCNAAUTO SKU exists; verify on Cisco Tier A
 pbq_poll:
-  enabled: false
+  enabled: true
   tier: b
   id: diontraining-ccnaauto-pbq
   sample_url: https://www.diontraining.com/search?q=ccna+automation&type=product

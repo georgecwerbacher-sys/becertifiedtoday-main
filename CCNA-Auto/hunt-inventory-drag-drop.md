@@ -5,26 +5,15 @@ category: drag-drop
 generated: 2026-06-25
 ---
 
-# Hunt inventory — drag-and-drop
+# CCNAAUTO 200-901 — hunt drag-and-drop signals
 
-BCT bank: **11** items
+Run: [[hunt-results/2026-06-25|Run 2026-06-25]] · **2** competitor page signals (verify + capture before draft)
 
-Preview: `http://localhost:3000/CCNA-Study/CCNA_D_D/{{slug}}.html`
-
-Back: [[hunt-inventory|Inventory]] · [[blueprint-hunt-list|Blueprint]]
+Back: [[hunt-inventory|Inventory]]
 
 ---
 
-| Title | Slug | Objectives |
-|---|---|---|
-| Drag and drop - Ansible features | dragdrop-ansible-features-unused-two | 6.0, 6.5 |
-| Drag and drop - Ansible terms to definitions | dragdrop-ansible-terms-to-definitions | 6.0, 6.5 |
-| Drag and drop - Cloud essential characteristics to descriptions | dragdrop-cloud-essential-characteristics-to-descriptions | 6.0 |
-| Drag and drop - configuration management terms | dragdrop-configuration-management-terms-unused-pull | 6.0, 6.5 |
-| Drag and drop - DNA Center vs traditional deployment | dragdrop-dna-center-vs-traditional-characteristics | 2.8 |
-| Drag and drop - Northbound API characteristics | dragdrop-northbound-api-characteristics-unused-three | 2.8 |
-| Drag and drop - Rapid PVST+ forwarding state actions | dragdrop-rapid-pvst-forwarding-state-actions | 2.0, 6.0 |
-| Drag and drop - REST HTTP methods to actions (one unused) | dragdrop-rest-http-methods-actions-unused-patch | 6.5 |
-| Drag and drop - REST HTTP methods | dragdrop-rest-http-methods-descriptions | 6.5 |
-| Drag and drop - HTTP verbs to API operations | dragdrop-rest-http-verbs-api-operations | 6.5 |
-| Drag and drop - traditional vs controller-based networking | dragdrop-traditional-controller-networking-statements | 6.0 |
+| Note | Stem | Source | Type |
+|---|---|---|---|
+| [[hunt-results/2026-06-25/labs/L001-page-mentions-security-pbq-drag-and-drop-simulat|L001-page-mentions-security-pbq-drag-and-drop-simulat]] | Page mentions Security+ PBQ / drag-and-drop / simulation practice (drag-and-drop, hands-on) | certimaan-ccnaauto-pbq | drag-and-drop |
+| [[hunt-results/2026-06-25/labs/L004-page-mentions-security-pbq-drag-and-drop-simulat|L004-page-mentions-security-pbq-drag-and-drop-simulat]] | Page mentions Security+ PBQ / drag-and-drop / simulation practice (pbq, performance-based) | howtonetwork-ccnaauto-pbq | drag-and-drop |

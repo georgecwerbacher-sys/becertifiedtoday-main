@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CCNA Automation (200-901 CCNAAUTO) practice portal — APIs, Python, Ansible, JSON drag-and-drop, and automation labs."
+  />
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-portal-theme.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-blueprint.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-blueprint-portal.css" />
+  <title>CCNA Automation Training Portal | Be Certified Today</title>
+  <style>html { -webkit-text-size-adjust: 100%; }</style>
+</head>
+<body class="ccnaauto-portal">
+  <div class="page">
+    <header>
+      <a class="brand" href="/ccnaauto-home.html" aria-label="Be Certified Today — CCNA Automation home">
+        <img src="/images/logo/becertifiedtoday_logo_trans.png" width="56" height="56" alt="" />
+      </a>
+    </header>
+    <main id="main">
+      <div class="funnel">
+        <p class="eyebrow">Welcome</p>
+        <h1>CCNA Automation Training Portal</h1>
+        <p class="lead">
+          Map your prep to the official <strong>200-901 CCNAAUTO v1.1</strong> blueprint—APIs, Python, Ansible, Cisco platform
+          automation, and network fundamentals—then prove it with hands-on practice here.
+        </p>
+        <ul class="benefits" aria-label="Portal benefits">
+          <li>Study paths aligned to six CCNAAUTO domains and their exam weights.</li>
+          <li>Automation MCQs, JSON drag-and-drop, and script-style labs in the browser.</li>
+          <li>120-minute timed simulation (in development) for test-day pressure.</li>
+        </ul>
+
+        <p class="portal-note" role="status">
+          <strong>Dedicated CCNAAUTO bank building now.</strong>
+          Use overlap practice below and CCNA domain 6 items until the full library ships.
+          Landing page: <a href="/ccnaauto-home.html">ccnaauto-home.html</a>
+        </p>
+
+        <div class="card" id="ccnaauto-domains">
+          <h2>200-901 CCNAAUTO v1.1 exam objectives</h2>
+          <p class="study-meta">Verbatim from Cisco exam topics PDF — all objectives and subcategories (1.8.a–g, 3.9.a–c, 4.3.a–c).</p>
+          <div id="ccnaauto-blueprint-root" aria-live="polite">
+            <p class="study-meta">Loading blueprint…</p>
+          </div>
+          <div id="ccnaauto-blueprint-changes-root" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <section class="formats-section" aria-labelledby="formats-title">
+        <div class="funnel">
+          <h2 id="formats-title">Choose your practice mode</h2>
+          <p class="formats-lead">
+            CCNAAUTO exams mix MCQ, drag-and-drop, and performance-based script or playbook tasks.
+            Start with overlap samples while the dedicated bank grows.
+          </p>
+
+          <div class="sim-grid">
+            <article class="sim-box">
+              <h3>Practice questions · automation overlap</h3>
+              <p class="study-meta">
+                REST API, Ansible, SDN, and JSON items from the CCNA bank tagged to automation objectives.
+                Full CCNAAUTO-only bank coming soon.
+              </p>
+              <a class="start-btn" href="/CCNA-Study/CCNA_questions/rest-api-supported-methods-get-put-post-delete.html">Open REST API sample</a>
+            </article>
+            <article class="sim-box">
+              <h3>Drag and drop · SDN &amp; APIs</h3>
+              <p class="study-meta">
+                Northbound API and automation concept matching—same NGTE drag-and-drop engine as CCNA samples.
+              </p>
+              <a class="start-btn" href="/CCNA-Study/CCNA_D_D/dragdrop-northbound-api-characteristics-unused-three.html">Open drag-and-drop</a>
+            </article>
+            <article class="sim-box">
+              <h3>CCNA domain 6 filter</h3>
+              <p class="study-meta">
+                Practice all CCNA 200-301 automation &amp; programmability items (domain 6) on the CCNA portal until CCNAAUTO banks ship.
+              </p>
+              <a class="start-btn" href="/CCNA-Study/CCNA_Training_Portal.html#ccna-practice-subject-filter">Open CCNA portal · domain 6</a>
+            </article>
+            <article class="sim-box">
+              <h3>Python / Ansible script labs</h3>
+              <p class="study-meta">
+                Script PBQs and playbook interpretation labs for domains 2.9, 5.7, and 5.8—in development.
+              </p>
+              <span class="start-btn start-btn--muted" aria-disabled="true">Coming soon</span>
+            </article>
+            <article class="sim-box">
+              <h3>120-minute timed simulation</h3>
+              <p class="study-meta">
+                Mixed MCQ, drag-and-drop, and lab pressure across all six CCNAAUTO domains—planned for full launch.
+              </p>
+              <span class="start-btn start-btn--muted" aria-disabled="true">Coming soon</span>
+            </article>
+          </div>
+
+          <p class="page-footer">
+            <a href="/ccnaauto-home.html">← CCNA Automation home</a>
+            ·
+            <a href="/ccna-home.html">CCNA 200-301</a>
+            ·
+            <a href="/index.html">All tracks</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/CCNAAUTO-Study/js/ccnaauto-blueprint-render.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      window.CCNAAUTO_BLUEPRINT.load(
+        "ccnaauto-blueprint-root",
+        "/CCNAAUTO-Study/data/ccnaauto-blueprint-v1.1.json",
+        "ccnaauto-blueprint-changes-root",
+        "/CCNAAUTO-Study/data/ccnaauto-blueprint-v1-changes.json"
+      );
+    });
+  </script>
+</body>
+</html>

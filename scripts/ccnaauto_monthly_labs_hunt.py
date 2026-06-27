@@ -13,6 +13,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
+from ccnaauto_exam_guard import EXAM, filter_ccnaauto_rows
 from secplus_competitor_poll import load_pbq_poll_sources, poll_all_pbq_sources
 from secplus_monthly_pbq_hunt import (
     CSV_FIELDS,
@@ -43,7 +44,7 @@ def load_source_config() -> dict:
 
 def poll_sites_dir(cfg: dict | None = None) -> Path:
     product_cfg = cfg or load_source_config()
-    rel = product_cfg.get("poll_registry", "data/ccnaauto-question-sourcing/competitor-sites")
+    rel = product_cfg.get("poll_registry", "data/competitor-sites")
     return ROOT / rel
 
 
@@ -235,7 +236,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     sources = load_pbq_poll_sources(product=product, sites_dir=poll_sites_dir(cfg))
     if not sources:
         print(
-            f"[collect] no enabled pbq_poll for product={product} — enable in data/ccnaauto-question-sourcing/competitor-sites/*-ccnaauto.md",
+            f"[collect] no enabled pbq_poll for product={product} — enable in data/competitor-sites/*-ccnaauto.md",
             file=sys.stderr,
         )
     polled = poll_all_pbq_sources(sources=sources)
@@ -250,9 +251,13 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
         print(f"[collect] import: {len(manual)} rows from {imp.name}")
         all_rows.extend(manual)
 
+    all_rows = filter_ccnaauto_rows(all_rows)
+
     if not all_rows:
         print(
-            "[collect] no labs/sim candidates — enable pbq_poll in data/ccnaauto-question-sourcing/competitor-sites/*-ccnaauto.md or add --import.",
+            "[collect] no CCNAAUTO 200-901 labs/sim candidates — enable pbq_poll in "
+            "data/competitor-sites/*-ccnaauto.md "
+            "(product CCNAAUTO-200-901, not CCNA-200-301) or add --import.",
             file=sys.stderr,
         )
         return 1, run_id
@@ -262,7 +267,7 @@ def cmd_collect(args: argparse.Namespace) -> tuple[int, str]:
     paths["meta"].write_text(
         json.dumps(
             {
-                "exam": "CCNAAUTO-200-901",
+                "exam": EXAM,
                 "content_type": "labs-sim",
                 "run_id": run_id,
                 "phase": "collect",

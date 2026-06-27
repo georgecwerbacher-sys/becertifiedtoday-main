@@ -4,17 +4,21 @@ exam: CCNAAUTO-200-901
 generated: 2026-06-25
 ---
 
-# CCNA-Auto hunt inventory
+# CCNAAUTO 200-901 hunt results
 
-Hunt run: `2026-06-25` · Regenerate: `python3 scripts/gen_ccnaauto_hunt_inventory.py`
+Latest run: [[hunt-results/2026-06-25|Run 2026-06-25]] · **Open questions:** [[hunt-results/2026-06-25/v1.1|MCQ folder]] · [[hunt-results/2026-06-25|run index]]
 
-| Category | BCT bank | Hunt net-new |
-|----------|----------|--------------|
-| MCQ questions | 119 | 6 |
-| Drag-and-drop | 11 | — |
-| CLI labs / sim | 0 | 5 |
+Rerun: `npm run ccnaauto:hunt`
 
-[[hunt-inventory-questions|Questions]] · [[hunt-inventory-drag-drop|Drag-and-drop]] · [[hunt-inventory-labs|Labs and sim]]
+| Category | Hunt net-new |
+|----------|-------------:|
+| MCQ questions | 32 |
+| Labs / PBQ | 2 |
+| Drag-and-drop signals | 2 |
+
+[[hunt-inventory-questions|Questions]] · [[hunt-inventory-labs|Labs & PBQ]] · [[hunt-inventory-drag-drop|Drag-and-drop]] · [[competitor-list|Competitor list]]
+
+BCT overlap dedupe reference (CCNA 200-301 automation slugs): [[bct-overlap-reference|BCT overlap]]
 
 Back: [[README|CCNA-Auto]]
 

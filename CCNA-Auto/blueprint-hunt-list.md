@@ -3,12 +3,19 @@ type: hunt-blueprint
 exam: CCNAAUTO-200-901
 blueprint_version: v1.1
 source: Cisco Learning Network CCNAAUTO exam topics
-source_pdf: https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf
+source_pdf: blueprints/200-901-CCNAAUTO_v.1.1.pdf
+source_legacy_pdf: blueprints/200-901-DEVASC_v1.0.pdf
+objectives_note: [[exam-objectives|Official exam objectives (v1.0 + v1.1)]]
+web_blueprint_json: ../../public/CCNAAUTO-Study/data/ccnaauto-blueprint-v1.1.json
 ---
 
 # CCNAAUTO 200-901 — blueprint hunt list
 
 Use this checklist when reviewing competitor captures. Mark **MCQ**, **Lab**, or **Sim/PBQ** as you find or draft coverage. Verify every answer on **Cisco Tier A** (official docs, Learning Network, DevNet) before bank draft.
+
+**Source:** verbatim from `blueprints/200-901-CCNAAUTO_v.1.1.pdf` · [[exam-objectives|exam-objectives]] · legacy `200-901-DEVASC_v1.0.pdf`
+
+**v1.0 → v1.1 diff (outdated vs in-scope):** [[blueprint-v1-changes|Changes only]]
 
 **Legend:** `[ ]` not started · `[~]` partial competitor signal · `[x]` in BCT bank · `[!]` needs manual exhibit/script capture
 
@@ -20,14 +27,21 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 1.1 | Compare data formats (XML, JSON, YAML, plain text) | [ ] | [ ] | CCNA overlap: JSON slugs in `CCNA_questions/json-*` |
-| 1.2 | Parse, construct, and validate JSON/XML/YAML/Python data structures | [ ] | [ ] | Hunt JSON drag-and-drop + script output items |
-| 1.3 | Describe concepts of test-driven development | [ ] | [ ] | |
-| 1.4 | Compare software development methods (agile, lean, waterfall) | [ ] | [ ] | |
-| 1.5 | Describe the advantages of version control | [ ] | [ ] | |
-| 1.6 | Describe the characteristics of API styles (REST, RPC, synchronous, async) | [ ] | [ ] | CCNA overlap: REST API MCQs |
-| 1.7 | Describe the challenges of network programmability | [ ] | [ ] | CCNA overlap: automation benefits/drivers |
-| 1.8 | Utilize common Git operations (clone, add/remove, commit, push/pull, branch, merge, diff) | [ ] | [ ] | Hunt CLI-style Git transcript labs |
+| 1.1 | Compare data formats (XML, JSON, and YAML) | [ ] | [ ] | CCNA overlap: `json-*` slugs |
+| 1.2 | Describe parsing of common data format (XML, JSON, and YAML) to Python data structures | [ ] | [ ] | JSON drag-and-drop |
+| 1.3 | Describe the concepts of test-driven development | [ ] | [ ] | |
+| 1.4 | Compare software development methods (agile, lean, and waterfall) | [ ] | [ ] | |
+| 1.5 | Explain the benefits of organizing code into methods / functions, classes, and modules | [ ] | [ ] | |
+| 1.6 | Explain the advantages of common design patterns (MVC and Observer) | [ ] | [ ] | |
+| 1.7 | Explain the advantages of version control | [ ] | [ ] | |
+| 1.8 | Utilize common version control operations with Git | [ ] | [ ] | |
+| 1.8.a | Clone | [ ] | [ ] | |
+| 1.8.b | Add/remove | [ ] | [ ] | |
+| 1.8.c | Commit | [ ] | [ ] | |
+| 1.8.d | Push / pull | [ ] | [ ] | |
+| 1.8.e | Branch | [ ] | [ ] | |
+| 1.8.f | Merge and handling conflicts | [ ] | [ ] | |
+| 1.8.g | diff | [ ] | [ ] | Hunt Git transcript labs |
 
 ---
 
@@ -35,15 +49,15 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 2.1 | Construct a REST API request from API documentation | [ ] | [ ] | Hunt curl/Postman-style exhibits |
-| 2.2 | Describe webhook usage patterns | [ ] | [ ] | |
-| 2.3 | Describe constraints when consuming APIs | [ ] | [ ] | |
-| 2.4 | Explain common HTTP response codes for REST APIs | [ ] | [ ] | CCNA overlap: `rest-api-http-*` slugs |
-| 2.5 | Troubleshoot using HTTP response code + request + docs | [ ] | [ ] | |
-| 2.6 | Interpret HTTP response parts (code, headers, body) | [ ] | [ ] | |
-| 2.7 | Utilize API auth: basic, custom token, API keys | [ ] | [ ] | |
-| 2.8 | Compare API styles (REST, RPC, sync, async) | [ ] | [ ] | |
-| 2.9 | Construct Python `requests` script calling a REST API | [ ] | [ ] | **Lab priority** — script PBQ |
+| 2.1 | Construct a REST API request to accomplish a task given API documentation | [ ] | [ ] | curl/Postman exhibits |
+| 2.2 | Describe common usage patterns related to webhooks | [ ] | [ ] | |
+| 2.3 | Describe the constraints when consuming APIs | [ ] | [ ] | |
+| 2.4 | Explain common HTTP response codes associated with REST APIs | [ ] | [ ] | CCNA overlap: `rest-api-http-*` |
+| 2.5 | Troubleshoot a problem given the HTTP response code, request and API documentation | [ ] | [ ] | |
+| 2.6 | Interpret the parts of an HTTP response (response code, headers, body) | [ ] | [ ] | |
+| 2.7 | Utilize common API authentication mechanisms: basic, custom token, and API keys | [ ] | [ ] | |
+| 2.8 | Compare common API styles (REST, RPC, synchronous, and asynchronous) | [ ] | [ ] | |
+| 2.9 | Construct a Python script that calls a REST API using the requests library | [ ] | [ ] | **Lab priority** — script PBQ |
 
 ---
 
@@ -51,17 +65,18 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 3.1 | Describe Cisco SDKs and their use | [ ] | [ ] | DevNet platform docs |
-| 3.2 | Describe capabilities of Cisco network management platforms (Meraki, Catalyst Center, SD-WAN, NSO) | [ ] | [ ] | CCNA overlap: DNA Center / Meraki MCQs |
-| 3.3 | Describe compute management APIs (UCS Manager, Intersight) | [ ] | [ ] | v1.1: UCS Director removed |
-| 3.4 | Describe collaboration APIs (Webex, CUCM AXL/UDS) | [ ] | [ ] | v1.1: Webex Teams → Webex |
-| 3.5 | Describe security platform APIs (XDR, Firepower, Umbrella, Secure Endpoint, ISE, Secure Malware Analytics) | [ ] | [ ] | v1.1 naming updates |
-| 3.6 | Describe device management APIs (IOS XE, NX-OS, IOS XR) | [ ] | [ ] | |
-| 3.7 | Describe model-driven telemetry (gRPC, MDT, YANG) | [ ] | [ ] | |
-| 3.8 | Describe RESTCONF/NETCONF capabilities | [ ] | [ ] | v1.1 emphasis |
-| 3.9.a | Code: list devices (Meraki, Catalyst Center, ACI, SD-WAN, NSO) | [ ] | [ ] | **Lab priority** |
-| 3.9.b | Code: manage Webex spaces/participants/messages | [ ] | [ ] | |
-| 3.9.c | Code: list clients/hosts (Meraki, Catalyst Center) | [ ] | [ ] | |
+| 3.1 | Construct a Python script that uses a Cisco SDK given SDK documentation | [ ] | [ ] | **Lab priority** |
+| 3.2 | Describe the capabilities of Cisco network management platforms and APIs (Meraki, Cisco Catalyst Center, ACI, Cisco Catalyst SD-WAN, and NSO) | [ ] | [ ] | v1.1 naming |
+| 3.3 | Describe the capabilities of Cisco compute management platforms and APIs (UCS Manager and Intersight) | [ ] | [ ] | v1.1: UCS Director removed |
+| 3.4 | Describe the capabilities of Cisco collaboration platforms and APIs (Webex, Webex devices, Cisco Unified Communications Manager including AXL and UDS interfaces) | [ ] | [ ] | v1.1: Webex Teams → Webex |
+| 3.5 | Describe the capabilities of Cisco security platforms and APIs (XDR, Firepower, Secure Connect, Secure Endpoint, ISE, and Secure Malware Analytics) | [ ] | [ ] | v1.1 product names |
+| 3.6 | Describe the device level APIs and dynamic interfaces for IOS XE and NX-OS | [ ] | [ ] | |
+| 3.7 | Describe the appropriate DevNet resource for a given scenario (Sandbox, Code Exchange, support, forums, Learning Labs, and API documentation) | [ ] | [ ] | |
+| 3.8 | Apply concepts of model driven programmability (YANG, RESTCONF, and NETCONF) in a Cisco environment | [ ] | [ ] | |
+| 3.9 | Construct code to perform a specific operation based on a set of requirements and given API reference documentation such as these: | [ ] | [ ] | parent |
+| 3.9.a | Obtain a list of network devices by using Meraki, Cisco Catalyst Center, ACI, Cisco Catalyst SD-WAN, or NSO | [ ] | [ ] | **Lab priority** |
+| 3.9.b | Manage spaces, participants, and messages in Webex | [ ] | [ ] | |
+| 3.9.c | Obtain a list of clients / hosts seen on a network using Meraki or Cisco Catalyst Center | [ ] | [ ] | |
 
 ---
 
@@ -69,15 +84,21 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 4.1 | Describe characteristics of API styles in application deployment | [ ] | [ ] | |
-| 4.2 | Describe the concepts of edge computing | [ ] | [ ] | |
-| 4.3.a | Describe VM deployment attributes | [ ] | [ ] | |
-| 4.3.b | Describe bare-metal deployment attributes | [ ] | [ ] | |
-| 4.3.c | Describe container deployment attributes | [ ] | [ ] | Hunt Docker/K8s MCQs |
-| 4.4 | Describe CI/CD pipeline concepts | [ ] | [ ] | |
-| 4.5 | Describe application security (OWASP, secrets, TLS) | [ ] | [ ] | |
-| 4.6 | Describe OWASP threats and mitigations | [ ] | [ ] | |
-| 4.7 | Describe secure coding practices | [ ] | [ ] | |
+| 4.1 | Describe the benefits of edge computing | [ ] | [ ] | |
+| 4.2 | Describe the attributes of different application deployment models (private cloud, public cloud, hybrid cloud, and edge) | [ ] | [ ] | |
+| 4.3 | Describe the attributes of these application deployment types | [ ] | [ ] | parent |
+| 4.3.a | Virtual machines | [ ] | [ ] | |
+| 4.3.b | Bare metal | [ ] | [ ] | |
+| 4.3.c | Containers | [ ] | [ ] | Docker MCQs |
+| 4.4 | Describe components for a CI/CD pipeline in application deployments | [ ] | [ ] | |
+| 4.5 | Construct a Python unit test | [ ] | [ ] | **Lab priority** |
+| 4.6 | Interpret contents of a Dockerfile | [ ] | [ ] | |
+| 4.7 | Utilize Docker images in local developer environment | [ ] | [ ] | |
+| 4.8 | Describe application security issues related to secret protection, encryption (storage and transport), and data handling | [ ] | [ ] | |
+| 4.9 | Explain how firewall, DNS, load balancers, and reverse proxy in application deployment | [ ] | [ ] | |
+| 4.10 | Describe top OWASP threats (such as XSS, SQL injections, and CSRF) | [ ] | [ ] | |
+| 4.11 | Utilize Bash commands (file management, directory navigation, and environmental variables) | [ ] | [ ] | **Lab priority** |
+| 4.12 | Describe the principles of DevOps practices | [ ] | [ ] | |
 
 ---
 
@@ -85,20 +106,20 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 5.1 | Describe model-driven programmability value | [ ] | [ ] | CCNA overlap: YANG/JSON models |
-| 5.2 | Compare controller-level vs device-level management | [ ] | [ ] | CCNA overlap: SDN controller |
-| 5.3 | Describe network simulation tools (CML, pyATS) | [ ] | [ ] | v1.1: VIRL → CML |
-| 5.4 | Describe CI/CD pipeline in infrastructure automation | [ ] | [ ] | |
-| 5.5 | Describe infrastructure-as-code principles | [ ] | [ ] | |
-| 5.6 | Describe Ansible, Terraform, Cisco NSO capabilities | [ ] | [ ] | CCNA overlap: Ansible/Terraform MCQs; v1.1 adds Terraform |
-| 5.7 | Identify workflow in Python script using Cisco APIs (ACI, Meraki, Catalyst Center, RESTCONF) | [ ] | [ ] | **Lab priority** |
-| 5.8 | Interpret Ansible playbook workflow | [ ] | [ ] | **Lab priority** — playbook PBQ |
-| 5.9 | Interpret bash script workflow | [ ] | [ ] | **Lab priority** |
-| 5.10 | Interpret RESTCONF/NETCONF query results | [ ] | [ ] | **Lab priority** |
-| 5.11 | Interpret basic YANG models | [ ] | [ ] | Hunt YANG tree drag-and-drop |
-| 5.12 | Interpret unified diff | [ ] | [ ] | v1.1 new |
-| 5.13 | Describe code review principles and benefits | [ ] | [ ] | v1.1 new |
-| 5.14 | Interpret API sequence diagram | [ ] | [ ] | v1.1 new |
+| 5.1 | Describe the value of model driven programmability for infrastructure automation | [ ] | [ ] | YANG/JSON models |
+| 5.2 | Compare controller-level to device-level management | [ ] | [ ] | SDN controller overlap |
+| 5.3 | Describe the use and roles of network simulation and test tools (such as Cisco Modeling Labs and pyATS) | [ ] | [ ] | v1.1: VIRL → CML |
+| 5.4 | Describe the components and benefits of CI/CD pipeline in infrastructure automation | [ ] | [ ] | |
+| 5.5 | Describe the principles of infrastructure as code | [ ] | [ ] | |
+| 5.6 | Describe the capabilities of automation tools such as Ansible, Terraform, and Cisco NSO | [ ] | [ ] | v1.1: +Terraform, −Puppet/Chef |
+| 5.7 | Identify the workflow being automated by a Python script that uses Cisco APIs including ACI, Meraki, Cisco Catalyst Center, and RESTCONF | [ ] | [ ] | **Lab priority** |
+| 5.8 | Interpret the workflow being automated by an Ansible playbook (management packages, user management related to services, basic service configuration, and start/stop) | [ ] | [ ] | **Lab priority** |
+| 5.9 | Interpret the workflow being automated by a bash script (such as file management, app install, user management, directory navigation) | [ ] | [ ] | **Lab priority** |
+| 5.10 | Interpret the results of a RESTCONF or NETCONF query | [ ] | [ ] | **Lab priority** |
+| 5.11 | Interpret basic YANG models | [ ] | [ ] | YANG tree D&D |
+| 5.12 | Interpret a unified diff | [ ] | [ ] | v1.1 |
+| 5.13 | Describe the principles and benefits of a code review process | [ ] | [ ] | v1.1 |
+| 5.14 | Interpret a sequence diagram that includes API calls | [ ] | [ ] | v1.1 |
 
 ---
 
@@ -106,15 +127,15 @@ Back: [[README|CCNA-Auto]]
 
 | ID | Objective | MCQ | Lab | Notes |
 |----|-----------|:---:|:---:|-------|
-| 6.1 | MAC addresses and VLANs | [ ] | [ ] | CCNA core overlap |
-| 6.2 | IP addresses, routes, prefix, gateways | [ ] | [ ] | CCNA core overlap |
-| 6.3 | Common components (switch, router, firewall, load balancer) | [ ] | [ ] | |
-| 6.4 | Interpret topology diagram | [ ] | [ ] | Hunt topology exhibits |
-| 6.5 | Management, data, and control planes | [ ] | [ ] | CCNA overlap |
-| 6.6 | IP services (DHCP, DNS, NAT, SNMP, NTP) | [ ] | [ ] | CCNA overlap |
-| 6.7 | Common protocol ports (SSH, Telnet, HTTP, HTTPS, NETCONF) | [ ] | [ ] | CCNA overlap |
-| 6.8 | Diagnose app connectivity (NAT, port block, proxy, VPN) | [ ] | [ ] | Troubleshooting PBQ |
-| 6.9 | Impacts of network constraints on applications | [ ] | [ ] | |
+| 6.1 | Describe the purpose and usage of MAC addresses and VLANs | [ ] | [ ] | CCNA core overlap |
+| 6.2 | Describe the purpose and usage of IP addresses, routes, subnet mask / prefix, and gateways | [ ] | [ ] | CCNA core overlap |
+| 6.3 | Describe the function of common networking components (such as switches, routers, firewalls, and load balancers) | [ ] | [ ] | |
+| 6.4 | Interpret a basic network topology diagram with elements such as switches, routers, firewalls, load balancers, and port values | [ ] | [ ] | topology exhibits |
+| 6.5 | Describe the function of management, data, and control planes in a network device | [ ] | [ ] | CCNA overlap |
+| 6.6 | Describe the functionality of these IP Services: DHCP, DNS, NAT, SNMP, NTP | [ ] | [ ] | |
+| 6.7 | Recognize common protocol port values (such as, SSH, Telnet, HTTP, HTTPS, and NETCONF) | [ ] | [ ] | |
+| 6.8 | Diagnose application connectivity issues (NAT problem, Transport Port blocked, proxy, and VPN) | [ ] | [ ] | troubleshooting PBQ |
+| 6.9 | Explain the impacts of network constraints on applications | [ ] | [ ] | |
 
 ---
 
