@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - REST API incorrect payload status code | Be Certified Today</title>
+  <title>CCNAAUTO - REST API JSON parse error | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -109,6 +110,13 @@
       border: 1px solid #8c3434;
       color: #fecaca;
     }
+    .ccnaauto-code-exhibit {
+      margin-bottom: 16px;
+    }
+    .ccnaauto-code-window__pre {
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
   </style>
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
 </head>
@@ -120,25 +128,60 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/python-filter-fruit-nested-json-output.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mac-address-unique-network-interface-lan.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mac-address-unique-network-interface-lan.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/version-control-advantages-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which status code is used by a REST API to indicate that the submitted payload is incorrect?</h1>
+    <h1>Refer to the exhibit. What caused the error in this API request?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q30" value="A" />A. 400</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q30" value="B" />B. 403</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q30" value="C" />C. 405</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q30" value="D" />D. 429</label>
+    <figure class="ccnaauto-code-exhibit" aria-label="API request and error response exhibit">
+      <p class="ccnaauto-code-exhibit__label">Exhibit · API request and response</p>
+      <div class="ccnaauto-code-window">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+<pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--json"><code>URL: https://&lt;ASA_IP&gt;/api/access/global/rules
+Method: POST
+Payload:
+{
+  "destinationAddress": {
+    "kind": "IPv4Address",
+    "value": \"10.1.1.1\"
+  },
+  "remarks": [],
+  "active": true,
+  "permit": true,
+  "sourceAddress": {
+    "kind": "IPv4Address",
+    "value": \"192.168.1.1\"
+  }
+}
+
+Response Status Code: 400 Bad Request
+{"messages":[{"level":"Error","code":"JSON-PARSE-ERROR","details":"Unexpected character ('\\' (code 34))"}]}</code></pre>
+        </div>
+      </div>
+    </figure>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q32" value="A" />A. The API resource does not support the POST operation</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q32" value="B" />B. The API resource does not support JSON format payloads</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q32" value="C" />C. The submitted JSON payload includes a field that is not supported by the API resource</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q32" value="D" />D. The submitted JSON payload has a formatting issue</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">2.4 HTTP response codes</span>
+          <span class="question-topic-meta__subject">2.5 API troubleshooting with response codes</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +194,9 @@
 
   <script>
     (function () {
-      var CORRECT = "A";
+      var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. A - HTTP 400 Bad Request is used when the payload is malformed, missing required fields, or otherwise invalid for the API schema.";
+        "Correct. D - The response explicitly shows JSON-PARSE-ERROR with an unexpected backslash character, indicating malformed JSON payload formatting rather than an unsupported method or resource field.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +206,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q30"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q32"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +223,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q30"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q32"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

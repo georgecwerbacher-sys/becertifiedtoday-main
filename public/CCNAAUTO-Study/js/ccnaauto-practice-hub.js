@@ -42,6 +42,11 @@
     "routing-table-destination-next-hop-interface",
     "python-filter-fruit-nested-json-output",
     "rest-api-incorrect-payload-status-code-400",
+    "mac-address-unique-network-interface-lan",
+    "rest-api-json-parse-error-formatting-issue",
+    "version-control-advantages-choose-two",
+    "webhook-interacting-application-descriptions-choose-two",
+    "default-gateway-description-true",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;

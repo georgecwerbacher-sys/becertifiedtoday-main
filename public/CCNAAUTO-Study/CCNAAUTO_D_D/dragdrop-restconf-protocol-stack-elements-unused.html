@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNAAUTO - RESTCONF protocol stack drag and drop</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+</head>
+<body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html" aria-label="CCNAAUTO training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+    <h1>Drag and drop elements of the RESTCONF protocol stack from the left onto the correct description on the right.</h1>
+    <p class="sub">Not all elements are used.</p>
+
+    <div class="sim-frame">
+      <div class="layout dnd-split">
+        <div class="panel">
+          <h2>RESTCONF stack elements</h2>
+          <div id="bank" class="bank">
+            <div class="token" draggable="true" data-value="data-tag">&lt;data&gt;</div>
+            <div class="token" draggable="true" data-value="xml-json">XML or JSON</div>
+            <div class="token" draggable="true" data-value="ssh">SSH</div>
+            <div class="token" draggable="true" data-value="rpc-tag">&lt;rpc&gt;, &lt;rpc-reply&gt;</div>
+            <div class="token" draggable="true" data-value="http-methods">GET, POST, PUT, PATCH, DELETE</div>
+            <div class="token" draggable="true" data-value="https">HTTPS</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Description</h2>
+          <div class="match-list">
+            <div class="match-row">
+              <p class="match-desc">content</p>
+              <div class="drop-slot" data-target="xml-json"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">operations</p>
+              <div class="drop-slot" data-target="http-methods"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">transport</p>
+              <div class="drop-slot" data-target="https"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <span id="result"></span>
+    </div>
+    <p class="question-topic-meta" aria-label="Format and topic">
+      <span class="question-topic-meta__version">200-901 v1.1</span>
+      <span class="question-topic-meta__subject">3.8 RESTCONF model-driven programmability</span>
+    </p>
+
+    </main>
+  </div>
+
+  <nav class="sim-nav ccna-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/ccnaauto-home.html">CCNAAUTO Study</a>
+  </nav>
+
+  <script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+      var UNUSED = ["data-tag", "ssh", "rpc-tag"];
+
+      function allSlots() {
+        return document.querySelectorAll(".drop-slot[data-target]");
+      }
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (n) {
+          n.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+      function tokenInBank(val) {
+        return [].slice.call(bank.querySelectorAll(".token")).some(function (t) {
+          return t.getAttribute("data-value") === val;
+        });
+      }
+
+      (function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      })();
+
+      var mainEl = document.querySelector("main.card");
+      mainEl.addEventListener("click", function (e) {
+        var tok = e.target.closest(".token");
+        if (tok) {
+          if (picked === tok) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            tok.parentNode && tok.parentNode.classList && tok.parentNode.classList.contains("drop-slot")
+              ? tok.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(tok);
+          return;
+        }
+        var slot = e.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+        if (bank.contains(e.target) && picked) {
+          if (!bank.contains(picked)) bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+      bank.addEventListener("dragover", function (e) {
+        e.preventDefault();
+      });
+      bank.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
+          return t.getAttribute("data-value") === value;
+        });
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var want = slot.getAttribute("data-target");
+          var t = slot.querySelector(".token");
+          if (!t) {
+            slot.classList.add("incorrect");
+            allOk = false;
+            return;
+          }
+          var v = t.getAttribute("data-value");
+          if (UNUSED.indexOf(v) !== -1) {
+            slot.classList.add("incorrect");
+            allOk = false;
+            return;
+          }
+          var ok = v === want;
+          slot.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) allOk = false;
+        });
+        UNUSED.forEach(function (v) {
+          if (!tokenInBank(v)) allOk = false;
+        });
+        result.textContent = allOk
+          ? "Correct. In RESTCONF, content is XML or JSON, operations are HTTP methods (GET/POST/PUT/PATCH/DELETE), and transport is HTTPS. The NETCONF-style items (<data>, SSH, and <rpc>/<rpc-reply>) are not used."
+          : "Incorrect. Match RESTCONF content/operations/transport and leave NETCONF-specific elements in the bank.";
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        allSlots().forEach(function (slot) {
+          var tok = takeFromBank(slot.getAttribute("data-target"));
+          if (tok) {
+            slot.appendChild(tok);
+            slot.classList.add("correct");
+          }
+        });
+        result.textContent = "Answer shown. NETCONF-specific elements remain in the bank.";
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var t = slot.querySelector(".token");
+          if (t) bank.appendChild(t);
+        });
+        result.textContent = "";
+        (function reshuffle() {
+          var nodes = [].slice.call(bank.querySelectorAll(".token"));
+          while (nodes.length) {
+            bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+          }
+        })();
+      });
+    })();
+  </script>
+</body>
+</html>
