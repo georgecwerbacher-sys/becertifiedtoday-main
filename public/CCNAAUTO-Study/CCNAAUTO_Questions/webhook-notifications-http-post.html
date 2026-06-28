@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - NETCONF operations for RESTCONF GET choose two | Be Certified Today</title>
+  <title>CCNAAUTO - Webhook notification HTTP method | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      margin: 0 0 18px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -120,26 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/restconf-patch-logging-severity-204.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-amp-vulnerable-software-api.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-single-request-timeout-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/code-review-before-merge.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which two NETCONF operations cover the RESTCONF GET operation? (Choose two.)</h1>
+    <h1>Which type of HTTP method is used by the Meraki and Webex Teams APIs to send webhook notifications?</h1>
 
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="A" />A. &lt;get&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="B" />B. &lt;edit&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="C" />C. &lt;get-update&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="D" />D. &lt;modify-config&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="E" />E. &lt;get-config&gt;</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q74" value="A" />A. HTTP GET</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q74" value="B" />B. HTTP PUT</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q74" value="C" />C. HTTP HEAD</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q74" value="D" />D. HTTP POST</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 NETCONF and RESTCONF operations</span>
+          <span class="question-topic-meta__subject">2.2 Webhook usage patterns</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -152,41 +151,26 @@
 
   <script>
     (function () {
-      var CORRECT = ["A", "E"];
+      var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. A and E - RESTCONF GET is a read operation and maps to NETCONF <get> and <get-config> behavior for retrieving state and configuration data.";
+        "Correct. D - Webhook notifications are sent to a receiver URL as HTTP POST requests that carry the event payload.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
-
-      function selectedValues() {
-        return Array.prototype.slice
-          .call(document.querySelectorAll('input[name="ccnaauto_q68"]:checked'))
-          .map(function (input) {
-            return input.value;
-          })
-          .sort();
-      }
-
-      function isCorrect(values) {
-        return values.length === CORRECT.length && values.every(function (value, idx) {
-          return value === CORRECT[idx];
-        });
-      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var values = selectedValues();
+        var sel = document.querySelector('input[name="ccnaauto_q74"]:checked');
         answerBox.style.display = "block";
-        if (!values.length) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select two answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (isCorrect(values)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -196,9 +180,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="ccnaauto_q68"]').forEach(function (input) {
-          input.checked = CORRECT.indexOf(input.value) !== -1;
-        });
+        var input = document.querySelector('input[name="ccnaauto_q74"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

@@ -80,6 +80,17 @@
     "basic-auth-base64-credential-string",
     "restconf-patch-logging-severity-204",
     "netconf-operations-restconf-get-choose-two",
+    "unified-diff-single-request-timeout-choose-two",
+    "dna-center-log-bundle-voice-quality",
+    "yang-ethernet-interface-management",
+    "docker-container-host-port-connection",
+    "cisco-amp-vulnerable-software-api",
+    "webhook-notifications-http-post",
+    "code-review-before-merge",
+    "dna-center-network-device-get-json-fill",
+    "topology-subnet-serial-statements-choose-two",
+    "restconf-hostname-get-remove-accept-header",
+    "nxos-python-sdk-loopback-json-effects-choose-two",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;

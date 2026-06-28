@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - APIC-EM service ticket Python script</title>
+  <title>CCNAAUTO - Bash backup variable assignments</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -23,35 +23,30 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-curl-oauth-json-retrieve-resource.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-apic-em-service-ticket-python.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-bash-backup-variable-assignments.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Fill in the blanks to complete the Python script to request a service ticket using the APIC-EM REST API for the user <code>devnetuser</code>.</h1>
-    <p class="sub">Drag each code snippet into the matching blank. Not all snippets are used.</p>
+    <h1>Refer to the exhibit. Drag and drop the variables from the left onto the item numbers on the right that match the missing assignments in the Bash script.</h1>
+    <p class="sub">Drag each variable name into the matching blank.</p>
 
     <div class="sim-frame">
       <div class="layout dnd-split ccnaauto-code-dnd-layout">
         <div class="panel panel--snippets">
-          <h2>Code snippets</h2>
+          <h2>Variables</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="devnetuser">'devnetuser'</div>
-            <div class="token" draggable="true" data-value="admin">'admin'</div>
-            <div class="token" draggable="true" data-value="requests">requests</div>
-            <div class="token" draggable="true" data-value="request">request</div>
-            <div class="token" draggable="true" data-value="header">header</div>
-            <div class="token" draggable="true" data-value="headers">headers</div>
-            <div class="token" draggable="true" data-value="payload">payload</div>
-            <div class="token" draggable="true" data-value="json">json</div>
+            <div class="token" draggable="true" data-value="backuptime">BACKUPTIME</div>
+            <div class="token" draggable="true" data-value="sourcefolder">SOURCEFOLDER</div>
+            <div class="token" draggable="true" data-value="destination">DESTINATION</div>
           </div>
         </div>
 
         <div class="panel panel--script">
-          <h2>Python script</h2>
-          <div class="ccnaauto-code-window" aria-label="Python script exhibit">
+          <h2>Bash script</h2>
+          <div class="ccnaauto-code-window" aria-label="Bash backup script exhibit">
             <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
               <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
               <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
@@ -61,19 +56,14 @@
               <div class="ccnaauto-code-window__logo" aria-hidden="true">
                 <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
               </div>
-              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code><span class="py-kw">import</span> <span class="py-mod">requests</span>
-<span class="py-kw">import</span> <span class="py-mod">json</span>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>#!/bin/bash
+<span class="drop-slot" data-accept="backuptime"></span>=`date +%b-%d-%y`
 
-<span class="py-name">controller</span> <span class="py-punct">=</span> <span class="py-str">'devnetapi.cisco.com/sandbox/apic_em'</span>
-<span class="py-name">url</span> <span class="py-punct">=</span> <span class="py-str">"https://"</span> <span class="py-punct">+</span> <span class="py-name">controller</span> <span class="py-punct">+</span> <span class="py-str">"/api/v1/ticket"</span>
-<span class="py-name">payload</span> <span class="py-punct">= {</span><span class="py-str">'username'</span><span class="py-punct">:</span> <span class="drop-slot" data-accept="devnetuser"></span><span class="py-punct">,</span> <span class="py-str">'password'</span><span class="py-punct">:</span> <span class="py-str">'371274739'</span><span class="py-punct">}</span>
-<span class="py-name">header</span> <span class="py-punct">= {</span><span class="py-str">'Content-type'</span><span class="py-punct">:</span> <span class="py-str">'application/json'</span><span class="py-punct">}</span>
-<span class="py-name">response</span> <span class="py-punct">=</span> <span class="drop-slot" data-accept="requests"></span><span class="py-punct">.</span><span class="py-fn">post</span><span class="py-punct">(</span><span class="py-name">url</span><span class="py-punct">, data=</span><span class="py-mod">json</span><span class="py-punct">.</span><span class="py-fn">dumps</span><span class="py-punct">(</span><span class="py-name">payload</span><span class="py-punct">), \</span>
-  <span class="py-name">headers</span><span class="py-punct">=</span><span class="drop-slot" data-accept="header"></span><span class="py-punct">, verify=False)</span>
-<span class="py-name">r_json</span> <span class="py-punct">=</span> <span class="py-name">response</span><span class="py-punct">.</span><span class="py-fn">json</span><span class="py-punct">()</span>
-<span class="py-fn">print</span><span class="py-punct">(</span><span class="py-name">r_json</span><span class="py-punct">)</span>
-<span class="py-name">ticket</span> <span class="py-punct">=</span> <span class="py-name">r_json</span><span class="py-punct">[</span><span class="py-str">"response"</span><span class="py-punct">][</span><span class="py-str">"serviceTicket"</span><span class="py-punct">]</span>
-<span class="py-fn">print</span><span class="py-punct">(</span><span class="py-name">ticket</span><span class="py-punct">)</span></code></pre>
+<span class="drop-slot" data-accept="destination"></span>=/home/usr/path/backup-$BACKUPTIME.tar.gz
+
+<span class="drop-slot" data-accept="sourcefolder"></span>=/home/usr/path/data_folder
+
+tar -cpzf $DESTINATION $SOURCEFOLDER</code></pre>
             </div>
           </div>
         </div>
@@ -88,7 +78,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">2.9 Python requests · 2.7 API authentication</span>
+      <span class="question-topic-meta__subject">4.11 Bash commands</span>
     </p>
 
     </main>
@@ -214,8 +204,8 @@
           );
         });
         result.textContent = full
-          ? "Correct. The payload supplies the devnetuser username, requests.post sends the JSON body to /api/v1/ticket, and the header variable carries the application/json content type."
-          : "Incorrect. Fill the blanks with 'devnetuser', requests, and header.";
+          ? "Correct. BACKUPTIME stores the date, DESTINATION builds the archive filename, and SOURCEFOLDER identifies the folder passed to tar."
+          : "Incorrect. Match the date value to BACKUPTIME, the archive path to DESTINATION, and the data folder path to SOURCEFOLDER.";
       });
 
       showBtn.addEventListener("click", function () {

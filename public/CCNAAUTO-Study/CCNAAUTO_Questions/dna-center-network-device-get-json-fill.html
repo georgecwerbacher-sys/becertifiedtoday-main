@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - NETCONF operations for RESTCONF GET choose two | Be Certified Today</title>
+  <title>CCNAAUTO - Cisco DNA Center network device API fill-in | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -26,32 +26,53 @@
       box-sizing: border-box;
     }
     .card {
-      width: min(900px, 100%);
+      width: min(980px, 100%);
       background: transparent;
       border: 0;
       padding: 0;
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      margin: 0 0 18px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
-    .choice {
-      display: block;
-      margin: 10px 0;
-      padding: 12px 14px;
-      border-radius: 10px;
-      background: var(--bcc-choice-bg);
-      border: 1px solid var(--bcc-choice-border);
-      font-size: 1.02rem;
-      color: var(--bcc-box-text);
-      cursor: pointer;
+    .statement-card {
+      margin: 18px 0;
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid #c8d7ea;
+      background: #f7fbff;
+      box-shadow: 0 10px 30px rgba(18, 45, 76, 0.08);
     }
-    .choice input {
-      margin-right: 10px;
-      transform: translateY(1px);
+    .statement {
+      margin: 0;
+      color: #173b6d;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      line-height: 1.9;
+    }
+    .blank-select {
+      min-width: 10ch;
+      margin: 0 4px;
+      padding: 6px 8px;
+      border: 0;
+      border-bottom: 3px solid #294f87;
+      background: #ffffff;
+      color: #173b6d;
+      font: inherit;
+      font-weight: 800;
+      text-align: center;
+      outline: none;
+      border-radius: 6px 6px 0 0;
+    }
+    .blank-select:focus {
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .endpoint {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.95em;
+      white-space: nowrap;
     }
     .answer-footer {
       display: flex;
@@ -120,26 +141,52 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/restconf-patch-logging-severity-204.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/code-review-before-merge.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-single-request-timeout-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/topology-subnet-serial-statements-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which two NETCONF operations cover the RESTCONF GET operation? (Choose two.)</h1>
+    <h1>Fill in the blanks to complete the statement.</h1>
 
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="A" />A. &lt;get&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="B" />B. &lt;edit&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="C" />C. &lt;get-update&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="D" />D. &lt;modify-config&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="E" />E. &lt;get-config&gt;</label>
+    <section class="statement-card" aria-label="Cisco DNA Center API statement">
+      <p class="statement">
+        Cisco DNA Center provides the capability to send an HTTP
+        <select id="methodBlank" class="blank-select" aria-label="HTTP method">
+          <option value="">select</option>
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+        request to the API endpoint
+        <span class="endpoint">https://DNA-c_API_ADDRESS/api/v1/network-device/</span>
+        and receive the network
+        <select id="listBlank" class="blank-select" aria-label="Network list type">
+          <option value="">select</option>
+          <option value="client">client</option>
+          <option value="device">device</option>
+          <option value="event">event</option>
+          <option value="site">site</option>
+        </select>
+        list in
+        <select id="formatBlank" class="blank-select" aria-label="Response format">
+          <option value="">select</option>
+          <option value="CSV">CSV</option>
+          <option value="JSON">JSON</option>
+          <option value="XML">XML</option>
+          <option value="YAML">YAML</option>
+        </select>
+        format.
+      </p>
+    </section>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 NETCONF and RESTCONF operations</span>
+          <span class="question-topic-meta__subject">3.9.a Cisco API device inventory</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -152,53 +199,47 @@
 
   <script>
     (function () {
-      var CORRECT = ["A", "E"];
-      var CORRECT_MSG =
-        "Correct. A and E - RESTCONF GET is a read operation and maps to NETCONF <get> and <get-config> behavior for retrieving state and configuration data.";
+      var methodBlank = document.getElementById("methodBlank");
+      var listBlank = document.getElementById("listBlank");
+      var formatBlank = document.getElementById("formatBlank");
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+      var CORRECT_MSG =
+        "Correct. Cisco DNA Center/Catalyst Center uses an HTTP GET request to retrieve the network device list, and API responses are returned in JSON format.";
 
-      function selectedValues() {
-        return Array.prototype.slice
-          .call(document.querySelectorAll('input[name="ccnaauto_q68"]:checked'))
-          .map(function (input) {
-            return input.value;
-          })
-          .sort();
+      function clean(value) {
+        return String(value || "").trim().toLowerCase();
       }
 
-      function isCorrect(values) {
-        return values.length === CORRECT.length && values.every(function (value, idx) {
-          return value === CORRECT[idx];
-        });
-      }
-
-      function incorrectMsg() {
-        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      function isCorrect() {
+        var method = clean(methodBlank.value);
+        var listType = clean(listBlank.value);
+        var format = clean(formatBlank.value);
+        return method === "get" && (listType === "device" || listType === "devices") && format === "json";
       }
 
       checkBtn.addEventListener("click", function () {
-        var values = selectedValues();
         answerBox.style.display = "block";
-        if (!values.length) {
+        if (!methodBlank.value || !listBlank.value || !formatBlank.value) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select two answers.";
+          answerBox.textContent = "Choose an option for all three blanks.";
           return;
         }
-        if (isCorrect(values)) {
+        if (isCorrect()) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = incorrectMsg();
+          answerBox.textContent =
+            "Incorrect. Use GET for the request method, device for the network list, and JSON for the response format.";
         }
       });
 
       showBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="ccnaauto_q68"]').forEach(function (input) {
-          input.checked = CORRECT.indexOf(input.value) !== -1;
-        });
+        methodBlank.value = "GET";
+        listBlank.value = "device";
+        formatBlank.value = "JSON";
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

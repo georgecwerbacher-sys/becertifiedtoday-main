@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - NETCONF operations for RESTCONF GET choose two | Be Certified Today</title>
+  <title>CCNAAUTO - DNA Center log bundle voice quality | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,26 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/restconf-patch-logging-severity-204.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-single-request-timeout-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-single-request-timeout-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/yang-ethernet-interface-management.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which two NETCONF operations cover the RESTCONF GET operation? (Choose two.)</h1>
+    <h1>A company has written a script that creates a log bundle from Cisco DNA Center every day. The script runs without error and the bundles are produced. However, when the script is run during business hours, users report poor voice quality on phone calls. What explains this behavior?</h1>
 
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="A" />A. &lt;get&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="B" />B. &lt;edit&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="C" />C. &lt;get-update&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="D" />D. &lt;modify-config&gt;</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q68" value="E" />E. &lt;get-config&gt;</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q70" value="A" />A. The application is running in the Voice VLAN and causes delays and jitter in the subnet.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q70" value="B" />B. The speed and duplex settings in Cisco DNA Center are set incorrectly, which causes the transfer to be too slow.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q70" value="C" />C. The script is written in a low-level programming language where there is no memory safety. This causes a buffer overflow and disruption on the network.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q70" value="D" />D. Generating the logs causes the CPU on the network controller to spike, which causes delays in forwarding the voice IP packets.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 NETCONF and RESTCONF operations</span>
+          <span class="question-topic-meta__subject">6.9 Network constraints on applications</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -152,41 +151,26 @@
 
   <script>
     (function () {
-      var CORRECT = ["A", "E"];
+      var CORRECT = "A";
       var CORRECT_MSG =
-        "Correct. A and E - RESTCONF GET is a read operation and maps to NETCONF <get> and <get-config> behavior for retrieving state and configuration data.";
+        "Correct. A - Voice traffic is sensitive to delay and jitter. If a log-bundle transfer competes with voice traffic in the voice VLAN, it can introduce congestion and degrade call quality. Cisco DNA Center does not forward the voice packets itself.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
-
-      function selectedValues() {
-        return Array.prototype.slice
-          .call(document.querySelectorAll('input[name="ccnaauto_q68"]:checked'))
-          .map(function (input) {
-            return input.value;
-          })
-          .sort();
-      }
-
-      function isCorrect(values) {
-        return values.length === CORRECT.length && values.every(function (value, idx) {
-          return value === CORRECT[idx];
-        });
-      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var values = selectedValues();
+        var sel = document.querySelector('input[name="ccnaauto_q70"]:checked');
         answerBox.style.display = "block";
-        if (!values.length) {
+        if (!sel) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select two answers.";
+          answerBox.textContent = "Select an answer.";
           return;
         }
-        if (isCorrect(values)) {
+        if (sel.value === CORRECT) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -196,9 +180,8 @@
       });
 
       showBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="ccnaauto_q68"]').forEach(function (input) {
-          input.checked = CORRECT.indexOf(input.value) !== -1;
-        });
+        var input = document.querySelector('input[name="ccnaauto_q70"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

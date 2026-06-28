@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Application deployment models drag and drop</title>
+  <title>CCNAAUTO - HTTP status codes drag and drop</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -22,50 +22,65 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-automation-interfaces-transport-protocols.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-networking-devices-functions.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-bash-commands-actions.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-dna-center-path-trace-request-order.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the descriptions from the left onto the correct application deployment models.</h1>
+    <h1>Drag and drop the HTTP status codes from the left onto the correct descriptions on the right.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>Descriptions</h2>
+          <h2>HTTP status codes</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="edge-low-latency">provides a low-latency compute capability close to the data source</div>
-            <div class="token" draggable="true" data-value="public-pay">environment where you pay only for the resources that you consume</div>
-            <div class="token" draggable="true" data-value="private-dedicated">offers a self-service, elastic compute environment from a dedicated set of physical resources</div>
-            <div class="token" draggable="true" data-value="hybrid-burst">provides an approach for overflow traffic to burst out to meet peak demands</div>
-            <div class="token" draggable="true" data-value="public-internet">shared compute platform that is offered over the Internet</div>
+            <div class="token" draggable="true" data-value="200"><code>200 OK</code></div>
+            <div class="token" draggable="true" data-value="201"><code>201 Created</code></div>
+            <div class="token" draggable="true" data-value="204"><code>204 No Content</code></div>
+            <div class="token" draggable="true" data-value="400"><code>400 Bad Request</code></div>
+            <div class="token" draggable="true" data-value="401"><code>401 Unauthorized</code></div>
+            <div class="token" draggable="true" data-value="403"><code>403 Forbidden</code></div>
+            <div class="token" draggable="true" data-value="404"><code>404 Not Found</code></div>
+            <div class="token" draggable="true" data-value="500"><code>500 Internal Server Error</code></div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Application deployment model</h2>
+          <h2>Descriptions</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">Public Cloud</p>
-              <div class="drop-slot" data-accept="public-pay|public-internet"></div>
+              <p class="match-desc">The request succeeded and the response includes the requested representation.</p>
+              <div class="drop-slot" data-accept="200"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Public Cloud</p>
-              <div class="drop-slot" data-accept="public-pay|public-internet"></div>
+              <p class="match-desc">The request succeeded and created a new resource.</p>
+              <div class="drop-slot" data-accept="201"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Private Cloud</p>
-              <div class="drop-slot" data-accept="private-dedicated"></div>
+              <p class="match-desc">The request succeeded, but the response has no message body.</p>
+              <div class="drop-slot" data-accept="204"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Hybrid Cloud</p>
-              <div class="drop-slot" data-accept="hybrid-burst"></div>
+              <p class="match-desc">The request was malformed or included an invalid payload.</p>
+              <div class="drop-slot" data-accept="400"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Edge Computing</p>
-              <div class="drop-slot" data-accept="edge-low-latency"></div>
+              <p class="match-desc">Authentication credentials are missing, invalid, or not accepted.</p>
+              <div class="drop-slot" data-accept="401"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">The client is authenticated, but does not have permission for the resource.</p>
+              <div class="drop-slot" data-accept="403"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">The requested resource or endpoint cannot be found.</p>
+              <div class="drop-slot" data-accept="404"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">The server encountered an unexpected condition while processing the request.</p>
+              <div class="drop-slot" data-accept="500"></div>
             </div>
           </div>
         </div>
@@ -79,7 +94,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">4.2 Application deployment models</span>
+      <span class="question-topic-meta__subject">2.4 HTTP response codes</span>
     </p>
 
     </main>
@@ -202,7 +217,6 @@
 
       checkBtn.addEventListener("click", function () {
         var allOk = true;
-        var publicValues = [];
         allSlots().forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
           var t = slot.querySelector(".token");
@@ -211,16 +225,13 @@
             allOk = false;
             return;
           }
-          var v = t.getAttribute("data-value");
-          var ok = accepts(slot, v);
-          if (slot.getAttribute("data-accept") === "public-pay|public-internet") publicValues.push(v);
+          var ok = accepts(slot, t.getAttribute("data-value"));
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
-        if (publicValues.sort().join("|") !== "public-internet|public-pay") allOk = false;
         result.textContent = allOk
-          ? "Correct. Public cloud is shared and consumption-based, private cloud uses dedicated resources, hybrid cloud supports cloud bursting, and edge computing places compute close to the data source."
-          : "Incorrect. Match public cloud to shared/pay-as-you-go, private cloud to dedicated resources, hybrid cloud to cloud bursting, and edge computing to low-latency compute near the data source.";
+          ? "Correct. The 2xx codes indicate successful requests, 4xx codes indicate client-side request problems, and 500 indicates a server-side failure."
+          : "Incorrect. Match each HTTP code to its standard REST API response meaning.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -230,7 +241,7 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-        var answers = ["public-pay", "public-internet", "private-dedicated", "hybrid-burst", "edge-low-latency"];
+        var answers = ["200", "201", "204", "400", "401", "403", "404", "500"];
         allSlots().forEach(function (slot, idx) {
           var tok = takeFromBank(answers[idx]);
           if (tok) {
