@@ -78,6 +78,8 @@
     "version-control-branching-collaboration-choose-two",
     "dns-cname-alias-record",
     "basic-auth-base64-credential-string",
+    "restconf-patch-logging-severity-204",
+    "netconf-operations-restconf-get-choose-two",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;
