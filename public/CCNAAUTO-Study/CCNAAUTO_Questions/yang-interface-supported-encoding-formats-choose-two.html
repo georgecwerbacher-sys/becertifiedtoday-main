@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Intermittent server connection fault | Be Certified Today</title>
+  <title>CCNAAUTO - YANG encoding formats choose two | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,25 +120,26 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-concepts-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-chunk-start-example.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-devnet-resources-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/python-requests-success-status-code-expression.html">Next</a>
       </div>
     </nav>
 
-    <h1>An automation script fails to connect to an internal server exactly 1 out of 2 times it is executed. This behavior is seen from different clients. Which networking device must be at fault? (Question 26)</h1>
+    <h1>Which two encoding formats do YANG interfaces support? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="A" />A. Laptop on which the script is running</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="B" />B. Router</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="C" />C. Switch</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="D" />D. Load balancer</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q45" value="A" />A. JSON</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q45" value="B" />B. XML</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q45" value="C" />C. XHTML</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q45" value="D" />D. Plain text</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q45" value="E" />E. BER</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.5 Network services behavior</span>
+          <span class="question-topic-meta__subject">3.8 YANG encoding formats</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,26 +152,41 @@
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = ["A", "B"];
       var CORRECT_MSG =
-        "Correct. D - A 50/50 intermittent failure across multiple clients strongly points to a load balancer sending traffic to one healthy and one failing backend target.";
+        "Correct. A and B - YANG-modeled data is commonly encoded as XML or JSON for model-driven interfaces such as NETCONF and RESTCONF.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {
+        return Array.prototype.slice
+          .call(document.querySelectorAll('input[name="ccnaauto_q45"]:checked'))
+          .map(function (input) {
+            return input.value;
+          })
+          .sort();
+      }
+
+      function isCorrect(values) {
+        return values.length === CORRECT.length && values.every(function (value, idx) {
+          return value === CORRECT[idx];
+        });
+      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q39"]:checked');
+        var values = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (!values.length) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Select two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (isCorrect(values)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -180,8 +196,9 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q39"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        document.querySelectorAll('input[name="ccnaauto_q45"]').forEach(function (input) {
+          input.checked = CORRECT.indexOf(input.value) !== -1;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

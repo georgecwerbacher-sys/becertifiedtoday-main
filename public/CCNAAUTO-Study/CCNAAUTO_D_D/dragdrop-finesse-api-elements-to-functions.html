@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - HTTP methods CRUD drag and drop</title>
+  <title>CCNAAUTO - Finesse API elements drag and drop</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -22,50 +22,60 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-restconf-protocol-stack-elements-unused.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-api-request-response-parts.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-api-request-response-parts.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-automation-interfaces-transport-protocols.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the HTTP methods from the left onto their generally accepted corresponding create, read, update, and delete operations on the right.</h1>
+    <h1>Drag and drop the element of the Finesse API on the left onto the description of its functionality on the right.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>HTTP methods</h2>
+          <h2>Finesse API elements</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="DELETE">DELETE</div>
-            <div class="token" draggable="true" data-value="GET">GET</div>
-            <div class="token" draggable="true" data-value="PATCH">PATCH</div>
-            <div class="token" draggable="true" data-value="POST">POST</div>
-            <div class="token" draggable="true" data-value="PUT">PUT</div>
+            <div class="token" draggable="true" data-value="user">User</div>
+            <div class="token" draggable="true" data-value="dialog">Dialog</div>
+            <div class="token" draggable="true" data-value="media">Media</div>
+            <div class="token" draggable="true" data-value="queue">Queue</div>
+            <div class="token" draggable="true" data-value="team">Team</div>
+            <div class="token" draggable="true" data-value="systeminfo">SystemInfo</div>
+            <div class="token" draggable="true" data-value="clientlogs">ClientLogs</div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>CRUD operation</h2>
+          <h2>Functionality</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">Create</p>
-              <div class="drop-slot" data-accept="POST"></div>
+              <p class="match-desc">Represents a skill group in Unified CCE.</p>
+              <div class="drop-slot" data-target="queue"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Read</p>
-              <div class="drop-slot" data-accept="GET"></div>
+              <p class="match-desc">Represents the current state of the system.</p>
+              <div class="drop-slot" data-target="systeminfo"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Update</p>
-              <div class="drop-slot" data-accept="PUT|PATCH"></div>
+              <p class="match-desc">Represents an agent, supervisor, or administrator.</p>
+              <div class="drop-slot" data-target="user"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Update</p>
-              <div class="drop-slot" data-accept="PUT|PATCH"></div>
+              <p class="match-desc">Represents a group of users.</p>
+              <div class="drop-slot" data-target="team"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Delete</p>
-              <div class="drop-slot" data-accept="DELETE"></div>
+              <p class="match-desc">Represents a call and the participants if the media type is voice.</p>
+              <div class="drop-slot" data-target="dialog"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">Sends client-side logging to the Finesse Server.</p>
+              <div class="drop-slot" data-target="clientlogs"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">Represents a user's state in a non-voice Media Routing Domain.</p>
+              <div class="drop-slot" data-target="media"></div>
             </div>
           </div>
         </div>
@@ -79,7 +89,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">2.1 REST API request methods</span>
+      <span class="question-topic-meta__subject">3.4 Cisco collaboration APIs</span>
     </p>
 
     </main>
@@ -100,7 +110,7 @@
       var picked = null;
 
       function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-accept]");
+        return document.querySelectorAll(".drop-slot[data-target]");
       }
       function clearPick() {
         document.querySelectorAll(".token.is-picked").forEach(function (n) {
@@ -118,10 +128,6 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
-      }
-      function accepts(slot, value) {
-        var allowed = String(slot.getAttribute("data-accept") || "").split("|");
-        return allowed.indexOf(value) !== -1;
       }
 
       (function shuffleBank() {
@@ -210,14 +216,13 @@
             allOk = false;
             return;
           }
-          var v = t.getAttribute("data-value");
-          var ok = accepts(slot, v);
+          var ok = t.getAttribute("data-value") === slot.getAttribute("data-target");
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
         result.textContent = allOk
-          ? "Correct. POST maps to create, GET to read, PUT/PATCH to update, and DELETE to delete."
-          : "Incorrect. Re-check CRUD mappings: create=POST, read=GET, update=PUT/PATCH, delete=DELETE.";
+          ? "Correct. These are the Cisco Finesse REST API object descriptions."
+          : "Incorrect. Re-check the Finesse API object descriptions.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -227,9 +232,8 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-        var answers = ["POST", "GET", "PUT", "PATCH", "DELETE"];
-        allSlots().forEach(function (slot, idx) {
-          var tok = takeFromBank(answers[idx]);
+        allSlots().forEach(function (slot) {
+          var tok = takeFromBank(slot.getAttribute("data-target"));
           if (tok) {
             slot.appendChild(tok);
             slot.classList.add("correct");

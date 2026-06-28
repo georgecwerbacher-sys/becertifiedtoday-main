@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNAAUTO - API request and response parts drag and drop</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    .api-layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); }
+    .api-code code { white-space: pre-wrap; }
+    .mark { border-radius: 5px; padding: 2px 4px; }
+    .mark-a,.mark-e { background: rgba(130,177,255,.18); }
+    .mark-b,.mark-f { background: rgba(255,138,128,.18); }
+    .mark-c { background: rgba(128,245,146,.18); }
+    .mark-d { background: rgba(245,211,128,.2); }
+    .slot-row { display: grid; grid-template-columns: 2.25rem 1fr; gap: 10px; align-items: center; margin: 10px 0; }
+    .slot-label { margin: 0; color: #e6edf3; font-weight: 800; text-align: center; }
+    @media (max-width: 860px) { .api-layout { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true"><img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" /></div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html" aria-label="CCNAAUTO training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-http-methods-crud-operations.html">Back</a>
+        <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-finesse-api-elements-to-functions.html">Next</a>
+      </div>
+    </nav>
+    <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+    <h1>Refer to the exhibit. Drag and drop the descriptors from the left onto the correct parts of the API request and response on the right.</h1>
+
+    <div class="sim-frame">
+      <div class="api-layout">
+        <div class="panel">
+          <h2>Exhibit</h2>
+          <div class="ccnaauto-code-window">
+            <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+            </div>
+            <div class="ccnaauto-code-window__body">
+              <div class="ccnaauto-code-window__logo" aria-hidden="true"><img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" /></div>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell api-code"><code><span class="sh-prompt">bash-3.2$</span> <span class="sh-cmd">curl</span> <span class="mark mark-a">-H "Content-Type: application/json" \
+  -H "Authorization: Bearer Fj2zy...BearerToken..."</span> \
+  <span class="mark mark-b">-d '{"roomId":"Y2geK...PG4","text":"test2"}'</span> \
+  <span class="mark mark-c">-X POST https://api.ciscospark.com/v1/messages</span>
+
+<span class="mark mark-d">HTTP/1.1 200 OK</span>
+<span class="mark mark-e">Via: 1.1 linked
+Transfer-Encoding: chunked
+TrackingID: ROUTER_5E0FE283-63EB-01BB-00ED-806BF1BD00ED
+Date: Sat, 01 Jan 2020 00:55:31 GMT
+Server: Redacted
+Content-Type: application/json;charset=UTF-8
+Vary: Accept-Encoding
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload</span>
+
+<span class="mark mark-f">{"id":"YCPJF3aVovyBYcbn71SdesNkKcgN5tlExdc6dcnPt14VaO5NfCh9MG17j0twXQI...",
+"roomId":"Y2geK...PG4","roomType":"group","text":"test2",
+"personId":"YcgYzL6XqtyfW81XXwqfKf7vhf123Kwqt4kLwkbb3JwUEBI...",
+"personEmail":"user@webex.com","created":"2020-01-01T00:55:32.492Z"}</span>
+<span class="sh-prompt">bash-3.2$</span></code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Descriptors</h2>
+          <div id="bank" class="bank">
+            <div class="token" draggable="true" data-value="response-headers">Response Headers</div>
+            <div class="token" draggable="true" data-value="http-request">HTTP Request</div>
+            <div class="token" draggable="true" data-value="http-response">HTTP Response</div>
+            <div class="token" draggable="true" data-value="request-payload">Request Payload</div>
+            <div class="token" draggable="true" data-value="request-headers">Request Headers</div>
+            <div class="token" draggable="true" data-value="response-payload">Response Payload</div>
+          </div>
+          <h2>Labels</h2>
+          <div class="slot-row"><p class="slot-label">A</p><div class="drop-slot" data-target="request-headers"></div></div>
+          <div class="slot-row"><p class="slot-label">B</p><div class="drop-slot" data-target="request-payload"></div></div>
+          <div class="slot-row"><p class="slot-label">C</p><div class="drop-slot" data-target="http-request"></div></div>
+          <div class="slot-row"><p class="slot-label">D</p><div class="drop-slot" data-target="http-response"></div></div>
+          <div class="slot-row"><p class="slot-label">E</p><div class="drop-slot" data-target="response-headers"></div></div>
+          <div class="slot-row"><p class="slot-label">F</p><div class="drop-slot" data-target="response-payload"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <span id="result"></span>
+    </div>
+    <p class="question-topic-meta" aria-label="Format and topic">
+      <span class="question-topic-meta__version">200-901 v1.1</span>
+      <span class="question-topic-meta__subject">2.6 HTTP request and response parts</span>
+    </p>
+
+    </main>
+  </div>
+  <nav class="sim-nav ccna-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/ccnaauto-home.html">CCNAAUTO Study</a>
+  </nav>
+  <script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+      function allSlots() { return document.querySelectorAll(".drop-slot[data-target]"); }
+      function clearPick() { document.querySelectorAll(".token.is-picked").forEach(function (n) { n.classList.remove("is-picked"); }); picked = null; }
+      function setPick(token) { clearPick(); picked = token; if (picked) picked.classList.add("is-picked"); }
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+      (function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+      })();
+      document.querySelector("main.card").addEventListener("click", function (e) {
+        var tok = e.target.closest(".token");
+        if (tok) {
+          if (picked === tok) { clearPick(); return; }
+          var parentSlot = tok.parentNode && tok.parentNode.classList && tok.parentNode.classList.contains("drop-slot") ? tok.parentNode : null;
+          if (picked && parentSlot) { moveTokenToSlot(parentSlot, picked); clearPick(); return; }
+          setPick(tok); return;
+        }
+        var slot = e.target.closest(".drop-slot");
+        if (slot && picked) { moveTokenToSlot(slot, picked); clearPick(); return; }
+        if (bank.contains(e.target) && picked) { if (!bank.contains(picked)) bank.appendChild(picked); clearPick(); }
+      });
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () { clearPick(); dragged = token; });
+      });
+      allSlots().forEach(function (slot) {
+        slot.addEventListener("dragover", function (e) { e.preventDefault(); slot.classList.add("over"); });
+        slot.addEventListener("dragleave", function () { slot.classList.remove("over"); });
+        slot.addEventListener("drop", function (e) { e.preventDefault(); slot.classList.remove("over"); if (dragged) moveTokenToSlot(slot, dragged); dragged = null; });
+      });
+      bank.addEventListener("dragover", function (e) { e.preventDefault(); });
+      bank.addEventListener("drop", function (e) { e.preventDefault(); if (dragged) bank.appendChild(dragged); dragged = null; });
+      function takeFromBank(value) {
+        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) { return t.getAttribute("data-value") === value; });
+      }
+      checkBtn.addEventListener("click", function () {
+        var allOk = true;
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          var ok = token && token.getAttribute("data-value") === slot.getAttribute("data-target");
+          slot.classList.add(ok ? "correct" : "incorrect");
+          if (!ok) allOk = false;
+        });
+        result.textContent = allOk ? "Correct. A=request headers, B=request payload, C=HTTP request, D=HTTP response, E=response headers, and F=response payload." : "Incorrect. Re-check each labeled part of the request and response.";
+      });
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        allSlots().forEach(function (slot) {
+          var token = takeFromBank(slot.getAttribute("data-target"));
+          if (token) { slot.appendChild(token); slot.classList.add("correct"); }
+        });
+        result.textContent = "Answer shown.";
+      });
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        allSlots().forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        result.textContent = "";
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Intermittent server connection fault | Be Certified Today</title>
+  <title>CCNAAUTO - Unified diff chunk start example | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,25 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-concepts-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/bash-script-create-next-missing-directory.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-devnet-resources-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/yang-interface-supported-encoding-formats-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>An automation script fails to connect to an internal server exactly 1 out of 2 times it is executed. This behavior is seen from different clients. Which networking device must be at fault? (Question 26)</h1>
+    <h1>Which line is an example of the start of a chunk from a unified diff?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="A" />A. Laptop on which the script is running</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="B" />B. Router</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="C" />C. Switch</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="D" />D. Load balancer</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q44" value="A" />A. <code>@@ -90,88 +20191008T1349@@</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q44" value="B" />B. <code>@@ -20191007T1200 +88,90 @@</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q44" value="C" />C. <code>@@ -20191007T1200 +20191008T1349@@</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q44" value="D" />D. <code>@@ -88,10 +88,6 @@</code></label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.5 Network services behavior</span>
+          <span class="question-topic-meta__subject">5.12 Unified diff</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -153,7 +153,7 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. D - A 50/50 intermittent failure across multiple clients strongly points to a load balancer sending traffic to one healthy and one failing backend target.";
+        "Correct. D - A unified diff hunk header starts with @@ and uses old-file and new-file line ranges, such as @@ -88,10 +88,6 @@.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +163,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q39"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q44"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +180,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q39"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q44"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

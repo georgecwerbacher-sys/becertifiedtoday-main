@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Intermittent server connection fault | Be Certified Today</title>
+  <title>CCNAAUTO - Python function returns DNAC token | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -109,6 +110,9 @@
       border: 1px solid #8c3434;
       color: #fecaca;
     }
+    .exhibit-wrap {
+      margin: 18px 0 22px;
+    }
   </style>
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
 </head>
@@ -120,25 +124,48 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-concepts-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/git-clone-creates-local-repository-copy.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-devnet-resources-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/nat-types-static-dynamic-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>An automation script fails to connect to an internal server exactly 1 out of 2 times it is executed. This behavior is seen from different clients. Which networking device must be at fault? (Question 26)</h1>
+    <h1>Refer to the exhibit. What does the Python function do?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="A" />A. Laptop on which the script is running</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="B" />B. Router</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="C" />C. Switch</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="D" />D. Load balancer</label>
+    <div class="exhibit-wrap">
+      <div class="ccnaauto-code-window" aria-label="Python function exhibit">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code><span class="py-kw">def</span> <span class="py-fn">get_result</span><span class="py-punct">():</span>
+    <span class="py-name">url</span> <span class="py-punct">=</span> <span class="py-str">"https://sandboxdnac.cisco.com/dna/system/api/v1/auth/token"</span>
+
+    <span class="py-name">resp</span> <span class="py-punct">=</span> <span class="py-mod">requests</span><span class="py-punct">.</span><span class="py-fn">post</span><span class="py-punct">(</span><span class="py-name">url</span><span class="py-punct">,</span> <span class="py-name">auth</span><span class="py-punct">=</span><span class="py-fn">HTTPBasicAuth</span><span class="py-punct">(</span><span class="py-name">DNAC_USER</span><span class="py-punct">,</span> <span class="py-name">DNAC_PASSWORD</span><span class="py-punct">))</span>
+
+    <span class="py-name">result</span> <span class="py-punct">=</span> <span class="py-name">resp</span><span class="py-punct">.</span><span class="py-fn">json</span><span class="py-punct">()[</span><span class="py-str">"Token"</span><span class="py-punct">]</span>
+
+    <span class="py-kw">return</span> <span class="py-name">result</span></code></pre>
+        </div>
+      </div>
+    </div>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q48" value="A" />A. It returns DNAC user and password.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q48" value="B" />B. It returns HTTP Basic Authentication.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q48" value="C" />C. It returns an authorization token.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q48" value="D" />D. It reads a token from a local JSON file and posts the token to the DNAC URL.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.5 Network services behavior</span>
+          <span class="question-topic-meta__subject">2.7 API authentication · 2.9 Python Requests</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +178,9 @@
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = "C";
       var CORRECT_MSG =
-        "Correct. D - A 50/50 intermittent failure across multiple clients strongly points to a load balancer sending traffic to one healthy and one failing backend target.";
+        "Correct. C - The function authenticates to Catalyst Center with HTTP Basic Authentication, parses the JSON response, and returns the Token value.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +190,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q39"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q48"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +207,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q39"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q48"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

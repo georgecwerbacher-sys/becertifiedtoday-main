@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Intermittent server connection fault | Be Certified Today</title>
+  <title>CCNAAUTO - Bash script directory action | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -109,6 +110,10 @@
       border: 1px solid #8c3434;
       color: #fecaca;
     }
+    .exhibit-wrap {
+      margin: 18px 0 22px;
+      max-width: 520px;
+    }
   </style>
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
 </head>
@@ -120,25 +125,47 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-concepts-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/network-programmability-scalable-replicable-provisioning.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-devnet-resources-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-chunk-start-example.html">Next</a>
       </div>
     </nav>
 
-    <h1>An automation script fails to connect to an internal server exactly 1 out of 2 times it is executed. This behavior is seen from different clients. Which networking device must be at fault? (Question 26)</h1>
+    <h1>Refer to the exhibit. What is the action of the Bash script that is shown?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="A" />A. Laptop on which the script is running</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="B" />B. Router</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="C" />C. Switch</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="D" />D. Load balancer</label>
+    <div class="exhibit-wrap">
+      <div class="ccnaauto-code-window" aria-label="Bash script exhibit">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code><span class="sh-comment">#!/bin/bash</span>
+<span class="sh-cmd">read</span> <span class="sh-var">ndir</span>
+<span class="sh-cmd">while</span> <span class="sh-punct">[</span> <span class="sh-flag">-d</span> <span class="sh-str">"$ndir"</span> <span class="sh-punct">]</span>
+<span class="sh-cmd">do</span>
+  <span class="sh-cmd">cd</span> <span class="sh-var">$ndir</span>
+<span class="sh-cmd">done</span>
+<span class="sh-cmd">mkdir</span> <span class="sh-var">$ndir</span></code></pre>
+        </div>
+      </div>
+    </div>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q43" value="A" />A. The script waits until input is entered. If the directory exists, the script goes into it until there is no directory with the same name, then it creates a new directory.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q43" value="B" />B. The script goes into the directory called "$ndir" and makes a new directory called "$ndir".</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q43" value="C" />C. The script waits until input is entered, then it goes into the directory entered and creates a new directory with the same name.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q43" value="D" />D. For all directories in the current folder, the script goes into each directory and makes a new directory.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.5 Network services behavior</span>
+          <span class="question-topic-meta__subject">5.9 Bash script workflow</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +178,9 @@
 
   <script>
     (function () {
-      var CORRECT = "D";
+      var CORRECT = "A";
       var CORRECT_MSG =
-        "Correct. D - A 50/50 intermittent failure across multiple clients strongly points to a load balancer sending traffic to one healthy and one failing backend target.";
+        "Correct. A - The script reads a directory name, repeatedly enters existing child directories with that name, and creates that directory once it reaches a level where it does not already exist.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +190,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q39"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q43"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +207,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q39"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q43"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

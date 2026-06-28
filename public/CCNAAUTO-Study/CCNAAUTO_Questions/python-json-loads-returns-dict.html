@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Intermittent server connection fault | Be Certified Today</title>
+  <title>CCNAAUTO - Python JSON loads returns dict | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -109,6 +110,9 @@
       border: 1px solid #8c3434;
       color: #fecaca;
     }
+    .exhibit-wrap {
+      margin: 18px 0 22px;
+    }
   </style>
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
 </head>
@@ -120,25 +124,56 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-concepts-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/nat-types-static-dynamic-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-devnet-resources-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/firewall-controls-traffic-security-rules.html">Next</a>
       </div>
     </nav>
 
-    <h1>An automation script fails to connect to an internal server exactly 1 out of 2 times it is executed. This behavior is seen from different clients. Which networking device must be at fault? (Question 26)</h1>
+    <h1>Refer to the exhibit. Which Python data structure does <code>my_json</code> contain?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="A" />A. Laptop on which the script is running</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="B" />B. Router</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="C" />C. Switch</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q39" value="D" />D. Load balancer</label>
+    <div class="exhibit-wrap">
+      <div class="ccnaauto-code-window" aria-label="Python JSON parsing exhibit">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code><span class="py-name">json_string</span> <span class="py-punct">=</span> <span class="py-str">"""</span>
+<span class="json-punct">{</span>
+    <span class="json-key">"researcher"</span><span class="json-punct">:</span> <span class="json-punct">{</span>
+        <span class="json-key">"name"</span><span class="json-punct">:</span> <span class="json-str">"Ford Perfect"</span><span class="json-punct">,</span>
+        <span class="json-key">"species"</span><span class="json-punct">:</span> <span class="json-str">"Betelgeusian"</span><span class="json-punct">,</span>
+        <span class="json-key">"relatives"</span><span class="json-punct">:</span> <span class="json-punct">[</span>
+            <span class="json-punct">{</span>
+                <span class="json-key">"name"</span><span class="json-punct">:</span> <span class="json-str">"Zaphod Beeblebrox"</span><span class="json-punct">,</span>
+                <span class="json-key">"species"</span><span class="json-punct">:</span> <span class="json-str">"Betelgeusian"</span>
+            <span class="json-punct">}</span>
+        <span class="json-punct">]</span>
+    <span class="json-punct">}</span>
+<span class="json-punct">}</span>
+<span class="py-str">"""</span>
+
+<span class="py-name">my_json</span> <span class="py-punct">=</span> <span class="py-mod">json</span><span class="py-punct">.</span><span class="py-fn">loads</span><span class="py-punct">(</span><span class="py-name">json_string</span><span class="py-punct">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q50" value="A" />A. List</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q50" value="B" />B. JSON</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q50" value="C" />C. Map</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q50" value="D" />D. Dict</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.5 Network services behavior</span>
+          <span class="question-topic-meta__subject">1.2 JSON parsing in Python</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -153,7 +188,7 @@
     (function () {
       var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. D - A 50/50 intermittent failure across multiple clients strongly points to a load balancer sending traffic to one healthy and one failing backend target.";
+        "Correct. D - json.loads() converts a JSON object into a Python dict. The outermost JSON value here is an object, so my_json is a dict.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +198,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q39"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q50"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +215,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q39"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q50"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
