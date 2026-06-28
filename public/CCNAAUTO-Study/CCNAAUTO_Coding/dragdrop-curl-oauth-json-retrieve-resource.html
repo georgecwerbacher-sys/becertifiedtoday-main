@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Network components drag and drop</title>
+  <title>CCNAAUTO - cURL OAuth JSON retrieval command</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
@@ -22,52 +23,53 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-dna-center-network-device-python-get.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-restconf-protocol-stack-elements-unused.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the network component names from the left onto the correct descriptions on the right.</h1>
-    <p class="sub">Not all options are used.</p>
+    <h1>Fill in the blanks to complete the cURL command that invokes a RESTful API to retrieve a resource in JSON format using OAuth.</h1>
+    <p class="sub">Drag each snippet into the matching blank. Not all snippets are used.</p>
 
     <div class="sim-frame">
-      <div class="layout dnd-split">
-        <div class="panel">
-          <h2>Network components</h2>
+      <div class="layout dnd-split ccnaauto-code-dnd-layout">
+        <div class="panel panel--snippets">
+          <h2>Code snippets</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="dns-server">DNS server</div>
-            <div class="token" draggable="true" data-value="firewall">firewall</div>
-            <div class="token" draggable="true" data-value="reverse-proxy">reverse proxy</div>
-            <div class="token" draggable="true" data-value="load-balancer">load balancer</div>
-            <div class="token" draggable="true" data-value="nat-gateway">NAT gateway</div>
+            <div class="token" draggable="true" data-value="GET">GET</div>
+            <div class="token" draggable="true" data-value="POST">POST</div>
+            <div class="token" draggable="true" data-value="DELETE">DELETE</div>
+            <div class="token" draggable="true" data-value="Accept">Accept</div>
+            <div class="token" draggable="true" data-value="Content-Type">Content-Type</div>
+            <div class="token" draggable="true" data-value="Authorization">Authorization</div>
+            <div class="token" draggable="true" data-value="X-Auth-Token">X-Auth-Token</div>
+            <div class="token" draggable="true" data-value="Basic">Basic</div>
           </div>
         </div>
 
-        <div class="panel">
-          <h2>Descriptions</h2>
-          <div class="match-list">
-            <div class="match-row">
-              <p class="match-desc">contains a database of public IP addresses and their associated hostnames and often resolves or translates those names to IP addresses, as requested</p>
-              <div class="drop-slot" data-target="dns-server"></div>
+        <div class="panel panel--script">
+          <h2>cURL command</h2>
+          <div class="ccnaauto-code-window" aria-label="cURL command exhibit">
+            <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
             </div>
-            <div class="match-row">
-              <p class="match-desc">enforces a set of rules about which data packets are allowed to enter or leave a network</p>
-              <div class="drop-slot" data-target="firewall"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">distributes network and application traffic across different servers</p>
-              <div class="drop-slot" data-target="load-balancer"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">retrieves resources on behalf of a client from one or more servers, then returns resources to the client, thus appearing as if they originated from the service itself</p>
-              <div class="drop-slot" data-target="reverse-proxy"></div>
+            <div class="ccnaauto-code-window__body">
+              <div class="ccnaauto-code-window__logo" aria-hidden="true">
+                <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+              </div>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code><span class="sh-cmd">curl</span> <span class="sh-flag">-X</span> <span class="drop-slot" data-accept="GET"></span> <span class="sh-punct">\</span>
+  <span class="sh-flag">-H</span> <span class="sh-str">"</span><span class="drop-slot" data-accept="Accept"></span><span class="sh-str">: application/json"</span> <span class="sh-punct">\</span>
+  <span class="sh-flag">-H</span> <span class="sh-str">"</span><span class="drop-slot" data-accept="Authorization"></span><span class="sh-str">: Bearer AbCdeF123456"</span> <span class="sh-str">http://localhost/api/myresource</span></code></pre>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
@@ -76,7 +78,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">4.9 Application deployment components</span>
+      <span class="question-topic-meta__subject">2.7 REST API authentication and headers</span>
     </p>
 
     </main>
@@ -89,17 +91,14 @@
   <script>
     (function () {
       var bank = document.getElementById("bank");
+      var slots = document.querySelectorAll(".drop-slot");
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
-      var UNUSED = "nat-gateway";
 
-      function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-target]");
-      }
       function clearPick() {
         document.querySelectorAll(".token.is-picked").forEach(function (n) {
           n.classList.remove("is-picked");
@@ -116,11 +115,6 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
-      }
-      function tokenInBank(val) {
-        return [].slice.call(bank.querySelectorAll(".token")).some(function (t) {
-          return t.getAttribute("data-value") === val;
-        });
       }
 
       (function shuffleBank() {
@@ -168,7 +162,7 @@
           dragged = token;
         });
       });
-      allSlots().forEach(function (slot) {
+      slots.forEach(function (slot) {
         slot.addEventListener("dragover", function (e) {
           e.preventDefault();
           slot.classList.add("over");
@@ -193,62 +187,48 @@
         dragged = null;
       });
 
-      function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
-          return t.getAttribute("data-value") === value;
-        });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var want = slot.getAttribute("data-target");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var v = t.getAttribute("data-value");
-          if (v === UNUSED) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
-          }
-          var ok = v === want;
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
+        var full = [].slice.call(slots).every(function (slot) {
+          var token = slot.querySelector(".token");
+          return token && token.getAttribute("data-value") === slot.getAttribute("data-accept");
         });
-        if (!tokenInBank(UNUSED)) allOk = false;
-        result.textContent = allOk
-          ? "Correct. DNS resolves hostnames to IP addresses; a firewall filters traffic entering or leaving a network; a load balancer spreads traffic across servers; a reverse proxy fetches content for clients and presents it as if it came from the proxy itself. NAT gateway is not used in this set."
-          : "Incorrect. Match each description to the right component and leave NAT gateway in the bank.";
+        [].slice.call(slots).forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (!token) {
+            slot.classList.add("incorrect");
+            return;
+          }
+          slot.classList.add(
+            token.getAttribute("data-value") === slot.getAttribute("data-accept") ? "correct" : "incorrect"
+          );
+        });
+        result.textContent = full
+          ? 'Correct. Use GET, set "Accept: application/json" for JSON response format, and include OAuth bearer credentials in the "Authorization" header.'
+          : 'Incorrect. Fill the blanks with GET, Accept, and Authorization.';
       });
 
       showBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        allSlots().forEach(function (slot) {
-          var tok = takeFromBank(slot.getAttribute("data-target"));
-          if (tok) {
-            slot.appendChild(tok);
+          var existing = slot.querySelector(".token");
+          if (existing) bank.appendChild(existing);
+          var target = bank.querySelector('.token[data-value="' + slot.getAttribute("data-accept") + '"]');
+          if (target) {
+            slot.appendChild(target);
             slot.classList.add("correct");
           }
         });
-        result.textContent = "Answer shown. NAT gateway remains in the bank.";
+        result.textContent = "Answer shown.";
       });
 
       resetBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
         });
         result.textContent = "";
         (function reshuffle() {

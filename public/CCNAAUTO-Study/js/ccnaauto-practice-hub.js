@@ -47,6 +47,10 @@
     "version-control-advantages-choose-two",
     "webhook-interacting-application-descriptions-choose-two",
     "default-gateway-description-true",
+    "git-delete-local-branch-force-experiment",
+    "netconf-default-port-830",
+    "tdd-concepts-choose-two",
+    "intermittent-server-connection-device-at-fault",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;
