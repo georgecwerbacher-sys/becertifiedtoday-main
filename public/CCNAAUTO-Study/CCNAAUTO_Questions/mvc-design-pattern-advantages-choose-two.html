@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - NX-OS Python SDK loopback JSON effects | Be Certified Today</title>
+  <title>CCNAAUTO - MVC design pattern advantages | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
-  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -27,40 +26,17 @@
       box-sizing: border-box;
     }
     .card {
-      width: min(980px, 100%);
+      width: min(900px, 100%);
       background: transparent;
       border: 0;
       padding: 0;
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 16px;
-      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      margin: 0 0 18px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
-    }
-    .ccnaauto-code-exhibit {
-      margin-bottom: 16px;
-    }
-    .sdk-doc-header {
-      margin: 0 0 12px;
-      padding: 14px 16px;
-      border-left: 6px solid #0ea5e9;
-      background: #eef9ff;
-      color: #173b6d;
-      border-radius: 0 10px 10px 0;
-      box-shadow: 0 10px 24px rgba(18, 45, 76, 0.08);
-    }
-    .sdk-doc-header p {
-      margin: 0 0 10px;
-      line-height: 1.45;
-    }
-    .sdk-doc-header p:last-child {
-      margin-bottom: 0;
-    }
-    .sdk-doc-header__note {
-      font-style: italic;
-      color: #31516f;
     }
     .choice {
       display: block;
@@ -144,57 +120,26 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/restconf-hostname-get-remove-accept-header.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ansible-ios-vlan-trunk-effects-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ansible-ios-vlan-trunk-effects-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ios-xe-model-driven-programmability-gnmi.html">Next</a>
       </div>
     </nav>
 
-    <h1>The Python interpreter and the Cisco Python SDK are available by default in Cisco NX-OS software. The SDK documentation shows how the <code>clid()</code> API can be used when working with JSON and XML. What are two effects of running the script? (Choose two.)</h1>
+    <h1>What are two advantages of the Model-view-controller software design pattern? (Choose two.)</h1>
 
-    <figure class="ccnaauto-code-exhibit" aria-label="NX-OS Python SDK script exhibit">
-      <p class="ccnaauto-code-exhibit__label">Python script exhibit</p>
-      <div class="sdk-doc-header">
-        <p>For CLI commands that support XML, the <code>clid()</code> method returns JSON output. An exception is thrown when XML is not used. It executes CLI commands, takes a CLI command string, and returns show command output in JSON form.</p>
-        <p class="sdk-doc-header__note">Note: The <code>clid</code> API can be useful when searching the output of show commands using JSON tools, as shown in the example.</p>
-      </div>
-      <div class="ccnaauto-code-window">
-        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
-          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
-          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
-          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
-        </div>
-        <div class="ccnaauto-code-window__body">
-          <div class="ccnaauto-code-window__logo" aria-hidden="true">
-            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
-          </div>
-          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code>from cli import *
-import json
-
-cli('configure terminal ; interface loopback 5 ; no shut')
-intflist = json.loads(clid('show interface brief'))
-i = 0
-while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
-    intf = intflist['TABLE_interface']['ROW_interface'][i]
-    i = i + 1
-    if intf['state'] == 'up':
-        print(intf['interface'])</code></pre>
-        </div>
-      </div>
-    </figure>
-
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="A" />A. configure interface loopback 5</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="B" />B. issue shutdown on interface loopback 5</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="C" />C. show only the interfaces in the up status</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="D" />D. show only the interfaces in admin shut status</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="E" />E. show details for the TABLE interface</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q81" value="A" />A. simplifies network automation</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q81" value="B" />B. allows for multiple views of the same model</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q81" value="C" />C. makes code easier to deploy using CI/CD pipelines</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q81" value="D" />D. reduces need for error handling</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q81" value="E" />E. separates responsibilities of the code, which makes future modifications easier</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.1 / 3.6 Cisco SDK and NX-OS APIs</span>
+          <span class="question-topic-meta__subject">1.6 MVC and Observer design patterns</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -207,16 +152,16 @@ while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
 
   <script>
     (function () {
-      var CORRECT = ["A", "C"];
+      var CORRECT = ["B", "E"];
       var CORRECT_MSG =
-        "Correct. A and C - The cli() call enters interface configuration for loopback 5 and issues no shut. The script then parses clid('show interface brief') JSON and prints only interfaces whose state is up.";
+        "Correct. B and E - MVC separates an application into model, view, and controller responsibilities. This separation makes later changes easier and lets the same model support multiple views.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return Array.prototype.slice
-          .call(document.querySelectorAll('input[name="ccnaauto_q79"]:checked'))
+          .call(document.querySelectorAll('input[name="ccnaauto_q81"]:checked'))
           .map(function (input) {
             return input.value;
           })
@@ -251,7 +196,7 @@ while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
       });
 
       showBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="ccnaauto_q79"]').forEach(function (input) {
+        document.querySelectorAll('input[name="ccnaauto_q81"]').forEach(function (input) {
           input.checked = CORRECT.indexOf(input.value) !== -1;
         });
         answerBox.style.display = "block";

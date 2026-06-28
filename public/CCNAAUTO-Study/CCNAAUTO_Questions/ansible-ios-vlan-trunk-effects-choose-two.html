@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - NX-OS Python SDK loopback JSON effects | Be Certified Today</title>
+  <title>CCNAAUTO - Ansible IOS VLAN trunk effects | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
@@ -41,26 +41,6 @@
     }
     .ccnaauto-code-exhibit {
       margin-bottom: 16px;
-    }
-    .sdk-doc-header {
-      margin: 0 0 12px;
-      padding: 14px 16px;
-      border-left: 6px solid #0ea5e9;
-      background: #eef9ff;
-      color: #173b6d;
-      border-radius: 0 10px 10px 0;
-      box-shadow: 0 10px 24px rgba(18, 45, 76, 0.08);
-    }
-    .sdk-doc-header p {
-      margin: 0 0 10px;
-      line-height: 1.45;
-    }
-    .sdk-doc-header p:last-child {
-      margin-bottom: 0;
-    }
-    .sdk-doc-header__note {
-      font-style: italic;
-      color: #31516f;
     }
     .choice {
       display: block;
@@ -144,20 +124,16 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/restconf-hostname-get-remove-accept-header.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/nxos-python-sdk-loopback-json-effects-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ansible-ios-vlan-trunk-effects-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mvc-design-pattern-advantages-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>The Python interpreter and the Cisco Python SDK are available by default in Cisco NX-OS software. The SDK documentation shows how the <code>clid()</code> API can be used when working with JSON and XML. What are two effects of running the script? (Choose two.)</h1>
+    <h1>Refer to the exhibit. Which two statements describe the configuration if the Ansible script is run? (Choose two.)</h1>
 
-    <figure class="ccnaauto-code-exhibit" aria-label="NX-OS Python SDK script exhibit">
-      <p class="ccnaauto-code-exhibit__label">Python script exhibit</p>
-      <div class="sdk-doc-header">
-        <p>For CLI commands that support XML, the <code>clid()</code> method returns JSON output. An exception is thrown when XML is not used. It executes CLI commands, takes a CLI command string, and returns show command output in JSON form.</p>
-        <p class="sdk-doc-header__note">Note: The <code>clid</code> API can be useful when searching the output of show commands using JSON tools, as shown in the example.</p>
-      </div>
+    <figure class="ccnaauto-code-exhibit" aria-label="Ansible IOS VLAN trunk playbook exhibit">
+      <p class="ccnaauto-code-exhibit__label">Ansible playbook exhibit</p>
       <div class="ccnaauto-code-window">
         <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
           <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
@@ -168,33 +144,56 @@
           <div class="ccnaauto-code-window__logo" aria-hidden="true">
             <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
           </div>
-          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code>from cli import *
-import json
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>---
+- hosts: switch2960cx
+  gather_facts: no
 
-cli('configure terminal ; interface loopback 5 ; no shut')
-intflist = json.loads(clid('show interface brief'))
-i = 0
-while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
-    intf = intflist['TABLE_interface']['ROW_interface'][i]
-    i = i + 1
-    if intf['state'] == 'up':
-        print(intf['interface'])</code></pre>
+  tasks:
+    - ios_l2_interface:
+        name: GigabitEthernet0/1
+        state: unconfigured
+
+    - ios_l2_interface:
+        name: GigabitEthernet0/1
+        mode: trunk
+        native_vlan: 1
+        trunk_allowed_vlans: 6-8
+        state: present
+
+    - ios_vlan:
+        vlan_id: 6
+        name: guest-vlan
+        interfaces:
+          - GigabitEthernet0/2
+          - GigabitEthernet0/3
+
+    - ios_vlan:
+        vlan_id: 7
+        name: corporate-vlan
+        interfaces:
+          - GigabitEthernet0/4
+
+    - ios_vlan:
+        vlan_id: 8
+        name: iot-vlan
+        interfaces:
+          - GigabitEthernet0/5</code></pre>
         </div>
       </div>
     </figure>
 
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="A" />A. configure interface loopback 5</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="B" />B. issue shutdown on interface loopback 5</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="C" />C. show only the interfaces in the up status</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="D" />D. show only the interfaces in admin shut status</label>
-    <label class="choice"><input type="checkbox" name="ccnaauto_q79" value="E" />E. show details for the TABLE interface</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q80" value="A" />A. Traffic on port 0/2 and 0/3 is connected to port 0/6.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q80" value="B" />B. Traffic from ports 0/2 to 0/5 can flow on port 0/1 due to the trunk.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q80" value="C" />C. Traffic can flow between ports 0/2 to 0/5 due to the trunk on port 0/1.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q80" value="D" />D. GigabitEthernet0/2 and GigabitEthernet0/3 are access ports for VLAN 6.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q80" value="E" />E. GigabitEthernet0/1 is left unconfigured.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.1 / 3.6 Cisco SDK and NX-OS APIs</span>
+          <span class="question-topic-meta__subject">5.8 Ansible and network automation</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -207,16 +206,16 @@ while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
 
   <script>
     (function () {
-      var CORRECT = ["A", "C"];
+      var CORRECT = ["B", "D"];
       var CORRECT_MSG =
-        "Correct. A and C - The cli() call enters interface configuration for loopback 5 and issues no shut. The script then parses clid('show interface brief') JSON and prints only interfaces whose state is up.";
+        "Correct. B and D - GigabitEthernet0/1 is rebuilt as a trunk with native VLAN 1 and allowed VLANs 6 through 8, so VLAN traffic from access ports 0/2 through 0/5 can traverse that trunk. The ios_vlan tasks place Gi0/2 and Gi0/3 into VLAN 6.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
 
       function selectedValues() {
         return Array.prototype.slice
-          .call(document.querySelectorAll('input[name="ccnaauto_q79"]:checked'))
+          .call(document.querySelectorAll('input[name="ccnaauto_q80"]:checked'))
           .map(function (input) {
             return input.value;
           })
@@ -251,7 +250,7 @@ while i &lt; len(intflist['TABLE_interface']['ROW_interface']):
       });
 
       showBtn.addEventListener("click", function () {
-        document.querySelectorAll('input[name="ccnaauto_q79"]').forEach(function (input) {
+        document.querySelectorAll('input[name="ccnaauto_q80"]').forEach(function (input) {
           input.checked = CORRECT.indexOf(input.value) !== -1;
         });
         answerBox.style.display = "block";

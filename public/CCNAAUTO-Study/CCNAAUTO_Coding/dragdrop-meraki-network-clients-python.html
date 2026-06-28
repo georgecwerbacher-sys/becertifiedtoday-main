@@ -4,11 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Automation interfaces transport protocols drag and drop</title>
+  <title>CCNAAUTO - Meraki network clients Python request</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    .ccnaauto-code-window {
+      margin-bottom: 16px;
+    }
+
+    body.ccna-dnd-ui .ccnaauto-code-dnd-layout {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    @media (max-width: 900px) {
+      body.ccna-dnd-ui .ccnaauto-code-dnd-layout {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -22,46 +38,106 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-finesse-api-elements-to-functions.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-bash-backup-variable-assignments.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-application-deployment-models.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/webex-membership-update-python-fill.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the network automation transport protocols from the left onto the automation interfaces that support them on the right. Not all options are used.</h1>
+    <h1>Refer to the exhibit. Drag and drop the code from the left onto the item numbers on the right to complete the Meraki code to obtain a list of clients which have used this network.</h1>
+    <p class="sub">Use the script exhibit to match each item number, then drag each code snippet to the numbered slot.</p>
+
+    <div class="ccnaauto-code-window" aria-label="Meraki clients Python request exhibit">
+      <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+        <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+        <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+        <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+      </div>
+      <div class="ccnaauto-code-window__body">
+        <div class="ccnaauto-code-window__logo" aria-hidden="true">
+          <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+        </div>
+        <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code>base_url = "https://api.meraki.com/api/v0"
+network_id = "L_12345678910"
+api_key = "1098hadpfsiapsf8ahf8ohp"
+
+requests.&lt;item 1&gt;(
+    &lt;item 2&gt; + "/&lt;item 3&gt;/" + &lt;item 4&gt; + "/&lt;item 5&gt;",
+    headers = {
+        "X-Cisco-Meraki-API-Key": "&lt;item 6&gt;",
+        "Content-Type": "&lt;item 7&gt;"
+    },
+    &lt;item 8&gt;={"&lt;item 9&gt;": &lt;item 10&gt;})</code></pre>
+      </div>
+    </div>
 
     <div class="sim-frame">
-      <div class="layout dnd-split">
-        <div class="panel">
-          <h2>Transport protocols</h2>
+      <div class="layout dnd-split ccnaauto-code-dnd-layout">
+        <div class="panel panel--snippets">
+          <h2>Code snippets</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="SSH">SSH</div>
-            <div class="token" draggable="true" data-value="HTTP">HTTP</div>
-            <div class="token" draggable="true" data-value="HTTP2">HTTP/2</div>
-            <div class="token" draggable="true" data-value="HTTPS">HTTPS</div>
+            <div class="token" draggable="true" data-value="params">params</div>
+            <div class="token" draggable="true" data-value="networks">networks</div>
+            <div class="token" draggable="true" data-value="timespan">timespan</div>
+            <div class="token" draggable="true" data-value="get">get</div>
+            <div class="token" draggable="true" data-value="432000">432000</div>
+            <div class="token" draggable="true" data-value="base_url">base_url</div>
+            <div class="token" draggable="true" data-value="application-json">application/json</div>
+            <div class="token" draggable="true" data-value="network_id">network_id</div>
+            <div class="token" draggable="true" data-value="clients">clients</div>
+            <div class="token" draggable="true" data-value="api_key">api_key</div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Network automation interface</h2>
+          <h2>Item numbers</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">gRPC</p>
-              <div class="drop-slot" data-accept="HTTP2"></div>
+              <p class="match-desc">&lt;item 1&gt;</p>
+              <div class="drop-slot" data-accept="get"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">NETCONF</p>
-              <div class="drop-slot" data-accept="SSH"></div>
+              <p class="match-desc">&lt;item 2&gt;</p>
+              <div class="drop-slot" data-accept="base_url"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">RESTCONF</p>
-              <div class="drop-slot" data-accept="HTTPS"></div>
+              <p class="match-desc">&lt;item 3&gt;</p>
+              <div class="drop-slot" data-accept="networks"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 4&gt;</p>
+              <div class="drop-slot" data-accept="network_id"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 5&gt;</p>
+              <div class="drop-slot" data-accept="clients"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 6&gt;</p>
+              <div class="drop-slot" data-accept="api_key"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 7&gt;</p>
+              <div class="drop-slot" data-accept="application-json"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 8&gt;</p>
+              <div class="drop-slot" data-accept="params"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 9&gt;</p>
+              <div class="drop-slot" data-accept="timespan"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">&lt;item 10&gt;</p>
+              <div class="drop-slot" data-accept="432000"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
@@ -70,7 +146,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.8 Model-driven programmability interfaces</span>
+      <span class="question-topic-meta__subject">3.9.a Meraki API client inventory</span>
     </p>
 
     </main>
@@ -83,6 +159,7 @@
   <script>
     (function () {
       var bank = document.getElementById("bank");
+      var slots = document.querySelectorAll(".drop-slot");
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");
@@ -90,9 +167,6 @@
       var dragged = null;
       var picked = null;
 
-      function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-accept]");
-      }
       function clearPick() {
         document.querySelectorAll(".token.is-picked").forEach(function (n) {
           n.classList.remove("is-picked");
@@ -109,10 +183,6 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
-      }
-      function accepts(slot, value) {
-        var allowed = String(slot.getAttribute("data-accept") || "").split("|");
-        return allowed.indexOf(value) !== -1;
       }
 
       (function shuffleBank() {
@@ -160,7 +230,7 @@
           dragged = token;
         });
       });
-      allSlots().forEach(function (slot) {
+      slots.forEach(function (slot) {
         slot.addEventListener("dragover", function (e) {
           e.preventDefault();
           slot.classList.add("over");
@@ -185,44 +255,36 @@
         dragged = null;
       });
 
-      function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
-          return t.getAttribute("data-value") === value;
-        });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
+        var full = [].slice.call(slots).every(function (slot) {
+          var token = slot.querySelector(".token");
+          return token && token.getAttribute("data-value") === slot.getAttribute("data-accept");
+        });
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
+          var token = slot.querySelector(".token");
+          if (!token) {
             slot.classList.add("incorrect");
-            allOk = false;
             return;
           }
-          var v = t.getAttribute("data-value");
-          var ok = accepts(slot, v);
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
+          slot.classList.add(
+            token.getAttribute("data-value") === slot.getAttribute("data-accept") ? "correct" : "incorrect"
+          );
         });
-        result.textContent = allOk
-          ? "Correct. gRPC uses HTTP/2, NETCONF uses SSH, and RESTCONF uses HTTPS. HTTP is not used."
-          : "Incorrect. Match gRPC to HTTP/2, NETCONF to SSH, and RESTCONF to HTTPS. Leave HTTP unused.";
+        result.textContent = full
+          ? "Correct. The script sends a GET request to /networks/{networkId}/clients with the Meraki API key header and a timespan query parameter."
+          : "Incorrect. Build a GET request to base_url + /networks/ + network_id + /clients, then include the API key header and params={timespan: 432000}.";
       });
 
       showBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var answers = ["HTTP2", "SSH", "HTTPS"];
-        allSlots().forEach(function (slot, idx) {
-          var tok = takeFromBank(answers[idx]);
-          if (tok) {
-            slot.appendChild(tok);
+          var existing = slot.querySelector(".token");
+          if (existing) bank.appendChild(existing);
+          var target = bank.querySelector('.token[data-value="' + slot.getAttribute("data-accept") + '"]');
+          if (target) {
+            slot.appendChild(target);
             slot.classList.add("correct");
           }
         });
@@ -231,10 +293,10 @@
 
       resetBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
         });
         result.textContent = "";
         (function reshuffle() {

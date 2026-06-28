@@ -91,6 +91,9 @@
     "topology-subnet-serial-statements-choose-two",
     "restconf-hostname-get-remove-accept-header",
     "nxos-python-sdk-loopback-json-effects-choose-two",
+    "ansible-ios-vlan-trunk-effects-choose-two",
+    "mvc-design-pattern-advantages-choose-two",
+    "ios-xe-model-driven-programmability-gnmi",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;
