@@ -1,0 +1,47 @@
+/**
+ * CCNAAUTO practice pages — spacing for Check / Reset / Show Answer controls.
+ * Load after page inline styles so these rules win.
+ */
+
+body.ccnaauto-question-ui:not(.dragdrop-exercise) .answer-footer {
+  margin-top: 36px;
+}
+
+body.ccnaauto-dnd-ui.dragdrop-exercise .actions {
+  margin-top: 28px;
+}
+
+/* Page watermark — transparent background logo */
+body.ccnaauto-question-ui {
+  position: relative;
+}
+
+body.ccnaauto-question-ui .page-logo-watermark {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+body.ccnaauto-question-ui .page-logo-watermark img {
+  width: min(85vw, 720px);
+  max-height: 85vh;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.12;
+}
+
+body.ccnaauto-question-ui:not(.dragdrop-exercise) .card,
+body.ccnaauto-question-ui:not(.dragdrop-exercise) main.card {
+  position: relative;
+  z-index: 1;
+}
+
+body.ccnaauto-dnd-ui.dragdrop-exercise .question-shell {
+  position: relative;
+  z-index: 1;
+}

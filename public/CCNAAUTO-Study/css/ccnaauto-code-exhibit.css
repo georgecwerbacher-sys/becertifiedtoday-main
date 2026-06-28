@@ -1,0 +1,294 @@
+/**
+ * CCNAAUTO code exhibit template — dark editor window + 4% logo watermark.
+ * Link from MCQ or D&D pages that show Python, YAML/Ansible, JSON, etc.
+ *
+ * Structure:
+ *   .ccnaauto-code-window
+ *     .ccnaauto-code-window__titlebar (+ __dot--close|minimize|maximize)
+ *     .ccnaauto-code-window__body
+ *       .ccnaauto-code-window__logo > img
+ *       pre.ccnaauto-code-window__pre[.ccnaauto-code-window__pre--python|.--yaml|.--shell|.--json|.--diff|.--linenumbers] > code
+ */
+
+.ccnaauto-code-exhibit {
+  margin: 0 0 18px;
+}
+
+.ccnaauto-code-exhibit__label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #516f94;
+}
+
+.ccnaauto-code-window {
+  border-radius: 14px;
+  border: 1px solid #243047;
+  background: #0f1623;
+  box-shadow: 0 14px 34px rgba(15, 22, 35, 0.28);
+  overflow: hidden;
+}
+
+.ccnaauto-code-window__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #182235 0%, #121b2b 100%);
+  border-bottom: 1px solid #243047;
+}
+
+.ccnaauto-code-window__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.ccnaauto-code-window__dot--close {
+  background: #ff5f57;
+}
+
+.ccnaauto-code-window__dot--minimize {
+  background: #febc2e;
+}
+
+.ccnaauto-code-window__dot--maximize {
+  background: #28c840;
+}
+
+.ccnaauto-code-window__body {
+  position: relative;
+  background: #0f1623;
+}
+
+.ccnaauto-code-window__logo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ccnaauto-code-window__logo img {
+  width: min(72%, 420px);
+  max-height: 78%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.04;
+}
+
+pre.ccnaauto-code-window__pre {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 18px 20px 22px;
+  border: 0;
+  background: transparent;
+  color: #e8eef7;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.86rem;
+  line-height: 1.7;
+  overflow: auto;
+  white-space: pre;
+  tab-size: 2;
+  box-sizing: border-box;
+}
+
+pre.ccnaauto-code-window__pre--linenumbers {
+  padding-left: 52px;
+  counter-reset: ccnaauto-code-line;
+}
+
+pre.ccnaauto-code-window__pre--linenumbers .line {
+  display: block;
+  position: relative;
+}
+
+pre.ccnaauto-code-window__pre--linenumbers .line::before {
+  counter-increment: ccnaauto-code-line;
+  content: counter(ccnaauto-code-line);
+  position: absolute;
+  left: -36px;
+  width: 24px;
+  text-align: right;
+  color: #5a6a85;
+  user-select: none;
+}
+
+/* Python syntax */
+.ccnaauto-code-window__pre--python .py-kw {
+  color: #c792ea;
+}
+
+.ccnaauto-code-window__pre--python .py-mod,
+.ccnaauto-code-window__pre--python .py-name {
+  color: #82b1ff;
+}
+
+.ccnaauto-code-window__pre--python .py-fn {
+  color: #e8eef7;
+}
+
+.ccnaauto-code-window__pre--python .py-str {
+  color: #f4a27a;
+}
+
+.ccnaauto-code-window__pre--python .py-punct {
+  color: #d7e0ef;
+}
+
+/* YAML / Ansible syntax */
+.ccnaauto-code-window__pre--yaml .yaml-key {
+  color: #82b1ff;
+}
+
+.ccnaauto-code-window__pre--yaml .yaml-str {
+  color: #f4a27a;
+}
+
+.ccnaauto-code-window__pre--yaml .yaml-var {
+  color: #e6c07a;
+}
+
+.ccnaauto-code-window__pre--yaml .yaml-list {
+  color: #d7e0ef;
+}
+
+/* Shell / Bash syntax */
+.ccnaauto-code-window__pre--shell .sh-cmd {
+  color: #82b1ff;
+}
+
+.ccnaauto-code-window__pre--shell .sh-flag {
+  color: #c792ea;
+}
+
+.ccnaauto-code-window__pre--shell .sh-str {
+  color: #f4a27a;
+}
+
+.ccnaauto-code-window__pre--shell .sh-prompt {
+  color: #28c840;
+}
+
+.ccnaauto-code-window__pre--shell .sh-punct {
+  color: #d7e0ef;
+}
+
+/* JSON syntax */
+.ccnaauto-code-window__pre--json .json-key {
+  color: #82b1ff;
+}
+
+.ccnaauto-code-window__pre--json .json-str {
+  color: #f4a27a;
+}
+
+.ccnaauto-code-window__pre--json .json-num {
+  color: #e6c07a;
+}
+
+.ccnaauto-code-window__pre--json .json-bool {
+  color: #c792ea;
+}
+
+.ccnaauto-code-window__pre--json .json-punct {
+  color: #d7e0ef;
+}
+
+/* Unified diff syntax */
+.ccnaauto-code-window__pre--diff .diff-hunk {
+  color: #c792ea;
+}
+
+.ccnaauto-code-window__pre--diff .diff-add {
+  color: #28c840;
+}
+
+.ccnaauto-code-window__pre--diff .diff-del {
+  color: #ff5f57;
+}
+
+.ccnaauto-code-window__pre--diff .diff-meta {
+  color: #82b1ff;
+}
+
+/* D&D fill-in blanks inside code windows */
+body.ccna-dnd-ui .ccnaauto-code-window .drop-slot,
+body.ccnaauto-dnd-ui .ccnaauto-code-window .drop-slot {
+  border-color: #5d7fb8;
+  background: rgba(130, 177, 255, 0.08);
+  color: #e8eef7;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-window .drop-slot:empty::before,
+body.ccnaauto-dnd-ui .ccnaauto-code-window .drop-slot:empty::before {
+  color: #8aa0bd;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-window .drop-slot.over,
+body.ccnaauto-dnd-ui .ccnaauto-code-window .drop-slot.over {
+  border-color: #82b1ff;
+  background: rgba(130, 177, 255, 0.16);
+}
+
+/* D&D layout: snippets 1/3 left, code 2/3 right */
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) !important;
+  align-items: stretch;
+  gap: 16px;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel--snippets .bank,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel--snippets .bank {
+  flex: 1;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window {
+  flex: 1;
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window__body,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel--script pre.ccnaauto-code-window__pre,
+body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel--script pre.ccnaauto-code-window__pre {
+  flex: 1;
+  min-height: 100%;
+}
+
+@media (max-width: 900px) {
+  body.ccna-dnd-ui .ccnaauto-code-dnd-layout,
+  body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ccna-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window,
+  body.ccnaauto-dnd-ui .ccnaauto-code-dnd-layout .panel--script .ccnaauto-code-window {
+    min-height: 320px;
+  }
+}

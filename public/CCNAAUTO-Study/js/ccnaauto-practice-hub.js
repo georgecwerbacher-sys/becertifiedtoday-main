@@ -11,7 +11,38 @@
   var QUESTIONS_BASE = "/CCNAAUTO-Study/CCNAAUTO_Questions/";
 
   window.CCNAAUTO_PRACTICE = window.CCNAAUTO_PRACTICE || {};
-  window.CCNAAUTO_PRACTICE.SLUGS = window.CCNAAUTO_PRACTICE.SLUGS || [];
+  window.CCNAAUTO_PRACTICE.SLUGS = [
+    "rest-constraint-no-client-context-server",
+    "cisco-dna-center-controller-level-management",
+    "bare-metal-application-deployment-characteristics",
+    "ios-xe-restconf-basic-authentication",
+    "tdd-refactoring-existing-test-coverage",
+    "bash-redirect-output-to-file",
+    "git-merge-unified-history",
+    "jenkins-cicd-automation-tool",
+    "rest-api-large-results-pagination",
+    "edge-computing-reduces-latency",
+    "unified-diff-hunk-header-line",
+    "cucm-api-voicemail-port-data",
+    "docker-app-security-benefits",
+    "package-updates-local-server-proxy",
+    "yang-interface-encoding-formats",
+    "safely-store-api-keys",
+    "virtual-platform-hypervisor",
+    "rest-api-valid-response-status-code",
+    "routing-protocol-traffic-control-plane",
+    "json-xml-true-statements",
+    "restconf-401-check-authentication-credentials",
+    "repeated-code-use-functions",
+    "hostile-data-to-interpreter-injection",
+    "cicd-pipeline-minimal-manual-interaction",
+    "ansible-ios-running-config-backup",
+    "artifact-repository-cicd-pipeline-role",
+    "cisco-virl-network-simulation-purpose",
+    "routing-table-destination-next-hop-interface",
+    "python-filter-fruit-nested-json-output",
+    "rest-api-incorrect-payload-status-code-400",
+  ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;
   window.CCNAAUTO_PRACTICE._tracker = null;

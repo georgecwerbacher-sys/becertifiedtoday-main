@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNAAUTO - Edge computing latency benefit | Be Certified Today</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      --bcc-outside-text: #1a3d6e;
+      --bcc-choice-bg: #254b8a;
+      --bcc-choice-border: #3d6dbb;
+      --bcc-box-text: #e6edf3;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      color: var(--bcc-outside-text);
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    .card {
+      width: min(900px, 100%);
+      background: transparent;
+      border: 0;
+      padding: 0;
+      color: var(--bcc-outside-text);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      line-height: 1.35;
+      color: var(--bcc-outside-text);
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--bcc-choice-bg);
+      border: 1px solid var(--bcc-choice-border);
+      font-size: 1.02rem;
+      color: var(--bcc-box-text);
+      cursor: pointer;
+    }
+    .choice input {
+      margin-right: 10px;
+      transform: translateY(1px);
+    }
+    .answer-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .answer-actions,
+    .answer-side-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-check,
+    .nav-show-answer {
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 800;
+      cursor: pointer;
+      color: #ffffff;
+      background: #1f4f93;
+    }
+    .nav-show-answer {
+      background: #31516f;
+    }
+    .question-topic-meta {
+      margin: 0;
+      color: #516f94;
+      font-size: 0.9rem;
+    }
+    .question-topic-meta__version,
+    .question-topic-meta__subject {
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .answer {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.45;
+    }
+    .answer.correct {
+      background: #113e2d;
+      border: 1px solid #1f7a58;
+      color: #ffffff;
+    }
+    .answer.incorrect {
+      background: #442020;
+      border: 1px solid #8c3434;
+      color: #fecaca;
+    }
+  </style>
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+</head>
+<body class="ccnaauto-question-ui">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <main class="card">
+    <nav class="question-nav" aria-label="Question navigation">
+      <div class="question-nav-links">
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/rest-api-large-results-pagination.html">Back</a>
+        <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/unified-diff-hunk-header-line.html">Next</a>
+      </div>
+    </nav>
+
+    <h1>What is a benefit of edge computing?</h1>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q10" value="A" />A. It reduces network latency by moving processing closer to the data source.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q10" value="B" />B. It simplifies security as devices and processing are brought closer together.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q10" value="C" />C. It removes the need for centralized data processing.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q10" value="D" />D. It reduces data velocity from devices or other data sources.</label>
+
+    <div class="answer-footer">
+      <div class="answer-actions">
+        <button id="checkBtn" type="button" class="nav-check">Check answer</button>
+        <p class="question-topic-meta">
+          <span class="question-topic-meta__version">200-901 v1.1</span>
+          <span class="question-topic-meta__subject">4.1 Edge computing</span>
+        </p>
+      </div>
+      <div class="answer-side-actions">
+        <button id="showBtn" type="button" class="nav-show-answer">Show Answer</button>
+      </div>
+    </div>
+
+    <div id="answerBox" class="answer" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (function () {
+      var CORRECT = "A";
+      var CORRECT_MSG =
+        "Correct. A - Edge computing places compute resources closer to where data is generated. This reduces data travel time, lowers latency, and improves real-time responsiveness for time-sensitive applications.";
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var answerBox = document.getElementById("answerBox");
+
+      function incorrectMsg() {
+        return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
+      }
+
+      checkBtn.addEventListener("click", function () {
+        var sel = document.querySelector('input[name="ccnaauto_q10"]:checked');
+        answerBox.style.display = "block";
+        if (!sel) {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = "Select an answer.";
+          return;
+        }
+        if (sel.value === CORRECT) {
+          answerBox.className = "answer correct";
+          answerBox.textContent = CORRECT_MSG;
+        } else {
+          answerBox.className = "answer incorrect";
+          answerBox.textContent = incorrectMsg();
+        }
+      });
+
+      showBtn.addEventListener("click", function () {
+        var input = document.querySelector('input[name="ccnaauto_q10"][value="' + CORRECT + '"]');
+        if (input) input.checked = true;
+        answerBox.style.display = "block";
+        answerBox.className = "answer correct";
+        answerBox.textContent = CORRECT_MSG;
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CCNAAUTO - DNA Center network device Python script</title>
+  <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
+  <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+</head>
+<body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
+  <script src="/js/sample-url-mask-apply.js"></script>
+  <div class="page-logo-watermark" aria-hidden="true">
+    <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+  </div>
+  <div class="question-shell">
+    <a class="site-logo-corner" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html" aria-label="CCNAAUTO training portal">
+      <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="52" height="52" alt="Be Certified Today" />
+    </a>
+    <main class="card">
+    <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
+
+    <h1>Fill in the blanks to complete the Python script to retrieve a list of network devices using the Cisco DNA Center API.</h1>
+    <p class="sub">Drag each code snippet into the matching blank. Not all snippets are used.</p>
+
+    <div class="sim-frame">
+      <div class="layout dnd-split ccnaauto-code-dnd-layout">
+        <div class="panel panel--snippets">
+          <h2>Code snippets</h2>
+          <div id="bank" class="bank">
+            <div class="token" draggable="true" data-value="GET">"GET"</div>
+            <div class="token" draggable="true" data-value="POST">"POST"</div>
+            <div class="token" draggable="true" data-value="PUT">"PUT"</div>
+            <div class="token" draggable="true" data-value="headers">headers</div>
+            <div class="token" draggable="true" data-value="payload">payload</div>
+            <div class="token" draggable="true" data-value="params">params</div>
+            <div class="token" draggable="true" data-value="json">json</div>
+            <div class="token" draggable="true" data-value="url">url</div>
+          </div>
+        </div>
+
+        <div class="panel panel--script">
+          <h2>Python script</h2>
+          <div class="ccnaauto-code-window" aria-label="Python script exhibit">
+            <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+            </div>
+            <div class="ccnaauto-code-window__body">
+              <div class="ccnaauto-code-window__logo" aria-hidden="true">
+                <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+              </div>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code><span class="py-kw">import</span> <span class="py-mod">requests</span>
+
+<span class="py-name">url</span> <span class="py-punct">=</span> <span class="py-str">"https://myDNAserver/dna/intent/api/v1/network-device"</span>
+<span class="py-name">payload</span> <span class="py-punct">= {}</span>
+<span class="py-name">headers</span> <span class="py-punct">= {</span>
+  <span class="py-str">'x-auth-token'</span><span class="py-punct">:</span> <span class="py-str">'&lt;token&gt;'</span>
+<span class="py-punct">}</span>
+
+<span class="py-name">response</span> <span class="py-punct">=</span> <span class="py-mod">requests</span><span class="py-punct">.</span><span class="py-fn">request</span><span class="py-punct">(</span><span class="drop-slot" data-accept="GET"></span><span class="py-punct">,</span> <span class="py-name">url</span><span class="py-punct">,</span>
+  <span class="py-name">headers</span> <span class="py-punct">=</span> <span class="drop-slot" data-accept="headers"></span><span class="py-punct">, data =</span> <span class="drop-slot" data-accept="payload"></span><span class="py-punct">)</span>
+
+<span class="py-fn">print</span><span class="py-punct">(</span><span class="py-name">response</span><span class="py-punct">.</span><span class="py-name">text</span><span class="py-punct">.</span><span class="py-fn">encode</span><span class="py-punct">(</span><span class="py-str">'utf8'</span><span class="py-punct">))</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="checkBtn" type="button">Check Answer</button>
+      <button id="resetBtn" type="button">Reset</button>
+      <button id="showBtn" type="button">Show Answer</button>
+      <span id="result"></span>
+    </div>
+    <p class="question-topic-meta" aria-label="Format and topic">
+      <span class="question-topic-meta__version">200-901 v1.1</span>
+      <span class="question-topic-meta__subject">5.7 Python · Catalyst Center API</span>
+    </p>
+
+    </main>
+  </div>
+
+  <nav class="sim-nav ccna-sample-sim-nav" aria-label="Simulation navigation">
+    <a class="sim-nav-btn sim-nav-home" href="/ccnaauto-home.html">CCNAAUTO Study</a>
+  </nav>
+
+  <script>
+    (function () {
+      var bank = document.getElementById("bank");
+      var slots = document.querySelectorAll(".drop-slot");
+      var checkBtn = document.getElementById("checkBtn");
+      var showBtn = document.getElementById("showBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var result = document.getElementById("result");
+      var dragged = null;
+      var picked = null;
+      var expectedByBlank = ["GET", "headers", "payload"];
+
+      function clearPick() {
+        document.querySelectorAll(".token.is-picked").forEach(function (n) {
+          n.classList.remove("is-picked");
+        });
+        picked = null;
+      }
+      function setPick(token) {
+        clearPick();
+        picked = token;
+        if (picked) picked.classList.add("is-picked");
+      }
+      function moveTokenToSlot(slot, token) {
+        if (!token || !slot) return;
+        var existing = slot.querySelector(".token");
+        if (existing && existing !== token) bank.appendChild(existing);
+        slot.appendChild(token);
+      }
+
+      (function shuffleBank() {
+        var nodes = [].slice.call(bank.querySelectorAll(".token"));
+        while (nodes.length) {
+          bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+        }
+      })();
+
+      var mainEl = document.querySelector("main.card");
+      mainEl.addEventListener("click", function (e) {
+        var tok = e.target.closest(".token");
+        if (tok) {
+          if (picked === tok) {
+            clearPick();
+            return;
+          }
+          var parentSlot =
+            tok.parentNode && tok.parentNode.classList && tok.parentNode.classList.contains("drop-slot")
+              ? tok.parentNode
+              : null;
+          if (picked && parentSlot) {
+            moveTokenToSlot(parentSlot, picked);
+            clearPick();
+            return;
+          }
+          setPick(tok);
+          return;
+        }
+        var slot = e.target.closest(".drop-slot");
+        if (slot && picked) {
+          moveTokenToSlot(slot, picked);
+          clearPick();
+          return;
+        }
+        if (bank.contains(e.target) && picked) {
+          if (!bank.contains(picked)) bank.appendChild(picked);
+          clearPick();
+        }
+      });
+
+      document.querySelectorAll(".token").forEach(function (token) {
+        token.addEventListener("dragstart", function () {
+          clearPick();
+          dragged = token;
+        });
+      });
+      slots.forEach(function (slot) {
+        slot.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          slot.classList.add("over");
+        });
+        slot.addEventListener("dragleave", function () {
+          slot.classList.remove("over");
+        });
+        slot.addEventListener("drop", function (e) {
+          e.preventDefault();
+          slot.classList.remove("over");
+          if (!dragged) return;
+          moveTokenToSlot(slot, dragged);
+          dragged = null;
+        });
+      });
+      bank.addEventListener("dragover", function (e) {
+        e.preventDefault();
+      });
+      bank.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (dragged) bank.appendChild(dragged);
+        dragged = null;
+      });
+
+      checkBtn.addEventListener("click", function () {
+        var full = [].slice.call(slots).every(function (slot) {
+          var token = slot.querySelector(".token");
+          return token && token.getAttribute("data-value") === slot.getAttribute("data-accept");
+        });
+        [].slice.call(slots).forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (!token) {
+            slot.classList.add("incorrect");
+            return;
+          }
+          slot.classList.add(
+            token.getAttribute("data-value") === slot.getAttribute("data-accept") ? "correct" : "incorrect"
+          );
+        });
+        result.textContent = full
+          ? 'Correct. Use GET on /dna/intent/api/v1/network-device to retrieve inventory, pass the x-auth-token in headers, and supply the empty payload dict as data.'
+          : 'Incorrect. Fill the blanks with "GET", headers, and payload.';
+      });
+
+      showBtn.addEventListener("click", function () {
+        clearPick();
+        [].slice.call(slots).forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var existing = slot.querySelector(".token");
+          if (existing) bank.appendChild(existing);
+          var target = bank.querySelector('.token[data-value="' + slot.getAttribute("data-accept") + '"]');
+          if (target) {
+            slot.appendChild(target);
+            slot.classList.add("correct");
+          }
+        });
+        result.textContent = "Answer shown.";
+      });
+
+      resetBtn.addEventListener("click", function () {
+        clearPick();
+        [].slice.call(slots).forEach(function (slot) {
+          slot.classList.remove("correct", "incorrect", "over");
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
+        });
+        result.textContent = "";
+        (function reshuffle() {
+          var nodes = [].slice.call(bank.querySelectorAll(".token"));
+          while (nodes.length) {
+            bank.appendChild(nodes.splice(Math.floor(Math.random() * nodes.length), 1)[0]);
+          }
+        })();
+      });
+    })();
+  </script>
+</body>
+</html>
