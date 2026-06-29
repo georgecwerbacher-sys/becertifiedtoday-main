@@ -34,10 +34,10 @@ Follow the core [[../Writing Guidelines|Writing Guidelines]], but apply them str
    - The post must be useful even if they never click a link to Be Certified Today. 
    - Give them the strategy, the mindset shift, or the technical breakdown right there in the text.
 
-4. **Soft Call-to-Action (CTA)**
-   - Do not sound like a billboard. 
-   - Only mention Be Certified Today at the very end, and frame it as the tool you built to solve the exact problem you just discussed.
-   - Example: *"I built Be Certified Today so you can practice these scenarios before test day."*
+4. **No Direct Promotion in the Post Body**
+   - The original post must contain **zero** promotion or links to BeCertifiedToday.com.
+   - The post must be 100% pure value, strategy, or advice.
+   - Promotion is strictly reserved for the **comments/responses**, and even then, only when carefully context-appropriate or when someone explicitly asks for resources.
 
 ## Pre-Post Checklist
 
@@ -45,10 +45,12 @@ Follow the core [[../Writing Guidelines|Writing Guidelines]], but apply them str
 - [ ] Are there zero contractions in the text?
 - [ ] Are the paragraphs short and easy to scan on a phone?
 - [ ] Does the post teach something useful without requiring a click?
+- [ ] Is the post 100% free of self-promotion or links to the site? (Save that for the comments).
 - [ ] Is the tone direct and honest, avoiding fluff and marketing speak?
 - [ ] Is the writing authentic? (Remember: minor grammatical errors are expected and prove it was written by a real person with a high school education, not ChatGPT).
 - [ ] Does it fail an AI-written check? (Run it through an AI detector—it must be flagged as human-written. If it passes as AI, rewrite it).
 - [ ] Are there zero em/en dashes?
+- [ ] Is the site referred to as BeCertifiedToday.com (and never just "Be Certified Today")?
 
 ---
 *See also:*

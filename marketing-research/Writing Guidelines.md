@@ -59,6 +59,10 @@ Think: A senior engineer mentoring a junior colleague at the whiteboard.
    - Minor grammatical errors are okay and even expected. They make the voice genuine and prove it was written by a human who actually does the work.
    - **The AI Check:** When a draft is complete, it should be checked and *fail* an AI-written review (meaning the detector flags it as human). If an AI detector thinks an AI wrote it, it is too polished or robotic and needs to be rewritten.
 
+9. **Site Naming**
+   - Always refer to the platform as **BeCertifiedToday.com** (or becertifiedtoday.com). 
+   - Never just call it "Be Certified Today" without the ".com".
+
 ## Example: Before & After
 
 **Bad (Generic, Fluffy, Contractions):**
