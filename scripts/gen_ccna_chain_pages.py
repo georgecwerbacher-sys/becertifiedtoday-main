@@ -16550,6 +16550,52 @@ line vty 0 4
             ],
             "mono": True,
         },
+        {
+            "slug": "ipv6-link-local-prefix-fe80",
+            "title": "CCNA — IPv6 Link-Local Prefix",
+            "stem": "Which IPv6 prefix is reserved by IANA for link-local addresses?",
+            "name": "ipv6linklocalpref1",
+            "correct": "A",
+            "explain": "Correct. A — The prefix FE80::/10 is reserved for IPv6 link-local addresses, which are automatically generated on IPv6-enabled interfaces and are not routable outside the local subnet. B — 2001::/3 is the global unicast block. C — FF00::/8 is the multicast block. D — FC00::/7 is the unique local address (ULA) block.",
+            "choices": [
+                "FE80::/10",
+                "2001::/3",
+                "FF00::/8",
+                "FC00::/7",
+            ],
+            "mono": True,
+        },
+        {
+            "slug": "stp-port-states-mac-learning",
+            "title": "CCNA — STP Port States",
+            "stem": "During which Spanning Tree Protocol (STP) state does a switch port begin populating its MAC address table but does not yet forward user data frames?",
+            "name": "stpportstates1",
+            "correct": "C",
+            "explain": "Correct. C — In the Learning state, the port listens for BPDUs and begins populating its MAC address table from incoming frames, but it still drops user data frames. A — In the Blocking state, the port only receives BPDUs and does not learn MAC addresses. B — In the Listening state, the port sends and receives BPDUs but does not learn MAC addresses. D — In the Forwarding state, the port both learns MAC addresses and forwards user data frames.",
+            "choices": [
+                "Blocking",
+                "Listening",
+                "Learning",
+                "Forwarding",
+            ],
+        },
+        {
+            "slug": "wlc-capwap-tunnel-ports",
+            "title": "CCNA — WLC CAPWAP Ports",
+            "stem": "Which two UDP ports are used by CAPWAP to establish the control and data tunnels between a lightweight AP and a Wireless LAN Controller (WLC)? (Choose two)",
+            "name": "wlccapwapport1",
+            "choose_two": True,
+            "correct": ["A", "C"],
+            "explain": "Correct. A and C — CAPWAP uses UDP port 5246 for the control plane (management traffic between AP and WLC) and UDP port 5247 for the data plane (encapsulated client traffic). B — UDP 1812 is used for RADIUS authentication. D — TCP 8443 is commonly used for secure WLC web administration, not CAPWAP tunnels. E — UDP 161 is used for SNMP.",
+            "choices": [
+                "UDP 5246",
+                "UDP 1812",
+                "UDP 5247",
+                "TCP 8443",
+                "UDP 161",
+            ],
+            "mono": True,
+        },
     ]
 
     hub_text = HUB_JS.read_text(encoding="utf-8")

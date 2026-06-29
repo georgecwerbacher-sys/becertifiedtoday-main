@@ -87,9 +87,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px 20px;
-      padding: max(16px, env(safe-area-inset-top, 0px)) clamp(18px, 4vw, 40px) 16px;
-      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
-      background: rgba(255, 255, 255, 0.92);
+      padding-top: max(16px, env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(18px, 4vw, 40px), env(safe-area-inset-right, 0px));
+      padding-bottom: 16px;
+      padding-left: max(clamp(18px, 4vw, 40px), env(safe-area-inset-left, 0px));
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.86);
       backdrop-filter: blur(8px);
     }
     .brand {
@@ -101,8 +104,68 @@
       font-weight: 800;
       font-size: 0.95rem;
       letter-spacing: 0.02em;
+      touch-action: manipulation;
     }
-    .brand img { display: block; width: 48px; height: auto; }
+    .brand img {
+      display: block;
+      width: auto;
+      height: clamp(64px, 10vw, 88px);
+    }
+    .brand span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .header-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .header-nav a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .header-nav a:hover { text-decoration: underline; }
+    .header-nav a[aria-current="page"] {
+      color: var(--page-text);
+      text-decoration: none;
+      cursor: default;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--page-text);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      touch-action: manipulation;
+    }
+    .brand img {
+      display: block;
+      width: auto;
+      height: clamp(64px, 10vw, 88px);
+    }
+    .brand span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .header-nav {
       display: flex;
       flex-wrap: wrap;
@@ -129,7 +192,7 @@
     }
     .page-intro {
       margin: 0 0 clamp(8px, 2vw, 16px);
-      text-align: left;
+      text-align: center;
     }
     .tagline {
       margin: 0 0 8px;
@@ -147,7 +210,7 @@
       line-height: 1.2;
     }
     .lead {
-      margin: 0;
+      margin: 0 auto;
       max-width: 42rem;
       font-size: clamp(0.95rem, 2.2vw, 1.05rem);
       color: var(--page-muted);
@@ -161,7 +224,7 @@
       color: #92400e;
       background: #fffbeb;
       border: 1px solid #fcd34d;
-      text-align: left;
+      text-align: center;
     }
     .draft-note code {
       font-size: 0.78rem;
@@ -225,7 +288,7 @@
     }
     .section-band--dark h2 {
       color: #ffffff;
-      text-align: left;
+      text-align: center;
     }
     .section-band--dark .section-inner > p {
       margin: 0 0 14px;
@@ -238,15 +301,15 @@
     }
     .section-band--light h2 {
       color: var(--bg);
-      text-align: left;
+      text-align: center;
       letter-spacing: -0.02em;
       text-transform: none;
       font-size: clamp(1.1rem, 2.8vw, 1.35rem);
     }
     .section-lead {
-      margin: 0 0 clamp(18px, 3vw, 22px);
+      margin: 0 auto clamp(18px, 3vw, 22px);
       max-width: 62ch;
-      text-align: left;
+      text-align: center;
       font-size: clamp(0.92rem, 2.1vw, 0.98rem);
       line-height: 1.55;
     }
@@ -256,15 +319,15 @@
     }
     .section-band--light .section-lead {
       color: var(--page-muted);
-      text-align: left;
-      margin-left: 0;
-      margin-right: 0;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
       max-width: 40rem;
     }
     .section-band--dark .prose-narrow {
       color: var(--text);
       max-width: none;
-      margin: 0;
+      margin: 0 auto;
     }
     .section-band--dark .prose-narrow p,
     .section-band--dark .prose-narrow li {
@@ -282,11 +345,11 @@
     }
     .prose-narrow {
       max-width: 40rem;
-      margin: 0;
+      margin: 0 auto;
       font-size: 0.95rem;
       line-height: 1.6;
     }
-    .prose-narrow p { margin: 0 0 14px; }
+    .prose-narrow p { margin: 0 0 14px; text-align: center; }
     .prose-narrow p:last-child { margin-bottom: 0; }
     .prose-narrow ul {
       margin: 0 0 14px;
@@ -299,7 +362,7 @@
       font-weight: 800;
       letter-spacing: -0.01em;
     }
-    p { margin: 0 0 14px; }
+    p { margin: 0 0 14px; text-align: center; }
     .step-grid {
       list-style: none;
       margin: 0;
@@ -327,6 +390,7 @@
       line-height: 1.5;
       color: var(--muted);
       position: relative;
+      text-align: center;
     }
     .step-grid li::before {
       content: counter(verify-step);
@@ -364,6 +428,7 @@
       border: 1px solid var(--border);
       background: var(--surface);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      text-align: center;
     }
     .tier-card h3 { color: #e8f0ff; }
     .tier-card p {
@@ -429,7 +494,7 @@
       border-radius: 12px;
       padding: clamp(20px, 3.5vw, 32px);
       background: rgba(18, 26, 43, 0.45);
-      text-align: left;
+      text-align: center;
     }
     .section-band--light .media-placeholder {
       background: #f8fafc;
@@ -493,7 +558,7 @@
       border: none;
       background: transparent;
       color: var(--text);
-      text-align: left;
+      text-align: center;
     }
     .cta-block .section-inner {
       max-width: 100%;
@@ -565,12 +630,16 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/" aria-label="Be Certified Today home">
-        <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="48" height="48" alt="" />
+      <a class="brand" href="/index.html" aria-label="Be Certified Today home" id="path-brand-preview">
+        <img
+          src="/images/logo/becertifiedtoday_logo_v2_white.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — Practice Like Test Day. Walk In Ready"
+        />
         <span>Be Certified Today</span>
       </a>
       <nav class="header-nav" aria-label="Site">
-        <a href="/">Home</a>
         <a href="/about.html">About</a>
         <a href="/how-we-verify-questions.html" aria-current="page">Always verified Questions</a>
         <a href="/verified-learner-discounts.html">Verified discounts</a>

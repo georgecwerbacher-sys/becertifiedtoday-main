@@ -87,9 +87,12 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px 20px;
-      padding: max(16px, env(safe-area-inset-top, 0px)) clamp(18px, 4vw, 40px) 16px;
-      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
-      background: rgba(255, 255, 255, 0.92);
+      padding-top: max(16px, env(safe-area-inset-top, 0px));
+      padding-right: max(clamp(18px, 4vw, 40px), env(safe-area-inset-right, 0px));
+      padding-bottom: 16px;
+      padding-left: max(clamp(18px, 4vw, 40px), env(safe-area-inset-left, 0px));
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.86);
       backdrop-filter: blur(8px);
     }
     .brand {
@@ -101,8 +104,24 @@
       font-weight: 800;
       font-size: 0.95rem;
       letter-spacing: 0.02em;
+      touch-action: manipulation;
     }
-    .brand img { display: block; width: 48px; height: auto; }
+    .brand img {
+      display: block;
+      width: auto;
+      height: clamp(64px, 10vw, 88px);
+    }
+    .brand span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .header-nav {
       display: flex;
       flex-wrap: wrap;
@@ -121,20 +140,27 @@
       cursor: default;
     }
     .hero-banner {
-      margin: 0;
-      width: 100%;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
-      background: #0d1528;
-      aspect-ratio: 16 / 7;
-      max-height: clamp(200px, 38vw, 420px);
+      display: flex;
+      justify-content: center;
+      margin: 0 0 clamp(20px, 3vw, 28px);
+      background: transparent;
+      line-height: 0;
     }
-    .hero-banner img {
+    .hero-banner__video {
       display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 28% center;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: min(57.5dvh, 405px);
+      background: transparent;
+      pointer-events: none;
+      vertical-align: top;
+    }
+    .hero-banner.is-intro-done .hero-banner__video {
+      max-height: min(44dvh, 304px);
+    }
+    .hero-banner__video::-webkit-media-controls {
+      display: none !important;
     }
     main {
       flex: 1;
@@ -170,11 +196,10 @@
     }
     .section-band {
       margin-top: clamp(28px, 4vw, 40px);
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
+      
       padding: clamp(32px, 5vw, 48px) clamp(18px, 4vw, 40px);
-      border-top: 1px solid rgba(45, 59, 90, 0.18);
-      border-bottom: 1px solid rgba(45, 59, 90, 0.18);
+      border: 1px solid rgba(45, 59, 90, 0.18);
+      border-radius: 16px;
     }
     .section-band:first-of-type {
       margin-top: clamp(20px, 3vw, 28px);
@@ -372,12 +397,11 @@
     .promise-grid strong { color: #e8f0ff; }
     .cta-block {
       margin-top: clamp(28px, 4vw, 40px);
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
+      
       padding: clamp(32px, 5vw, 48px) clamp(18px, 4vw, 40px);
       background: linear-gradient(165deg, #152238 0%, var(--surface) 55%);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       color: var(--text);
       text-align: center;
     }
@@ -444,30 +468,38 @@
 <body>
   <div class="page">
     <header>
-      <a class="brand" href="/" aria-label="Be Certified Today home">
-        <img src="/images/logo/becertifiedtoday_logo_image_trans.png" width="48" height="48" alt="" />
+      <a class="brand" href="/index.html" aria-label="Be Certified Today home" id="path-brand-preview">
+        <img
+          src="/images/logo/becertifiedtoday_logo_v2_white.png"
+          width="1024"
+          height="1024"
+          alt="Be Certified Today — Practice Like Test Day. Walk In Ready"
+        />
         <span>Be Certified Today</span>
       </a>
       <nav class="header-nav" aria-label="Site">
-        <a href="/">Home</a>
         <a href="/about.html" aria-current="page">About</a>
         <a href="/how-we-verify-questions.html">Always verified Questions</a>
         <a href="/verified-learner-discounts.html">Verified discounts</a>
       </nav>
     </header>
 
-    <figure class="hero-banner">
-      <img
-        src="/images/about-header-classroom.jpg"
-        width="1024"
-        height="699"
-        alt="Student smiling while working at a computer in a modern classroom lab."
-        decoding="async"
-        fetchpriority="high"
-      />
-    </figure>
-
     <main id="main">
+      <figure class="hero-banner" id="hero-banner">
+        <video
+          id="hero-intro-video"
+          class="hero-banner__video"
+          src="/videos/bct-intro.mp4"
+          poster="/images/logo/becertifiedtoday_logo_v2_white.png"
+          aria-label="Welcome to Be Certified Today — exam prep in your browser"
+          playsinline
+          muted
+          disablepictureinpicture
+          controlslist="nodownload nofullscreen noremoteplayback"
+          preload="auto"
+          tabindex="-1"
+        ></video>
+      </figure>
       <div class="page-intro">
         <p class="tagline">Practice Like Test Day. Walk In Ready.</p>
         <h1>About Be Certified Today</h1>
@@ -479,7 +511,7 @@
 
       <section class="section-band section-band--dark" aria-labelledby="why-built-title">
         <div class="section-inner prose-narrow">
-          <h2 id="why-built-title">Why I built this</h2>
+          <h2 id="why-built-title">Why I Built This</h2>
           <p>
             Most exam prep still asks you to choose between the wrong options: a static PDF or memorization file for
             <strong>$50–$100</strong>, a desktop simulator you have to install, or a <strong>$300+ course</strong> when you
@@ -492,43 +524,43 @@
           </p>
           <p>
             That is true for CCNA, CCNP ENCOR, and CompTIA Security+. Same promise:
-            <strong>exam-realistic practice, verified answers, one clear payment for a defined access period.</strong>
+            <strong>exam-realistic practice, verified answers, and one clear payment for a defined access period.</strong>
           </p>
         </div>
       </section>
 
       <section class="section-band section-band--light" aria-labelledby="different-title">
         <div class="section-inner">
-          <h2 id="different-title">What makes Be Certified Today different</h2>
+          <h2 id="different-title">What Makes Be Certified Today Different</h2>
           <p class="section-lead">
             Browser-based practice built for exam day—not static PDFs, course videos, or desktop-only simulators.
           </p>
           <ul class="diff-grid">
           <li class="diff-card">
-            <h3>Interactive certification-style scenarios online</h3>
+            <h3>Interactive, Certification-Style Scenarios Online</h3>
             <p>
-              Performance-based items are not flat screenshots in a PDF. On Security+, chain labs, drag-and-drop, and IR
+              Performance-based items are not flat screenshots in a PDF. On Security+, chain labs, drag-and-drop, and incident response
               scenarios run in the browser with the same interaction model as full access. On CCNA and ENCOR, you get timed
               runs, drag-and-drop, and CLI labs in the browser—no GNS3, no Packet Tracer install.
             </p>
           </li>
           <li class="diff-card">
-            <h3>Adaptive prep that pushes what needs work</h3>
+            <h3>Adaptive Prep That Prioritizes What Needs Work</h3>
             <p>
-              Review modes prioritize weak areas. Miss a question in review mode and it shuffles to the end of the queue so
+              Review modes target your weak areas. Miss a question in review mode, and it shuffles to the end of the queue so
               you try again before you walk in. Run a random full-bank session or a focused review—your choice, same engine.
             </p>
           </li>
           <li class="diff-card">
-            <h3>Timed online simulation</h3>
+            <h3>Timed Online Simulation</h3>
             <p>
-              A timed exam-style run with mixed item types and certification-style pacing, not flipping
+              A timed exam-style run with mixed item types and certification-style pacing, rather than flipping
               through a static file and hoping you are ready. Security+ includes a 90-minute simulation; CCNA uses a 120-minute timed
-              run aligned to exam length.
+              run aligned to the exam length.
             </p>
           </li>
           <li class="diff-card">
-            <h3>A focused sprint, not a course</h3>
+            <h3>A Focused Sprint, Not a Course</h3>
             <p>
               Instead of buying a stale PDF for $99.99, unlock full access for a defined 30-day study window. One payment.
               No membership. That includes 1,000+ current-version
@@ -536,20 +568,20 @@
             </p>
           </li>
           <li class="diff-card">
-            <h3>Mobile-friendly practice</h3>
+            <h3>Mobile-Friendly Practice</h3>
             <p>
               Many of you study between shifts, on a commute, or at the kitchen table on a phone. MCQ and scenario practice
               works on phone, tablet, and desktop—not desktop-only legacy sims.
             </p>
           </li>
           <li class="diff-card">
-            <h3>Answers I verify—not forum votes</h3>
+            <h3>Answers I Verify—Not Forum Votes</h3>
             <p>
               Keys and explanations are checked against official Cisco and CompTIA sources, not forum votes or recall threads.
             </p>
           </li>
           <li class="diff-card">
-            <h3>Try before you pay</h3>
+            <h3>Try Before You Pay</h3>
             <p>
               Each exam landing page includes previews that use the same UI and testing engine as paid access.
               Judge quality on the track page before checkout.
@@ -561,14 +593,14 @@
 
       <section class="section-band section-band--dark" aria-labelledby="audience-title">
         <div class="section-inner">
-          <h2 id="audience-title">Who this is for</h2>
-          <p class="section-lead">Built for people who already studied and need realistic, timed practice before test day.</p>
+          <h2 id="audience-title">Who This Is For</h2>
+          <p class="section-lead">Built for people who have already studied and need realistic, timed practice before test day.</p>
           <div class="audience-grid">
             <article class="audience-card">
               <h3>This is for you if…</h3>
               <ul class="audience-list">
                 <li>
-                  You have already studied, want a focused readiness check, and you are asking:
+                  You have already studied, want a focused readiness check, and are asking:
                   <em>Am I ready?</em>
                 </li>
                 <li>
@@ -576,7 +608,7 @@
                   role, government mandate, job posting—and you need realistic prep, not another bootcamp.
                 </li>
                 <li>
-                  You were burned by a static PDF or a random question bank with no review loop and want interactive, timed, adaptive
+                  You were burned by a static PDF or a random question bank with no review loop and want interactive, timed, and adaptive
                   practice instead.
                 </li>
               </ul>
@@ -584,9 +616,9 @@
             <article class="audience-card audience-card--muted">
               <h3 id="not-for-title">This is not for you if…</h3>
               <ul class="audience-list">
-                <li>Shoppers optimizing for “most questions per dollar” in a printable file.</li>
+                <li>You are a shopper optimizing for “most questions per dollar” in a printable file.</li>
                 <li>
-                  People starting from zero who need an instructor-led video course—we are practice and readiness, not a replacement
+                  You are starting from zero and need an instructor-led video course—we provide practice and readiness, not a replacement
                   for learning the material the first time.
                 </li>
               </ul>
@@ -597,20 +629,24 @@
 
       <section class="section-band section-band--light" aria-labelledby="exams-title">
         <div class="section-inner">
-          <h2 id="exams-title">Certifications on the site</h2>
-          <p class="section-lead">Three tracks—same portal experience, same timed simulation and adaptive review model.</p>
+          <h2 id="exams-title">Certifications on the Site</h2>
+          <p class="section-lead">Four tracks—same portal experience, same timed simulation and adaptive review model.</p>
           <div class="exam-table-wrap">
           <table>
             <thead>
               <tr>
                 <th scope="col">Exam</th>
-                <th scope="col">What you practice</th>
+                <th scope="col">What You Practice</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">CCNA 200-301</th>
                 <td>Timed sim, drag-and-drop, browser CLI labs, 700+ questions, V_2025 &amp; V_2026</td>
+              </tr>
+              <tr>
+                <th scope="row">CCNA Automation 200-901</th>
+                <td><em>Coming soon</em> — Practice tests, drag-and-drop, and API labs</td>
               </tr>
               <tr>
                 <th scope="row">CCNP ENCOR 350-401</th>
@@ -628,13 +664,14 @@
 
       <section class="section-band section-band--light" aria-labelledby="promise-title">
         <div class="section-inner">
-          <h2 id="promise-title">What I promise</h2>
-          <p class="section-lead">Six commitments every track on the site is built around.</p>
+          <h2 id="promise-title">What I Promise</h2>
+          <p class="section-lead">Seven commitments every track on the site is built around.</p>
           <ol class="promise-grid">
             <li><strong>Material aligned to current objectives</strong> — not last year’s PDF.</li>
-            <li><strong>Practice that behaves like test day</strong> — interactive, timed, mixed item types.</li>
+            <li><strong>Practice that behaves like test day</strong> — interactive, timed, and mixed item types.</li>
             <li><strong>Adaptive review</strong> — weak areas and missed questions get another turn.</li>
             <li><strong>Clear pricing</strong> — one-time 30-day access; no subscription nag.</li>
+            <li><strong>No personal data tracking</strong> — we never sell or collect your email; our vendor handles the checkout receipt.</li>
             <li><strong>A quiet portal</strong> — no third-party ads inside the study library.</li>
             <li><strong>Confidence when it counts</strong> — walk in prepared, not guessing.</li>
           </ol>
@@ -643,8 +680,8 @@
 
       <section class="cta-block" aria-labelledby="cta-title">
         <div class="section-inner">
-          <h2 id="cta-title">Choose the exam track you are preparing for.</h2>
-          <p>Each landing page has the previews, pricing, and access path for that exam.</p>
+          <h2 id="cta-title">Choose the Exam Track You Are Preparing For</h2>
+          <p>Each landing page has previews, pricing, and the access path for that exam.</p>
           <div class="cta-links">
             <a href="/ccna-home.html">CCNA exam prep</a>
             <a href="/ccnp-home.html">CCNP ENCOR prep</a>
@@ -672,6 +709,8 @@
       <a class="footer-mailto" href="#ask" aria-label="Ask a question">Ask a question</a>
     </footer>
   </div>
+  <script src="/js/site-welcome-video.js"></script>
+  <script src="/js/index-hero-intro.js"></script>
   <script src="/js/visitor-question-widget.js" defer></script>
 </body>
 </html>
