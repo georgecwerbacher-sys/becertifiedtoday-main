@@ -97,6 +97,19 @@
     ensurePbqTimer(session, index);
     var meta = pbqMetaFromPage(session, index);
     var result = readPbqResultFromDom();
+    
+    // Auto-check if the user didn't explicitly check their answer yet
+    if (!result.checked) {
+      var checkBtns = document.querySelectorAll(".actions button");
+      for (var i = 0; i < checkBtns.length; i++) {
+        if (checkBtns[i].textContent.indexOf("Check") !== -1) {
+          checkBtns[i].click();
+          break;
+        }
+      }
+      result = readPbqResultFromDom();
+    }
+
     var elapsed = Math.max(0, Date.now() - (session.currentPbqStartedAt || Date.now()));
     if (!Array.isArray(session[SCORES_KEY])) session[SCORES_KEY] = [];
     session[SCORES_KEY][index] = {
