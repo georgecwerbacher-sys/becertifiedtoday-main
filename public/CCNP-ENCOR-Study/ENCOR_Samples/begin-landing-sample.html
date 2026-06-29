@@ -18,11 +18,23 @@
       background: #ffffff;
       color: #b8c3d6;
       font-family: system-ui, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      color: #0b1020;
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+    }
+    p {
+      margin: 0;
     }
   </style>
 </head>
 <body>
-  <p>Loading sample…</p>
+  <main>
+    <h1>Loading CCNP ENCOR sample</h1>
+    <p>Starting your free practice sample...</p>
+  </main>
   <script>
     (function () {
       var track = (new URLSearchParams(location.search).get("track") || "questions").toLowerCase();
