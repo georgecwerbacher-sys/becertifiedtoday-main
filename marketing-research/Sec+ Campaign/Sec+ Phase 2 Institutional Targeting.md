@@ -295,6 +295,5 @@ Pull from `/how-we-verify-questions.html`:
 ## Related
 
 - [[Sec+ Positioning]] — updated voice
-- [[Sec+ Phase 1 Action Plan]] — Phase 1 ops unchanged
-- [[Sec+ Phase 1 Purpose]] — budget rules until stable
+- [[Sec+ One-Campaign Ad Group Plan]] — current Google Ads structure
 - [[README|← Sec+ Campaign folder]]

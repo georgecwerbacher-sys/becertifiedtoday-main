@@ -36,10 +36,10 @@ Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
 Use these pins in each of the three ad groups, with final URLs from [[Sec+ One-Campaign Ad Group Plan#Final URLs]].
 
-| Pin | Headline | Chars |
-|-----|----------|-------|
-| **H1** | `SY0-701 Exam Prep Online` | 24 |
-| **H2** | `Timed 90-Min Exam Sim` | 21 |
+| Pin    | Headline                   | Chars |
+| ------ | -------------------------- | ----- |
+| **H1** | `SY0-701 Exam Prep Online` | 24    |
+| **H2** | `Timed 90-Min Exam Sim`    | 21    |
 
 ### All 15 headlines — Phase 2 set (exam prep lead)
 
@@ -61,23 +61,23 @@ Study Phone, Tablet, Desktop
 Interactive Exam Simulation
 ```
 
-| # | Headline | Chars | Notes |
-|---|----------|-------|-------|
-| 1 | SY0-701 Exam Prep Online | 24 | Pin H1 Phase 2 |
-| 2 | Timed 90-Min Exam Sim | 21 | Pin H2 |
-| 3 | Am I Ready? · Scorecard | 22 | Primary job |
-| 4 | 1000+ Verified SY0-701 Qs | 25 | Bank + verify |
-| 5 | Blueprint-Verified Bank | 23 | Trust |
-| 6 | 90-Min Timed Exam + Scorecard | 29 | Sim proof |
-| 7 | 30-Day Access · $19.99 | 22 | Price in pool |
-| 8 | Adaptive Review Modes | 21 | |
-| 9 | DoD 8140-Aligned Prep | 21 | Federal/military intent |
-| 10 | Cert Required for Job | 21 | Work-required |
-| 11 | Not a PDF · Browser Prep | 24 | Anti-dump |
-| 12 | 34 PBQ Scenarios Included | 27 | PBQ as included feature |
-| 13 | Detailed Domain Scorecard | 25 | |
-| 14 | Study Phone, Tablet, Desktop | 28 | Military/mobile |
-| 15 | Interactive Exam Simulation | 27 | |
+| #   | Headline                      | Chars | Notes                   |
+| --- | ----------------------------- | ----- | ----------------------- |
+| 1   | SY0-701 Exam Prep Online      | 24    | Pin H1 Phase 2          |
+| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                  |
+| 3   | Am I Ready? · Scorecard       | 22    | Primary job             |
+| 4   | 1000+ Verified SY0-701 Qs     | 25    | Bank + verify           |
+| 5   | Blueprint-Verified Bank       | 23    | Trust                   |
+| 6   | 90-Min Timed Exam + Scorecard | 29    | Sim proof               |
+| 7   | 30-Day Access · $19.99        | 22    | Price in pool           |
+| 8   | Adaptive Review Modes         | 21    |                         |
+| 9   | DoD 8140-Aligned Prep         | 21    | Federal/military intent |
+| 10  | Cert Required for Job         | 21    | Work-required           |
+| 11  | Not a PDF · Browser Prep      | 24    | Anti-dump               |
+| 12  | 34 PBQ Scenarios Included     | 27    | PBQ as included feature |
+| 13  | Detailed Domain Scorecard     | 25    |                         |
+| 14  | Study Phone, Tablet, Desktop  | 28    | Military/mobile         |
+| 15  | Interactive Exam Simulation   | 27    |                         |
 
 ### Descriptions — Phase 2 (≤90 chars)
 
@@ -161,16 +161,16 @@ Adaptive Review Modes
 
 RSA must align with [[Sec+ Positioning#Product proof (checklist for landing + RSA)|product proof]] and cert home:
 
-- [ ] **Exam prep lead** — 1000+ questions + timed sim + adaptive review (not “free samples” or PBQ-only)
-- [ ] **Verification** — blueprint / verified bank language where space allows
-- [ ] **34 PBQs** — included feature, not sole headline
-- [ ] **Browser / no download** — not desktop sim install
-- [ ] **$19.99 / 30-day** pricing matches landing (Google paid path)
-- [ ] **No verified learner discount** in RSA — separate organic URL (students, veterans, workforce, etc.)
-- [ ] **Course contrast** — last-mile after Messer/Dion, not bootcamp
-- [ ] **PDF/course contrast** — use only policy-safe “not another course / not a PDF” phrasing
-- [ ] **No policy-risk phrases** — no *walk in ready*, *like test day*, *real exam*
-- [ ] **No “free” in RSA** — samples on landing only; negate `free*` in Search
+- [x] **Exam prep lead** — 1000+ questions + timed sim + adaptive review (not “free samples” or PBQ-only)
+- [x] **Verification** — blueprint / verified bank language where space allows
+- [x] **34 PBQs** — included feature, not sole headline
+- [x] **Browser / no download** — not desktop sim install
+- [x] **$19.99 / 30-day** pricing matches landing (Google paid path)
+- [x] **No verified learner discount** in RSA — separate organic URL (students, veterans, workforce, etc.)
+- [x] **Course contrast** — last-mile after Messer/Dion, not bootcamp
+- [x] **PDF/course contrast** — use only policy-safe “not another course / not a PDF” phrasing
+- [x] **No policy-risk phrases** — no *walk in ready*, *like test day*, *real exam*
+- [x] **No “free” in RSA** — samples on landing only; negate `free*` in Search
 
 ---
 

@@ -494,8 +494,6 @@ Copy the table above; add **Vol/mo · Comp · Add?** columns in Sheets.
 
 Regenerate checklist: `npm run sync:secplus-checklist` · paste **Negatives** rows marked `pending` in [[secplus-keywords.csv]] · **remove** the three practice-questions **positives** in Google Ads UI.
 
-**Admin tracker:** after repo sync, check **Keyword CSV synced** + **Negatives added** on [Day 3 in /admin/#section-campaign-plan](https://becertifiedtoday.com/admin/#section-campaign-plan) · setup step **Generic practice-questions tier removed** under Ad group phase.
-
 ---
 
 ## Keyword change log (tracker notes)

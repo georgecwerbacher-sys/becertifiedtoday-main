@@ -94,6 +94,17 @@
     "ansible-ios-vlan-trunk-effects-choose-two",
     "mvc-design-pattern-advantages-choose-two",
     "ios-xe-model-driven-programmability-gnmi",
+    "tdd-first-task-failing-test",
+    "yang-infrastructure-automation-advantages-choose-two",
+    "version-control-merge-conflict-resolution",
+    "git-checkout-new-bugfix-branch",
+    "dns-directory-lookup-ip-hostnames",
+    "client-server-subnet-separation-reasons-choose-two",
+    "router-transports-between-broadcast-domains",
+    "yang-union-ippeer-single-address-value",
+    "ansible-ios-startup-config-backup-show-conf",
+    "rest-api-401-requires-authentication",
+    "icmp-time-exceeded-routing-loop",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;

@@ -27,8 +27,6 @@
  * @property {string} setupDocTxt
  * @property {string[]} sampleTracks
  * @property {string} [adsDashboardUrl]
- * @property {boolean} [trackInAdmin] — show on /admin campaign tracker (default false)
- * @property {number} [projectionWindowDays] — budget projection horizon (default 21)
  */
 
 /** @type {CampaignMarketingDefinition[]} */
@@ -155,8 +153,6 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl:
       "https://ads.google.com/aw/overview?ocid=8235244277&euid=277397985&__u=6466314265&uscid=8235244277&__c=3900876173&authuser=0&workspaceId=0&subid=us-en-awhp-g-aw-c-home-signin-bgc!o2-aluminum%7Cib:2387565277%7Cib:8016481541%7Cib:6079319977%7C-ahpm-0000000209-0000000001%7C-ahpm-0000000179-0000000001",
-    trackInAdmin: true,
-    projectionWindowDays: 21,
   },
   {
     id: "secplus_wedge_pbq_reddit",
@@ -212,13 +208,6 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
 
 export function getCampaignMarketingRegistry() {
   return CAMPAIGN_MARKETING_REGISTRY.map((c) => ({ ...c }));
-}
-
-/** Campaigns shown on /admin (trackInAdmin: true). */
-export function getAdminTrackedCampaignRegistry() {
-  return CAMPAIGN_MARKETING_REGISTRY.filter((c) => c.trackInAdmin === true).map((c) => ({
-    ...c,
-  }));
 }
 
 /** Ad landing paths monitored on /admin (exact GA4 pagePath). */

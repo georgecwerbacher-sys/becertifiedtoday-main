@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - IOS XE model-driven programmability protocol | Be Certified Today</title>
+  <title>CCNAAUTO - Start a new Git bug fix branch | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,25 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mvc-design-pattern-advantages-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/version-control-merge-conflict-resolution.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-first-task-failing-test.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dns-directory-lookup-ip-hostnames.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which model-driven programmability protocol does Cisco IOS XE Software support?</h1>
+    <h1>How is a branch called "my-bug-fix" started to develop a fix needed in a product?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="A" />A. CORBA</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="B" />B. SSH</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="C" />C. gNMI</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="D" />D. SOAP</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q86" value="A" />A. <code>git branch -b my-bug-fix</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q86" value="B" />B. <code>git checkout -b my-bug-fix</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q86" value="C" />C. <code>git checkout my-bug-fix</code></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q86" value="D" />D. <code>git branch my-bug-fix</code></label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 Model-driven programmability interfaces</span>
+          <span class="question-topic-meta__subject">1.7 Version control systems</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +151,9 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
+      var CORRECT = "B";
       var CORRECT_MSG =
-        "Correct. C - Cisco IOS XE Software supports gNMI, the gRPC Network Management Interface, for model-driven configuration and retrieval of operational data.";
+        "Correct. B - The command git checkout -b my-bug-fix creates a new branch and checks it out in one step so development can begin on that branch.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +163,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q82"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q86"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +180,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q82"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q86"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

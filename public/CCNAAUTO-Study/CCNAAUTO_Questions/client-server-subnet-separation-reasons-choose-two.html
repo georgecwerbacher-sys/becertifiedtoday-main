@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - IOS XE model-driven programmability protocol | Be Certified Today</title>
+  <title>CCNAAUTO - Client and server subnet separation | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,25 +120,26 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mvc-design-pattern-advantages-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dns-directory-lookup-ip-hostnames.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-first-task-failing-test.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/router-transports-between-broadcast-domains.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which model-driven programmability protocol does Cisco IOS XE Software support?</h1>
+    <h1>A small company has 5 servers and 50 clients. What are two reasons an engineer should split this network into separate client and server subnets? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="A" />A. CORBA</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="B" />B. SSH</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="C" />C. gNMI</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="D" />D. SOAP</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q88" value="A" />A. Internet access to the servers will be denied on the router.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q88" value="B" />B. A router will limit the traffic types between the clients and servers.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q88" value="C" />C. Subnets will split domains to limit failures.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q88" value="D" />D. A router will bridge the traffic between clients and servers.</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q88" value="E" />E. Subnets provide more IP address space for clients and servers.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 Model-driven programmability interfaces</span>
+          <span class="question-topic-meta__subject">6.2 / 6.4 Subnet segmentation</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,26 +152,41 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
+      var CORRECT = ["B", "C"];
       var CORRECT_MSG =
-        "Correct. C - Cisco IOS XE Software supports gNMI, the gRPC Network Management Interface, for model-driven configuration and retrieval of operational data.";
+        "Correct. B and C - Separate client and server subnets create routed boundaries where traffic can be controlled, and segmentation limits the scope of broadcast or failure domains. Routers route rather than bridge between subnets, and subnetting does not inherently deny Internet access or create more total address space.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {
+        return Array.prototype.slice
+          .call(document.querySelectorAll('input[name="ccnaauto_q88"]:checked'))
+          .map(function (input) {
+            return input.value;
+          })
+          .sort();
+      }
+
+      function isCorrect(values) {
+        return values.length === CORRECT.length && values.every(function (value, idx) {
+          return value === CORRECT[idx];
+        });
+      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q82"]:checked');
+        var values = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (!values.length) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Select two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (isCorrect(values)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -180,8 +196,9 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q82"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        document.querySelectorAll('input[name="ccnaauto_q88"]').forEach(function (input) {
+          input.checked = CORRECT.indexOf(input.value) !== -1;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

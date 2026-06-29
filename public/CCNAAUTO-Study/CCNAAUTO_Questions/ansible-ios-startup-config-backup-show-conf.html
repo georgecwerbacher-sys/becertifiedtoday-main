@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - IOS XE model-driven programmability protocol | Be Certified Today</title>
+  <title>CCNAAUTO - Ansible IOS startup config backup | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -26,7 +27,7 @@
       box-sizing: border-box;
     }
     .card {
-      width: min(900px, 100%);
+      width: min(980px, 100%);
       background: transparent;
       border: 0;
       padding: 0;
@@ -37,6 +38,9 @@
       font-size: clamp(1.05rem, 2vw, 1.5rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
+    }
+    .ccnaauto-code-exhibit {
+      margin-bottom: 18px;
     }
     .choice {
       display: block;
@@ -120,25 +124,57 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mvc-design-pattern-advantages-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/yang-union-ippeer-single-address-value.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-first-task-failing-test.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/rest-api-401-requires-authentication.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which model-driven programmability protocol does Cisco IOS XE Software support?</h1>
+    <h1>Refer to the exhibit. What is the result of executing this Ansible playbook?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="A" />A. CORBA</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="B" />B. SSH</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="C" />C. gNMI</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="D" />D. SOAP</label>
+    <figure class="ccnaauto-code-exhibit" aria-label="Ansible startup configuration backup exhibit">
+      <p class="ccnaauto-code-exhibit__label">Exhibit · Ansible playbook</p>
+      <div class="ccnaauto-code-window">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--yaml"><code>---
+- hosts: CISCO_ROUTER_01
+  gather_facts: true
+  connection: network_cli
+
+  tasks:
+    - name: show conf
+      ios_command:
+        commands:
+          - show conf
+      register: config
+
+    - name: save output to /etc/ansible/configs
+      copy:
+        content: "{{ config.stdout[0] }}"
+        dest: "/etc/ansible/configs/show_conf_{{ inventory_hostname }}.txt"</code></pre>
+        </div>
+      </div>
+    </figure>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q91" value="A" />A. The playbook copies a new start-up configuration to CISCO_ROUTER_01.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q91" value="B" />B. The playbook backs up the running configuration of CISCO_ROUTER_01.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q91" value="C" />C. The playbook backs up the start-up configuration of CISCO_ROUTER_01.</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q91" value="D" />D. The playbook copies a new running configuration to CISCO_ROUTER_01.</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 Model-driven programmability interfaces</span>
+          <span class="question-topic-meta__subject">5.8 Ansible playbook workflow</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -153,7 +189,7 @@
     (function () {
       var CORRECT = "C";
       var CORRECT_MSG =
-        "Correct. C - Cisco IOS XE Software supports gNMI, the gRPC Network Management Interface, for model-driven configuration and retrieval of operational data.";
+        "Correct. C - The ios_command task runs show conf and registers the output. The copy task writes that captured output to a local file on the Ansible control node, so the playbook backs up the startup configuration rather than pushing a new configuration to the router.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +199,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q82"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q91"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +216,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q82"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q91"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

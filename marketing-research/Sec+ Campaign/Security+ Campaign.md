@@ -77,12 +77,12 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 ## Pre-Launch Checks
 
-- [ ] Stripe `secplus-portal-30d` ($19.99) live
-- [ ] Checkout works on cert home (desktop + mobile)
-- [ ] GA4 `begin_checkout` fires for `secplus_portal_30d`
-- [ ] Campaign URL tested for each `utm_content`
-- [ ] Cert home loads: `/comptia-sec+-home.html`
-- [ ] Keyword split reviewed: [[Sec+ Keywords#One-campaign ad group keyword split]]
+- [x] Stripe `secplus-portal-30d` ($19.99) live
+- [x] Checkout works on cert home (desktop + mobile)
+- [x] GA4 `begin_checkout` fires for `secplus_portal_30d`
+- [x] Campaign URL tested for each `utm_content`
+- [x] Cert home loads: `/comptia-sec+-home.html`
+- [x] Keyword split reviewed: [[Sec+ Keywords#One-campaign ad group keyword split]]
 
 ---
 

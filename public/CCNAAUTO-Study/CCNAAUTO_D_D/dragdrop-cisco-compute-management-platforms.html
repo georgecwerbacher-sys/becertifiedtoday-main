@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - DNA Center path trace request order</title>
+  <title>CCNAAUTO - Cisco compute management platforms drag and drop</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -22,45 +22,40 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-http-status-codes-descriptions.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-dna-center-path-trace-request-order.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-cisco-compute-management-platforms.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the requests from the left into the correct order on the right to create and check the path trace between two devices using the Cisco DNA Center API.</h1>
+    <h1>Drag and drop the capability on the left onto the Cisco compute management platform that supports the capability on the right.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>Requests</h2>
+          <h2>Capabilities</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="get-devices"><code>GET /dna/intent/api/v1/network-device</code></div>
-            <div class="token" draggable="true" data-value="get-trace"><code>GET /dna/intent/api/v1/flow-analysis/{flowAnalysisId}</code></div>
-            <div class="token" draggable="true" data-value="auth-token"><code>POST /dna/system/api/v1/auth/token</code></div>
-            <div class="token" draggable="true" data-value="create-trace"><code>POST /dna/intent/api/v1/flow-analysis</code></div>
+            <div class="token" draggable="true" data-value="ucs-director">Multi-cloud automation and orchestration platform for Cisco and third-party servers, networks, storage, and converged infrastructure.</div>
+            <div class="token" draggable="true" data-value="intersight">Software as a Service platform that enables Cisco infrastructure management, automation, and orchestration from anywhere.</div>
+            <div class="token" draggable="true" data-value="ucs-manager">Embedded software that enables Cisco server, fabric, and storage provisioning.</div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Correct order</h2>
+          <h2>Cisco compute management platform</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">1. Authenticate and obtain an API token.</p>
-              <div class="drop-slot" data-accept="auth-token"></div>
+              <p class="match-desc">UCS Manager</p>
+              <div class="drop-slot" data-accept="ucs-manager"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">2. Retrieve device details or IP addresses used for the trace.</p>
-              <div class="drop-slot" data-accept="get-devices"></div>
+              <p class="match-desc">UCS Director</p>
+              <div class="drop-slot" data-accept="ucs-director"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">3. Initiate a new path trace with source and destination IP values.</p>
-              <div class="drop-slot" data-accept="create-trace"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">4. Check the path trace result using the returned flow analysis ID.</p>
-              <div class="drop-slot" data-accept="get-trace"></div>
+              <p class="match-desc">Intersight</p>
+              <div class="drop-slot" data-accept="intersight"></div>
             </div>
           </div>
         </div>
@@ -74,7 +69,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.2 Cisco network management APIs</span>
+      <span class="question-topic-meta__subject">3.3 Cisco compute management platforms</span>
     </p>
 
     </main>
@@ -113,10 +108,6 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
-      }
-      function accepts(slot, value) {
-        var allowed = String(slot.getAttribute("data-accept") || "").split("|");
-        return allowed.indexOf(value) !== -1;
       }
 
       (function shuffleBank() {
@@ -205,13 +196,13 @@
             allOk = false;
             return;
           }
-          var ok = accepts(slot, t.getAttribute("data-value"));
+          var ok = t.getAttribute("data-value") === slot.getAttribute("data-accept");
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
         result.textContent = allOk
-          ? "Correct. Authenticate first, gather device/IP details if needed, create the flow analysis, then poll the result by flowAnalysisId."
-          : "Incorrect. First get an auth token, then device/IP context, then create the path trace, then retrieve the result.";
+          ? "Correct. UCS Manager is embedded UCS management, UCS Director provides multi-cloud/data-center orchestration, and Intersight provides SaaS-based infrastructure management."
+          : "Incorrect. Match embedded UCS provisioning to UCS Manager, multi-cloud orchestration to UCS Director, and SaaS anywhere management to Intersight.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -221,7 +212,7 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-        var answers = ["auth-token", "get-devices", "create-trace", "get-trace"];
+        var answers = ["ucs-manager", "ucs-director", "intersight"];
         allSlots().forEach(function (slot, idx) {
           var tok = takeFromBank(answers[idx]);
           if (tok) {

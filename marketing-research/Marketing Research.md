@@ -9,7 +9,7 @@ tags:
 
 **Start here:** [[Site Mission]] — canonical positioning for becertifiedtoday.com
 
-**Live campaign:** [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Google Search · **$15/day** · Phase 1 purpose: [[Sec+ Campaign/Sec+ Phase 1 Purpose|Sec+ Phase 1 Purpose]]
+**Live campaign:** [[Sec+ Campaign/README|Sec+ Campaign]] — Security+ Google Search setup · **$25/day** shared budget · one campaign with three ad groups
 
 Hub for the active ad campaign, competitor intel, and weekly analytics.
 
@@ -45,12 +45,6 @@ npm run sync:secplus-checklist
 # Competitor question polls
 npm run secplus:monthly
 ```
-
-## Admin tracker
-
-[/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns) — GA4 paid sessions, landing funnel, `begin_checkout`, 21-day budget projection, Stripe Sec+ purchases.
-
-Registry: `server-lib/campaign-marketing-registry.js` → id **`secplus_portal`**
 
 ## Obsidian vault
 

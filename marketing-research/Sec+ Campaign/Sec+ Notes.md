@@ -21,13 +21,13 @@ tags:
 
 ## 0. Before You Open Google Ads
 
-- [ ] Stripe $19.99 / 30-day product is live.
-- [ ] `/comptia-sec+-home.html` opens on desktop and phone.
-- [ ] Purchase button starts Stripe checkout.
-- [ ] GA4 `begin_checkout` fires from the purchase path.
-- [ ] GA4 `begin_checkout` is imported into Google Ads as a Primary conversion.
-- [ ] RSA copy reviewed against [[Sec+ Positioning]].
-- [ ] Keyword split reviewed in [[Sec+ Keywords#One-campaign ad group keyword split]].
+- [x] Stripe $19.99 / 30-day product is live.
+- [x] `/comptia-sec+-home.html` opens on desktop and phone.
+- [x] Purchase button starts Stripe checkout.
+- [x] GA4 `begin_checkout` fires from the purchase path.
+- [x] GA4 `begin_checkout` is imported into Google Ads as a Primary conversion.
+- [x] RSA copy reviewed against [[Sec+ Positioning]].
+- [x] Keyword split reviewed in [[Sec+ Keywords#One-campaign ad group keyword split]].
 
 ---
 

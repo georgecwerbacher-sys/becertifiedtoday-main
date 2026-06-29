@@ -5,7 +5,8 @@ date: 2026-06-27
 subject: study material blueprint verification
 source_page: https://becertifiedtoday.com/how-we-verify-questions.html
 ---
-
+posted on 
+6/27/2025\
 # Check your study materials against the current exam blueprint before you trust them
 
 I have been going through a large Security+ question bank and checking it against the current SY0-701 objectives.

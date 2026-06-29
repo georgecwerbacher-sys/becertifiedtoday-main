@@ -28,11 +28,11 @@ Reference docs: [[Sec+ One-Campaign Ad Group Plan]] · [[Sec+ Notes]] · [[Sec+ 
 
 ## 0. Before Opening Google Ads
 
-- [ ] Confirm Stripe product is live: `secplus-portal-30d` at **$19.99 / 30 days**
-- [ ] Open cert home on desktop and phone: `/comptia-sec+-home.html`
-- [ ] Confirm purchase button starts Stripe checkout
-- [ ] Confirm GA4 `begin_checkout` is imported as **Primary** in Google Ads
-- [ ] Keep old `secplus_portal` history; do **not** delete it
+- [x] Confirm Stripe product is live: `secplus-portal-30d` at **$19.99 / 30 days**
+- [x] Open cert home on desktop and phone: `/comptia-sec+-home.html`
+- [x] Confirm purchase button starts Stripe checkout
+- [x] Confirm GA4 `begin_checkout` is imported as **Primary** in Google Ads
+- [x] Keep old `secplus_portal` history; do **not** delete it
 
 ---
 
@@ -61,39 +61,39 @@ Reference docs: [[Sec+ One-Campaign Ad Group Plan]] · [[Sec+ Notes]] · [[Sec+ 
 
 ### Ad Group 1 — Core Exam Prep
 
-- [ ] Ad group name: `Core Exam Prep`
-- [ ] Display path: `Security+` / `Exam-Prep`
-- [ ] Final URL:
+- [x] Ad group name: `Core Exam Prep`
+- [x] Display path: `Security+` / `Exam-Prep`
+- [x] Final URL:
 
 ```text
 https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=core-exam-prep
 ```
 
-- [ ] Paste keywords from [[Sec+ Keywords#Ad group 1 — `Core Exam Prep`]]
+- [x] Paste keywords from [[Sec+ Keywords#Ad group 1 — `Core Exam Prep`]]
 
 ### Ad Group 2 — Military Gov 8140
 
-- [ ] Ad group name: `Military Gov 8140`
-- [ ] Display path: `Security+` / `DoD-8140`
-- [ ] Final URL:
+- [x] Ad group name: `Military Gov 8140`
+- [x] Display path: `Security+` / `DoD-8140`
+- [x] Final URL:
 
 ```text
 https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=mil-gov-8140
 ```
 
-- [ ] Paste keywords from [[Sec+ Keywords#Ad group 2 — `Military Gov 8140`]]
+- [x] Paste keywords from [[Sec+ Keywords#Ad group 2 — `Military Gov 8140`]]
 
 ### Ad Group 3 — Student Workforce
 
-- [ ] Ad group name: `Student Workforce`
-- [ ] Display path: `Security+` / `Career-Prep`
-- [ ] Final URL:
+- [x] Ad group name: `Student Workforce`
+- [x] Display path: `Security+` / `Career-Prep`
+- [x] Final URL:
 
 ```text
 https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=student-workforce
 ```
 
-- [ ] Paste keywords from [[Sec+ Keywords#Ad group 3 — `Student Workforce`]]
+- [x] Paste keywords from [[Sec+ Keywords#Ad group 3 — `Student Workforce`]]
 
 ---
 
@@ -103,8 +103,8 @@ Use [[Sec+ RSA Copy]]. Create one responsive search ad in each ad group.
 
 Pin:
 
-- [ ] H1: `SY0-701 Exam Prep Online`
-- [ ] H2: `Timed 90-Min Exam Sim`
+- [x] H1: `SY0-701 Exam Prep Online`
+- [x] H2: `Timed 90-Min Exam Sim`
 
 Keep other headlines and descriptions unpinned during week 1.
 

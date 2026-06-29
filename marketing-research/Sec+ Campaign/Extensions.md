@@ -25,14 +25,14 @@ Base UTM: `utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal`. Use `u
 
 ## Sitelinks (6) — Live Phase 1
 
-| # | Link text | Description 1 | Description 2 | URL |
-|---|-----------|---------------|---------------|-----|
-| 1 | 30-Day Access · $19.99 | Full exam prep + timed sim | One payment, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase` |
-| 2 | 1000+ SY0-701 Questions | Blueprint-verified bank | Adaptive review modes | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-bank#purchase` |
-| 3 | Timed 90-Min Sim | Mixed MCQ and PBQ run | Domain scorecard included | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim#purchase` |
-| 4 | Preview Sample Prep | MCQ + 3 PBQ scenarios | Same UI as full access | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples#home-secplus-samples-title` |
-| 5 | DoD 8140 Exam Prep | Work-required SY0-701 | Timed sim + verified bank | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-dod#purchase` |
-| 6 | Scorecard & Review | Timed sim + weak domains | Adaptive review modes | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard#purchase` |
+| #   | Link text               | Description 1              | Description 2                | URL                                                                                                                                                                        |
+| --- | ----------------------- | -------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | 30-Day Access · $19.99  | Full exam prep + timed sim | One payment, no subscription | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-30d#purchase`                       |
+| 2   | 1000+ SY0-701 Questions | Blueprint-verified bank    | Adaptive review modes        | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-bank#purchase`                      |
+| 3   | Timed 90-Min Sim        | Mixed MCQ and PBQ run      | Domain scorecard included    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-sim#purchase`                       |
+| 4   | Preview Sample Prep     | MCQ + 3 PBQ scenarios      | Same UI as full access       | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-samples#home-secplus-samples-title` |
+| 5   | DoD 8140 Exam Prep      | Work-required SY0-701      | Timed sim + verified bank    | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-dod#purchase`                       |
+| 6   | Scorecard & Review      | Timed sim + weak domains   | Adaptive review modes        | `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=sitelink-scorecard#purchase`                 |
 
 ---
 

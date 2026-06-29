@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Webex membership update Python fill-in</title>
+  <title>CCNAAUTO - Bash rename files to SHA256 hash fill-in</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
@@ -43,7 +43,7 @@
       line-height: 1.5;
     }
     .code-select {
-      min-width: 12ch;
+      min-width: 13ch;
       max-width: 100%;
       padding: 4px 8px;
       border: 1px solid #82b1ff;
@@ -52,6 +52,9 @@
       color: #e8eef7;
       font: inherit;
       font-weight: 800;
+    }
+    .code-select--wide {
+      min-width: min(42ch, 100%);
     }
     .code-select:focus {
       outline: 2px solid rgba(130, 177, 255, 0.7);
@@ -125,16 +128,16 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-meraki-network-clients-python.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/webex-membership-update-python-fill.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/bash-rename-files-sha256-hash-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Next</a>
       </div>
     </nav>
 
-    <h1>Fill in the blanks to complete the Python script to update the Webex Teams membership of a room using the Python requests library.</h1>
-    <p class="sub">Choose the correct value for each blank in the transcribed exhibit.</p>
+    <h1>Fill in the blanks to complete the Bash script in which each file in a directory is renamed to its SHA256 hash.</h1>
+    <p class="sub">Choose the correct Bash token or expression for each blank in the transcribed exhibit.</p>
 
-    <div class="ccnaauto-code-window" aria-label="Webex membership update Python script exhibit">
+    <div class="ccnaauto-code-window" aria-label="Bash SHA256 file rename script exhibit">
       <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
         <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
         <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
@@ -144,34 +147,29 @@
         <div class="ccnaauto-code-window__logo" aria-hidden="true">
           <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
         </div>
-        <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code>import requests
-url = "https://api.ciscospark.com/v1/memberships/Y2lzY29zcGFyazovL3VzL01FTUJFUlNISVA"
-payload = "{\"isModerator\": true}"
-headers = {
-  "Authorization": "Bearer ACCESS_TOKEN",
-  "Content-Type": "application/json"
-}
+        <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>TARGET_DIR=/usr/local/certs
 
-response = requests.<select id="requestBlank" class="code-select" aria-label="requests function">
+for f in <select id="filesBlank" class="code-select" aria-label="files to loop over">
   <option value="">select</option>
-  <option value="request">request</option>
-  <option value="get">get</option>
-  <option value="post">post</option>
-  <option value="json">json</option>
-</select>("PATCH", url, headers=<select id="headersBlank" class="code-select" aria-label="headers argument">
-  <option value="">select</option>
-  <option value="headers">headers</option>
-  <option value="payload">payload</option>
-  <option value="url">url</option>
-  <option value="requests">requests</option>
-</select>, data=<select id="payloadBlank" class="code-select" aria-label="data argument">
-  <option value="">select</option>
-  <option value="payload">payload</option>
-  <option value="headers">headers</option>
-  <option value="response">response</option>
-  <option value="url">url</option>
-</select>)
-print(response.text.encode("utf8"))</code></pre>
+  <option value="$TARGET_DIR/*">$TARGET_DIR/*</option>
+  <option value="$TARGET_DIR">$TARGET_DIR</option>
+  <option value="$f">$f</option>
+  <option value="/usr/local">/usr/local</option>
+</select>; do
+  <select id="commandBlank" class="code-select" aria-label="rename command">
+    <option value="">select</option>
+    <option value="mv">mv</option>
+    <option value="cp">cp</option>
+    <option value="ls">ls</option>
+    <option value="cat">cat</option>
+  </select> "$f" <select id="targetBlank" class="code-select code-select--wide" aria-label="destination filename">
+    <option value="">select</option>
+    <option value="$TARGET_DIR/$(openssl sha -sha256 -r &lt; &quot;$f&quot; | cut -f1 -d &quot; &quot;)">$TARGET_DIR/$(openssl sha -sha256 -r &lt; "$f" | cut -f1 -d " ")</option>
+    <option value="$(openssl sha -sha256 -r &lt; &quot;$TARGET_DIR&quot; | cut -f1 -d &quot; &quot;)">$(openssl sha -sha256 -r &lt; "$TARGET_DIR" | cut -f1 -d " ")</option>
+    <option value="$TARGET_DIR/$f">$TARGET_DIR/$f</option>
+    <option value="$f/$(openssl sha -sha256 -r &lt; &quot;$f&quot; | cut -f1 -d &quot; &quot;)">$f/$(openssl sha -sha256 -r &lt; "$f" | cut -f1 -d " ")</option>
+  </select>
+done</code></pre>
       </div>
     </div>
 
@@ -181,7 +179,7 @@ print(response.text.encode("utf8"))</code></pre>
         <button id="resetBtn" type="button" class="nav-reset">Reset</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.9.b Webex spaces and memberships</span>
+          <span class="question-topic-meta__subject">4.11 Bash scripts and commands</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -194,22 +192,23 @@ print(response.text.encode("utf8"))</code></pre>
 
   <script>
     (function () {
-      var requestBlank = document.getElementById("requestBlank");
-      var headersBlank = document.getElementById("headersBlank");
-      var payloadBlank = document.getElementById("payloadBlank");
+      var filesBlank = document.getElementById("filesBlank");
+      var commandBlank = document.getElementById("commandBlank");
+      var targetBlank = document.getElementById("targetBlank");
       var checkBtn = document.getElementById("checkBtn");
       var resetBtn = document.getElementById("resetBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+      var TARGET_VALUE = '$TARGET_DIR/$(openssl sha -sha256 -r < "$f" | cut -f1 -d " ")';
       var CORRECT_MSG =
-        "Correct. The generic requests.request() call uses the method string shown in the script, then passes the headers dictionary and payload data.";
+        "Correct. The loop visits every file under TARGET_DIR, mv renames each file, and the destination filename is built from the SHA256 hash produced by openssl and extracted with cut.";
 
       function isComplete() {
-        return requestBlank.value && headersBlank.value && payloadBlank.value;
+        return filesBlank.value && commandBlank.value && targetBlank.value;
       }
 
       function isCorrect() {
-        return requestBlank.value === "request" && headersBlank.value === "headers" && payloadBlank.value === "payload";
+        return filesBlank.value === "$TARGET_DIR/*" && commandBlank.value === "mv" && targetBlank.value === TARGET_VALUE;
       }
 
       checkBtn.addEventListener("click", function () {
@@ -225,23 +224,23 @@ print(response.text.encode("utf8"))</code></pre>
         } else {
           answerBox.className = "answer incorrect";
           answerBox.textContent =
-            "Incorrect. Use requests.request(), pass headers=headers, and send the body with data=payload.";
+            "Incorrect. Iterate over $TARGET_DIR/*, use mv, and build the destination filename from the SHA256 hash of each file.";
         }
       });
 
       resetBtn.addEventListener("click", function () {
-        requestBlank.value = "";
-        headersBlank.value = "";
-        payloadBlank.value = "";
+        filesBlank.value = "";
+        commandBlank.value = "";
+        targetBlank.value = "";
         answerBox.style.display = "none";
         answerBox.textContent = "";
         answerBox.className = "answer";
       });
 
       showBtn.addEventListener("click", function () {
-        requestBlank.value = "request";
-        headersBlank.value = "headers";
-        payloadBlank.value = "payload";
+        filesBlank.value = "$TARGET_DIR/*";
+        commandBlank.value = "mv";
+        targetBlank.value = TARGET_VALUE;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

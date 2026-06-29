@@ -49,15 +49,10 @@ tags:
 | Note | Purpose |
 |------|---------|
 | [[Sec+ Positioning\|Sec+ Positioning]] | Voice, proof points, free vs paid rules |
-| [[Sec+ Phase 1 Purpose\|Phase 1 purpose]] | Budget rules and stability gates |
-| [[Sec+ Phase 1 Scorecard\|Phase 1 scorecard]] | Numeric goals and cutback playbook |
-| [[Sec+ Phase 1 Action Plan\|Phase 1 action plan]] | Weekly operating rhythm |
 | [[Sec+ Phase 2 Institutional Targeting\|Phase 2 institutional]] | Future students, veterans, government, workforce targeting |
 | [[Sec+ CAE College Target List\|CAE college target list]] | Future school/campus targeting research |
 
 **Registry:** `server-lib/campaign-marketing-registry.js` → id **`secplus_portal`**
-
-**Admin tracker:** [/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns)
 
 **Promo spend:** [[Google Ads Spend Promo]] · [[google-ads-spend-promo-2026.csv]]
 

@@ -22,7 +22,6 @@ raw/                        — original filenames from Google export
 Downstream updates (2026-06-25)
 -------------------------------
   google-ads-spend-promo-2026.csv     — Jun 25 actuals ($24.58 · 12 clicks)
-  secplus-monthly-scorecard.csv       — June partial spend + avg CPC
   secplus-keywords.csv                — Clicks/Cost (2026-06-25) columns
   Sec+ Keywords.md                    — search-term review notes
 

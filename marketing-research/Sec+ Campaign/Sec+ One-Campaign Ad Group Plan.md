@@ -23,21 +23,21 @@ Related: [[Security+ Campaign]] · [[Sec+ Notes]] · [[Sec+ Keywords]] · [[Sec+
 
 ## Campaign Foundation
 
-| Setting | Value |
-|---------|-------|
-| Campaign name | `Security+ SY0-701 · US Search` |
-| Campaign type | Search only |
-| Daily budget | **$25/day shared** |
-| Budget allocation | Google determines spend split based on ad group output |
-| Bidding | Maximize clicks · max CPC **$2.75** to start |
-| Location | **United States only** |
-| Location option | **Presence** — people in or regularly in targeted locations |
-| Language | English |
-| Search partners | **Off** until data is stable |
-| Display Network | **Off** |
-| AI Max / URL expansion | **Off** |
-| Conversion | GA4 `begin_checkout` imported as Primary |
-| Campaign UTM | `utm_campaign=secplus_portal` |
+| Setting                | Value                                                       |
+| ---------------------- | ----------------------------------------------------------- |
+| Campaign name          | `Security+ SY0-701 · US Search`                             |
+| Campaign type          | Search only                                                 |
+| Daily budget           | **$25/day shared**                                          |
+| Budget allocation      | Google determines spend split based on ad group output      |
+| Bidding                | Maximize clicks · max CPC **$2.75** to start                |
+| Location               | **United States only**                                      |
+| Location option        | **Presence** — people in or regularly in targeted locations |
+| Language               | English                                                     |
+| Search partners        | **Off** until data is stable                                |
+| Display Network        | **Off**                                                     |
+| AI Max / URL expansion | **Off**                                                     |
+| Conversion             | GA4 `begin_checkout` imported as Primary                    |
+| Campaign UTM           | `utm_campaign=secplus_portal`                               |
 
 **Hold rule:** Do not change budget, max CPC, campaign structure, or RSA pins for the first **7 days** unless traffic is clearly irrelevant or checkout tracking is broken.
 
@@ -45,11 +45,11 @@ Related: [[Security+ Campaign]] · [[Sec+ Notes]] · [[Sec+ Keywords]] · [[Sec+
 
 ## Ad Group Structure
 
-| Ad group | Intent | `utm_content` | Display path |
-|----------|--------|---------------|--------------|
-| `Core Exam Prep` | Timed sim, readiness, adaptive review, no-PDF/browser prep | `core-exam-prep` | `Security+` / `Exam-Prep` |
-| `Military Gov 8140` | DoD 8140, federal, contractor, military, public-sector job requirement | `mil-gov-8140` | `Security+` / `DoD-8140` |
-| `Student Workforce` | Students, educators, veterans, workforce/job-placement programs | `student-workforce` | `Security+` / `Career-Prep` |
+| Ad group            | Intent                                                                 | `utm_content`       | Display path                |
+| ------------------- | ---------------------------------------------------------------------- | ------------------- | --------------------------- |
+| `Core Exam Prep`    | Timed sim, readiness, adaptive review, no-PDF/browser prep             | `core-exam-prep`    | `Security+` / `Exam-Prep`   |
+| `Military Gov 8140` | DoD 8140, federal, contractor, military, public-sector job requirement | `mil-gov-8140`      | `Security+` / `DoD-8140`    |
+| `Student Workforce` | Students, educators, veterans, workforce/job-placement programs        | `student-workforce` | `Security+` / `Career-Prep` |
 
 Use the same landing page for all three ad groups:
 

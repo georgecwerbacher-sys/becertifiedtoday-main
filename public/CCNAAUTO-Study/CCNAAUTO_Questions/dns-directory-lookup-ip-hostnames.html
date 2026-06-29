@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - IOS XE model-driven programmability protocol | Be Certified Today</title>
+  <title>CCNAAUTO - DNS directory lookup service | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -120,25 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/mvc-design-pattern-advantages-choose-two.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/git-checkout-new-bugfix-branch.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/tdd-first-task-failing-test.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/client-server-subnet-separation-reasons-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>Which model-driven programmability protocol does Cisco IOS XE Software support?</h1>
+    <h1>Which service provides a directory lookup for IP addresses and host names?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="A" />A. CORBA</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="B" />B. SSH</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="C" />C. gNMI</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q82" value="D" />D. SOAP</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q87" value="A" />A. DNS</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q87" value="B" />B. DHCP</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q87" value="C" />C. SNMP</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q87" value="D" />D. NAT</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">3.8 Model-driven programmability interfaces</span>
+          <span class="question-topic-meta__subject">6.6 DNS</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +151,9 @@
 
   <script>
     (function () {
-      var CORRECT = "C";
+      var CORRECT = "A";
       var CORRECT_MSG =
-        "Correct. C - Cisco IOS XE Software supports gNMI, the gRPC Network Management Interface, for model-driven configuration and retrieval of operational data.";
+        "Correct. A - DNS provides name resolution, mapping host names to IP addresses and supporting lookup of DNS resource records.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +163,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q82"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q87"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +180,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q82"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q87"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

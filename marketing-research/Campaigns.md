@@ -9,13 +9,13 @@ tags:
 
 Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 
-## Active: Security+ Google Search · 21-day test
+## Active: Security+ Google Search Setup
 
-**Campaign:** `Security+ SY0-701 · Exam prep · becertifiedtoday`  
-**Ad group:** **`Security+ PBQ Practice`** (only)  
-**Budget:** **$15.00/day** · max CPC **$2.75**  
+**Campaign:** `Security+ SY0-701 · US Search`  
+**Ad groups:** `Core Exam Prep` · `Military Gov 8140` · `Student Workforce`  
+**Budget:** **$25/day shared** · max CPC **$2.75**  
 **Landing:** `/comptia-sec+-home.html`  
-**utm_campaign:** `secplus_portal` · **utm_content:** `pbq-wedge`
+**utm_campaign:** `secplus_portal` · **utm_content:** ad-group specific
 
 **Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]] — all setup copy in one folder
 
@@ -27,11 +27,9 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 | RSA copy | [[Sec+ Campaign/Sec+ RSA Copy\|Sec+ RSA Copy]] |
 | Extensions | [[Sec+ Campaign/Extensions\|Extensions]] |
 | Checklist CSV | [[Sec+ Campaign/secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] |
-| Landing | https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=pbq-wedge |
+| Landing | https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=core-exam-prep |
 
-**During the test:** collect data for 21 days — track sessions, `begin_checkout`, and Stripe Sec+ purchases in [/admin/#section-campaigns](https://becertifiedtoday.com/admin/#section-campaigns). Add campaign negatives only for obvious junk search terms.
-
-**Before changes:** compare search terms, CPA, and checkout rate at day 21 before scaling budget or bids.
+Use Google Ads for campaign spend/clicks and Stripe checkout/admin purchase records for completed Sec+ purchases. Add campaign negatives only for obvious junk search terms.
 
 ## Landing page
 
@@ -42,7 +40,6 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 
 - Guest page copy sync: `scripts/sync-guest-page-marketing.py`
 - Purchase conversion tag: `public/js/google-ads-purchase-conversion.js`
-- Admin projection: `server-lib/campaign-marketing-report.js`
 
 ## CCNA Automation (200-901)
 

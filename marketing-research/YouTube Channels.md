@@ -182,4 +182,4 @@ YouTube Studio → **Traffic sources → External** and GA4 → `utm_source=yout
 
 - [[Site Mission]] · [[Marketing Research]] · [[Sec+ Campaign/Sec+ Positioning|Sec+ Positioning]]
 - PBQ clip notes: `data/secplus-pbq/*/recommendations.md`
-- Phase 1 focus stays Google Ads until checkout data is stable — YouTube is **Tier B organic** (see [[Sec+ Campaign/Sec+ Phase 1 Action Plan#Tier C — after stable month or strong checkout (not now)|Phase 1 tiers]]); batch videos without letting production delay ad ops.
+- Keep YouTube organic and lightweight while Google Ads setup remains the paid acquisition focus; batch videos without letting production delay ad ops.
