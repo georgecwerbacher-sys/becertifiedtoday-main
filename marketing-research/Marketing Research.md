@@ -16,6 +16,7 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 ## Sections
 
 - [[Site Mission]] — why the site exists; reference for all marketing work
+- [[Writing Guidelines]] — core voice, tone, and formatting rules for all copy
 - [[Sec+ Campaign/README|Sec+ Campaign]] — Google Ads setup, keywords, RSA, extensions, checklist
 - [[YouTube Channels]] — video plan: Sec+ PBQ, CCNA/ENCOR labs, test prep techniques
 - [[videos/README|Videos]] — production notes by track (`website`, `ccna`, `sec+`, `encor`)
@@ -32,6 +33,7 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 | `videos/` | YouTube + site embed briefs by track |
 | `competitor-sites/` | `data/competitor-sites/` — **all** hunt polls (Sec+, CCNA, CCNAAUTO, ENCOR) |
 | `weekly-reports/` | `data/reports/weekly/` |
+| `reddit/` | Reddit drafts and [[reddit/Reddit Posting Guide|Reddit Posting Guide]] |
 
 ## Quick commands
 
