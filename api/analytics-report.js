@@ -7,6 +7,7 @@
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
 import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
+import { buildSiteTrafficReport } from "../server-lib/site-traffic-report.js";
 import {
   analyticsApiReady,
   fetchAnalyticsSummary,
@@ -152,7 +153,7 @@ export default async function handler(req, res) {
       })),
     ]);
 
-    const [certHomeLanding] = await Promise.all([
+    const [certHomeLanding, siteTraffic] = await Promise.all([
       buildCertHomeLandingReport(
         client,
         env.propertyId,
@@ -161,6 +162,9 @@ export default async function handler(req, res) {
         sampleLeadRows && !sampleLeadRows.error ? sampleLeadRows : []
       ).catch((err) => ({
         error: err?.message || "Cert home landing report failed",
+      })),
+      buildSiteTrafficReport(client, env.propertyId, range, rangePreset).catch((err) => ({
+        error: err?.message || "Site traffic report failed",
       })),
     ]);
 
@@ -180,6 +184,13 @@ export default async function handler(req, res) {
               pages: [],
               totals: {},
               error: certHomeLanding?.error || "Cert home landing unavailable",
+            },
+      siteTraffic:
+        siteTraffic && !siteTraffic.error
+          ? siteTraffic
+          : {
+              campaigns: [],
+              error: siteTraffic?.error || "Site traffic unavailable",
             },
       sampleLeadCsvError: sampleLeadRows?.error || null,
       fetchedAt: new Date().toISOString(),

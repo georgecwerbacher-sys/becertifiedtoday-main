@@ -493,38 +493,27 @@ export async function fetchBeginCheckoutByItemId(client, propertyId, range, item
     .slice(0, limit);
   if (!ids.length) return [];
 
-  const itemFilter = {
-    orGroup: {
-      expressions: ids.map((itemId) => ({
-        filter: {
-          fieldName: "itemId",
-          stringFilter: { matchType: "EXACT", value: itemId },
-        },
-      })),
-    },
-  };
-
-  const response = await runBeginCheckoutEventReport(client, propertyId, range, {
-    dimensions: [{ name: "itemId" }],
-    metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
-    extraFilter: itemFilter,
-    limit: ids.length,
-  });
-
-  const byId = Object.create(null);
-  for (const row of response.rows || []) {
-    const itemId = row.dimensionValues?.[0]?.value || "";
-    if (!itemId) continue;
-    byId[itemId] = {
-      itemId,
-      checkoutClicks: Number(row.metricValues?.[0]?.value || 0),
-      uniqueUsers: Number(row.metricValues?.[1]?.value || 0),
+  const results = [];
+  for (const itemId of ids) {
+    const itemFilter = {
+      filter: {
+        fieldName: "itemId",
+        stringFilter: { matchType: "EXACT", value: itemId },
+      },
     };
+    try {
+      const [checkoutClicks, uniqueUsers] = await Promise.all([
+        fetchBeginCheckoutEventCount(client, propertyId, range, itemFilter),
+        fetchBeginCheckoutActiveUsers(client, propertyId, range, itemFilter),
+      ]);
+      if (checkoutClicks > 0 || uniqueUsers > 0) {
+        results.push({ itemId, checkoutClicks, uniqueUsers });
+      }
+    } catch {
+      /* skip unsupported item parameter */
+    }
   }
-
-  return ids
-    .map((itemId) => byId[itemId] || { itemId, checkoutClicks: 0, uniqueUsers: 0 })
-    .filter((row) => row.checkoutClicks > 0 || row.uniqueUsers > 0);
+  return results.sort((a, b) => b.checkoutClicks - a.checkoutClicks);
 }
 
 /**
@@ -810,6 +799,32 @@ function eventNameExactFilter(eventNames) {
       })),
     },
   };
+}
+
+/** Event count (+ users) on one pagePath. */
+export async function fetchPageEventCount(client, propertyId, range, pagePath, eventName) {
+  if (!pagePath || !eventName) return { eventCount: 0, activeUsers: 0 };
+  try {
+    const response = await runReportSafe(client, {
+      property: propertyName(propertyId),
+      dateRanges: [range],
+      dimensionFilter: mergeDimensionFilters(
+        gaCustomerTrafficDimensionFilter(),
+        pagePathExactFilter([pagePath]),
+        eventNameExactFilter([eventName])
+      ),
+      metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+    });
+    const row = response.rows?.[0];
+    return {
+      eventCount: Number(row?.metricValues?.[0]?.value || 0),
+      activeUsers: Number(row?.metricValues?.[1]?.value || 0),
+    };
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (msg.includes("INVALID_ARGUMENT")) return { eventCount: 0, activeUsers: 0 };
+    throw err;
+  }
 }
 
 export async function fetchHomeLandingPageViews(client, propertyId, range, paths) {
