@@ -6,7 +6,11 @@
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
-import { buildCertHomeLandingReport } from "../server-lib/cert-home-landing-report.js";
+import {
+  isoRangeFromPreset,
+  listCampaignDailyLogs,
+  upsertCampaignDailyLog,
+} from "../server-lib/campaign-daily-log.js";
 import { buildSiteTrafficReport } from "../server-lib/site-traffic-report.js";
 import {
   analyticsApiReady,
@@ -18,7 +22,6 @@ import {
   getGoogleAnalyticsEnv,
   rangeFromPreset,
 } from "../server-lib/google-analytics.js";
-import { readSampleLeadEvents } from "../server-lib/sample-lead-analytics.js";
 
 function readJsonBody(req) {
   try {
@@ -111,6 +114,59 @@ export default async function handler(req, res) {
     return res.status(401).json({ ok: false, error: "Unauthorized" });
   }
 
+  const rangePreset = typeof body.range === "string" && body.range.trim() ? body.range.trim() : "7d";
+  const range = rangeFromPreset(rangePreset);
+
+  if (action === "daily_log_list") {
+    try {
+      const isoRange = isoRangeFromPreset(rangePreset);
+      const entries = await listCampaignDailyLogs({
+        startDate: isoRange.startDate,
+        endDate: isoRange.endDate,
+        limit: 90,
+      });
+      return res.status(200).json({
+        ok: true,
+        entries,
+        range,
+        rangePreset,
+      });
+    } catch (err) {
+      return res.status(502).json({
+        ok: false,
+        error: err?.message || "Could not load daily log",
+      });
+    }
+  }
+
+  if (action === "daily_log_save") {
+    try {
+      const result = await upsertCampaignDailyLog(body.entry || body);
+      if (!result.ok) {
+        const status = result.reason === "not_configured" ? 503 : 400;
+        return res.status(status).json({
+          ok: false,
+          error: result.reason || "save_failed",
+          hint:
+            result.reason === "not_configured"
+              ? "Set GITHUB_LEADS_TOKEN on Vercel to persist the daily log."
+              : undefined,
+          detail: result.detail,
+        });
+      }
+      return res.status(200).json({
+        ok: true,
+        entry: result.entry,
+        backend: result.backend,
+      });
+    } catch (err) {
+      return res.status(502).json({
+        ok: false,
+        error: err?.message || "Could not save daily log",
+      });
+    }
+  }
+
   const env = getGoogleAnalyticsEnv();
   const diagnostics = getAnalyticsDiagnostics();
   if (!analyticsApiReady(env)) {
@@ -139,30 +195,13 @@ export default async function handler(req, res) {
     });
   }
 
-  const rangePreset = typeof body.range === "string" && body.range.trim() ? body.range.trim() : "7d";
-  const range = rangeFromPreset(rangePreset);
   const client = getAnalyticsDataClient(env);
 
   try {
-    const [summary, dailyTrend, realtimeActiveUsers, sampleLeadRows] = await Promise.all([
+    const [summary, dailyTrend, realtimeActiveUsers, siteTraffic] = await Promise.all([
       fetchAnalyticsSummary(client, env.propertyId, range),
       fetchDailyTrend(client, env.propertyId, range),
       fetchRealtimeActiveUsers(client, env.propertyId),
-      readSampleLeadEvents().catch((err) => ({
-        error: err?.message || "Sample lead CSV read failed",
-      })),
-    ]);
-
-    const [certHomeLanding, siteTraffic] = await Promise.all([
-      buildCertHomeLandingReport(
-        client,
-        env.propertyId,
-        range,
-        rangePreset,
-        sampleLeadRows && !sampleLeadRows.error ? sampleLeadRows : []
-      ).catch((err) => ({
-        error: err?.message || "Cert home landing report failed",
-      })),
       buildSiteTrafficReport(client, env.propertyId, range, rangePreset).catch((err) => ({
         error: err?.message || "Site traffic report failed",
       })),
@@ -177,14 +216,6 @@ export default async function handler(req, res) {
       summary,
       dailyTrend,
       realtimeActiveUsers,
-      certHomeLanding:
-        certHomeLanding && !certHomeLanding.error
-          ? certHomeLanding
-          : {
-              pages: [],
-              totals: {},
-              error: certHomeLanding?.error || "Cert home landing unavailable",
-            },
       siteTraffic:
         siteTraffic && !siteTraffic.error
           ? siteTraffic
@@ -192,7 +223,6 @@ export default async function handler(req, res) {
               campaigns: [],
               error: siteTraffic?.error || "Site traffic unavailable",
             },
-      sampleLeadCsvError: sampleLeadRows?.error || null,
       fetchedAt: new Date().toISOString(),
     });
   } catch (err) {

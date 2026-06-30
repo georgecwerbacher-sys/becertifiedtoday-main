@@ -24,6 +24,7 @@ import {
   fetchTopPages,
   rangePresetLabel,
 } from "./google-analytics.js";
+import { buildCampaignConversionRecommendations } from "./campaign-conversion-recommendations.js";
 
 export const PRIMARY_LANDING_PATH =
   (process.env.BCC_GA_PRIMARY_LANDING_PATH || "/comptia-sec+-home.html").trim();
@@ -183,7 +184,6 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     },
   };
   for (const row of checkoutByCampaign || []) {
-    const name = String(row.campaign || "").toLowerCase();
     const checkout = Number(row.beginCheckout || 0);
     if ((googleCpc || []).some((g) => g.campaign === row.campaign)) {
       channelTotals.googleCpc.beginCheckout += checkout;
@@ -191,12 +191,9 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     if ((redditCpc || []).some((g) => g.campaign === row.campaign)) {
       channelTotals.redditCpc.beginCheckout += checkout;
     }
-    if (name.includes("secplus") || name.includes("ccna") || name.includes("encor")) {
-      /* counted per campaign row */
-    }
   }
 
-  return {
+  const reportCore = {
     rangeLabel: rangePresetLabel(rangePreset),
     primaryLanding: primary,
     siteCheckout: checkoutSummary,
@@ -207,6 +204,13 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     adLandingViews: adLandingViews || [],
     gaCampaigns: (sessionsByCampaign || []).slice(0, 25),
     channelTotals,
+  };
+
+  const recommendations = buildCampaignConversionRecommendations(reportCore);
+
+  return {
+    ...reportCore,
+    recommendations,
     note:
       "Use this section to tune ads and landing pages. begin_checkout = Stripe click (primary conversion). " +
       "purchase = checkout-success page. Compare campaigns before/after copy or bid changes. " +
