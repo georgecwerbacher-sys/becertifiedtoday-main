@@ -15,7 +15,7 @@ When analytics MCP is connected, default all reports to this page unless the use
 
 | `utm_campaign` | Channel | Primary `utm_content` |
 |----------------|---------|------------------------|
-| `secplus_portal` | Google Ads | `pbq-wedge`, `core-exam-prep`, `mil-gov-8140` |
+| `secplus_portal` | Google Ads | `core-exam-prep`, `mil-gov-8140`, `student-workforce` (legacy: `pbq-wedge`) |
 | `secplus_wedge_pbq` | Reddit Ads | `reddit-pbq` |
 | `secplus_portal` | Reddit (phase 2) | `reddit-timed-sim` |
 
@@ -42,8 +42,12 @@ When analytics MCP is connected, default all reports to this page unless the use
 
 ## Repo mirrors (when MCP unavailable)
 
-- `/admin` — Site traffic GA4 hub (`server-lib/site-traffic-report.js`)
-- `server-lib/campaign-marketing-registry.js` — `secplus_portal`, `secplus_wedge_pbq`
+- `/admin#section-secplus-ad-groups` — Security+ Google ad groups by `utm_content` (GA4)
+- `/admin#section-recommendations` — conversion tactics from live metrics
+- `/admin#section-daily-log` — owner daily spend/copy log (pairs with ad group changes)
+- `server-lib/secplus-google-ad-groups.js` — ad group registry (Obsidian ↔ admin)
+- `server-lib/site-traffic-report.js` — GA4 hub API
+- `server-lib/campaign-marketing-registry.js` — all campaigns including `secplus_portal`
 - `npm run marketing:weekly-report`
 
 ## Guardrails

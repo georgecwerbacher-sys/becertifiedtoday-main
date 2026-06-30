@@ -28,4 +28,7 @@ Open the `weekly-reports/` folder in the file explorer or link new files here as
 
 - Sessions, users, page views
 - Top pages and campaign breakdown
+- Security+ Google ad groups by `utm_content` (when using `/admin`)
 - Daily trend table (auto section between `<!-- auto:body -->` markers)
+
+Pair with [[Campaigns#Analytics & improvement loop]] and [[Sec+ Campaign/Sec+ One-Campaign Ad Group Plan#Analytics monitoring loop (admin + Obsidian)]].

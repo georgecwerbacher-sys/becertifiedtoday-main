@@ -45,11 +45,11 @@ Related: [[Security+ Campaign]] · [[Sec+ Notes]] · [[Sec+ Keywords]] · [[Sec+
 
 ## Ad Group Structure
 
-| Ad group            | Intent                                                                 | `utm_content`       | Display path                |
-| ------------------- | ---------------------------------------------------------------------- | ------------------- | --------------------------- |
-| `Core Exam Prep`    | Timed sim, readiness, adaptive review, no-PDF/browser prep             | `core-exam-prep`    | `Security+` / `Exam-Prep`   |
-| `Military Gov 8140` | DoD 8140, federal, contractor, military, public-sector job requirement | `mil-gov-8140`      | `Security+` / `DoD-8140`    |
-| `Student Workforce` | Students, educators, veterans, workforce/job-placement programs        | `student-workforce` | `Security+` / `Career-Prep` |
+| Ad group            | Intent                                                                 | `utm_content`       | Display path                | RSA copy |
+| ------------------- | ---------------------------------------------------------------------- | ------------------- | --------------------------- | -------- |
+| `Core Exam Prep`    | Timed sim, readiness, adaptive review, no-PDF/browser prep             | `core-exam-prep`    | `Security+` / `Exam-Prep`   | [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] |
+| `Military Gov 8140` | DoD 8140, federal, contractor, military, public-sector job requirement | `mil-gov-8140`      | `Security+` / `DoD-8140`    | [[Sec+ RSA Copy - Military Gov 8140]] |
+| `Student Workforce` | Students, educators, veterans, workforce/job-placement programs        | `student-workforce` | `Security+` / `Career-Prep` | [[Sec+ RSA Copy - Student Workforce]] |
 
 Use the same landing page for all three ad groups:
 
@@ -125,5 +125,30 @@ On day 7, review by ad group and keyword:
 | Search term is course/free/dump/PDF intent | Add negative immediately |
 | One ad group spends without checkout | Tighten keywords before splitting campaigns |
 | One ad group clearly converts | Consider budget increase or future campaign split |
+
+---
+
+## Analytics monitoring loop (admin + Obsidian)
+
+**Code registry:** `server-lib/secplus-google-ad-groups.js` (ad group slugs, `utm_content`, RSA pin H1) · synced to `server-lib/campaign-marketing-registry.js` (`secplus_portal`).
+
+| Step | Where | What |
+|------|-------|------|
+| 1. **Measure** | [/admin → Security+ ad groups](https://becertifiedtoday.com/admin#section-secplus-ad-groups) | GA4 sessions + `begin_checkout` per `utm_content` |
+| 2. **Diagnose** | [/admin → Recommendations](https://becertifiedtoday.com/admin#section-recommendations) | Rule-based tactics (scale winner, fix zero-checkout ad group) |
+| 3. **Log** | [/admin → Daily campaign log](https://becertifiedtoday.com/admin#section-daily-log) | Spend, RSA edits, site changes for the day |
+| 4. **Edit copy** | [[Sec+ RSA Copy]] · [[Sec+ RSA Copy - Military Gov 8140]] · [[Sec+ RSA Copy - Student Workforce]] | Per-ad-group headlines/descriptions |
+| 5. **Spend truth** | [Google Ads](https://ads.google.com) | Clicks, CPC, search terms — compare to GA4 sessions |
+| 6. **Weekly** | `node scripts/marketing-weekly-report.mjs` | Archive in `data/reports/weekly/` · [[Weekly Reports]] |
+
+**utm_content → ad group (must match Final URL):**
+
+| `utm_content` | Ad group | RSA section |
+|---------------|----------|-------------|
+| `core-exam-prep` | Core Exam Prep | [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] |
+| `mil-gov-8140` | Military Gov 8140 | [[Sec+ RSA Copy - Military Gov 8140]] |
+| `student-workforce` | Student Workforce | [[Sec+ RSA Copy - Student Workforce]] |
+
+**Hold rule:** After a copy or URL change, wait **7 days** before judging checkout rate — log the change date in Daily campaign log so Recommendations compare the right window.
 
 [[README|← Sec+ Campaign folder]]

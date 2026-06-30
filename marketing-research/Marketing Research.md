@@ -22,7 +22,7 @@ Hub for the active ad campaign, competitor intel, and weekly analytics.
 - [[videos/README|Videos]] — production notes by track (`website`, `ccna`, `sec+`, `encor`)
 - [[Tools/README|Tools]] — Sec+ keyword checklist workflow
 - [[Competitors]] — Security+ prep sites
-- [[Campaigns]] — live campaign summary + UTM registry
+- [[Campaigns]] — live campaign summary + UTM registry + **admin analytics loop**
 - [[Weekly Reports]] — GA4 summaries (`node scripts/marketing-weekly-report.mjs`)
 
 ## Linked folders

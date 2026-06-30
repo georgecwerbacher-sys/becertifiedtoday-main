@@ -37,7 +37,10 @@ tags:
 | [[Sec+ Google Ads Build Checklist\|Google Ads build checklist]] | Click-by-click build checklist |
 | [[Security+ Campaign\|Campaign shell]] | Paste-ready campaign settings, URLs, and products |
 | [[Sec+ Keywords\|Sec+ Keywords]] | Keyword/ad-group split + negatives |
-| [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Headlines and descriptions |
+| [[Sec+ RSA Copy\|Sec+ RSA Copy]] | Core exam prep RSA + index |
+| [[Sec+ RSA Copy - Military Gov 8140\|RSA · Military Gov 8140]] | DoD / federal / contractor ad group copy |
+| [[Sec+ RSA Copy - Student Workforce\|RSA · Student Workforce]] | Student / veteran / workforce ad group copy |
+| Analytics loop | [[Sec+ One-Campaign Ad Group Plan#Analytics monitoring loop (admin + Obsidian)\|Monitoring workflow]] |
 | [[Extensions\|Extensions]] | Sitelinks, URL exclusions, and geo notes |
 | [[secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] | Spreadsheet checklist for Google Ads setup |
 | [[secplus-campaign-checklist-README.txt\|Google checklist README]] | Numbers column guide |

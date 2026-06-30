@@ -82,6 +82,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 ```
 
 - [x] Paste keywords from [[Sec+ Keywords#Ad group 2 — `Military Gov 8140`]]
+- [x] Paste RSA from [[Sec+ RSA Copy - Military Gov 8140]] (not the Core Exam Prep set)
 
 ### Ad Group 3 — Student Workforce
 
@@ -94,6 +95,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 ```
 
 - [x] Paste keywords from [[Sec+ Keywords#Ad group 3 — `Student Workforce`]]
+- [x] Paste RSA from [[Sec+ RSA Copy - Student Workforce]] (not Core or Military sets)
 
 ---
 
@@ -101,10 +103,17 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 Use [[Sec+ RSA Copy]]. Create one responsive search ad in each ad group.
 
+| Ad group | RSA section | Pin H1 | Pin H2 |
+|----------|-------------|--------|--------|
+| `Core Exam Prep` | [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] | `SY0-701 Exam Prep Online` | `Timed 90-Min Exam Sim` |
+| `Military Gov 8140` | [[Sec+ RSA Copy - Military Gov 8140]] | `Security+ for DoD 8140` | `Timed 90-Min Exam Sim` |
+| `Student Workforce` | [[Sec+ RSA Copy - Student Workforce]] | `Security+ Career Prep` | `Timed 90-Min Exam Sim` |
+
 Pin:
 
-- [x] H1: `SY0-701 Exam Prep Online`
-- [x] H2: `Timed 90-Min Exam Sim`
+- [x] **Core Exam Prep:** H1 `SY0-701 Exam Prep Online` · H2 `Timed 90-Min Exam Sim`
+- [x] **Military Gov 8140:** H1 `Security+ for DoD 8140` · H2 `Timed 90-Min Exam Sim`
+- [x] **Student Workforce:** H1 `Security+ Career Prep` · H2 `Timed 90-Min Exam Sim`
 
 Keep other headlines and descriptions unpinned during week 1.
 

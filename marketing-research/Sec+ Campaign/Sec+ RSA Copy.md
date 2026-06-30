@@ -12,7 +12,15 @@ tags:
 
 Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
-**Build:** one US-only Search campaign with three ad groups at **$25/day shared** — [[Sec+ One-Campaign Ad Group Plan]]. Legacy `Security+ PBQ Practice` copy remains as baseline history only.
+**Build:** one US-only Search campaign with three ad groups at **$25/day shared** — [[Sec+ One-Campaign Ad Group Plan]].
+
+| Ad group | RSA note |
+|----------|----------|
+| `Core Exam Prep` | [[Sec+ RSA Copy#Phase 2 — exam prep lead (paste when ready)]] (this file) |
+| `Military Gov 8140` | [[Sec+ RSA Copy - Military Gov 8140]] |
+| `Student Workforce` | [[Sec+ RSA Copy - Student Workforce]] |
+
+Legacy `Security+ PBQ Practice` copy remains as baseline history only.
 
 **Landing offer:** **30-day · $19.99** on cert home. Verified learner discount (students, educators, veterans, workforce) on a **separate URL** — not in RSA.
 
@@ -34,7 +42,7 @@ Headlines ≤30 chars · descriptions ≤90 chars. **Pin H1 + H2**.
 
 ### Phase 2 — exam prep lead (paste when ready)
 
-Use these pins in each of the three ad groups, with final URLs from [[Sec+ One-Campaign Ad Group Plan#Final URLs]].
+Use these pins in **`Core Exam Prep`** only. Military and Student Workforce use their own RSA sections below.
 
 | Pin    | Headline                   | Chars |
 | ------ | -------------------------- | ----- |
@@ -118,6 +126,8 @@ Practice after your course: timed sim, weak-domain review, and PBQs in one brows
 | B | No stale PDFs or desktop test engines. Browser prep with timed sim and scorecard. | 80 |
 | C | Current SY0-701 prep with verified explanations, adaptive review, and no subscription. | 83 |
 | D | Practice after your course: timed sim, weak-domain review, and PBQs in one browser portal. | 88 |
+
+**Other ad groups:** [[Sec+ RSA Copy - Military Gov 8140]] · [[Sec+ RSA Copy - Student Workforce]]
 
 ---
 

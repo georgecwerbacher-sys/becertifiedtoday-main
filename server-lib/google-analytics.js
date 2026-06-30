@@ -589,6 +589,65 @@ function campaignNameExactFilter(name) {
   };
 }
 
+function campaignNameOrFilter(names) {
+  const values = [...new Set((names || []).map((n) => String(n || "").trim()).filter(Boolean))];
+  if (!values.length) return undefined;
+  if (values.length === 1) return campaignNameExactFilter(values[0]);
+  return {
+    orGroup: {
+      expressions: values.map((name) => campaignNameExactFilter(name).filter),
+    },
+  };
+}
+
+/**
+ * Google CPC sessions by utm_content (sessionManualAdContent) for one or more campaign names.
+ */
+export async function fetchGoogleCpcByAdContent(client, propertyId, range, campaignNames, limit = 20) {
+  const response = await runReportSafe(client, {
+    property: propertyName(propertyId),
+    dateRanges: [range],
+    dimensionFilter: mergeDimensionFilters(
+      gaCustomerTrafficDimensionFilter(),
+      googleCpcSourceMediumFilter(),
+      campaignNameOrFilter(campaignNames)
+    ),
+    dimensions: [{ name: "sessionManualAdContent" }],
+    metrics: [
+      { name: "sessions" },
+      { name: "activeUsers" },
+      { name: "engagedSessions" },
+    ],
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    adContent: row.dimensionValues?.[0]?.value || "(not set)",
+    sessions: Number(row.metricValues?.[0]?.value || 0),
+    users: Number(row.metricValues?.[1]?.value || 0),
+    engagedSessions: Number(row.metricValues?.[2]?.value || 0),
+  }));
+}
+
+/**
+ * begin_checkout sessions by utm_content for Google CPC + campaign name(s).
+ */
+export async function fetchBeginCheckoutByAdContent(client, propertyId, range, campaignNames, limit = 20) {
+  const response = await runBeginCheckoutEventReport(client, propertyId, range, {
+    dimensions: [{ name: "sessionManualAdContent" }],
+    metrics: [{ name: "sessions" }],
+    extraFilter: mergeDimensionFilters(googleCpcSourceMediumFilter(), campaignNameOrFilter(campaignNames)),
+    orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    limit,
+  });
+
+  return (response.rows || []).map((row) => ({
+    adContent: row.dimensionValues?.[0]?.value || "(not set)",
+    beginCheckout: Number(row.metricValues?.[0]?.value || 0),
+  }));
+}
+
 /** GA4 API date dimension YYYYMMDD → YYYY-MM-DD. */
 export function gaDateToIso(gaDate) {
   const s = String(gaDate || "").trim();

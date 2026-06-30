@@ -24,9 +24,11 @@ export function buildCampaignConversionRecommendations(report) {
 
   const primary = report.primaryLanding || {};
   const campaigns = report.campaigns || [];
-  const channels = report.channelTotals || {};
+  const adGroups = (report.secplusAdGroups || []).filter((g) => !g.isOther);
+  const activeAdGroups = adGroups.filter((g) => Number(g.sessions) > 0);
   const siteCheckout = report.siteCheckout || {};
   const rangeLabel = report.rangeLabel || "this range";
+  const channels = report.channelTotals || {};
 
   const paidCampaigns = campaigns.filter((c) => Number(c.sessions) > 0);
   const secplusPaid = paidCampaigns.filter((c) => c.product === "secplus");
@@ -83,7 +85,7 @@ export function buildCampaignConversionRecommendations(report) {
       title: "Landing checkout rate is below 2%",
       detail: `${landingCheckout} checkouts / ${landingViews} views (${pctLabel(landingCheckoutRate)}) on Security+ home.`,
       action:
-        "Tighten hero to one offer. Add social proof near CTA. A/B utm_content (pbq-wedge vs core-exam-prep). Reduce competing links that leave before #purchase.",
+        "Tighten hero to one offer. Add social proof near CTA. Compare utm_content in admin (core-exam-prep vs mil-gov-8140 vs student-workforce). Log the change in Daily campaign log before refreshing.",
     });
   }
 
@@ -171,6 +173,73 @@ export function buildCampaignConversionRecommendations(report) {
     });
   }
 
+  // —— Security+ Google ad groups (utm_content) ——
+  for (const g of adGroups) {
+    if (g.isLegacy || g.isOther) continue;
+    if (Number(g.sessions) >= 12 && Number(g.beginCheckout) === 0) {
+      push(recs, {
+        id: `adgroup-zero-${g.slug}`,
+        priority: "high",
+        category: "ads",
+        title: `${g.adGroupName}: traffic without checkout`,
+        detail: `${g.sessions} Google CPC sessions on utm_content=${g.utmContent}, 0 begin_checkout in ${rangeLabel}.`,
+        action: `Google Ads → ${g.adGroupName}: confirm Final URL uses utm_content=${g.utmContent}. Review RSA pin "${g.pinH1}" vs search terms. Update copy in Obsidian Sec+ RSA Copy, then log in Daily campaign log.`,
+      });
+    }
+    if (
+      Number(g.sessions) >= 15 &&
+      g.checkoutRate != null &&
+      g.checkoutRate >= 0.05 &&
+      Number(g.beginCheckout) >= 2
+    ) {
+      push(recs, {
+        id: `adgroup-scale-${g.slug}`,
+        priority: "win",
+        category: "ads",
+        title: `${g.adGroupName}: strong checkout — protect spend`,
+        detail: `${g.beginCheckout} checkouts / ${g.sessions} sessions (${pctLabel(g.checkoutRate)}) on ${g.utmContent}.`,
+        action:
+          "Let Google allocate more of the $25/day shared budget to this ad group. Do not change RSA pins for 7 days. Note win in Daily campaign log.",
+      });
+    }
+  }
+
+  const adGroupWithCheckout = [...activeAdGroups]
+    .filter((g) => Number(g.beginCheckout) > 0 && !g.isLegacy)
+    .sort((a, b) => (b.checkoutRate || 0) - (a.checkoutRate || 0));
+  const topAdGroupVolume = [...activeAdGroups]
+    .filter((g) => !g.isLegacy)
+    .sort((a, b) => b.sessions - a.sessions)[0];
+  const bestAdGroupCvr = adGroupWithCheckout[0];
+  if (
+    topAdGroupVolume &&
+    bestAdGroupCvr &&
+    topAdGroupVolume.utmContent !== bestAdGroupCvr.utmContent &&
+    Number(topAdGroupVolume.sessions) >= 15 &&
+    Number(bestAdGroupCvr.sessions) >= 10
+  ) {
+    push(recs, {
+      id: "adgroup-volume-not-best-cvr",
+      priority: "medium",
+      category: "ads",
+      title: "Security+ ad group spend may be misallocated",
+      detail: `${topAdGroupVolume.adGroupName} has the most sessions (${topAdGroupVolume.sessions}); ${bestAdGroupCvr.adGroupName} converts better (${pctLabel(bestAdGroupCvr.checkoutRate)} checkout rate).`,
+      action: `In Google Ads, tighten keywords/negatives in ${topAdGroupVolume.adGroupName} or pause weak RSAs. Favor ${bestAdGroupCvr.adGroupName} creative angle — do not split campaigns yet (see One-Campaign Ad Group Plan week-1 rule).`,
+    });
+  }
+
+  if (activeAdGroups.some((g) => g.isLegacy && Number(g.sessions) >= 5)) {
+    push(recs, {
+      id: "legacy-utm-content",
+      priority: "medium",
+      category: "ads",
+      title: "Legacy utm_content still receiving traffic",
+      detail: "GA4 shows sessions on old utm_content (e.g. pbq-wedge) alongside the three-ad-group build.",
+      action:
+        "Google Ads → replace Final URLs with core-exam-prep, mil-gov-8140, or student-workforce. Pause legacy ad groups after URLs are updated.",
+    });
+  }
+
   // —— Per-campaign ——
   for (const c of secplusPaid) {
     if (Number(c.sessions) >= 15 && Number(c.beginCheckout) === 0) {
@@ -178,7 +247,7 @@ export function buildCampaignConversionRecommendations(report) {
         id: `campaign-zero-${c.id}`,
         priority: "high",
         category: "ads",
-        title: `${c.label}: sessions without checkout`,
+        title: `${c.label || c.id}: sessions without checkout`,
         detail: `${c.sessions} sessions (${c.channel}), 0 begin_checkout. Landing: ${c.landingPath}.`,
         action: `Open ${c.channel === "reddit" ? "Reddit" : "Google"} Ads → compare ad copy to ${c.utmCampaign} landing. Pause weakest ad set until CTR and checkout improve.`,
       });
@@ -234,7 +303,7 @@ export function buildCampaignConversionRecommendations(report) {
       title: "Maintain Security+ conversion loop",
       detail: `Security+ home: ${landingCheckout} checkouts / ${landingViews} views in ${rangeLabel}.`,
       action:
-        "Weekly: one utm_content A/B, refresh PBQ sample on home, import begin_checkout as Primary in Google Ads, log change date to compare next refresh.",
+        "Weekly: compare the three utm_content rows in /admin, one RSA tweak per ad group max, log spend/copy in Daily campaign log, then refresh Recommendations.",
     });
   }
 

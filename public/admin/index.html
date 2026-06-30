@@ -342,6 +342,7 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-traffic">Site traffic</a>
+        <a href="#section-secplus-ad-groups">Security+ ad groups</a>
         <a href="#section-recommendations">Recommendations</a>
         <a href="#section-daily-log">Daily log</a>
         <a href="#section-register">Stripe checkout</a>
@@ -517,6 +518,31 @@
               </tr>
             </thead>
             <tbody id="campaignPerfBody"></tbody>
+          </table>
+        </div>
+
+        <h3 class="portal-product-title" id="section-secplus-ad-groups" style="margin-top:20px">
+          Security+ Google ad groups · <code>utm_content</code>
+        </h3>
+        <p class="section-note" id="secplusAdGroupsNote">
+          Matches Obsidian [[Sec+ One-Campaign Ad Group Plan]] — one campaign (<code>secplus_portal</code>),
+          three ad groups. Compare sessions and <code>begin_checkout</code> before RSA or bid changes; log edits in
+          <a href="#section-daily-log">Daily campaign log</a>, then check <a href="#section-recommendations">Recommendations</a>.
+        </p>
+        <div class="portal-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ad group</th>
+                <th>utm_content</th>
+                <th>Pin H1</th>
+                <th>Sessions</th>
+                <th>Engaged</th>
+                <th>Checkout</th>
+                <th>Checkout / session</th>
+              </tr>
+            </thead>
+            <tbody id="secplusAdGroupBody"></tbody>
           </table>
         </div>
 
@@ -1189,6 +1215,7 @@
           if (channelCards) channelCards.innerHTML = "";
           [
             "campaignPerfBody",
+            "secplusAdGroupBody",
             "checkoutItemsBody",
             "landingSourceBody",
             "gaCampaignsBody",
@@ -1307,6 +1334,61 @@
               })
               .join("");
           }
+        }
+
+        var adGroupBody = document.getElementById("secplusAdGroupBody");
+        var adGroupNote = document.getElementById("secplusAdGroupsNote");
+        var adGroups = traffic.secplusAdGroups || [];
+        if (adGroupBody) {
+          if (!adGroups.length) {
+            adGroupBody.innerHTML =
+              '<tr><td colspan="7" style="color:var(--muted)">No Security+ ad group traffic in range (Google CPC + secplus_portal).</td></tr>';
+          } else {
+            adGroupBody.innerHTML = adGroups
+              .map(function (g) {
+                var legacy =
+                  g.isLegacy || g.isOther
+                    ? ' <span class="badge" style="opacity:0.85">legacy</span>'
+                    : "";
+                return (
+                  "<tr><td><strong>" +
+                  (g.adGroupName || g.slug) +
+                  "</strong>" +
+                  legacy +
+                  '<br><span style="color:var(--muted);font-size:0.78rem">' +
+                  (g.intent || "") +
+                  "</span></td><td><code>" +
+                  (g.utmContent || "") +
+                  '</code></td><td style="font-size:0.82rem">' +
+                  (g.pinH1 || "—") +
+                  "</td><td>" +
+                  fmt(g.sessions) +
+                  "</td><td>" +
+                  fmt(g.engagedSessions) +
+                  "</td><td>" +
+                  fmt(g.beginCheckout) +
+                  "</td><td>" +
+                  fmtPct(g.checkoutRate) +
+                  "</td></tr>"
+                );
+              })
+              .join("");
+          }
+        }
+        if (adGroupNote && traffic.secplusGoogleCampaign) {
+          var gc = traffic.secplusGoogleCampaign;
+          adGroupNote.innerHTML =
+            'Matches Obsidian <code>' +
+            (gc.planDoc || "Sec+ One-Campaign Ad Group Plan") +
+            "</code> — <strong>" +
+            (gc.label || "Security+ SY0-701 · US Search") +
+            '</strong> (<code>' +
+            (gc.utmCampaign || "secplus_portal") +
+            "</code>), $" +
+            (gc.dailyBudgetUsd || 25) +
+            "/day shared. Log RSA/bid/spend changes in " +
+            '<a href="#section-daily-log">Daily campaign log</a>, then ' +
+            '<a href="#section-recommendations">Recommendations</a>.';
         }
 
         var itemsBody = document.getElementById("checkoutItemsBody");

@@ -10,12 +10,14 @@ import {
   CAMPAIGN_MARKETING_REGISTRY,
 } from "./campaign-marketing-registry.js";
 import {
+  fetchBeginCheckoutByAdContent,
   fetchBeginCheckoutByCampaign,
   fetchBeginCheckoutByItemId,
   fetchBeginCheckoutSummary,
   fetchCertHomeEventCounts,
   fetchCertHomeLandingSessions,
   fetchCertHomePageMetrics,
+  fetchGoogleCpcByAdContent,
   fetchGoogleCpcByCampaign,
   fetchHomeLandingPageViews,
   fetchLandingPagesTrafficBySource,
@@ -25,6 +27,10 @@ import {
   rangePresetLabel,
 } from "./google-analytics.js";
 import { buildCampaignConversionRecommendations } from "./campaign-conversion-recommendations.js";
+import {
+  buildSecplusAdGroupMetrics,
+  SECPLUS_GOOGLE_CAMPAIGN,
+} from "./secplus-google-ad-groups.js";
 
 export const PRIMARY_LANDING_PATH =
   (process.env.BCC_GA_PRIMARY_LANDING_PATH || "/comptia-sec+-home.html").trim();
@@ -82,6 +88,8 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     adLandingViews,
     googleCpc,
     redditCpc,
+    secplusAdContentSessions,
+    secplusAdContentCheckout,
     primaryPageMetrics,
     primaryLandingSessions,
     primaryEvents,
@@ -95,6 +103,20 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     fetchHomeLandingPageViews(client, propertyId, range, AD_LANDING_MONITOR_PATHS),
     fetchGoogleCpcByCampaign(client, propertyId, range, 20),
     fetchRedditCpcByCampaign(client, propertyId, range, 20),
+    fetchGoogleCpcByAdContent(
+      client,
+      propertyId,
+      range,
+      SECPLUS_GOOGLE_CAMPAIGN.campaignAliases,
+      20
+    ),
+    fetchBeginCheckoutByAdContent(
+      client,
+      propertyId,
+      range,
+      SECPLUS_GOOGLE_CAMPAIGN.campaignAliases,
+      20
+    ),
     fetchCertHomePageMetrics(client, propertyId, range, [PRIMARY_LANDING_PATH]),
     fetchCertHomeLandingSessions(client, propertyId, range, [PRIMARY_LANDING_PATH]),
     fetchCertHomeEventCounts(client, propertyId, range, [PRIMARY_LANDING_PATH], [
@@ -193,11 +215,22 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     }
   }
 
+  const secplusAdGroups = buildSecplusAdGroupMetrics(secplusAdContentSessions, secplusAdContentCheckout);
+
   const reportCore = {
     rangeLabel: rangePresetLabel(rangePreset),
     primaryLanding: primary,
     siteCheckout: checkoutSummary,
     campaigns,
+    secplusAdGroups,
+    secplusGoogleCampaign: {
+      id: SECPLUS_GOOGLE_CAMPAIGN.id,
+      label: SECPLUS_GOOGLE_CAMPAIGN.googleAdsCampaignName,
+      utmCampaign: SECPLUS_GOOGLE_CAMPAIGN.utmCampaign,
+      dailyBudgetUsd: SECPLUS_GOOGLE_CAMPAIGN.dailyBudgetUsd,
+      planDoc: SECPLUS_GOOGLE_CAMPAIGN.planDoc,
+      adminPath: SECPLUS_GOOGLE_CAMPAIGN.adminAnalyticsPath,
+    },
     checkoutByItem: checkoutByItem || [],
     topPages: topPages || [],
     landingBySource: landingBySource || [],
@@ -213,7 +246,8 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     recommendations,
     note:
       "Use this section to tune ads and landing pages. begin_checkout = Stripe click (primary conversion). " +
-      "purchase = checkout-success page. Compare campaigns before/after copy or bid changes. " +
+      "Security+ Google ad groups break down by utm_content (core-exam-prep, mil-gov-8140, student-workforce). " +
+      "Log spend and copy changes in Daily campaign log, then refresh and check Recommendations. " +
       "Spend and clicks: Google Ads / Reddit dashboards (links below).",
   };
 }
