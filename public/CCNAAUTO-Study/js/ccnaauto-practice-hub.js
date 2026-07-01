@@ -129,6 +129,20 @@
     "agile-incremental-delivery-advantage",
     "modules-benefit-large-complex-systems",
     "ip-address-function-unique-host-id",
+    "api-inventory-xml-bearer-headers-choose-two",
+    "edge-computing-iot-high-speed-data-processing",
+    "rest-api-curl-upload-local-file-authorization",
+    "model-driven-programmability-benefits-choose-two",
+    "infrastructure-automation-method-cicd-exhibit",
+    "rest-api-retry-after-rate-limit",
+    "webhook-effective-use-cases-choose-two",
+    "code-review-main-purpose",
+    "model-driven-programmability-benefit",
+    "application-deployment-hardware-independent-container",
+    "cisco-umbrella-block-domain-api",
+    "synchronous-vs-asynchronous-api-difference",
+    "http-204-no-content-response",
+    "mac-address-oui-vendor-identifier",
   ];
   window.CCNAAUTO_PRACTICE._topicAssignments = null;
   window.CCNAAUTO_PRACTICE._blueprint = null;

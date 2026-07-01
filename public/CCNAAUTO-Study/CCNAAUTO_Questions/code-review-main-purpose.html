@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - Code review main purpose | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -120,18 +120,18 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-effective-use-cases-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/model-driven-programmability-benefit.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>What is the main purpose of a code review?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q125" value="A" />A. To provide the technical lead visibility into all code</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q125" value="B" />B. To identify and review errors with the team</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q125" value="C" />C. To ensure that all code is checked in simultaneously</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q125" value="D" />D. To detect logical errors</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
@@ -153,7 +153,7 @@
     (function () {
       var CORRECT = "B";
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. B - Code review is a collaborative quality practice in which peers examine changes before merge to find bugs, security issues, style problems, and other defects the author may have missed. It is not primarily about lead visibility, simultaneous check-ins, or logical errors alone.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +163,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q125"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +180,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q125"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

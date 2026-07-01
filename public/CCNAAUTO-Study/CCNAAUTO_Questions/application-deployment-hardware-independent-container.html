@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - Hardware-independent application deployment | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -52,6 +52,13 @@
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 4px;
+    }
+    .choice-body {
+      display: inline-block;
+      max-width: calc(100% - 2rem);
+      line-height: 1.45;
     }
     .answer-footer {
       display: flex;
@@ -120,25 +127,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/model-driven-programmability-benefit.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/cisco-umbrella-block-domain-api.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>A new application is being developed that must be hardware independent. The application includes an administrative component which is accessed using a Windows desktop GUI. Installation and management of the environment must be fully automated. Which application deployment type meets the requirements?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q127" value="A" /><span class="choice-body">A. bare metal</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q127" value="B" /><span class="choice-body">B. virtual Python environment</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q127" value="C" /><span class="choice-body">C. container</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q127" value="D" /><span class="choice-body">D. virtual machine</span></label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">5.13 Code review process</span>
+          <span class="question-topic-meta__subject">4.3 Application deployment types</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +158,9 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
+      var CORRECT = "C";
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. C - Containers package an application with its dependencies so it can run consistently across different hosts, which supports hardware independence. Orchestration tools such as Kubernetes automate deployment, scaling, and lifecycle management. Bare metal is tied to physical hardware, a virtual Python environment only isolates Python packages, and VMs are heavier and less aligned with modern automated container workflows on the exam.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +170,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q127"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +187,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q127"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - API inventory XML Bearer headers choose two | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -33,10 +34,24 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
+    }
+    .question-exhibit {
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .question-exhibit img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      height: auto;
+      border: 1px solid #d5deeb;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(26, 61, 110, 0.12);
     }
     .choice {
       display: block;
@@ -52,6 +67,10 @@
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
+    }
+    .choice code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.92em;
     }
     .answer-footer {
       display: flex;
@@ -120,25 +139,33 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ip-address-function-unique-host-id.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/edge-computing-iot-high-speed-data-processing.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>Refer to the exhibit. An API call is constructed to retrieve the inventory in XML format by using the API. The response to the call is 401 Unauthorized. Which two headers must be added to the API call? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <figure class="question-exhibit" aria-label="API v1 inventory documentation and 401 response exhibit">
+      <img
+        src="/CCNAAUTO-Study/CCNAAUTO_Questions/images/api-v1-inventory-bearer-token-exhibit.png"
+        alt="API v1 documentation for GET /api/v1/inventory with Bearer token authentication, sample request, and 401 Unauthorized response"
+      />
+    </figure>
+
+    <label class="choice"><input type="checkbox" name="ccnaauto_q118" value="A" />A. <code>Accept: application/xml</code></label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q118" value="B" />B. <code>Content-Type: application/xml</code></label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q118" value="C" />C. <code>Authentication: Bearer dXNlcm5hbWU6cGFzc3dvcmQ=</code></label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q118" value="D" />D. <code>Bearer-Token: dXNlcm5hbWU6cGFzc3dvcmQ=</code></label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q118" value="E" />E. <code>Authorization: Bearer dXNlcm5hbWU6cGFzc3dvcmQ=</code></label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">5.13 Code review process</span>
+          <span class="question-topic-meta__subject">2.5 / 2.7 API headers and authentication</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,26 +178,41 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
+      var CORRECT = ["A", "E"];
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. A and E - Use Accept: application/xml to request XML inventory data, and Authorization: Bearer with the provided token to authenticate. Content-Type describes a request body on POST/PUT, and Authentication or Bearer-Token are not the standard HTTP header names.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {
+        return Array.prototype.slice
+          .call(document.querySelectorAll('input[name="ccnaauto_q118"]:checked'))
+          .map(function (input) {
+            return input.value;
+          })
+          .sort();
+      }
+
+      function isCorrect(values) {
+        return values.length === CORRECT.length && values.every(function (value, idx) {
+          return value === CORRECT[idx];
+        });
+      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var values = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (!values.length) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Select two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (isCorrect(values)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -180,8 +222,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="ccnaauto_q118"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - Model-driven programmability benefits choose two | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -120,25 +120,26 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/rest-api-curl-upload-local-file-authorization.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/infrastructure-automation-method-cicd-exhibit.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>What are two benefits of model-driven programmability? (Choose two.)</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q121" value="A" />A. model-driven APIs for abstraction and simplification</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q121" value="B" />B. single choice of transport, protocol, and encoding</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q121" value="C" />C. model-based, structured, and human friendly</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q121" value="D" />D. easier to design, deploy, and manage APIs</label>
+    <label class="choice"><input type="checkbox" name="ccnaauto_q121" value="E" />E. models decoupled from transport, protocol, and encoding</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">5.13 Code review process</span>
+          <span class="question-topic-meta__subject">3.8 · 5.1 Model-driven programmability</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,26 +152,41 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
+      var CORRECT = ["C", "E"];
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. C and E - Model-driven programmability uses structured YANG data models that are human readable and machine friendly. The same model can be accessed over multiple transports and protocols (such as NETCONF, RESTCONF, and gNMI) because the model is decoupled from transport, protocol, and encoding. A single transport choice is incorrect; flexibility across choices is a key benefit.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
+
+      function selectedValues() {
+        return Array.prototype.slice
+          .call(document.querySelectorAll('input[name="ccnaauto_q121"]:checked'))
+          .map(function (input) {
+            return input.value;
+          })
+          .sort();
+      }
+
+      function isCorrect(values) {
+        return values.length === CORRECT.length && values.every(function (value, idx) {
+          return value === CORRECT[idx];
+        });
+      }
 
       function incorrectMsg() {
         return "Incorrect. " + CORRECT_MSG.replace(/^Correct\.\s*/, "");
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var values = selectedValues();
         answerBox.style.display = "block";
-        if (!sel) {
+        if (!values.length) {
           answerBox.className = "answer incorrect";
-          answerBox.textContent = "Select an answer.";
+          answerBox.textContent = "Select two answers.";
           return;
         }
-        if (sel.value === CORRECT) {
+        if (isCorrect(values)) {
           answerBox.className = "answer correct";
           answerBox.textContent = CORRECT_MSG;
         } else {
@@ -180,8 +196,10 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
-        if (input) input.checked = true;
+        CORRECT.forEach(function (value) {
+          var input = document.querySelector('input[name="ccnaauto_q121"][value="' + value + '"]');
+          if (input) input.checked = true;
+        });
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
         answerBox.textContent = CORRECT_MSG;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - Cisco Umbrella block domain API | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -120,25 +120,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/application-deployment-hardware-independent-container.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/synchronous-vs-asynchronous-api-difference.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>Which tool is used to block all traffic to the domain by using a single API call?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q128" value="A" />A. Cisco ISE</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q128" value="B" />B. Cisco Firepower</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q128" value="C" />C. Cisco AMP</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q128" value="D" />D. Cisco Umbrella</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">5.13 Code review process</span>
+          <span class="question-topic-meta__subject">3.5 Cisco security platforms and APIs</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +151,9 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
+      var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. D - Cisco Umbrella provides DNS-layer security and its Enforcement API lets you add a domain to a block list with a single API call, preventing DNS resolution for that domain across protected identities. ISE handles access policy, Firepower is a firewall platform, and AMP/Secure Endpoint focuses on endpoint malware detection.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +163,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q128"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +180,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q128"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

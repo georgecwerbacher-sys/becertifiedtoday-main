@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - IP address function in networking | Be Certified Today</title>
+  <title>CCNAAUTO - REST API cURL upload file authorization | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <style>
     :root {
       color-scheme: light;
@@ -37,6 +38,14 @@
       font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
+    }
+    .ccnaauto-code-exhibit {
+      margin-bottom: 16px;
+    }
+    .ccnaauto-code-window__pre {
+      font-size: 0.78rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
     }
     .choice {
       display: block;
@@ -120,25 +129,79 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/modules-benefit-large-complex-systems.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/edge-computing-iot-high-speed-data-processing.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/api-inventory-xml-bearer-headers-choose-two.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/model-driven-programmability-benefits-choose-two.html">Next</a>
       </div>
     </nav>
 
-    <h1>What is the function of IP address in networking?</h1>
+    <h1>Refer to the exhibit. A developer needs to upload a local file by using the REST API. The developer gathers information according to the documentation and sends the request by using the cURL command in the exhibit but gets an error code. Which action should be followed to get a valid response?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q117" value="A" />A. specifies the type of traffic that is allowed to roam on a network</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q117" value="B" />B. represents the unique ID that is assigned to one host on a network</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q117" value="C" />C. specifies resource&rsquo;s location and the mechanism to retrieve it</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q117" value="D" />D. represents a network connection on specific devices</label>
+    <figure class="ccnaauto-code-exhibit" aria-label="Webex Messages API file upload documentation excerpt">
+      <p class="ccnaauto-code-exhibit__label">API documentation excerpt</p>
+      <div class="ccnaauto-code-window">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>POST https://webexapis.com/v1/messages
+
+To send local file attachments, include your access token in the
+Authorization header and the path to your local file with the files
+parameter. When uploading files from your local filesystem, the
+request must be multipart/form-data rather than JSON.
+
+Example:
+  Authorization: Bearer ACCESS_TOKEN
+  files=@/home/desktop/example.png
+  roomId=Y2lzY2.....
+  text=example attached</code></pre>
+        </div>
+      </div>
+    </figure>
+
+    <figure class="ccnaauto-code-exhibit" aria-label="cURL command used for file upload">
+      <p class="ccnaauto-code-exhibit__label">cURL command</p>
+      <div class="ccnaauto-code-window">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
+        </div>
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>curl --request POST \
+  --form "files=@/home/desktop/example.png" \
+  --form "roomId=Y2lzY2....." \
+  --form "text=example attached" \
+  https://webexapis.com/v1/messages
+
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+
+{"message":"The request requires a valid access token set in the Authorization request header."}</code></pre>
+        </div>
+      </div>
+    </figure>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q120" value="A" />A. change content type as JSON</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q120" value="B" />B. add the authorization header with the access token</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q120" value="C" />C. add a username-password combination to request command</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q120" value="D" />D. change request method as GET</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.2 IP addresses and routing</span>
+          <span class="question-topic-meta__subject">2.1 REST API requests · 2.5 API troubleshooting · 2.7 API authentication</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -153,7 +216,7 @@
     (function () {
       var CORRECT = "B";
       var CORRECT_MSG =
-        "Correct. B - An IP address is a logical Layer 3 identifier assigned to a host interface so devices can be uniquely addressed and routed on a network. Traffic policy is enforced by firewalls and ACLs, URLs describe resource location on the web, and physical or data-link connections are identified differently.";
+        "Correct. B - The documentation requires an access token in the Authorization header (for example, Authorization: Bearer <token>). The cURL command already uses POST with multipart form data for a local file upload, but it omits that header, which produces the 401 Unauthorized response. JSON content type and GET are incorrect for this upload operation.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +226,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q117"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q120"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +243,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q117"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q120"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

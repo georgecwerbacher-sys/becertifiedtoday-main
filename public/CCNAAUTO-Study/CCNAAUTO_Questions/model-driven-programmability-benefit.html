@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Code review before merge | Be Certified Today</title>
+  <title>CCNAAUTO - Model-driven programmability benefit | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,8 +33,8 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
     }
@@ -52,6 +52,13 @@
     .choice input {
       margin-right: 10px;
       transform: translateY(1px);
+      vertical-align: top;
+      margin-top: 4px;
+    }
+    .choice-body {
+      display: inline-block;
+      max-width: calc(100% - 2rem);
+      line-height: 1.45;
     }
     .answer-footer {
       display: flex;
@@ -120,25 +127,25 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/webhook-notifications-http-post.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/code-review-main-purpose.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/dna-center-network-device-get-json-fill.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/application-deployment-hardware-independent-container.html">Next</a>
       </div>
     </nav>
 
-    <h1>Before which process is code review performed when version control is used?</h1>
+    <h1>What is a benefit of model-driven programmability?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="A" />A. Branching code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="B" />B. Merge of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="C" />C. Checkout of code</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q75" value="D" />D. Committing code</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q126" value="A" /><span class="choice-body">A. It addresses the static architecture of traditional networks being decentralized and complex.</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q126" value="B" /><span class="choice-body">B. By modeling data, it ensures that vast quantities of data are usable for monitoring.</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q126" value="C" /><span class="choice-body">C. It provides a programmatic and standards-based way of writing configurations to any network device.</span></label>
+    <label class="choice"><input type="radio" name="ccnaauto_q126" value="D" /><span class="choice-body">D. It simplifies management and operations by decoupling the networking hardware from its control mechanism.</span></label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">5.13 Code review process</span>
+          <span class="question-topic-meta__subject">3.8 · 5.1 Model-driven programmability</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +158,9 @@
 
   <script>
     (function () {
-      var CORRECT = "B";
+      var CORRECT = "C";
       var CORRECT_MSG =
-        "Correct. B - In a version-control workflow, code review is commonly performed through a pull request before the feature branch is merged into the main codebase.";
+        "Correct. C - Model-driven programmability uses structured YANG data models with standards-based interfaces such as NETCONF and RESTCONF to configure devices programmatically instead of relying on proprietary CLI text. Decoupling hardware from the control plane describes SDN; monitoring scale and static architecture are not the primary benefit stated for model-driven programmability.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +170,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q75"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q126"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +187,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q75"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q126"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";
