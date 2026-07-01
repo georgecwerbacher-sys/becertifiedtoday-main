@@ -4,12 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - cURL OAuth JSON retrieval command</title>
+  <title>CCNAAUTO - Meraki create network Python script</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    .meraki-api-exhibit {
+      margin: 16px 0 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid #c8d7ea;
+      background: #f7fbff;
+      color: #173b6d;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .meraki-api-exhibit h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #1a3d6e;
+    }
+    .meraki-api-exhibit code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.9em;
+    }
+    .meraki-api-exhibit ul {
+      margin: 8px 0 0;
+      padding-left: 1.2rem;
+    }
+  </style>
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -23,35 +48,42 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-dna-center-auth-token-python-steps.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-meraki-network-clients-python.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-apic-em-service-ticket-python.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-curl-meraki-list-organization-networks.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Fill in the blanks to complete the cURL command that invokes a RESTful API to retrieve a resource in JSON format using OAuth.</h1>
-    <p class="sub">Drag each snippet into the matching blank. Not all snippets are used.</p>
+    <h1>Refer to the exhibit. Drag and drop the code from the bottom onto the box where the code is missing on the Meraki Python script to create a new network.</h1>
+
+    <section class="meraki-api-exhibit" aria-label="Meraki API documentation excerpt">
+      <h2>HTTP REQUEST</h2>
+      <p><strong>POST</strong> <code>/organizations/{organizationId}/networks</code></p>
+      <p><strong>PARAMETERS</strong></p>
+      <ul>
+        <li><code>name</code> — name of the new network</li>
+        <li><code>type</code> — wireless, appliance, switch, systemsManager, camera, cellularGateway, or combined types</li>
+        <li><code>tags</code>, <code>timeZone</code>, <code>copyFromNetworkId</code>, and other optional fields</li>
+      </ul>
+    </section>
 
     <div class="sim-frame">
       <div class="layout dnd-split ccnaauto-code-dnd-layout">
         <div class="panel panel--snippets">
           <h2>Code snippets</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="GET">GET</div>
-            <div class="token" draggable="true" data-value="POST">POST</div>
-            <div class="token" draggable="true" data-value="DELETE">DELETE</div>
-            <div class="token" draggable="true" data-value="Accept">Accept</div>
-            <div class="token" draggable="true" data-value="Content-Type">Content-Type</div>
-            <div class="token" draggable="true" data-value="Authorization">Authorization</div>
-            <div class="token" draggable="true" data-value="X-Auth-Token">X-Auth-Token</div>
-            <div class="token" draggable="true" data-value="Basic">Basic</div>
+            <div class="token token--mono" draggable="true" data-value="organizations">"organizations"</div>
+            <div class="token token--mono" draggable="true" data-value="headers">headers</div>
+            <div class="token token--mono" draggable="true" data-value="api_key">api_key</div>
+            <div class="token token--mono" draggable="true" data-value="org_id">org_id</div>
+            <div class="token token--mono" draggable="true" data-value="name">name</div>
           </div>
         </div>
 
         <div class="panel panel--script">
-          <h2>cURL command</h2>
-          <div class="ccnaauto-code-window" aria-label="cURL command exhibit">
+          <h2>Python script</h2>
+          <div class="ccnaauto-code-window" aria-label="Meraki create network Python script">
             <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
               <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
               <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
@@ -61,9 +93,22 @@
               <div class="ccnaauto-code-window__logo" aria-hidden="true">
                 <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
               </div>
-              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code><span class="sh-cmd">curl</span> <span class="sh-flag">-X</span> <span class="drop-slot" data-accept="GET"></span> <span class="sh-punct">\</span>
-  <span class="sh-flag">-H</span> <span class="sh-str">"</span><span class="drop-slot" data-accept="Accept"></span><span class="sh-str">: application/json"</span> <span class="sh-punct">\</span>
-  <span class="sh-flag">-H</span> <span class="sh-str">"</span><span class="drop-slot" data-accept="Authorization"></span><span class="sh-str">: Bearer AbCdeF123456"</span> <span class="sh-str">http://localhost/api/myresource</span></code></pre>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--python"><code><span class="py-name">base_url</span> <span class="py-punct">=</span> <span class="py-str">"https://api.meraki.com/api/v0"</span>
+<span class="py-name">org_id</span> <span class="py-punct">=</span> <span class="py-str">"123456789"</span>
+<span class="py-name">api_key</span> <span class="py-punct">=</span> <span class="py-str">"1098hadpfsiapsf8ahf8ohp"</span>
+<span class="py-name">network_name</span> <span class="py-punct">=</span> <span class="py-str">"New Network"</span>
+
+<span class="py-mod">requests</span><span class="py-punct">.</span><span class="py-fn">post</span><span class="py-punct">(</span>
+    <span class="py-name">base_url</span> <span class="py-punct">+</span> <span class="py-str">"/"</span> <span class="py-punct">+</span> <span class="drop-slot" data-accept="organizations"></span> <span class="py-punct">+</span> <span class="py-str">"/"</span> <span class="py-punct">+</span> <span class="drop-slot" data-accept="org_id"></span> <span class="py-punct">+</span> <span class="py-str">"/networks"</span><span class="py-punct">,</span>
+    <span class="drop-slot" data-accept="headers"></span> <span class="py-punct">= {</span>
+        <span class="py-str">"X-Cisco-Meraki-API-Key"</span><span class="py-punct">:</span> <span class="drop-slot" data-accept="api_key"></span><span class="py-punct">,</span>
+        <span class="py-str">"Content-Type"</span><span class="py-punct">:</span> <span class="py-str">"application/json"</span>
+    <span class="py-punct">},</span>
+    <span class="py-name">data</span><span class="py-punct">=</span><span class="py-mod">json</span><span class="py-punct">.</span><span class="py-fn">dumps</span><span class="py-punct">({</span>
+        <span class="py-str">"</span><span class="drop-slot" data-accept="name"></span><span class="py-str">"</span><span class="py-punct">:</span> <span class="py-name">network_name</span><span class="py-punct">,</span>
+        <span class="py-str">"type"</span><span class="py-punct">:</span> <span class="py-str">"wireless switch"</span>
+    <span class="py-punct">})</span>
+<span class="py-punct">)</span></code></pre>
             </div>
           </div>
         </div>
@@ -78,7 +123,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">2.7 REST API authentication and headers</span>
+      <span class="question-topic-meta__subject">3.9.a Meraki API · 5.7 Python workflow</span>
     </p>
 
     </main>
@@ -204,8 +249,8 @@
           );
         });
         result.textContent = full
-          ? 'Correct. Use GET, set "Accept: application/json" for JSON response format, and include OAuth bearer credentials in the "Authorization" header.'
-          : 'Incorrect. Fill the blanks with GET, Accept, and Authorization.';
+          ? "Correct. POST to /organizations/{org_id}/networks with headers (API key), and a JSON body that includes the name field."
+          : "Incorrect. Use organizations and org_id in the URL, headers for the API key dict, api_key as the key value, and name as the JSON field for network_name.";
       });
 
       showBtn.addEventListener("click", function () {

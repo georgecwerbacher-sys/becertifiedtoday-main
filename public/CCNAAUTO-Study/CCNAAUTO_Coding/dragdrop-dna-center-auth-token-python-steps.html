@@ -4,11 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Cisco compute management platforms drag and drop</title>
+  <title>CCNAAUTO - DNA Center auth token Python REST API steps</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    body.ccnaauto-dnd-ui .token--code {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.76rem;
+      font-weight: 600;
+      line-height: 1.45;
+      max-width: 100%;
+    }
+    body.ccnaauto-dnd-ui .match-desc {
+      margin: 0 0 8px;
+      font-weight: 700;
+      color: #1a3d6e;
+    }
+  </style>
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -22,40 +37,57 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-git-push-local-changes-order.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-dna-center-network-device-python-get.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-agile-waterfall-characteristics.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-curl-oauth-json-retrieve-resource.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the capability on the left onto the Cisco compute management platform that supports the capability on the right.</h1>
+    <h1>Drag and drop the Python code from the left onto the correct step on the right to call a REST API.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>Capabilities</h2>
+          <h2>Python code</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="ucs-director">Multi-cloud automation and orchestration platform for Cisco and third-party servers, networks, storage, and converged infrastructure.</div>
-            <div class="token" draggable="true" data-value="intersight">Software as a Service platform that enables Cisco infrastructure management, automation, and orchestration from anywhere.</div>
-            <div class="token" draggable="true" data-value="ucs-manager">Embedded software that enables Cisco server, fabric, and storage provisioning.</div>
+            <div class="token token--code" draggable="true" data-value="send-request">response = requests.post(url, data=json.dumps(payload), \
+headers=header, verify=False)</div>
+            <div class="token token--code" draggable="true" data-value="parse-ticket">ticket = r_json["Token"]
+print (ticket)</div>
+            <div class="token token--code" draggable="true" data-value="format-json">r_json = response.json()
+print(r_json)</div>
+            <div class="token token--code" draggable="true" data-value="import-libs">import requests
+import json</div>
+            <div class="token token--code" draggable="true" data-value="declare-vars">controller = 'devnetapicisco.com/sandbox/dnacenter'
+url = "https://" + controller + "/dna/system/api/v1/auth/token"
+payload = { 'username': 'devnetuser', 'password': 'pa55word' }
+header = { 'Content-type': 'application/json' }</div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Cisco compute management platform</h2>
+          <h2>Steps</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">UCS Manager</p>
-              <div class="drop-slot" data-accept="ucs-manager"></div>
+              <p class="match-desc">Step 1. Import the correct libraries.</p>
+              <div class="drop-slot" data-accept="import-libs"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">UCS Director</p>
-              <div class="drop-slot" data-accept="ucs-director"></div>
+              <p class="match-desc">Step 2. Declare the necessary variable.</p>
+              <div class="drop-slot" data-accept="declare-vars"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Intersight</p>
-              <div class="drop-slot" data-accept="intersight"></div>
+              <p class="match-desc">Step 3. Send the HTTP Request.</p>
+              <div class="drop-slot" data-accept="send-request"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">Step 4. Format and display the response in JSON readable format.</p>
+              <div class="drop-slot" data-accept="format-json"></div>
+            </div>
+            <div class="match-row">
+              <p class="match-desc">Step 5. Parse the response to display the Service Ticket.</p>
+              <div class="drop-slot" data-accept="parse-ticket"></div>
             </div>
           </div>
         </div>
@@ -69,7 +101,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.3 Cisco compute management platforms</span>
+      <span class="question-topic-meta__subject">5.7 Python · Catalyst Center API</span>
     </p>
 
     </main>
@@ -88,6 +120,7 @@
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
+      var answers = ["import-libs", "declare-vars", "send-request", "format-json", "parse-ticket"];
 
       function allSlots() {
         return document.querySelectorAll(".drop-slot[data-accept]");
@@ -108,6 +141,10 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
+      }
+      function accepts(slot, value) {
+        var allowed = String(slot.getAttribute("data-accept") || "").split("|");
+        return allowed.indexOf(value) !== -1;
       }
 
       (function shuffleBank() {
@@ -196,13 +233,13 @@
             allOk = false;
             return;
           }
-          var ok = t.getAttribute("data-value") === slot.getAttribute("data-accept");
+          var ok = accepts(slot, t.getAttribute("data-value"));
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
         result.textContent = allOk
-          ? "Correct. UCS Manager is embedded UCS management, UCS Director provides multi-cloud/data-center orchestration, and Intersight provides SaaS-based infrastructure management."
-          : "Incorrect. Match embedded UCS provisioning to UCS Manager, multi-cloud orchestration to UCS Director, and SaaS anywhere management to Intersight.";
+          ? "Correct. Import libraries, declare URL and credentials, POST the auth request, parse JSON from the response, then extract and print the Token value."
+          : "Incorrect. Order: import libraries → declare variables → send POST → parse/print JSON → extract Token.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -212,7 +249,6 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-        var answers = ["ucs-manager", "ucs-director", "intersight"];
         allSlots().forEach(function (slot, idx) {
           var tok = takeFromBank(answers[idx]);
           if (tok) {

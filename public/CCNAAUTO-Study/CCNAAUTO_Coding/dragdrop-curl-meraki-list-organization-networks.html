@@ -4,11 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Cisco compute management platforms drag and drop</title>
+  <title>CCNAAUTO - cURL Meraki list organization networks</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
+  <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    .meraki-api-exhibit {
+      margin: 16px 0 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 1px solid #c8d7ea;
+      background: #f7fbff;
+      color: #173b6d;
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+    .meraki-api-exhibit h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #1a3d6e;
+    }
+    .meraki-api-exhibit code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.9em;
+    }
+    .meraki-api-exhibit pre {
+      margin: 10px 0 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: #0f172a;
+      color: #e2e8f0;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+  </style>
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -22,45 +54,68 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-git-push-local-changes-order.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Coding/dragdrop-meraki-create-network-python.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-agile-waterfall-characteristics.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Coding/webex-membership-update-python-fill.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the capability on the left onto the Cisco compute management platform that supports the capability on the right.</h1>
+    <h1>Refer to the exhibit. Fill in the blanks to complete the cURL command to list the networks in the Meraki organization with an id of <code>384279060</code>.</h1>
+    <p class="sub">Drag each snippet into the matching blank. Not all snippets are used.</p>
+
+    <section class="meraki-api-exhibit" aria-label="Meraki list networks API excerpt">
+      <h2>List the networks in a Meraki organization</h2>
+      <p><strong>GET</strong> <code>https://api.meraki.com/api/v0/organizations/&lt;org_id&gt;/networks</code></p>
+      <p><strong>Response code:</strong> <code>200</code></p>
+      <p><strong>Response body:</strong></p>
+      <pre>[
+  {
+    "id": &lt;network_id&gt;,
+    "name": "Test Network",
+    "organization_id": &lt;new_org_id&gt;,
+    "type": "wireless",
+    "timeZone": "America/Los_Angeles",
+    "tags": " test "
+  }
+]</pre>
+    </section>
 
     <div class="sim-frame">
-      <div class="layout dnd-split">
-        <div class="panel">
-          <h2>Capabilities</h2>
+      <div class="layout dnd-split ccnaauto-code-dnd-layout">
+        <div class="panel panel--snippets">
+          <h2>Code snippets</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="ucs-director">Multi-cloud automation and orchestration platform for Cisco and third-party servers, networks, storage, and converged infrastructure.</div>
-            <div class="token" draggable="true" data-value="intersight">Software as a Service platform that enables Cisco infrastructure management, automation, and orchestration from anywhere.</div>
-            <div class="token" draggable="true" data-value="ucs-manager">Embedded software that enables Cisco server, fabric, and storage provisioning.</div>
+            <div class="token token--mono" draggable="true" data-value="organizations">organizations</div>
+            <div class="token token--mono" draggable="true" data-value="384279060">384279060</div>
+            <div class="token token--mono" draggable="true" data-value="networks">networks</div>
+            <div class="token token--mono" draggable="true" data-value="org_id">org_id</div>
+            <div class="token token--mono" draggable="true" data-value="clients">clients</div>
+            <div class="token token--mono" draggable="true" data-value="devices">devices</div>
           </div>
         </div>
 
-        <div class="panel">
-          <h2>Cisco compute management platform</h2>
-          <div class="match-list">
-            <div class="match-row">
-              <p class="match-desc">UCS Manager</p>
-              <div class="drop-slot" data-accept="ucs-manager"></div>
+        <div class="panel panel--script">
+          <h2>cURL command</h2>
+          <div class="ccnaauto-code-window" aria-label="Meraki list networks cURL command">
+            <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
             </div>
-            <div class="match-row">
-              <p class="match-desc">UCS Director</p>
-              <div class="drop-slot" data-accept="ucs-director"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">Intersight</p>
-              <div class="drop-slot" data-accept="intersight"></div>
+            <div class="ccnaauto-code-window__body">
+              <div class="ccnaauto-code-window__logo" aria-hidden="true">
+                <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+              </div>
+              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code><span class="sh-cmd">curl</span> <span class="sh-flag">-X</span> <span class="sh-val">GET</span> <span class="sh-flag">-L</span> <span class="sh-punct">\</span>
+  <span class="sh-flag">--url</span> <span class="sh-str">https://api.meraki.com/api/v0/</span><span class="drop-slot" data-accept="organizations"></span><span class="sh-str">/</span><span class="drop-slot" data-accept="384279060"></span><span class="sh-str">/</span><span class="drop-slot" data-accept="networks"></span> <span class="sh-punct">\</span>
+  <span class="sh-flag">-H</span> <span class="sh-str">'X-Cisco-Meraki-API-Key: $meraki_api_key'</span></code></pre>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <div class="actions">
       <button id="checkBtn" type="button">Check Answer</button>
       <button id="resetBtn" type="button">Reset</button>
@@ -69,7 +124,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.3 Cisco compute management platforms</span>
+      <span class="question-topic-meta__subject">2.1 REST API requests · 3.9.a Meraki API</span>
     </p>
 
     </main>
@@ -82,6 +137,7 @@
   <script>
     (function () {
       var bank = document.getElementById("bank");
+      var slots = document.querySelectorAll(".drop-slot");
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var resetBtn = document.getElementById("resetBtn");
@@ -89,9 +145,6 @@
       var dragged = null;
       var picked = null;
 
-      function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-accept]");
-      }
       function clearPick() {
         document.querySelectorAll(".token.is-picked").forEach(function (n) {
           n.classList.remove("is-picked");
@@ -155,7 +208,7 @@
           dragged = token;
         });
       });
-      allSlots().forEach(function (slot) {
+      slots.forEach(function (slot) {
         slot.addEventListener("dragover", function (e) {
           e.preventDefault();
           slot.classList.add("over");
@@ -180,43 +233,36 @@
         dragged = null;
       });
 
-      function takeFromBank(value) {
-        return [].slice.call(bank.querySelectorAll(".token")).find(function (t) {
-          return t.getAttribute("data-value") === value;
-        });
-      }
-
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
+        var full = [].slice.call(slots).every(function (slot) {
+          var token = slot.querySelector(".token");
+          return token && token.getAttribute("data-value") === slot.getAttribute("data-accept");
+        });
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
+          var token = slot.querySelector(".token");
+          if (!token) {
             slot.classList.add("incorrect");
-            allOk = false;
             return;
           }
-          var ok = t.getAttribute("data-value") === slot.getAttribute("data-accept");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
+          slot.classList.add(
+            token.getAttribute("data-value") === slot.getAttribute("data-accept") ? "correct" : "incorrect"
+          );
         });
-        result.textContent = allOk
-          ? "Correct. UCS Manager is embedded UCS management, UCS Director provides multi-cloud/data-center orchestration, and Intersight provides SaaS-based infrastructure management."
-          : "Incorrect. Match embedded UCS provisioning to UCS Manager, multi-cloud orchestration to UCS Director, and SaaS anywhere management to Intersight.";
+        result.textContent = full
+          ? "Correct. GET https://api.meraki.com/api/v0/organizations/384279060/networks lists networks for that organization."
+          : "Incorrect. Use organizations, the organization id 384279060, and networks in the URL path.";
       });
 
       showBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
-        });
-        var answers = ["ucs-manager", "ucs-director", "intersight"];
-        allSlots().forEach(function (slot, idx) {
-          var tok = takeFromBank(answers[idx]);
-          if (tok) {
-            slot.appendChild(tok);
+          var existing = slot.querySelector(".token");
+          if (existing) bank.appendChild(existing);
+          var target = bank.querySelector('.token[data-value="' + slot.getAttribute("data-accept") + '"]');
+          if (target) {
+            slot.appendChild(target);
             slot.classList.add("correct");
           }
         });
@@ -225,10 +271,10 @@
 
       resetBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
+        [].slice.call(slots).forEach(function (slot) {
           slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
+          var token = slot.querySelector(".token");
+          if (token) bank.appendChild(token);
         });
         result.textContent = "";
         (function reshuffle() {

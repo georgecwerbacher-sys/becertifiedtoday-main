@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - ICMP time exceeded routing issue | Be Certified Today</title>
+  <title>CCNAAUTO - OWASP cross-site scripting exhibit | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <style>
     :root {
@@ -33,10 +33,20 @@
       color: var(--bcc-outside-text);
     }
     h1 {
-      margin: 0 0 18px;
-      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      margin: 0 0 16px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
       line-height: 1.35;
       color: var(--bcc-outside-text);
+    }
+    .exhibit-wrap {
+      margin: 0 0 16px;
+      text-align: center;
+    }
+    .exhibit-wrap img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #c5d4e8;
+      border-radius: 8px;
     }
     .choice {
       display: block;
@@ -120,25 +130,32 @@
   <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/rest-api-401-requires-authentication.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_Questions/ios-xe-configuration-change-protocols-choose-two.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/synchronous-api-immediate-results.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Questions/bash-rm-rf-delete-directory-recursive.html">Next</a>
       </div>
     </nav>
 
-    <h1>Users cannot access a webserver. After traffic is captured, the capture tool shows an ICMP packet that reports "time exceeded in-transit." What is the cause of this webserver access issue?</h1>
+    <h1>Refer to the exhibit. Which OWASP threat does this example demonstrate?</h1>
 
-    <label class="choice"><input type="radio" name="ccnaauto_q93" value="A" />A. A router along the path is misrouting the packets in a wrong direction.</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q93" value="B" />B. A router along the path has the wrong time.</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q93" value="C" />C. The server is too far away and the packets require too much time to reach it.</label>
-    <label class="choice"><input type="radio" name="ccnaauto_q93" value="D" />D. The server is too loaded and the connection could not be handled in time.</label>
+    <figure class="exhibit-wrap">
+      <img
+        src="/CCNAAUTO-Study/CCNAAUTO_Questions/images/owasp-xss-url-script-alert.png"
+        alt="Browser window with a URL containing a script tag in the user query parameter and a JavaScript alert dialog"
+      />
+    </figure>
+
+    <label class="choice"><input type="radio" name="ccnaauto_q108" value="A" />A. broken access control</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q108" value="B" />B. SQL injection</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q108" value="C" />C. man-in-the-middle</label>
+    <label class="choice"><input type="radio" name="ccnaauto_q108" value="D" />D. cross-site scripting</label>
 
     <div class="answer-footer">
       <div class="answer-actions">
         <button id="checkBtn" type="button" class="nav-check">Check answer</button>
         <p class="question-topic-meta">
           <span class="question-topic-meta__version">200-901 v1.1</span>
-          <span class="question-topic-meta__subject">6.8 Application connectivity troubleshooting</span>
+          <span class="question-topic-meta__subject">4.10 OWASP threats</span>
         </p>
       </div>
       <div class="answer-side-actions">
@@ -151,9 +168,9 @@
 
   <script>
     (function () {
-      var CORRECT = "A";
+      var CORRECT = "D";
       var CORRECT_MSG =
-        "Correct. A - ICMP Time Exceeded in transit means the packet TTL expired before reaching the destination. In an operational network, this commonly indicates a routing loop or misrouting along the path, not clock time, distance, or server load.";
+        "Correct. D - Cross-site scripting (XSS) occurs when untrusted input such as a script tag in a URL parameter is reflected back and executed in the victim's browser. SQL injection targets databases, broken access control bypasses authorization, and man-in-the-middle attacks intercept traffic between endpoints.";
       var checkBtn = document.getElementById("checkBtn");
       var showBtn = document.getElementById("showBtn");
       var answerBox = document.getElementById("answerBox");
@@ -163,7 +180,7 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var sel = document.querySelector('input[name="ccnaauto_q93"]:checked');
+        var sel = document.querySelector('input[name="ccnaauto_q108"]:checked');
         answerBox.style.display = "block";
         if (!sel) {
           answerBox.className = "answer incorrect";
@@ -180,7 +197,7 @@
       });
 
       showBtn.addEventListener("click", function () {
-        var input = document.querySelector('input[name="ccnaauto_q93"][value="' + CORRECT + '"]');
+        var input = document.querySelector('input[name="ccnaauto_q108"][value="' + CORRECT + '"]');
         if (input) input.checked = true;
         answerBox.style.display = "block";
         answerBox.className = "answer correct";

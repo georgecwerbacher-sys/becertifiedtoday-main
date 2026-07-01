@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Cisco compute management platforms drag and drop</title>
+  <title>CCNAAUTO - Agile and Waterfall characteristics drag and drop</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -22,41 +22,40 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-git-push-local-changes-order.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-cisco-compute-management-platforms.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-agile-waterfall-characteristics.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the capability on the left onto the Cisco compute management platform that supports the capability on the right.</h1>
+    <h1>Drag and drop the characteristics from the left onto the corresponding software development methodologies on the right.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>Capabilities</h2>
+          <h2>Characteristics</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="ucs-director">Multi-cloud automation and orchestration platform for Cisco and third-party servers, networks, storage, and converged infrastructure.</div>
-            <div class="token" draggable="true" data-value="intersight">Software as a Service platform that enables Cisco infrastructure management, automation, and orchestration from anywhere.</div>
-            <div class="token" draggable="true" data-value="ucs-manager">Embedded software that enables Cisco server, fabric, and storage provisioning.</div>
+            <div class="token" draggable="true" data-value="advanced-planning">The focus is on advanced planning and outcome prediction.</div>
+            <div class="token" draggable="true" data-value="feedback-after-product">Users receive functional software and can provide feedback after the product is available.</div>
+            <div class="token" draggable="true" data-value="timeline-feedback-before">The timeline is followed and feedback is gathered before product completion.</div>
+            <div class="token" draggable="true" data-value="requirement-changes">Developers respond to requirement changes throughout the development process.</div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Cisco compute management platform</h2>
-          <div class="match-list">
-            <div class="match-row">
-              <p class="match-desc">UCS Manager</p>
-              <div class="drop-slot" data-accept="ucs-manager"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">UCS Director</p>
-              <div class="drop-slot" data-accept="ucs-director"></div>
-            </div>
-            <div class="match-row">
-              <p class="match-desc">Intersight</p>
-              <div class="drop-slot" data-accept="intersight"></div>
-            </div>
+          <h2>Software development methodology</h2>
+          <div class="category-grid">
+            <section class="category-box">
+              <h3 class="category-title">Agile</h3>
+              <div class="drop-slot" data-target="agile"></div>
+              <div class="drop-slot" data-target="agile"></div>
+            </section>
+            <section class="category-box">
+              <h3 class="category-title">Waterfall</h3>
+              <div class="drop-slot" data-target="waterfall"></div>
+              <div class="drop-slot" data-target="waterfall"></div>
+            </section>
           </div>
         </div>
       </div>
@@ -69,7 +68,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.3 Cisco compute management platforms</span>
+      <span class="question-topic-meta__subject">1.4 Software development methods</span>
     </p>
 
     </main>
@@ -79,6 +78,7 @@
     <a class="sim-nav-btn sim-nav-home" href="/ccnaauto-home.html">CCNAAUTO Study</a>
   </nav>
 
+  <script src="/CCNA-Study/js/ccna-dnd-category-check.js"></script>
   <script>
     (function () {
       var bank = document.getElementById("bank");
@@ -88,9 +88,15 @@
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
+      var CORRECT_GROUP = {
+        "advanced-planning": "waterfall",
+        "feedback-after-product": "waterfall",
+        "timeline-feedback-before": "agile",
+        "requirement-changes": "agile"
+      };
 
       function allSlots() {
-        return document.querySelectorAll(".drop-slot[data-accept]");
+        return document.querySelectorAll(".drop-slot[data-target]");
       }
       function clearPick() {
         document.querySelectorAll(".token.is-picked").forEach(function (n) {
@@ -187,40 +193,28 @@
       }
 
       checkBtn.addEventListener("click", function () {
-        var allOk = true;
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (!t) {
-            slot.classList.add("incorrect");
-            allOk = false;
-            return;
+        CcnaDndCategoryCheck.check({
+          bank: bank,
+          allSlots: allSlots,
+          correctGroup: CORRECT_GROUP,
+          result: result,
+          messages: {
+            ok: "Correct. Waterfall emphasizes upfront planning and delivers working software late in the cycle for feedback after release. Agile gathers feedback during development and adapts to changing requirements.",
+            fail: "Incorrect. Match upfront planning and late user feedback to Waterfall; match iterative feedback and changing requirements to Agile."
           }
-          var ok = t.getAttribute("data-value") === slot.getAttribute("data-accept");
-          slot.classList.add(ok ? "correct" : "incorrect");
-          if (!ok) allOk = false;
         });
-        result.textContent = allOk
-          ? "Correct. UCS Manager is embedded UCS management, UCS Director provides multi-cloud/data-center orchestration, and Intersight provides SaaS-based infrastructure management."
-          : "Incorrect. Match embedded UCS provisioning to UCS Manager, multi-cloud orchestration to UCS Director, and SaaS anywhere management to Intersight.";
       });
 
       showBtn.addEventListener("click", function () {
         clearPick();
-        allSlots().forEach(function (slot) {
-          slot.classList.remove("correct", "incorrect", "over");
-          var t = slot.querySelector(".token");
-          if (t) bank.appendChild(t);
+        CcnaDndCategoryCheck.show({
+          bank: bank,
+          allSlots: allSlots,
+          correctGroup: CORRECT_GROUP,
+          takeFromBank: takeFromBank,
+          result: result,
+          showMessage: "Answer shown."
         });
-        var answers = ["ucs-manager", "ucs-director", "intersight"];
-        allSlots().forEach(function (slot, idx) {
-          var tok = takeFromBank(answers[idx]);
-          if (tok) {
-            slot.appendChild(tok);
-            slot.classList.add("correct");
-          }
-        });
-        result.textContent = "Answer shown.";
       });
 
       resetBtn.addEventListener("click", function () {

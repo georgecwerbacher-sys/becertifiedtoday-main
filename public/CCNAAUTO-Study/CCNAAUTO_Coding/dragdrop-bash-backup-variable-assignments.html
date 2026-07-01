@@ -10,6 +10,30 @@
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-code-exhibit.css" />
   <link rel="stylesheet" href="/CCNAAUTO-Study/css/ccnaauto-question-page.css" />
+  <style>
+    .bash-backup-dnd .ccnaauto-code-window {
+      margin-bottom: 14px;
+    }
+    .bash-backup-dnd .bank-wrap {
+      margin-top: 4px;
+    }
+    .bash-backup-dnd .bank-wrap h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      color: #1a3d6e;
+    }
+    .bash-backup-dnd #bank {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .bash-backup-dnd #bank .token {
+      flex: 0 1 auto;
+      min-width: 9rem;
+      text-align: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+  </style>
 </head>
 <body class="ccnaauto-question-ui ccna-dnd-ui ccnaauto-dnd-ui dragdrop-exercise">
   <script src="/js/sample-url-mask-apply.js"></script>
@@ -30,33 +54,20 @@
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Refer to the exhibit. Drag and drop the variables from the left onto the item numbers on the right that match the missing assignments in the Bash script.</h1>
-    <p class="sub">Drag each variable name into the matching blank.</p>
+    <h1>Drag and drop the code from the bottom onto the box where the code is missing in the Bash script to complete the missing assignment.</h1>
 
-    <div class="sim-frame">
-      <div class="layout dnd-split ccnaauto-code-dnd-layout">
-        <div class="panel panel--snippets">
-          <h2>Variables</h2>
-          <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="backuptime">BACKUPTIME</div>
-            <div class="token" draggable="true" data-value="sourcefolder">SOURCEFOLDER</div>
-            <div class="token" draggable="true" data-value="destination">DESTINATION</div>
-          </div>
+    <div class="sim-frame bash-backup-dnd">
+      <div class="ccnaauto-code-window" aria-label="Bash backup script exhibit">
+        <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
+          <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
         </div>
-
-        <div class="panel panel--script">
-          <h2>Bash script</h2>
-          <div class="ccnaauto-code-window" aria-label="Bash backup script exhibit">
-            <div class="ccnaauto-code-window__titlebar" aria-hidden="true">
-              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--close"></span>
-              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--minimize"></span>
-              <span class="ccnaauto-code-window__dot ccnaauto-code-window__dot--maximize"></span>
-            </div>
-            <div class="ccnaauto-code-window__body">
-              <div class="ccnaauto-code-window__logo" aria-hidden="true">
-                <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
-              </div>
-              <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>#!/bin/bash
+        <div class="ccnaauto-code-window__body">
+          <div class="ccnaauto-code-window__logo" aria-hidden="true">
+            <img src="/images/logo/becertifiedtoday_logo_image_trans.png" alt="" />
+          </div>
+          <pre class="ccnaauto-code-window__pre ccnaauto-code-window__pre--shell"><code>#!/bin/bash
 <span class="drop-slot" data-accept="backuptime"></span>=`date +%b-%d-%y`
 
 <span class="drop-slot" data-accept="destination"></span>=/home/usr/path/backup-$BACKUPTIME.tar.gz
@@ -64,8 +75,15 @@
 <span class="drop-slot" data-accept="sourcefolder"></span>=/home/usr/path/data_folder
 
 tar -cpzf $DESTINATION $SOURCEFOLDER</code></pre>
-            </div>
-          </div>
+        </div>
+      </div>
+
+      <div class="bank-wrap">
+        <h2>Variables</h2>
+        <div id="bank" class="bank">
+          <div class="token" draggable="true" data-value="backuptime">BACKUPTIME</div>
+          <div class="token" draggable="true" data-value="sourcefolder">SOURCEFOLDER</div>
+          <div class="token" draggable="true" data-value="destination">DESTINATION</div>
         </div>
       </div>
     </div>

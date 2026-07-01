@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CCNAAUTO - Cisco compute management platforms drag and drop</title>
+  <title>CCNAAUTO - Git push local changes order</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/CCNA-Study/CCNA_Samples/ccna-sample-touch.css" />
   <link rel="stylesheet" href="/CCNA-Study/js/ccna-dnd-page.css" />
@@ -22,40 +22,42 @@
     <main class="card">
     <nav class="question-nav" aria-label="Question navigation">
       <div class="question-nav-links">
-        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-git-push-local-changes-order.html">Back</a>
+        <a class="nav-link nav-prev" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-dna-center-path-trace-request-order.html">Back</a>
         <a class="nav-link nav-home" href="/ccnaauto-home.html">Home</a>
-        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-agile-waterfall-characteristics.html">Next</a>
+        <a class="nav-link nav-next next-link" href="/CCNAAUTO-Study/CCNAAUTO_D_D/dragdrop-cisco-compute-management-platforms.html">Next</a>
       </div>
     </nav>
     <p class="dragdrop-touch-hint" aria-hidden="true">On a phone or tablet, tap a chip to pick it up, then tap a drop zone (or another chip to swap).</p>
 
-    <h1>Drag and drop the capability on the left onto the Cisco compute management platform that supports the capability on the right.</h1>
+    <h1>Drag and drop the Git commands from the left onto the right that add modified local files to a remote repository. Not all options are used.</h1>
 
     <div class="sim-frame">
       <div class="layout dnd-split">
         <div class="panel">
-          <h2>Capabilities</h2>
+          <h2>Git commands</h2>
           <div id="bank" class="bank">
-            <div class="token" draggable="true" data-value="ucs-director">Multi-cloud automation and orchestration platform for Cisco and third-party servers, networks, storage, and converged infrastructure.</div>
-            <div class="token" draggable="true" data-value="intersight">Software as a Service platform that enables Cisco infrastructure management, automation, and orchestration from anywhere.</div>
-            <div class="token" draggable="true" data-value="ucs-manager">Embedded software that enables Cisco server, fabric, and storage provisioning.</div>
+            <div class="token token--mono" draggable="true" data-value="git-push"><code>git push</code></div>
+            <div class="token token--mono" draggable="true" data-value="git-add"><code>git add .</code></div>
+            <div class="token token--mono" draggable="true" data-value="git-checkout"><code>git checkout -b "new branch"</code></div>
+            <div class="token token--mono" draggable="true" data-value="git-commit"><code>git commit -m "this is my edit"</code></div>
+            <div class="token token--mono" draggable="true" data-value="git-pull"><code>git pull</code></div>
           </div>
         </div>
 
         <div class="panel">
-          <h2>Cisco compute management platform</h2>
+          <h2>Correct order</h2>
           <div class="match-list">
             <div class="match-row">
-              <p class="match-desc">UCS Manager</p>
-              <div class="drop-slot" data-accept="ucs-manager"></div>
+              <p class="match-desc">Git command one</p>
+              <div class="drop-slot" data-accept="git-add"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">UCS Director</p>
-              <div class="drop-slot" data-accept="ucs-director"></div>
+              <p class="match-desc">Git command two</p>
+              <div class="drop-slot" data-accept="git-commit"></div>
             </div>
             <div class="match-row">
-              <p class="match-desc">Intersight</p>
-              <div class="drop-slot" data-accept="intersight"></div>
+              <p class="match-desc">Git command three</p>
+              <div class="drop-slot" data-accept="git-push"></div>
             </div>
           </div>
         </div>
@@ -69,7 +71,7 @@
     </div>
     <p class="question-topic-meta" aria-label="Format and topic">
       <span class="question-topic-meta__version">200-901 v1.1</span>
-      <span class="question-topic-meta__subject">3.3 Cisco compute management platforms</span>
+      <span class="question-topic-meta__subject">1.8 Git version control</span>
     </p>
 
     </main>
@@ -88,6 +90,7 @@
       var result = document.getElementById("result");
       var dragged = null;
       var picked = null;
+      var answers = ["git-add", "git-commit", "git-push"];
 
       function allSlots() {
         return document.querySelectorAll(".drop-slot[data-accept]");
@@ -108,6 +111,10 @@
         var existing = slot.querySelector(".token");
         if (existing && existing !== token) bank.appendChild(existing);
         slot.appendChild(token);
+      }
+      function accepts(slot, value) {
+        var allowed = String(slot.getAttribute("data-accept") || "").split("|");
+        return allowed.indexOf(value) !== -1;
       }
 
       (function shuffleBank() {
@@ -196,13 +203,13 @@
             allOk = false;
             return;
           }
-          var ok = t.getAttribute("data-value") === slot.getAttribute("data-accept");
+          var ok = accepts(slot, t.getAttribute("data-value"));
           slot.classList.add(ok ? "correct" : "incorrect");
           if (!ok) allOk = false;
         });
         result.textContent = allOk
-          ? "Correct. UCS Manager is embedded UCS management, UCS Director provides multi-cloud/data-center orchestration, and Intersight provides SaaS-based infrastructure management."
-          : "Incorrect. Match embedded UCS provisioning to UCS Manager, multi-cloud orchestration to UCS Director, and SaaS anywhere management to Intersight.";
+          ? "Correct. Stage changes with git add, record them with git commit, then upload the commit to the remote with git push."
+          : "Incorrect. Stage with git add, commit locally, then push to the remote repository.";
       });
 
       showBtn.addEventListener("click", function () {
@@ -212,7 +219,6 @@
           var t = slot.querySelector(".token");
           if (t) bank.appendChild(t);
         });
-        var answers = ["ucs-manager", "ucs-director", "intersight"];
         allSlots().forEach(function (slot, idx) {
           var tok = takeFromBank(answers[idx]);
           if (tok) {
