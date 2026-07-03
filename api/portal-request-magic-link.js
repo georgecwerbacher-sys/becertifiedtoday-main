@@ -5,6 +5,8 @@
  * Legacy paths rewrite here via vercel.json:
  *   /api/ccna-portal-request-magic-link
  *   /api/encor-portal-request-magic-link
+ *   /api/secplus-portal-request-magic-link
+ *   /api/secplus-trial-access  (?grant=trial-3d)
  */
 import Stripe from "stripe";
 import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
@@ -29,7 +31,10 @@ import {
   sendCcnaPortalMagicEmail,
   sendEncorPortalMagicEmail,
   sendSecplusPortalMagicEmail,
+  sendSecplusTrial3dEmail,
 } from "../server-lib/ccna-portal-resend.js";
+import { grantSecplusTrialAccess } from "../server-lib/secplus-trial-access.js";
+import { appendMarketingLeadCsv, buildLeadCsvRow } from "../server-lib/append-marketing-lead-csv.js";
 import { appendPortalMagicLinkRequest } from "../server-lib/portal-magic-link-requests.js";
 
 function readJsonBody(req) {
@@ -97,6 +102,78 @@ const TRACK_CONFIG = {
   },
 };
 
+function wantsSecplusTrial3dGrant(req, body) {
+  if (String(req.query?.grant || "").trim().toLowerCase() === "trial-3d") return true;
+  return body?.grantTrial3d === true;
+}
+
+async function handleSecplusTrial3dGrant(res, body, email, sk, jwtSecret, site) {
+  const stripe = new Stripe(sk.secret);
+  const grant = await grantSecplusTrialAccess(stripe, email);
+
+  if (!grant.ok) {
+    const status =
+      grant.reason === "invalid-email"
+        ? 400
+        : grant.reason === "paid-portal-active" || grant.reason === "trial-used"
+          ? 200
+          : 400;
+    return res.status(status).json({
+      ok: false,
+      reason: grant.reason,
+      message: grant.message,
+    });
+  }
+
+  const expSec = Math.floor(grant.accessExpiresAtMs / 1000);
+  const token = signPortalMagicJwt(
+    {
+      aud: "secplus-portal-access",
+      kind: "secplus-trial",
+      email: grant.email,
+      productId: grant.productId,
+      exp: expSec,
+    },
+    jwtSecret
+  );
+
+  const magicUrl = `${site}/COMP_TIA_SEC+/secplus-portal-magic.html#t=${encodeURIComponent(token)}`;
+
+  void appendMarketingLeadCsv(
+    buildLeadCsvRow(body, {
+      event: grant.alreadyActive ? "secplus_trial_3d_return" : "secplus_trial_3d_grant",
+      email: grant.email,
+      magnet: "secplus-trial-3d",
+      product: "secplus",
+      source: body.source || "secplus-trial-3d",
+    })
+  ).catch((err) => {
+    console.warn("[secplus-trial] lead csv:", err?.message || err);
+  });
+
+  let emailSent = false;
+  try {
+    emailSent = await sendSecplusTrial3dEmail({ to: grant.email, magicUrl });
+  } catch (err) {
+    console.warn("[secplus-trial] email:", err?.message || err);
+  }
+
+  return res.status(200).json({
+    ok: true,
+    productId: grant.productId,
+    accessExpiresAt: grant.accessExpiresAtMs,
+    accessDays: 3,
+    alreadyActive: !!grant.alreadyActive,
+    emailSent,
+    magicUrl,
+    message: grant.alreadyActive
+      ? "Your free 3-day access is still active on this email. Opening the portal on this device now."
+      : emailSent
+        ? "Your free 3-day access is active on this browser. We also emailed a link for other devices."
+        : "Your free 3-day access is active on this browser. Save this tab or use the portal link we returned if you switch devices.",
+  });
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -131,17 +208,22 @@ export default async function handler(req, res) {
       error: "PUBLIC_SITE_URL is not configured",
     });
   }
+
+  const email = normalizeEmail(body.email);
+  if (!email) {
+    return res.status(400).json({ ok: false, error: "Enter a valid email address." });
+  }
+
+  if (track === "secplus" && wantsSecplusTrial3dGrant(req, body)) {
+    return handleSecplusTrial3dGrant(res, body, email, sk, jwtSecret, site);
+  }
+
   if (!resendKey) {
     return res.status(503).json({
       ok: false,
       error: "Email delivery is not configured",
       hint: "Set RESEND_API_KEY and RESEND_FROM on Vercel, then redeploy.",
     });
-  }
-
-  const email = normalizeEmail(body.email);
-  if (!email) {
-    return res.status(400).json({ ok: false, error: "Enter a valid email address." });
   }
 
   const stripe = new Stripe(sk.secret);

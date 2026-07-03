@@ -162,10 +162,10 @@
         statusEl.hidden = true;
         actionsEl.hidden = true;
 
-        fetch("/api/secplus-trial-access", {
+        fetch("/api/portal-request-magic-link?track=secplus&grant=trial-3d", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email, source: "secplus-trial-3d-page" }),
+          body: JSON.stringify({ email: email, grantTrial3d: true, source: "secplus-trial-3d-page" }),
         })
           .then(function (res) {
             return res.json().then(function (data) {
