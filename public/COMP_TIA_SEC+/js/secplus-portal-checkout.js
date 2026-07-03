@@ -11,9 +11,14 @@
  *   /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
  *
  * Optional metadata on the link: productId = secplus-portal-30d
+ *
+ * 3-day free trial Payment Link (promo / partner):
+ *   https://buy.stripe.com/6oU3cu7gF5Ovglq1xac3m0b
+ * Optional metadata: productId = secplus-portal-3d
  */
 (function () {
   var LINKS = {
+    "3d": "https://buy.stripe.com/6oU3cu7gF5Ovglq1xac3m0b",
     "10d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
     "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
   };
@@ -22,6 +27,13 @@
   var LAUNCH_PROMO_CODE = "ONETIMEDEAL";
 
   var PRODUCTS = {
+    "3d": {
+      id: "secplus_portal_3d",
+      name: "CompTIA Security+ 3-day free access",
+      value: "0.00",
+      defaultLabel: "Get 3-day free access",
+      labelKey: "secplusPortal3dCheckoutLabel",
+    },
     "10d": {
       id: "secplus_portal_10d",
       name: "CompTIA Security+ 10-day access",
@@ -116,6 +128,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-secplus-portal-3d-checkout]").forEach(function (btn) {
+      wireCheckout(btn, "3d");
+    });
     document.querySelectorAll("[data-secplus-portal-30d-checkout]").forEach(function (btn) {
       wireCheckout(btn, "30d");
     });

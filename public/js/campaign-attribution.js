@@ -107,7 +107,7 @@
       "[data-bcc-track='begin_checkout'], .bcc-track-checkout, " +
       "[data-ccna-portal-30d-checkout], " +
       "[data-encor-portal-30d-checkout], " +
-      "[data-secplus-portal-10d-checkout], [data-secplus-portal-30d-checkout]";
+      "[data-secplus-portal-3d-checkout], [data-secplus-portal-10d-checkout], [data-secplus-portal-30d-checkout]";
     document.querySelectorAll(selector).forEach(function (el) {
       if (el.dataset.bccCheckoutBound === "1") return;
       el.dataset.bccCheckoutBound = "1";

@@ -17,6 +17,7 @@ import {
   portalAccessExpiresAtMs,
 } from "../server-lib/ccna-portal-stripe.js";
 import { verifyPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
+import { getSecplusTrialAccessForEmail } from "../server-lib/secplus-trial-access.js";
 
 function readJsonBody(req) {
   try {
@@ -70,18 +71,37 @@ export default async function handler(req, res) {
   const nowSec = Math.floor(Date.now() / 1000);
   const track = resolveTrackFromAud(payload?.aud);
 
-  if (
-    !payload ||
-    !track ||
-    typeof payload.cs !== "string" ||
-    payload.cs.indexOf("cs_") !== 0 ||
-    typeof payload.exp !== "number" ||
-    payload.exp <= nowSec
-  ) {
+  if (!payload || !track || typeof payload.exp !== "number" || payload.exp <= nowSec) {
     return res.status(401).json({ ok: false, error: "Invalid or expired link" });
   }
 
   const stripe = new Stripe(sk.secret);
+
+  if (payload.kind === "secplus-trial" && track === "secplus") {
+    const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
+    const productId = typeof payload.productId === "string" ? payload.productId.trim() : "";
+    if (!email || productId !== "secplus-portal-3d") {
+      return res.status(401).json({ ok: false, error: "Invalid or expired link" });
+    }
+
+    const trial = await getSecplusTrialAccessForEmail(stripe, email);
+    if (!trial || trial.accessExpiresAtMs <= Date.now()) {
+      return res.status(403).json({ ok: false, error: "Access window has ended" });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      productId: trial.productId,
+      accessExpiresAt: trial.accessExpiresAtMs,
+      checkoutSessionId: null,
+      customer_email: email,
+    });
+  }
+
+  if (typeof payload.cs !== "string" || payload.cs.indexOf("cs_") !== 0) {
+    return res.status(401).json({ ok: false, error: "Invalid or expired link" });
+  }
+
   const isProduct =
     track === "encor"
       ? isEncorPortalProduct

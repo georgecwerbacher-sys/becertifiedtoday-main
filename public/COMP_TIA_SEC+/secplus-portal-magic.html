@@ -176,7 +176,13 @@
           var exp =
             typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
               ? data.accessExpiresAt
-              : Date.now() + 30 * 86400000;
+              : Date.now() +
+                (data.productId === "secplus-portal-3d"
+                  ? 3
+                  : data.productId === "secplus-portal-10d"
+                    ? 10
+                    : 30) *
+                  86400000;
           var cs =
             typeof data.checkoutSessionId === "string" && data.checkoutSessionId.indexOf("cs_") === 0
               ? data.checkoutSessionId

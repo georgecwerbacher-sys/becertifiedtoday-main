@@ -21,6 +21,7 @@ const ITEM_LABELS = {
   encor_portal_10d: "ENCOR 10-day portal",
   encor_portal_30d: "ENCOR 30-day portal",
   encor_timed_simulation: "ENCOR timed simulation",
+  secplus_portal_3d: "Security+ 3-day portal",
   secplus_portal_10d: "Security+ 10-day portal",
   secplus_portal_30d: "Security+ 30-day portal",
 };

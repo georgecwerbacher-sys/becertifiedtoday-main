@@ -33,23 +33,36 @@
   }
 
   function isSecplusPortalProductId(productId) {
-    return productId === "secplus-portal-30d" || productId === "secplus-portal-10d";
+    return (
+      productId === "secplus-portal-30d" ||
+      productId === "secplus-portal-10d" ||
+      productId === "secplus-portal-3d"
+    );
+  }
+
+  function secplusPortalAccessDays(productId) {
+    if (productId === "secplus-portal-3d") return 3;
+    if (productId === "secplus-portal-10d") return 10;
+    if (productId === "secplus-portal-30d") return 30;
+    return 0;
   }
 
   function tierToProductId(tier) {
+    if (tier === "3d") return "secplus-portal-3d";
     if (tier === "10d") return "secplus-portal-10d";
     if (tier === "30d") return "secplus-portal-30d";
     return null;
   }
 
   function productIdFromAmountCentsSecplus(amount) {
+    if (amount === 0) return "secplus-portal-3d";
     if (amount === 999) return "secplus-portal-10d";
     if (amount === 1999 || amount === 1499) return "secplus-portal-30d";
     return null;
   }
 
   function bccSetSecplusPendingPortalTier(tier) {
-    if (tier !== "10d" && tier !== "30d") return false;
+    if (tier !== "3d" && tier !== "10d" && tier !== "30d") return false;
     try {
       localStorage.setItem(KEY_PENDING_TIER, tier);
       localStorage.setItem(KEY_PENDING_AT, String(Date.now()));
@@ -64,7 +77,7 @@
       var tier = localStorage.getItem(KEY_PENDING_TIER);
       var at = parseInt(localStorage.getItem(KEY_PENDING_AT) || "0", 10);
       if (!tier || !Number.isFinite(at) || Date.now() - at > PENDING_MAX_MS) return null;
-      return tier === "10d" || tier === "30d" ? tier : null;
+      return tier === "3d" || tier === "10d" || tier === "30d" ? tier : null;
     } catch (e) {
       return null;
     }
@@ -155,7 +168,7 @@
     var exp =
       typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
         ? data.accessExpiresAt
-        : Date.now() + (productId === "secplus-portal-10d" ? 10 : 30) * 86400000;
+        : Date.now() + secplusPortalAccessDays(productId) * 86400000;
     if (exp <= Date.now()) {
       return false;
     }

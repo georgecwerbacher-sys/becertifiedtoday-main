@@ -146,3 +146,51 @@ export async function sendSecplusPortalMagicEmail({ to, magicUrl }) {
   }
   return true;
 }
+
+export async function sendSecplusTrial3dEmail({ to, magicUrl }) {
+  const key = (process.env.RESEND_API_KEY || "").trim();
+  if (!key) {
+    console.warn("[secplus-trial] RESEND_API_KEY unset — skipping trial email");
+    return false;
+  }
+
+  const escapeHtml = (s) =>
+    String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const escapeAttr = (s) =>
+    String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+  const from =
+    (process.env.RESEND_FROM || "").trim() ||
+    "Be Certified Today <onboarding@resend.dev>";
+
+  const subject =
+    (process.env.RESEND_SECPLUS_TRIAL_3D_SUBJECT || "").trim() ||
+    "Your free 3-day Security+ access";
+
+  const plainUrl = escapeHtml(magicUrl);
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      subject,
+      html: `<p>Your free <strong>3-day CompTIA Security+</strong> library access is ready.</p>
+<p><a href="${escapeAttr(magicUrl)}"><strong>Open Security+ training portal</strong></a></p>
+<p>If the button does not work, paste this URL into your browser:</p>
+<p style="word-break:break-all;font-size:13px;color:#444">${plainUrl}</p>
+<p>This link works for 3 days from signup. When it ends, you can purchase 10-day or 30-day access from Security+ home.</p>`,
+    }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    console.error("[secplus-trial] Resend error:", res.status, text.slice(0, 500));
+    throw new Error("Resend rejected email: HTTP " + res.status);
+  }
+  return true;
+}

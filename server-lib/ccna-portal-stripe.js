@@ -13,6 +13,7 @@ const PAYMENT_LINK_SLUG_TO_PRODUCT = {
   "5kQ14mbwVgt93yEfo0c3m07": "secplus-portal-30d",
   cNi28q6cB90H3yEdfSc3m0a: "secplus-portal-30d",
   "8x28wObwVfp54CIgs4c3m06": "secplus-portal-10d",
+  "6oU3cu7gF5Ovglq1xac3m0b": "secplus-portal-3d",
   "9B63cudF33Gnc5a1xac3m08": "secplus-test-simulation",
 };
 
@@ -22,6 +23,7 @@ const PRODUCT_ID_ALIASES = {
   ccna_portal_30d: "ccna-portal-30d",
   encor_portal_10d: "encor-portal-10d",
   encor_portal_30d: "encor-portal-30d",
+  secplus_portal_3d: "secplus-portal-3d",
   secplus_portal_10d: "secplus-portal-10d",
   secplus_portal_30d: "secplus-portal-30d",
   secplus_test_simulation: "secplus-test-simulation",
@@ -70,6 +72,9 @@ function productIdFromAmountCents(amount, track, session = null) {
     if (track === "encor") return "encor-test-simulation";
     if (track === "secplus") return "secplus-test-simulation";
     return "ccna-test-simulation";
+  }
+  if (amount === 0 && track === "secplus") {
+    return "secplus-portal-3d";
   }
   if (amount === 999) {
     if (track === "encor") return "encor-portal-10d";
@@ -162,6 +167,10 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "encor-portal-10d";
         break;
       }
+      if (/security\+|secplus|sy0-701/i.test(name) && /3.?day|3 day/i.test(name)) {
+        productId = "secplus-portal-3d";
+        break;
+      }
       if (/security\+|secplus|sy0-701/i.test(name) && /10.?day|10 day/i.test(name)) {
         productId = "secplus-portal-10d";
         break;
@@ -233,7 +242,30 @@ export function isEncorPortalProduct(productId) {
 }
 
 export function isSecplusPortalProduct(productId) {
-  return productId === "secplus-portal-30d" || productId === "secplus-portal-10d";
+  return (
+    productId === "secplus-portal-30d" ||
+    productId === "secplus-portal-10d" ||
+    productId === "secplus-portal-3d"
+  );
+}
+
+export function portalAccessDaysForProductId(productId) {
+  if (productId === "secplus-portal-3d") return 3;
+  if (
+    productId === "ccna-portal-10d" ||
+    productId === "encor-portal-10d" ||
+    productId === "secplus-portal-10d"
+  ) {
+    return 10;
+  }
+  if (
+    productId === "ccna-portal-30d" ||
+    productId === "encor-portal-30d" ||
+    productId === "secplus-portal-30d"
+  ) {
+    return 30;
+  }
+  return 30;
 }
 
 export function isSecplusTestSimulationProduct(productId) {
@@ -257,14 +289,7 @@ export function portalAccessExpiresAtMs(sess, productId = null) {
       anchorSec = Math.max(anchorSec, pi.created);
     }
   } catch (_) {}
-  const days =
-    productId === "ccna-portal-10d" || productId === "encor-portal-10d" || productId === "secplus-portal-10d"
-      ? 10
-      : productId === "ccna-portal-30d" ||
-          productId === "encor-portal-30d" ||
-          productId === "secplus-portal-30d"
-        ? 30
-        : 30;
+  const days = portalAccessDaysForProductId(productId);
   return anchorSec * 1000 + days * 86400000;
 }
 

@@ -23,6 +23,7 @@ import {
   findActiveSecplusPortalSessionForEmail,
   getSecplusPurchaseHintsForEmail,
 } from "../server-lib/secplus-portal-customers.js";
+import { getSecplusTrialAccessForEmail } from "../server-lib/secplus-trial-access.js";
 import { signPortalMagicJwt } from "../server-lib/ccna-portal-magic-jwt.js";
 import {
   sendCcnaPortalMagicEmail,
@@ -206,6 +207,35 @@ export default async function handler(req, res) {
             reason: "portal-expired",
             message:
               "Security+ library access for this email has expired. Purchase a new 10-day or 30-day pass from Security+ home if you want the training portal again.",
+          });
+        }
+        const trial = await getSecplusTrialAccessForEmail(stripe, email);
+        if (trial) {
+          const token = signPortalMagicJwt(
+            {
+              aud: cfg.aud,
+              kind: "secplus-trial",
+              email: trial.email,
+              productId: trial.productId,
+              exp: Math.floor(trial.accessExpiresAtMs / 1000),
+            },
+            jwtSecret
+          );
+          const magicUrl = `${site}${cfg.magicPath}#t=${encodeURIComponent(token)}`;
+          const sent = await cfg.sendEmail({ to: email, magicUrl });
+          logMagicLinkRequest({
+            found: true,
+            sent: !!sent,
+            reason: sent ? "trial-sent" : "trial-send-failed",
+          });
+          return res.status(200).json({
+            ok: true,
+            sent: !!sent,
+            found: true,
+            reason: sent ? "trial-sent" : "trial-send-failed",
+            message: sent
+              ? "We sent a login link for your free 3-day Security+ access. Check your inbox and spam folder."
+              : "We found active free trial access but could not deliver email. Open the portal on the device where you signed up, or try again shortly.",
           });
         }
       }

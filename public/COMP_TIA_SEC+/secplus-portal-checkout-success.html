@@ -194,6 +194,7 @@
 
       function purchaseValueForProduct(productId) {
         if (productId === "secplus-test-simulation") return 9.99;
+        if (productId === "secplus-portal-3d") return 0;
         if (productId === "secplus-portal-10d") return 9.99;
         if (productId === "secplus-portal-30d") return 19.99;
         return undefined;
@@ -208,7 +209,23 @@
       }
 
       function isPortalProduct(productId) {
-        return productId === "secplus-portal-30d" || productId === "secplus-portal-10d";
+        return (
+          productId === "secplus-portal-30d" ||
+          productId === "secplus-portal-10d" ||
+          productId === "secplus-portal-3d"
+        );
+      }
+
+      function portalAccessLabel(productId) {
+        if (productId === "secplus-portal-3d") return "3 days";
+        if (productId === "secplus-portal-10d") return "10 days";
+        return "30 days";
+      }
+
+      function portalAccessDays(productId) {
+        if (productId === "secplus-portal-3d") return 3;
+        if (productId === "secplus-portal-10d") return 10;
+        return 30;
       }
 
       async function run() {
@@ -224,8 +241,13 @@
           if (typeof window.bccApplySecplusPortalCheckoutFromUrl === "function") {
             var granted = await window.bccApplySecplusPortalCheckoutFromUrl(null, true);
             if (granted && typeof window.bccSecplusPortalAccessActive === "function" && window.bccSecplusPortalAccessActive()) {
+              var storedProductId = null;
+              try {
+                var stored = JSON.parse(localStorage.getItem("bcc_secplus_portal_v1") || "null");
+                if (stored && stored.productId) storedProductId = stored.productId;
+              } catch (_) {}
               finishPortalAccess("your paid window", sessionId);
-              trackAdsPurchase(sessionId, "secplus-portal-30d");
+              trackAdsPurchase(sessionId, storedProductId || "secplus-portal-30d");
               return;
             }
           }
@@ -262,11 +284,11 @@
             return;
           }
 
-          var label = data.productId === "secplus-portal-10d" ? "10 days" : "30 days";
+          var label = portalAccessLabel(data.productId);
           if (
             typeof window.bccSetSecplusPortalEntitlement === "function" &&
             window.bccSetSecplusPortalEntitlement(
-              typeof data.accessExpiresAt === "number" ? data.accessExpiresAt : Date.now() + (data.productId === "secplus-portal-10d" ? 10 : 30) * 86400000,
+              typeof data.accessExpiresAt === "number" ? data.accessExpiresAt : Date.now() + portalAccessDays(data.productId) * 86400000,
               sessionId,
               data.productId
             )
