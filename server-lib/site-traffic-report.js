@@ -1,12 +1,11 @@
 /**
  * Site traffic report for /admin → Site traffic (GA4).
+ * Website metrics only — no paid-channel or Google Ads attribution.
  */
 import {
-  fetchBeginCheckoutByItemId,
-  fetchBeginCheckoutSummary,
-  fetchCertHomeEventCounts,
   fetchCertHomeLandingSessions,
   fetchCertHomePageMetrics,
+  fetchSiteEventCounts,
   fetchTopPages,
   rangePresetLabel,
 } from "./google-analytics.js";
@@ -16,18 +15,12 @@ export const PRIMARY_LANDING_PATH =
 
 const PRIMARY_LANDING_LABEL = "Security+ home";
 
-const CHECKOUT_ITEM_IDS = [
-  "secplus_portal_10d",
-  "secplus_portal_30d",
-  "secplus_portal_3d",
+const SITE_CONVERSION_EVENTS = [
+  { key: "begin_checkout", label: "Checkout clicks" },
+  { key: "purchase", label: "Purchases (GA4)" },
+  { key: "secplus_free_sim_start", label: "Free sim starts" },
+  { key: "generate_lead", label: "Lead forms" },
 ];
-
-function pct(num, den) {
-  const n = Number(num) || 0;
-  const d = Number(den) || 0;
-  if (d <= 0) return null;
-  return n / d;
-}
 
 /**
  * @param {import('@google-analytics/data').BetaAnalyticsDataClient} client
@@ -36,32 +29,38 @@ function pct(num, den) {
  * @param {string} rangePreset
  */
 export async function buildSiteTrafficReport(client, propertyId, range, rangePreset = "7d") {
-  const [checkoutSummary, checkoutByItem, topPages, primaryPageMetrics, primaryLandingSessions, primaryEvents] =
-    await Promise.all([
-      fetchBeginCheckoutSummary(client, propertyId, range),
-      fetchBeginCheckoutByItemId(client, propertyId, range, CHECKOUT_ITEM_IDS, 20),
-      fetchTopPages(client, propertyId, range, 20),
-      fetchCertHomePageMetrics(client, propertyId, range, [PRIMARY_LANDING_PATH]),
-      fetchCertHomeLandingSessions(client, propertyId, range, [PRIMARY_LANDING_PATH]),
-      fetchCertHomeEventCounts(client, propertyId, range, [PRIMARY_LANDING_PATH], [
-        "begin_checkout",
-        "purchase",
-        "secplus_free_sim_start",
-        "home_offer_popup_shown",
-        "home_offer_popup_click",
-        "generate_lead",
-      ]),
-    ]);
+  const [topPages, primaryPageMetrics, primaryLandingSessions, siteEvents] = await Promise.all([
+    fetchTopPages(client, propertyId, range, 20),
+    fetchCertHomePageMetrics(client, propertyId, range, [PRIMARY_LANDING_PATH]),
+    fetchCertHomeLandingSessions(client, propertyId, range, [PRIMARY_LANDING_PATH]),
+    fetchSiteEventCounts(
+      client,
+      propertyId,
+      range,
+      SITE_CONVERSION_EVENTS.map((e) => e.key)
+    ),
+  ]);
 
   const page = primaryPageMetrics[0] || {};
   const landing = primaryLandingSessions[0] || {};
   const eventsByName = Object.create(null);
-  for (const row of primaryEvents || []) {
-    if (row.pagePath !== PRIMARY_LANDING_PATH) continue;
-    eventsByName[row.eventName] = Number(row.eventCount || 0);
+  for (const row of siteEvents || []) {
+    eventsByName[row.eventName] = {
+      eventCount: Number(row.eventCount || 0),
+      activeUsers: Number(row.activeUsers || 0),
+    };
   }
 
-  const primaryCheckout = Number(eventsByName.begin_checkout || 0);
+  const conversions = SITE_CONVERSION_EVENTS.map((def) => {
+    const row = eventsByName[def.key] || {};
+    return {
+      eventName: def.key,
+      label: def.label,
+      eventCount: Number(row.eventCount || 0),
+      activeUsers: Number(row.activeUsers || 0),
+    };
+  });
+
   const primary = {
     path: PRIMARY_LANDING_PATH,
     label: PRIMARY_LANDING_LABEL,
@@ -71,22 +70,13 @@ export async function buildSiteTrafficReport(client, propertyId, range, rangePre
     landingSessions: Number(landing.sessions || 0),
     engagedSessions: Number(landing.engagedSessions || 0),
     avgSessionDurationSeconds: Number(landing.averageSessionDurationSeconds || 0),
-    beginCheckout: primaryCheckout,
-    purchases: Number(eventsByName.purchase || 0),
-    freeSimStarts: Number(eventsByName.secplus_free_sim_start || 0),
-    offerPopupShown: Number(eventsByName.home_offer_popup_shown || 0),
-    offerPopupClick: Number(eventsByName.home_offer_popup_click || 0),
-    generateLead: Number(eventsByName.generate_lead || 0),
-    checkoutRate: pct(primaryCheckout, Number(page.screenPageViews || 0)),
-    purchaseRate: pct(Number(eventsByName.purchase || 0), primaryCheckout),
   };
 
   return {
     rangeLabel: rangePresetLabel(rangePreset),
     primaryLanding: primary,
-    siteCheckout: checkoutSummary,
-    checkoutByItem: checkoutByItem || [],
+    conversions,
     topPages: topPages || [],
-    note: "begin_checkout = Stripe purchase button click. Completed purchases appear under Stripe checkout.",
+    note: "Completed purchases are also listed under Stripe checkout. GA4 purchase events may lag Stripe.",
   };
 }

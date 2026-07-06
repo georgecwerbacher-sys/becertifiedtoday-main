@@ -220,7 +220,6 @@ export default async function handler(req, res) {
         siteTraffic && !siteTraffic.error
           ? siteTraffic
           : {
-              campaigns: [],
               error: siteTraffic?.error || "Site traffic unavailable",
             },
       fetchedAt: new Date().toISOString(),

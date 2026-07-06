@@ -4,9 +4,6 @@
 import {
   checkoutSessionIsPaid,
   inferProductIdFromCheckoutSession,
-  isCcnaPortalProduct,
-  isCcnaTestSimulationProduct,
-  isEncorPortalProduct,
   isSecplusPortalProduct,
   isSecplusTestSimulationProduct,
 } from "./ccna-portal-stripe.js";
@@ -48,16 +45,12 @@ export async function buildStripePurchasesReport(stripe, rangePreset = "7d") {
       ...(startingAfter ? { starting_after: startingAfter } : {}),
     });
 
-    for (const session of page.data || []) {
+      for (const session of page.data || []) {
       if (!checkoutSessionIsPaid(session)) continue;
       const productId = inferProductIdFromCheckoutSession(session);
       if (
         !productId ||
-        (!isCcnaPortalProduct(productId) &&
-          !isCcnaTestSimulationProduct(productId) &&
-          !isEncorPortalProduct(productId) &&
-          !isSecplusPortalProduct(productId) &&
-          !isSecplusTestSimulationProduct(productId))
+        (!isSecplusPortalProduct(productId) && !isSecplusTestSimulationProduct(productId))
       ) {
         continue;
       }
@@ -79,7 +72,7 @@ export async function buildStripePurchasesReport(stripe, rangePreset = "7d") {
     startingAfter = page.data[page.data.length - 1].id;
   }
 
-  const byTrack = { ccna: 0, encor: 0, secplus: 0, other: 0 };
+  const byTrack = { secplus: 0, other: 0 };
   const emails = new Set();
   for (const row of purchases) {
     if (row.email && row.email !== "(no email)") emails.add(row.email);
@@ -95,14 +88,12 @@ export async function buildStripePurchasesReport(stripe, rangePreset = "7d") {
     uniqueCustomers: emails.size,
     newRegister: emails.size,
     byProduct: {
-      ccna: byTrack.ccna,
-      encor: byTrack.encor,
       secplus: byTrack.secplus,
     },
     recentPurchases: purchases.slice(0, 50),
     truncated: pages >= maxPages,
     note:
-      "Paid Stripe checkouts in the selected date range (UTC). New Register = distinct checkout emails in the range. " +
+      "Paid Security+ Stripe checkouts in the selected date range (UTC). New Register = distinct checkout emails in the range. " +
       "Unlike GA4 new visitors, this counts real purchases — same person on a new browser still counts once if same email. " +
       "Repeat purchases by the same email in the range count once for New Register.",
   };

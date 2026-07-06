@@ -1009,6 +1009,36 @@ export async function fetchCertHomeEventCounts(client, propertyId, range, paths,
   }
 }
 
+/** Site-wide GA4 event counts (eventName only). */
+export async function fetchSiteEventCounts(client, propertyId, range, eventNames) {
+  const names = Array.isArray(eventNames) ? eventNames.filter(Boolean) : [];
+  if (!names.length) return [];
+
+  try {
+    const response = await runReportSafe(client, {
+      property: propertyName(propertyId),
+      dateRanges: [range],
+      dimensionFilter: mergeDimensionFilters(
+        gaCustomerTrafficDimensionFilter(),
+        eventNameExactFilter(names)
+      ),
+      dimensions: [{ name: "eventName" }],
+      metrics: [{ name: "eventCount" }, { name: "activeUsers" }],
+      limit: names.length,
+    });
+
+    return (response.rows || []).map((row) => ({
+      eventName: row.dimensionValues?.[0]?.value || "",
+      eventCount: Number(row.metricValues?.[0]?.value || 0),
+      activeUsers: Number(row.metricValues?.[1]?.value || 0),
+    }));
+  } catch (err) {
+    const msg = err && err.message ? String(err.message) : "";
+    if (msg.includes("INVALID_ARGUMENT")) return [];
+    throw err;
+  }
+}
+
 /**
  * Sessions on ad landing paths, split by session source + medium.
  * Uses landingPage (session scope) — do not mix pagePath with sessionSource in one report.
