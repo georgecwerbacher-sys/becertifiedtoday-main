@@ -2,9 +2,11 @@
  * POST /api/analytics-report
  *
  * action "login" — Body: { "action": "login", "email", "password" }
+ * default (Bearer JWT) — Body: { "range": "7d"|... } → Vercel Web Analytics site traffic
  */
 import crypto from "crypto";
 import { issueAnalyticsAdminToken, verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { buildVercelSiteTrafficReport } from "../server-lib/vercel-web-analytics-report.js";
 
 function readJsonBody(req) {
   try {
@@ -97,5 +99,27 @@ export default async function handler(req, res) {
     return res.status(401).json({ ok: false, error: "Unauthorized" });
   }
 
-  return res.status(200).json({ ok: true });
+  const rangePreset =
+    typeof body.range === "string" && body.range.trim() ? body.range.trim() : "7d";
+
+  try {
+    const siteTraffic = await buildVercelSiteTrafficReport(rangePreset);
+    if (siteTraffic.error) {
+      return res.status(503).json({
+        ok: false,
+        error: siteTraffic.error,
+        hint: siteTraffic.hint,
+      });
+    }
+    return res.status(200).json({
+      ok: true,
+      siteTraffic,
+      fetchedAt: new Date().toISOString(),
+    });
+  } catch (err) {
+    return res.status(502).json({
+      ok: false,
+      error: err?.message || "Site traffic report failed",
+    });
+  }
 }
