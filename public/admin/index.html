@@ -209,113 +209,6 @@
       color: var(--muted);
       line-height: 1.5;
     }
-    .traffic-bottom-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 24px 0 12px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-    .traffic-tab {
-      font: inherit;
-      font-size: 0.85rem;
-      font-weight: 700;
-      padding: 8px 14px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: #0f1729;
-      color: var(--muted);
-      cursor: pointer;
-    }
-    .traffic-tab:hover { filter: brightness(1.08); }
-    .traffic-tab--active {
-      border-color: #4f84d8;
-      background: rgba(47, 102, 191, 0.25);
-      color: #e6edf3;
-    }
-    .traffic-pane.hidden { display: none !important; }
-    .rec-list { display: grid; gap: 12px; margin-top: 8px; }
-    .rec-card {
-      background: #0f1729;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      border-left: 4px solid var(--border);
-    }
-    .rec-card.priority-high { border-left-color: var(--bad); }
-    .rec-card.priority-medium { border-left-color: #e6b84d; }
-    .rec-card.priority-low { border-left-color: var(--muted); }
-    .rec-card.priority-win { border-left-color: var(--good); }
-    .rec-card h4 {
-      margin: 0 0 6px;
-      font-size: 0.95rem;
-      color: #e6edf3;
-    }
-    .rec-card p {
-      margin: 0 0 8px;
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.45;
-    }
-    .rec-card .rec-action {
-      margin: 0;
-      font-size: 0.85rem;
-      color: #c5d4f0;
-      line-height: 1.45;
-    }
-    .rec-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    .rec-meta .badge { text-transform: uppercase; letter-spacing: 0.03em; }
-    .daily-log-panel {
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-    }
-    .daily-log-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .daily-log-grid label { margin-bottom: 0; }
-    .daily-log-grid input { max-width: none; }
-    .daily-log-field { margin-top: 10px; }
-    .daily-log-field textarea {
-      width: 100%;
-      min-height: 64px;
-      resize: vertical;
-      font: inherit;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      background: #0f1729;
-      color: var(--text);
-    }
-    .daily-log-actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    .daily-log-snippet {
-      max-width: 220px;
-      font-size: 0.82rem;
-      color: var(--muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .daily-log-edit {
-      font: inherit;
-      font-size: 0.82rem;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: #c5d4f0;
-      cursor: pointer;
-    }
-    .daily-log-edit:hover { filter: brightness(1.08); }
   </style>
 </head>
 <body>
@@ -342,14 +235,10 @@
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
         <a href="#section-traffic">Site traffic</a>
-        <a href="#section-secplus-ad-groups">Security+ ad groups</a>
-        <a href="#section-recommendations">Recommendations</a>
-        <a href="#section-daily-log">Daily log</a>
         <a href="#section-register">Stripe checkout</a>
         <a href="#section-magic-link">Magic link reset</a>
         <a href="#section-questions">Questions</a>
         <a href="#section-portal-access">Portal access</a>
-        <a href="/admin/tools/">Tools</a>
       </nav>
 
       <div class="panel row" style="align-items:flex-end;gap:12px;margin-bottom:0">
@@ -370,8 +259,7 @@
       <div class="panel" id="portalPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-register">Stripe checkout · New Register</h2>
         <p class="section-note" style="margin-top:0">
-          Paid checkouts from Stripe in the selected date range (UTC). Google Ads spend lives in
-          <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">Google Ads</a>.
+          Paid checkouts from Stripe in the selected date range (UTC).
           This section is <strong>completed purchases only</strong> (email + product + checkout session).
           <strong>New Register</strong> = distinct checkout emails in the range.
         </p>
@@ -481,94 +369,19 @@
           <button type="button" id="trafficRefreshBtn" class="secondary">Refresh analytics</button>
         </div>
         <p class="section-note">
-          Campaign conversion hub — track ad landing performance, <code>begin_checkout</code> (Stripe click),
-          and <code>purchase</code> before/after copy or bid changes. Primary focus:
+          GA4 metrics for the selected date range. Primary focus:
           <strong>/comptia-sec+-home.html</strong>. Completed purchases also appear under
           <a href="#section-register">Stripe checkout</a>.
         </p>
         <p id="metaLine" class="status ok"></p>
         <p id="trafficStatus" class="status" aria-live="polite"></p>
 
-        <div id="trafficMetricsPane" role="tabpanel" aria-labelledby="trafficTabMetrics">
         <h3 class="portal-product-title" id="traffic-metrics-top">Site overview</h3>
         <div class="cards" id="summaryCards"></div>
 
         <h3 class="portal-product-title">Primary landing · Security+ home</h3>
         <div class="cards" id="primaryLandingCards"></div>
         <p id="primaryLandingNote" class="section-note"></p>
-
-        <h3 class="portal-product-title">Paid channels</h3>
-        <div class="cards" id="channelSummaryCards"></div>
-
-        <h3 class="portal-product-title">Campaign performance (registry)</h3>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Campaign</th>
-                <th>Channel</th>
-                <th>Landing</th>
-                <th>Sessions</th>
-                <th>Users</th>
-                <th>Engaged</th>
-                <th>Landing views</th>
-                <th>Checkout</th>
-                <th>Checkout / session</th>
-                <th>Checkout / views</th>
-              </tr>
-            </thead>
-            <tbody id="campaignPerfBody"></tbody>
-          </table>
-        </div>
-
-        <h3 class="portal-product-title" id="section-secplus-ad-groups" style="margin-top:20px">
-          Security+ Google ad groups · <code>utm_content</code>
-        </h3>
-        <p class="section-note" id="secplusAdGroupsNote">
-          Matches Obsidian [[Sec+ One-Campaign Ad Group Plan]] — one campaign (<code>secplus_portal</code>),
-          three ad groups. Compare sessions and <code>begin_checkout</code> before RSA or bid changes; log edits in
-          <a href="#section-daily-log">Daily campaign log</a>, then check <a href="#section-recommendations">Recommendations</a>.
-        </p>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Ad group</th>
-                <th>utm_content</th>
-                <th>Pin H1</th>
-                <th>Sessions</th>
-                <th>Engaged</th>
-                <th>Checkout</th>
-                <th>Checkout / session</th>
-              </tr>
-            </thead>
-            <tbody id="secplusAdGroupBody"></tbody>
-          </table>
-        </div>
-
-        <div class="link-grid" style="margin-top:12px" id="trafficExternalLinks">
-          <article class="link-card">
-            <h3>Google Ads</h3>
-            <p>Spend, clicks, and auction metrics.</p>
-            <div class="actions">
-              <a class="btn" href="https://ads.google.com/aw/overview?ocid=8235244277" target="_blank" rel="noopener noreferrer">Open Google Ads</a>
-            </div>
-          </article>
-          <article class="link-card">
-            <h3>Reddit Ads</h3>
-            <p>SEC+ wedge campaigns.</p>
-            <div class="actions">
-              <a class="btn" href="https://ads.reddit.com" target="_blank" rel="noopener noreferrer">Open Reddit Ads</a>
-            </div>
-          </article>
-          <article class="link-card">
-            <h3>Google Analytics</h3>
-            <p>Property 538156526 — Reports home, Realtime, explorations.</p>
-            <div class="actions">
-              <a class="btn" href="https://analytics.google.com/analytics/web/#/a395179512p538156526/reports/intelligenthome" target="_blank" rel="noopener noreferrer">Open GA4</a>
-            </div>
-          </article>
-        </div>
 
         <h3 class="portal-product-title" style="margin-top:20px">Checkout by product SKU (<code>begin_checkout</code>)</h3>
         <div class="portal-table-wrap">
@@ -580,37 +393,14 @@
           </table>
         </div>
 
-        <h3 class="portal-product-title" style="margin-top:20px">Ad landing pages · sessions by source</h3>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Landing page</th>
-                <th>Source</th>
-                <th>Medium</th>
-                <th>Sessions</th>
-                <th>Users</th>
-                <th>Engaged</th>
-              </tr>
-            </thead>
-            <tbody id="landingSourceBody"></tbody>
-          </table>
-        </div>
-
-        <h3 class="portal-product-title" style="margin-top:20px">All GA4 campaigns (raw)</h3>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>sessionCampaignName</th>
-                <th>Sessions</th>
-                <th>Users</th>
-                <th>Engaged</th>
-                <th>Page views</th>
-              </tr>
-            </thead>
-            <tbody id="gaCampaignsBody"></tbody>
-          </table>
+        <div class="link-grid" style="margin-top:12px">
+          <article class="link-card">
+            <h3>Google Analytics</h3>
+            <p>Property 538156526 — Reports home, Realtime, explorations.</p>
+            <div class="actions">
+              <a class="btn" href="https://analytics.google.com/analytics/web/#/a395179512p538156526/reports/intelligenthome" target="_blank" rel="noopener noreferrer">Open GA4</a>
+            </div>
+          </article>
         </div>
 
         <h3 class="portal-product-title" style="margin-top:20px">Top pages</h3>
@@ -632,101 +422,8 @@
             <tbody id="trendBody"></tbody>
           </table>
         </div>
-        </div>
-
-        <div class="traffic-bottom-tabs" role="tablist" aria-label="Site traffic views">
-          <button type="button" class="traffic-tab traffic-tab--active" id="trafficTabMetrics" role="tab" aria-selected="true" aria-controls="trafficMetricsPane">Metrics</button>
-          <button type="button" class="traffic-tab" id="trafficTabRecommendations" role="tab" aria-selected="false" aria-controls="section-recommendations">Recommendations</button>
-        </div>
-
-        <div id="section-recommendations" class="traffic-pane hidden" role="tabpanel" aria-labelledby="trafficTabRecommendations">
-          <h3 class="portal-product-title" style="margin-top:0">Conversion recommendations</h3>
-          <p class="section-note">
-            Quick tactics from your GA4 metrics for the selected date range. Refresh analytics after you ship a change, then compare checkout rate.
-          </p>
-          <div class="rec-list" id="recommendationsList"></div>
-          <p id="recommendationsStatus" class="status" aria-live="polite"></p>
-        </div>
 
         <p id="trafficNote" class="section-note"></p>
-
-        <div class="daily-log-panel" id="section-daily-log">
-          <h3 class="portal-product-title" style="margin-top:0">Daily campaign log</h3>
-          <p class="section-note">
-            One entry per day — spend, site changes, and experiments you ran. Saved entries filter with the
-            <strong>date range</strong> above so you can compare notes to GA4 metrics and recommendations.
-          </p>
-          <form id="dailyLogForm">
-            <div class="daily-log-grid">
-              <label>
-                Date
-                <input type="date" id="dailyLogDate" name="log_date" required />
-              </label>
-              <label>
-                Google spend ($)
-                <input type="number" id="dailyLogGoogleSpend" min="0" step="0.01" placeholder="0.00" />
-              </label>
-              <label>
-                Reddit spend ($)
-                <input type="number" id="dailyLogRedditSpend" min="0" step="0.01" placeholder="0.00" />
-              </label>
-              <label>
-                Stripe purchases
-                <input type="number" id="dailyLogStripePurchases" min="0" step="1" placeholder="0" />
-              </label>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogCreative">Creative / ad copy changes</label>
-              <textarea id="dailyLogCreative" placeholder="New headlines, Reddit post angles, image swaps…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogBids">Bids &amp; targeting</label>
-              <textarea id="dailyLogBids" placeholder="Budget shifts, geo, keywords, audience tweaks…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogSite">Site / landing changes</label>
-              <textarea id="dailyLogSite" placeholder="Deployed copy, CTA, pricing, popup, PBQ sample…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogExperiments">Experiments &amp; tests</label>
-              <textarea id="dailyLogExperiments" placeholder="A/B ideas started or ended today…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogBlockers">Blockers / issues</label>
-              <textarea id="dailyLogBlockers" placeholder="Tracking gaps, disapprovals, checkout friction…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogNext">Next actions</label>
-              <textarea id="dailyLogNext" placeholder="Tomorrow’s top 1–3 moves…"></textarea>
-            </div>
-            <div class="daily-log-field">
-              <label for="dailyLogNotes">Notes</label>
-              <textarea id="dailyLogNotes" placeholder="Anything else worth remembering…"></textarea>
-            </div>
-            <div class="daily-log-actions">
-              <button type="submit" id="dailyLogSaveBtn">Save day</button>
-              <button type="button" class="secondary" id="dailyLogTodayBtn">Use today</button>
-              <button type="button" class="secondary" id="dailyLogClearBtn">Clear form</button>
-            </div>
-          </form>
-          <p id="dailyLogStatus" class="status" aria-live="polite"></p>
-          <h4 class="portal-product-title" style="margin-top:18px;font-size:0.95rem">Recent entries</h4>
-          <div class="portal-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Spend (G / R)</th>
-                  <th>Stripe</th>
-                  <th>Site changes</th>
-                  <th>Next actions</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="dailyLogBody"></tbody>
-            </table>
-          </div>
-        </div>
       </div>
 
       <div class="panel" id="visitorQuestionsPanel">
@@ -772,19 +469,6 @@
         <div class="link-grid" id="portalBypassLinks"></div>
         <p id="portalBypassStatus" class="status" aria-live="polite"></p>
         <div class="link-grid" id="portalExternalShortcuts" aria-label="External shortcuts">
-          <article class="link-card">
-            <h3>Google Ads</h3>
-            <p>Campaign overview, spend, and clicks.</p>
-            <div class="actions">
-              <a
-                class="btn"
-                href="https://ads.google.com/aw/overview?ocid=8235244277&amp;workspaceId=0&amp;euid=277397985&amp;__u=6466314265&amp;uscid=8235244277&amp;__c=3900876173&amp;authuser=0&amp;subid=us-en-awhp-g-aw-c-home-signin-bgc!o2-aluminum%7Cib:2387565277%7Cib:8016481541%7Cib:6079319977%7C-ahpm-0000000209-0000000001%7C-ahpm-0000000200-0000000001%7C-ahpm-0000000179-0000000001"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Open Google Ads</a
-              >
-            </div>
-          </article>
           <article class="link-card">
             <h3>Reddit · r/RealisticCertPrep</h3>
             <p>Community subreddit for realistic cert prep.</p>
@@ -917,314 +601,20 @@
         return (Number(rate) * 100).toFixed(1) + "%";
       }
 
-      function channelBadge(channel) {
-        var ch = String(channel || "").toLowerCase();
-        if (ch === "google") return '<span class="badge channel-google">Google</span>';
-        if (ch === "reddit") return '<span class="badge channel-reddit">Reddit</span>';
-        return ch || "—";
-      }
-
-      function priorityLabel(priority) {
-        var map = { high: "High", medium: "Medium", low: "Low", win: "Win" };
-        return map[priority] || priority || "—";
-      }
-
-      function setTrafficTab(which) {
-        var metricsPane = document.getElementById("trafficMetricsPane");
-        var recPane = document.getElementById("section-recommendations");
-        var tabMetrics = document.getElementById("trafficTabMetrics");
-        var tabRec = document.getElementById("trafficTabRecommendations");
-        var showRec = which === "recommendations";
-        if (metricsPane) metricsPane.classList.toggle("hidden", showRec);
-        if (recPane) recPane.classList.toggle("hidden", !showRec);
-        if (tabMetrics) {
-          tabMetrics.classList.toggle("traffic-tab--active", !showRec);
-          tabMetrics.setAttribute("aria-selected", showRec ? "false" : "true");
-        }
-        if (tabRec) {
-          tabRec.classList.toggle("traffic-tab--active", showRec);
-          tabRec.setAttribute("aria-selected", showRec ? "true" : "false");
-        }
-      }
-
-      function renderRecommendations(recommendations) {
-        var list = document.getElementById("recommendationsList");
-        var status = document.getElementById("recommendationsStatus");
-        if (!list) return;
-        var recs = recommendations || [];
-        if (!recs.length) {
-          list.innerHTML =
-            '<p class="section-note">No recommendations for this range yet. Refresh analytics once GA4 has enough paid traffic.</p>';
-          if (status) {
-            status.textContent = "";
-            status.className = "status";
-          }
-          return;
-        }
-        var order = { high: 0, medium: 1, low: 2, win: 3 };
-        recs = recs.slice().sort(function (a, b) {
-          return (order[a.priority] != null ? order[a.priority] : 9) - (order[b.priority] != null ? order[b.priority] : 9);
-        });
-        list.innerHTML = recs
-          .map(function (r) {
-            return (
-              '<article class="rec-card priority-' +
-              (r.priority || "low") +
-              '">' +
-              '<div class="rec-meta">' +
-              '<span class="badge">' +
-              priorityLabel(r.priority) +
-              "</span>" +
-              (r.category ? '<span class="badge">' + r.category + "</span>" : "") +
-              "</div>" +
-              "<h4>" +
-              (r.title || "") +
-              "</h4>" +
-              "<p>" +
-              (r.detail || "") +
-              "</p>" +
-              (r.action ? '<p class="rec-action"><strong>Try:</strong> ' + r.action + "</p>" : "") +
-              "</article>"
-            );
-          })
-          .join("");
-        if (status) {
-          status.textContent = recs.length + " tactic" + (recs.length === 1 ? "" : "s") + " for this range.";
-          status.className = "status ok";
-        }
-      }
-
-      function localDateInputValue(dateObj) {
-        var dt = dateObj || new Date();
-        var y = dt.getFullYear();
-        var m = String(dt.getMonth() + 1);
-        if (m.length < 2) m = "0" + m;
-        var day = String(dt.getDate());
-        if (day.length < 2) day = "0" + day;
-        return y + "-" + m + "-" + day;
-      }
-
-      function escapeHtml(s) {
-        return String(s || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      function dailyLogSnippet(text, max) {
-        var t = String(text || "").replace(/\s+/g, " ").trim();
-        if (!t) return "—";
-        if (t.length <= (max || 80)) return escapeHtml(t);
-        return escapeHtml(t.slice(0, max || 80)) + "…";
-      }
-
-      function fillDailyLogForm(entry) {
-        var e = entry || {};
-        document.getElementById("dailyLogDate").value = e.logDate || localDateInputValue();
-        document.getElementById("dailyLogGoogleSpend").value = e.googleSpendUsd || "";
-        document.getElementById("dailyLogRedditSpend").value = e.redditSpendUsd || "";
-        document.getElementById("dailyLogStripePurchases").value = e.stripePurchases || "";
-        document.getElementById("dailyLogCreative").value = e.creativeChanges || "";
-        document.getElementById("dailyLogBids").value = e.bidTargeting || "";
-        document.getElementById("dailyLogSite").value = e.siteChanges || "";
-        document.getElementById("dailyLogExperiments").value = e.experiments || "";
-        document.getElementById("dailyLogBlockers").value = e.blockers || "";
-        document.getElementById("dailyLogNext").value = e.nextActions || "";
-        document.getElementById("dailyLogNotes").value = e.notes || "";
-      }
-
-      function collectDailyLogForm() {
-        return {
-          log_date: document.getElementById("dailyLogDate").value,
-          googleSpendUsd: document.getElementById("dailyLogGoogleSpend").value,
-          redditSpendUsd: document.getElementById("dailyLogRedditSpend").value,
-          stripePurchases: document.getElementById("dailyLogStripePurchases").value,
-          creativeChanges: document.getElementById("dailyLogCreative").value,
-          bidTargeting: document.getElementById("dailyLogBids").value,
-          siteChanges: document.getElementById("dailyLogSite").value,
-          experiments: document.getElementById("dailyLogExperiments").value,
-          blockers: document.getElementById("dailyLogBlockers").value,
-          nextActions: document.getElementById("dailyLogNext").value,
-          notes: document.getElementById("dailyLogNotes").value,
-        };
-      }
-
-      function renderDailyLogTable(entries) {
-        var body = document.getElementById("dailyLogBody");
-        if (!body) return;
-        var rows = entries || [];
-        if (!rows.length) {
-          body.innerHTML =
-            '<tr><td colspan="6" style="color:var(--muted)">No log entries in this date range yet.</td></tr>';
-          return;
-        }
-        body.innerHTML = rows
-          .map(function (e) {
-            var spend =
-              (e.googleSpendUsd ? "$" + e.googleSpendUsd : "—") +
-              " / " +
-              (e.redditSpendUsd ? "$" + e.redditSpendUsd : "—");
-            return (
-              "<tr>" +
-              "<td>" +
-              escapeHtml(e.logDate) +
-              "</td>" +
-              "<td>" +
-              escapeHtml(spend) +
-              "</td>" +
-              "<td>" +
-              (e.stripePurchases ? escapeHtml(e.stripePurchases) : "—") +
-              '</td><td><span class="daily-log-snippet" title="' +
-              escapeAttr(e.siteChanges || "") +
-              '">' +
-              dailyLogSnippet(e.siteChanges, 72) +
-              '</span></td><td><span class="daily-log-snippet" title="' +
-              escapeAttr(e.nextActions || "") +
-              '">' +
-              dailyLogSnippet(e.nextActions, 72) +
-              '</span></td><td><button type="button" class="daily-log-edit" data-daily-log-edit="' +
-              escapeAttr(e.logDate) +
-              '">Edit</button></td></tr>'
-            );
-          })
-          .join("");
-      }
-
-      function bindDailyLogEditButtons(entries) {
-        var cached = entries || [];
-        document.querySelectorAll("[data-daily-log-edit]").forEach(function (btn) {
-          if (btn.dataset.dailyLogBound === "1") return;
-          btn.dataset.dailyLogBound = "1";
-          btn.addEventListener("click", function () {
-            var date = btn.getAttribute("data-daily-log-edit");
-            var entry = cached.find(function (e) {
-              return e.logDate === date;
-            });
-            if (entry) {
-              fillDailyLogForm(entry);
-              var status = document.getElementById("dailyLogStatus");
-              if (status) {
-                status.textContent = "Loaded " + date + " for editing.";
-                status.className = "status ok";
-              }
-              var panel = document.getElementById("section-daily-log");
-              if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior: "smooth", block: "start" });
-            }
-          });
-        });
-      }
-
-      var dailyLogEntriesCache = [];
-
-      function loadDailyLog() {
-        var status = document.getElementById("dailyLogStatus");
-        if (status) {
-          status.textContent = "Loading daily log…";
-          status.className = "status";
-        }
-        return postJson("/api/analytics-report", {
-          action: "daily_log_list",
-          range: rangeEl.value,
-        })
-          .then(function (res) {
-            if (!res.ok) {
-              if (res.body && res.body.error === "Unauthorized") {
-                setToken("");
-                showDash(false);
-              }
-              renderDailyLogTable([]);
-              if (status) {
-                var msg = (res.body && res.body.error) || "Could not load daily log";
-                if (res.body && res.body.hint) msg += " — " + res.body.hint;
-                status.textContent = msg;
-                status.className = "status err";
-              }
-              return;
-            }
-            dailyLogEntriesCache = res.body.entries || [];
-            renderDailyLogTable(dailyLogEntriesCache);
-            bindDailyLogEditButtons(dailyLogEntriesCache);
-            if (status) {
-              status.textContent = dailyLogEntriesCache.length
-                ? dailyLogEntriesCache.length + " entr" + (dailyLogEntriesCache.length === 1 ? "y" : "ies") + " in range."
-                : "No entries in this range — save today’s log below.";
-              status.className = "status ok";
-            }
-          })
-          .catch(function (err) {
-            renderDailyLogTable([]);
-            if (status) {
-              status.textContent = err.message || "Failed to load daily log";
-              status.className = "status err";
-            }
-          });
-      }
-
-      function saveDailyLog(evt) {
-        if (evt && evt.preventDefault) evt.preventDefault();
-        var status = document.getElementById("dailyLogStatus");
-        var saveBtn = document.getElementById("dailyLogSaveBtn");
-        if (status) {
-          status.textContent = "Saving…";
-          status.className = "status";
-        }
-        if (saveBtn) saveBtn.disabled = true;
-        return postJson("/api/analytics-report", {
-          action: "daily_log_save",
-          entry: collectDailyLogForm(),
-        })
-          .then(function (res) {
-            if (!res.ok || !res.body || res.body.ok === false) {
-              var msg = (res.body && (res.body.error || res.body.reason)) || "Could not save";
-              if (res.body && res.body.hint) msg += " — " + res.body.hint;
-              throw new Error(msg);
-            }
-            if (status) {
-              status.textContent = "Saved " + (res.body.entry && res.body.entry.logDate) + ".";
-              status.className = "status ok";
-            }
-            return loadDailyLog();
-          })
-          .catch(function (err) {
-            if (status) {
-              status.textContent = err.message || "Could not save daily log";
-              status.className = "status err";
-            }
-          })
-          .finally(function () {
-            if (saveBtn) saveBtn.disabled = false;
-          });
-      }
-
-      function handleTrafficHash() {
-        if (window.location.hash === "#section-recommendations") {
-          setTrafficTab("recommendations");
-        }
-      }
-
       function renderSiteTraffic(data) {
         var traffic = data && data.siteTraffic;
         var statusEl = document.getElementById("trafficStatus");
         var noteEl = document.getElementById("trafficNote");
         var primaryCards = document.getElementById("primaryLandingCards");
-        var channelCards = document.getElementById("channelSummaryCards");
         var primaryNote = document.getElementById("primaryLandingNote");
 
         if (!traffic || traffic.error) {
           if (primaryCards) primaryCards.innerHTML = "";
-          if (channelCards) channelCards.innerHTML = "";
-          [
-            "campaignPerfBody",
-            "secplusAdGroupBody",
-            "checkoutItemsBody",
-            "landingSourceBody",
-            "gaCampaignsBody",
-            "topPagesBody",
-          ].forEach(function (id) {
+          ["checkoutItemsBody", "topPagesBody"].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) {
               el.innerHTML =
-                '<tr><td colspan="10" style="color:var(--muted)">Site traffic not loaded.</td></tr>';
+                '<tr><td colspan="6" style="color:var(--muted)">Site traffic not loaded.</td></tr>';
             }
           });
           if (statusEl) {
@@ -1233,7 +623,6 @@
           }
           if (noteEl) noteEl.textContent = "";
           if (primaryNote) primaryNote.textContent = "";
-          renderRecommendations([]);
           return;
         }
 
@@ -1263,132 +652,7 @@
             .join("");
         }
         if (primaryNote) {
-          primaryNote.textContent =
-            (p.path || "") +
-            (p.adjustmentNote ? " · " + p.adjustmentNote : "");
-        }
-
-        var ch = traffic.channelTotals || {};
-        var siteCheckout = traffic.siteCheckout || {};
-        if (channelCards) {
-          channelCards.innerHTML = [
-            ["Site begin_checkout", fmt(siteCheckout.checkoutClicks)],
-            ["Checkout unique users", fmt(siteCheckout.uniqueUsers)],
-            ["Google CPC sessions", fmt(ch.googleCpc && ch.googleCpc.sessions)],
-            ["Google CPC checkout", fmt(ch.googleCpc && ch.googleCpc.beginCheckout)],
-            ["Reddit CPC sessions", fmt(ch.redditCpc && ch.redditCpc.sessions)],
-            ["Reddit CPC checkout", fmt(ch.redditCpc && ch.redditCpc.beginCheckout)],
-          ]
-            .map(function (c) {
-              return (
-                '<div class="card"><div class="val">' +
-                c[1] +
-                '</div><div class="lbl">' +
-                c[0] +
-                "</div></div>"
-              );
-            })
-            .join("");
-        }
-
-        var campaignBody = document.getElementById("campaignPerfBody");
-        var campaigns = traffic.campaigns || [];
-        if (campaignBody) {
-          if (!campaigns.length) {
-            campaignBody.innerHTML =
-              '<tr><td colspan="10" style="color:var(--muted)">No campaign traffic in range.</td></tr>';
-          } else {
-            campaignBody.innerHTML = campaigns
-              .map(function (c) {
-                var adj = c.adjustmentNote
-                  ? '<br><span style="color:var(--muted);font-size:0.78rem">' +
-                    c.adjustmentNote +
-                    "</span>"
-                  : "";
-                return (
-                  "<tr><td><strong>" +
-                  (c.label || c.id) +
-                  "</strong><br><span style=\"color:var(--muted);font-size:0.78rem\">" +
-                  (c.utmCampaign || "") +
-                  adj +
-                  '</span></td><td>' +
-                  channelBadge(c.channel) +
-                  "</td><td class=\"path\">" +
-                  (c.landingPath || "") +
-                  "</td><td>" +
-                  fmt(c.sessions) +
-                  "</td><td>" +
-                  fmt(c.users) +
-                  "</td><td>" +
-                  fmt(c.engagedSessions) +
-                  "</td><td>" +
-                  fmt(c.landingPageViews) +
-                  "</td><td>" +
-                  fmt(c.beginCheckout) +
-                  "</td><td>" +
-                  fmtPct(c.checkoutRate) +
-                  "</td><td>" +
-                  fmtPct(c.landingCheckoutRate) +
-                  "</td></tr>"
-                );
-              })
-              .join("");
-          }
-        }
-
-        var adGroupBody = document.getElementById("secplusAdGroupBody");
-        var adGroupNote = document.getElementById("secplusAdGroupsNote");
-        var adGroups = traffic.secplusAdGroups || [];
-        if (adGroupBody) {
-          if (!adGroups.length) {
-            adGroupBody.innerHTML =
-              '<tr><td colspan="7" style="color:var(--muted)">No Security+ ad group traffic in range (Google CPC + secplus_portal).</td></tr>';
-          } else {
-            adGroupBody.innerHTML = adGroups
-              .map(function (g) {
-                var legacy =
-                  g.isLegacy || g.isOther
-                    ? ' <span class="badge" style="opacity:0.85">legacy</span>'
-                    : "";
-                return (
-                  "<tr><td><strong>" +
-                  (g.adGroupName || g.slug) +
-                  "</strong>" +
-                  legacy +
-                  '<br><span style="color:var(--muted);font-size:0.78rem">' +
-                  (g.intent || "") +
-                  "</span></td><td><code>" +
-                  (g.utmContent || "") +
-                  '</code></td><td style="font-size:0.82rem">' +
-                  (g.pinH1 || "—") +
-                  "</td><td>" +
-                  fmt(g.sessions) +
-                  "</td><td>" +
-                  fmt(g.engagedSessions) +
-                  "</td><td>" +
-                  fmt(g.beginCheckout) +
-                  "</td><td>" +
-                  fmtPct(g.checkoutRate) +
-                  "</td></tr>"
-                );
-              })
-              .join("");
-          }
-        }
-        if (adGroupNote && traffic.secplusGoogleCampaign) {
-          var gc = traffic.secplusGoogleCampaign;
-          adGroupNote.innerHTML =
-            'Matches Obsidian <code>' +
-            (gc.planDoc || "Sec+ One-Campaign Ad Group Plan") +
-            "</code> — <strong>" +
-            (gc.label || "Security+ SY0-701 · US Search") +
-            '</strong> (<code>' +
-            (gc.utmCampaign || "secplus_portal") +
-            "</code>), $" +
-            (gc.dailyBudgetUsd || 25) +
-            "/day shared. Log RSA/bid/spend changes in " +
-            '<a href="#section-daily-log">Daily campaign log</a>, then ' +
-            '<a href="#section-recommendations">Recommendations</a>.';
+          primaryNote.textContent = p.path || "";
         }
 
         var itemsBody = document.getElementById("checkoutItemsBody");
@@ -1409,56 +673,6 @@
                 })
                 .join("")
             : '<tr><td colspan="3" style="color:var(--muted)">No checkout events in range.</td></tr>';
-        }
-
-        var landingBody = document.getElementById("landingSourceBody");
-        var landingRows = traffic.landingBySource || [];
-        if (landingBody) {
-          landingBody.innerHTML = landingRows.length
-            ? landingRows
-                .map(function (r) {
-                  return (
-                    "<tr><td class=\"path\">" +
-                    (r.pagePath || "") +
-                    "</td><td>" +
-                    (r.source || "") +
-                    "</td><td>" +
-                    (r.medium || "") +
-                    "</td><td>" +
-                    fmt(r.sessions) +
-                    "</td><td>" +
-                    fmt(r.users) +
-                    "</td><td>" +
-                    fmt(r.engagedSessions) +
-                    "</td></tr>"
-                  );
-                })
-                .join("")
-            : '<tr><td colspan="6" style="color:var(--muted)">No landing source data.</td></tr>';
-        }
-
-        var gaCampBody = document.getElementById("gaCampaignsBody");
-        var gaRows = traffic.gaCampaigns || [];
-        if (gaCampBody) {
-          gaCampBody.innerHTML = gaRows.length
-            ? gaRows
-                .map(function (r) {
-                  return (
-                    "<tr><td>" +
-                    (r.campaign || "(not set)") +
-                    "</td><td>" +
-                    fmt(r.sessions) +
-                    "</td><td>" +
-                    fmt(r.users) +
-                    "</td><td>" +
-                    fmt(r.engagedSessions) +
-                    "</td><td>" +
-                    fmt(r.pageViews) +
-                    "</td></tr>"
-                  );
-                })
-                .join("")
-            : '<tr><td colspan="5" style="color:var(--muted)">No campaigns.</td></tr>';
         }
 
         var topBody = document.getElementById("topPagesBody");
@@ -1486,7 +700,6 @@
           statusEl.className = "status ok";
         }
         if (noteEl) noteEl.textContent = traffic.note || "";
-        renderRecommendations(traffic.recommendations);
       }
 
       function renderTrend(rows) {
@@ -1996,14 +1209,8 @@
         }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
-        var dailyLogStatus = document.getElementById("dailyLogStatus");
-        if (dailyLogStatus) {
-          dailyLogStatus.textContent = "Loading daily log…";
-          dailyLogStatus.className = "status";
-        }
 
         loadVisitorQuestions();
-        loadDailyLog();
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
@@ -2157,51 +1364,6 @@
         trafficRefreshBtn.addEventListener("click", function () {
           loadTrafficReport().catch(function () {});
         });
-      }
-      var trafficTabMetrics = document.getElementById("trafficTabMetrics");
-      var trafficTabRecommendations = document.getElementById("trafficTabRecommendations");
-      if (trafficTabMetrics) {
-        trafficTabMetrics.addEventListener("click", function () {
-          setTrafficTab("metrics");
-          if (window.location.hash === "#section-recommendations") {
-            history.replaceState(null, "", "#section-traffic");
-          }
-        });
-      }
-      if (trafficTabRecommendations) {
-        trafficTabRecommendations.addEventListener("click", function () {
-          setTrafficTab("recommendations");
-          if (window.location.hash !== "#section-recommendations") {
-            history.replaceState(null, "", "#section-recommendations");
-          }
-        });
-      }
-      window.addEventListener("hashchange", handleTrafficHash);
-      handleTrafficHash();
-
-      var dailyLogForm = document.getElementById("dailyLogForm");
-      if (dailyLogForm) {
-        dailyLogForm.addEventListener("submit", saveDailyLog);
-      }
-      var dailyLogTodayBtn = document.getElementById("dailyLogTodayBtn");
-      if (dailyLogTodayBtn) {
-        dailyLogTodayBtn.addEventListener("click", function () {
-          document.getElementById("dailyLogDate").value = localDateInputValue();
-        });
-      }
-      var dailyLogClearBtn = document.getElementById("dailyLogClearBtn");
-      if (dailyLogClearBtn) {
-        dailyLogClearBtn.addEventListener("click", function () {
-          fillDailyLogForm({ logDate: localDateInputValue() });
-          var status = document.getElementById("dailyLogStatus");
-          if (status) {
-            status.textContent = "";
-            status.className = "status";
-          }
-        });
-      }
-      if (document.getElementById("dailyLogDate") && !document.getElementById("dailyLogDate").value) {
-        document.getElementById("dailyLogDate").value = localDateInputValue();
       }
       document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
