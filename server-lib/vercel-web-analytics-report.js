@@ -6,6 +6,10 @@ import { rangePresetLabel } from "./google-analytics.js";
 
 const API_BASE = "https://api.vercel.com/v1/query/web-analytics";
 
+/** becertifiedtoday-main — public IDs from .vercel/project.json (not secrets). */
+const DEFAULT_VERCEL_PROJECT_ID = "prj_jciGbVeDTqWNxzV7UOlxJr5OhaO0";
+const DEFAULT_VERCEL_TEAM_ID = "team_5FzkAvqWhBzLieekJ8CcUXSa";
+
 export const PRIMARY_LANDING_PATH =
   (process.env.BCC_VERCEL_PRIMARY_LANDING_PATH || "/comptia-sec+-home.html").trim();
 
@@ -40,6 +44,7 @@ export function vercelDateRangeFromPreset(preset = "7d") {
 
 export function getVercelAnalyticsEnv() {
   const token = (
+    process.env.BCC_VERCEL_ACCESS_TOKEN ||
     process.env.VERCEL_ACCESS_TOKEN ||
     process.env.VERCEL_TOKEN ||
     ""
@@ -47,15 +52,26 @@ export function getVercelAnalyticsEnv() {
   const projectId = (
     process.env.VERCEL_PROJECT_ID ||
     process.env.BCC_VERCEL_PROJECT_ID ||
-    ""
+    DEFAULT_VERCEL_PROJECT_ID
   ).trim();
   const teamId = (
     process.env.VERCEL_ORG_ID ||
     process.env.VERCEL_TEAM_ID ||
     process.env.BCC_VERCEL_TEAM_ID ||
-    ""
+    DEFAULT_VERCEL_TEAM_ID
   ).trim();
   return { token, projectId, teamId };
+}
+
+export function getVercelAnalyticsDiagnostics() {
+  const env = getVercelAnalyticsEnv();
+  return {
+    hasToken: Boolean(env.token),
+    hasProjectId: Boolean(env.projectId),
+    hasTeamId: Boolean(env.teamId),
+    projectId: env.projectId,
+    teamId: env.teamId,
+  };
 }
 
 export function vercelAnalyticsReady(env = getVercelAnalyticsEnv()) {
@@ -86,11 +102,18 @@ async function vercelAnalyticsGet(path, params, env = getVercelAnalyticsEnv()) {
  */
 export async function buildVercelSiteTrafficReport(rangePreset = "7d") {
   const env = getVercelAnalyticsEnv();
+  const diagnostics = getVercelAnalyticsDiagnostics();
   if (!vercelAnalyticsReady(env)) {
+    const missing = [];
+    if (!diagnostics.hasToken) missing.push("BCC_VERCEL_ACCESS_TOKEN");
+    if (!diagnostics.hasProjectId) missing.push("project ID");
+    if (!diagnostics.hasTeamId) missing.push("team ID");
     return {
       error: "Vercel Web Analytics is not configured",
       hint:
-        "Set VERCEL_ACCESS_TOKEN on Vercel (Account → Tokens, read scope). VERCEL_PROJECT_ID and VERCEL_ORG_ID are set automatically on deploy.",
+        (missing.length ? `Missing: ${missing.join(", ")}. ` : "") +
+        "Create a read-scope token at vercel.com/account/tokens and set BCC_VERCEL_ACCESS_TOKEN on Vercel (production + preview), then redeploy.",
+      diagnostics,
     };
   }
 

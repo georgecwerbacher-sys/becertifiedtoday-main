@@ -109,6 +109,7 @@ export default async function handler(req, res) {
         ok: false,
         error: siteTraffic.error,
         hint: siteTraffic.hint,
+        diagnostics: siteTraffic.diagnostics,
       });
     }
     return res.status(200).json({
