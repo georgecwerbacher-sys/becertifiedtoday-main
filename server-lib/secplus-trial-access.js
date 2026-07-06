@@ -7,6 +7,11 @@ import { findActiveSecplusPortalSessionForEmail } from "./secplus-portal-custome
 export const SECPLUS_TRIAL_PRODUCT_ID = "secplus-portal-3d";
 export const SECPLUS_TRIAL_DAYS = 3;
 
+/** Set SECPLUS_TRIAL_3D_ENABLED=1 on Vercel to re-open the email-only 3-day promo. */
+export function isSecplusTrial3dPromoEnabled() {
+  return (process.env.SECPLUS_TRIAL_3D_ENABLED || "").trim() === "1";
+}
+
 export function normalizeTrialEmail(raw) {
   const s = typeof raw === "string" ? raw.trim().toLowerCase() : "";
   if (!s || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)) return "";
@@ -74,6 +79,15 @@ export async function grantSecplusTrialAccess(stripe, email) {
   const activeTrial = await getSecplusTrialAccessForEmail(stripe, normalized);
   if (activeTrial) {
     return { ok: true, ...activeTrial, alreadyActive: true };
+  }
+
+  if (!isSecplusTrial3dPromoEnabled()) {
+    return {
+      ok: false,
+      reason: "promo-ended",
+      message:
+        "The free 3-day Security+ promotion has ended. Purchase 10-day or 30-day access from Security+ home, or try the free samples.",
+    };
   }
 
   const customers = await stripe.customers.list({ email: normalized, limit: 10 });

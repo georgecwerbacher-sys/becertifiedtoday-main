@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, follow" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Free 3-day Security+ access | Be Certified Today</title>
+  <title>Security+ access | Be Certified Today</title>
   <script src="/js/ga-site-config.js"></script>
   <script src="/js/analytics-exclude.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTT6KBHX7V"></script>
@@ -39,62 +39,11 @@
       letter-spacing: -0.02em;
     }
     p { margin: 0 0 14px; color: var(--page-muted); font-size: 1rem; }
-    label {
-      display: block;
-      margin: 18px 0 8px;
-      font-weight: 700;
-      font-size: 0.92rem;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 14px 16px;
-      min-height: 48px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(18, 26, 43, 0.85);
-      color: #e6edf3;
-      font: inherit;
-      font-size: 1rem;
-    }
-    input[type="email"]:focus {
-      outline: 2px solid rgba(139, 92, 246, 0.55);
-      outline-offset: 2px;
-    }
-    button[type="submit"] {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      padding: 14px 22px;
-      min-height: 48px;
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(139, 92, 246, 0.55);
-      font: inherit;
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: #f3e8ff;
-      background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-    button[type="submit"]:disabled { opacity: 0.65; cursor: wait; }
-    .status {
-      margin: 16px 0 0;
-      padding: 14px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: rgba(18, 26, 43, 0.65);
-      font-size: 0.95rem;
-      color: #e6edf3;
-    }
-    .status--ok { border-color: rgba(74, 224, 146, 0.45); color: #c7f2da; }
-    .status--err { border-color: rgba(248, 113, 113, 0.45); color: #fecaca; }
     a.cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-top: 12px;
+      margin-top: 8px;
       padding: 14px 22px;
       min-height: 48px;
       border-radius: 12px;
@@ -118,103 +67,18 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Free 3-day Security+ access</h1>
-    <p>Enter your email to unlock the full SY0-701 practice library for <strong>3 days</strong>. No payment card. No Stripe checkout.</p>
+    <h1>Free 3-day promotion ended</h1>
+    <p>
+      The limited-time <strong>free 3-day Security+ library access</strong> offer has ended. If you already started a trial on this email, your access remains active until it expires.
+    </p>
     <ul>
-      <li>1000+ practice questions and PBQ-style scenarios</li>
-      <li>Works in your browser — phone, tablet, or desktop</li>
-      <li>One free trial per email</li>
+      <li>Try free PBQ and MCQ samples without an account</li>
+      <li>Purchase 10-day or 30-day full library access when you are ready</li>
     </ul>
-    <form id="trialForm">
-      <label for="email">Email address</label>
-      <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
-      <button type="submit" id="submitBtn">Start free 3-day access</button>
-    </form>
-    <div id="status" class="status" hidden role="status" aria-live="polite"></div>
-    <p id="actions" hidden>
-      <a class="cta" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Open Security+ training portal</a>
+    <p>
+      <a class="cta" href="/comptia-sec+-home.html#purchase">View Security+ access options</a>
     </p>
     <a class="link-muted" href="/comptia-sec+-home.html">&larr; Security+ home</a>
   </div>
-  <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js"></script>
-  <script>
-    (function () {
-      var form = document.getElementById("trialForm");
-      var emailEl = document.getElementById("email");
-      var submitBtn = document.getElementById("submitBtn");
-      var statusEl = document.getElementById("status");
-      var actionsEl = document.getElementById("actions");
-
-      function showStatus(msg, ok) {
-        statusEl.hidden = false;
-        statusEl.textContent = msg;
-        statusEl.classList.toggle("status--ok", !!ok);
-        statusEl.classList.toggle("status--err", !ok);
-      }
-
-      form.addEventListener("submit", function (ev) {
-        ev.preventDefault();
-        var email = (emailEl.value || "").trim();
-        if (!email) return;
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Starting access…";
-        statusEl.hidden = true;
-        actionsEl.hidden = true;
-
-        fetch("/api/portal-request-magic-link?track=secplus&grant=trial-3d", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email, grantTrial3d: true, source: "secplus-trial-3d-page" }),
-        })
-          .then(function (res) {
-            return res.json().then(function (data) {
-              return { res: res, data: data };
-            });
-          })
-          .then(function (pair) {
-            var data = pair.data || {};
-            if (!data.ok) {
-              showStatus(data.message || data.error || "Could not start free access.", false);
-              submitBtn.disabled = false;
-              submitBtn.textContent = "Start free 3-day access";
-              return;
-            }
-
-            var exp =
-              typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
-                ? data.accessExpiresAt
-                : Date.now() + 3 * 86400000;
-
-            if (
-              typeof window.bccSetSecplusPortalEntitlement === "function" &&
-              window.bccSetSecplusPortalEntitlement(exp, null, data.productId || "secplus-portal-3d")
-            ) {
-              showStatus(data.message || "Access active for 3 days on this browser.", true);
-              actionsEl.hidden = false;
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "secplus_trial_3d_start", {
-                  product: "secplus",
-                  value: 0,
-                  currency: "USD",
-                });
-              }
-            } else {
-              showStatus(
-                "Access was granted but this browser blocked saving it. Allow site data, reload, and try again—or use the link we emailed.",
-                false
-              );
-            }
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Start free 3-day access";
-          })
-          .catch(function () {
-            showStatus("Could not reach the server. Check your connection and try again.", false);
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Start free 3-day access";
-          });
-      });
-    })();
-  </script>
 </body>
 </html>

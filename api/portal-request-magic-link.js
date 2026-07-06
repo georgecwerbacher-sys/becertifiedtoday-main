@@ -115,7 +115,9 @@ async function handleSecplusTrial3dGrant(res, body, email, sk, jwtSecret, site) 
     const status =
       grant.reason === "invalid-email"
         ? 400
-        : grant.reason === "paid-portal-active" || grant.reason === "trial-used"
+        : grant.reason === "paid-portal-active" ||
+            grant.reason === "trial-used" ||
+            grant.reason === "promo-ended"
           ? 200
           : 400;
     return res.status(status).json({
