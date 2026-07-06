@@ -7,7 +7,6 @@
   <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin dashboard | Be Certified Today</title>
-  <script src="/js/analytics-exclude.js"></script>
   <style>
     :root {
       color-scheme: light dark;
@@ -215,8 +214,8 @@
   <div class="wrap">
     <h1>Admin dashboard</h1>
     <p class="lead">
-      Owner-only access for <strong>georgecwerbacher@gmail.com</strong>. Traffic reports exclude localhost,
-      <code>/admin/</code>, and internal test emails. Signing in opts this browser out of GA4 on the public site.
+      Owner-only access for <strong>georgecwerbacher@gmail.com</strong>. Stripe checkouts, portal access,
+      visitor questions, and magic-link resets.
     </p>
 
     <section id="loginPanel" class="panel">
@@ -234,7 +233,6 @@
 
     <section id="dashPanel" class="hidden">
       <nav class="admin-nav" aria-label="Dashboard sections">
-        <a href="#section-traffic">Site traffic</a>
         <a href="#section-register">Stripe checkout</a>
         <a href="#section-magic-link">Magic link reset</a>
         <a href="#section-questions">Questions</a>
@@ -327,61 +325,6 @@
         <p id="portalStatus" class="status" aria-live="polite"></p>
       </div>
 
-      <div class="panel" id="section-traffic">
-        <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:8px">
-          <h2 style="margin:0;font-size:1.05rem">Site traffic (GA4)</h2>
-          <button type="button" id="trafficRefreshBtn" class="secondary">Refresh analytics</button>
-        </div>
-        <p class="section-note">
-          Website visitors, engagement, and conversions for the selected date range.
-          Completed purchases also appear under <a href="#section-register">Stripe checkout</a>.
-        </p>
-        <p id="metaLine" class="status ok"></p>
-        <p id="trafficStatus" class="status" aria-live="polite"></p>
-
-        <h3 class="portal-product-title" id="traffic-metrics-top">Site overview</h3>
-        <div class="cards" id="summaryCards"></div>
-
-        <h3 class="portal-product-title">Primary landing · Security+ home</h3>
-        <div class="cards" id="primaryLandingCards"></div>
-        <p id="primaryLandingNote" class="section-note"></p>
-
-        <h3 class="portal-product-title" style="margin-top:20px">Website conversions</h3>
-        <div class="cards" id="conversionCards"></div>
-
-        <div class="link-grid" style="margin-top:12px">
-          <article class="link-card">
-            <h3>Google Analytics</h3>
-            <p>Property 538156526 — Reports home, Realtime, explorations.</p>
-            <div class="actions">
-              <a class="btn" href="https://analytics.google.com/analytics/web/#/a395179512p538156526/reports/intelligenthome" target="_blank" rel="noopener noreferrer">Open GA4</a>
-            </div>
-          </article>
-        </div>
-
-        <h3 class="portal-product-title" style="margin-top:20px">Top pages</h3>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr><th>Page</th><th>Views</th><th>Users</th></tr>
-            </thead>
-            <tbody id="topPagesBody"></tbody>
-          </table>
-        </div>
-
-        <h3 class="portal-product-title" style="margin-top:20px">Daily trend</h3>
-        <div class="portal-table-wrap">
-          <table>
-            <thead>
-              <tr><th>Date</th><th>Users</th><th>Sessions</th><th>Page views</th></tr>
-            </thead>
-            <tbody id="trendBody"></tbody>
-          </table>
-        </div>
-
-        <p id="trafficNote" class="section-note"></p>
-      </div>
-
       <div class="panel" id="visitorQuestionsPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-questions">Visitor questions</h2>
         <p class="section-note">
@@ -472,9 +415,6 @@
       var loginForm = document.getElementById("loginForm");
       var loginStatus = document.getElementById("loginStatus");
       var dashStatus = document.getElementById("dashStatus");
-      var summaryCards = document.getElementById("summaryCards");
-      var trendBody = document.getElementById("trendBody");
-      var metaLine = document.getElementById("metaLine");
       var rangeEl = document.getElementById("range");
       var portalStatus = document.getElementById("portalStatus");
       var PORTAL_PRODUCTS = [
@@ -511,166 +451,6 @@
 
       function fmt(n) {
         return Number(n || 0).toLocaleString();
-      }
-
-      function fmtDuration(sec) {
-        var s = Math.round(Number(sec) || 0);
-        if (s < 60) return s + "s";
-        return Math.floor(s / 60) + "m " + (s % 60) + "s";
-      }
-
-      function renderSummary(data) {
-        var s = data.summary || {};
-        var cards = [
-          ["Active users", fmt(s.activeUsers)],
-          ["New visitors (GA4)", fmt(s.newUsers)],
-          ["Sessions", fmt(s.sessions)],
-          ["Page views", fmt(s.screenPageViews)],
-          ["Realtime users", fmt(data.realtimeActiveUsers)],
-          ["Avg session", fmtDuration(s.averageSessionDurationSeconds)],
-          ["Engagement", ((Number(s.engagementRate) || 0) * 100).toFixed(1) + "%"],
-        ];
-        summaryCards.innerHTML = cards
-          .map(function (c) {
-            return (
-              '<div class="card"><div class="val">' +
-              c[1] +
-              '</div><div class="lbl">' +
-              c[0] +
-              "</div></div>"
-            );
-          })
-          .join("");
-        metaLine.textContent =
-          "Property " +
-          (data.propertyId || "—") +
-          " · Measurement " +
-          (data.measurementId || "—") +
-          " · Updated " +
-          (data.fetchedAt || "");
-      }
-
-      function fmtPct(rate) {
-        if (rate == null || !Number.isFinite(Number(rate))) return "—";
-        return (Number(rate) * 100).toFixed(1) + "%";
-      }
-
-      function renderSiteTraffic(data) {
-        var traffic = data && data.siteTraffic;
-        var statusEl = document.getElementById("trafficStatus");
-        var noteEl = document.getElementById("trafficNote");
-        var primaryCards = document.getElementById("primaryLandingCards");
-        var primaryNote = document.getElementById("primaryLandingNote");
-
-        if (!traffic || traffic.error) {
-          if (primaryCards) primaryCards.innerHTML = "";
-          var convCards = document.getElementById("conversionCards");
-          if (convCards) convCards.innerHTML = "";
-          ["topPagesBody"].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (el) {
-              el.innerHTML =
-                '<tr><td colspan="6" style="color:var(--muted)">Site traffic not loaded.</td></tr>';
-            }
-          });
-          if (statusEl) {
-            statusEl.textContent = (traffic && traffic.error) || "";
-            statusEl.className = traffic && traffic.error ? "status err" : "status";
-          }
-          if (noteEl) noteEl.textContent = "";
-          if (primaryNote) primaryNote.textContent = "";
-          return;
-        }
-
-        var p = traffic.primaryLanding || {};
-        if (primaryCards) {
-          primaryCards.innerHTML = [
-            ["Page views", fmt(p.screenPageViews)],
-            ["Users", fmt(p.activeUsers)],
-            ["Landing sessions", fmt(p.landingSessions)],
-            ["Engaged sessions", fmt(p.engagedSessions)],
-            ["Avg on page", fmtDuration(p.avgSecondsOnPage)],
-            ["Avg session", fmtDuration(p.avgSessionDurationSeconds)],
-          ]
-            .map(function (c) {
-              return (
-                '<div class="card"><div class="val">' +
-                c[1] +
-                '</div><div class="lbl">' +
-                c[0] +
-                "</div></div>"
-              );
-            })
-            .join("");
-        }
-        if (primaryNote) {
-          primaryNote.textContent = p.path || "";
-        }
-
-        var convCards = document.getElementById("conversionCards");
-        var conversions = traffic.conversions || [];
-        if (convCards) {
-          convCards.innerHTML = conversions.length
-            ? conversions
-                .map(function (row) {
-                  return (
-                    '<div class="card"><div class="val">' +
-                    fmt(row.eventCount) +
-                    '</div><div class="lbl">' +
-                    (row.label || row.eventName || "") +
-                    (row.activeUsers ? " · " + fmt(row.activeUsers) + " users" : "") +
-                    "</div></div>"
-                  );
-                })
-                .join("")
-            : '<p class="section-note" style="margin:0;color:var(--muted)">No conversion events in range.</p>';
-        }
-
-        var topBody = document.getElementById("topPagesBody");
-        var topRows = traffic.topPages || [];
-        if (topBody) {
-          topBody.innerHTML = topRows.length
-            ? topRows
-                .map(function (r) {
-                  return (
-                    "<tr><td class=\"path\">" +
-                    (r.pagePath || "") +
-                    "</td><td>" +
-                    fmt(r.screenPageViews) +
-                    "</td><td>" +
-                    fmt(r.activeUsers) +
-                    "</td></tr>"
-                  );
-                })
-                .join("")
-            : '<tr><td colspan="3" style="color:var(--muted)">No page data.</td></tr>';
-        }
-
-        if (statusEl) {
-          statusEl.textContent = traffic.rangeLabel ? "Range: " + traffic.rangeLabel : "";
-          statusEl.className = "status ok";
-        }
-        if (noteEl) noteEl.textContent = traffic.note || "";
-      }
-
-      function renderTrend(rows) {
-        trendBody.innerHTML = (rows || [])
-          .map(function (r) {
-            var d = r.date || "";
-            if (d.length === 8) d = d.slice(0, 4) + "-" + d.slice(4, 6) + "-" + d.slice(6, 8);
-            return (
-              "<tr><td>" +
-              d +
-              "</td><td>" +
-              fmt(r.activeUsers) +
-              "</td><td>" +
-              fmt(r.sessions) +
-              "</td><td>" +
-              fmt(r.screenPageViews) +
-              "</td></tr>"
-            );
-          })
-          .join("");
       }
 
       function fmtIsoUtc(iso) {
@@ -1106,38 +886,6 @@
           });
       }
 
-      function loadTrafficReport() {
-        var trafficStatus = document.getElementById("trafficStatus");
-        if (trafficStatus) {
-          trafficStatus.textContent = "Refreshing GA4 analytics…";
-          trafficStatus.className = "status";
-        }
-        return postJson("/api/analytics-report", { range: rangeEl.value })
-          .then(function (ga) {
-            if (!ga.ok) {
-              if (ga.body && ga.body.error === "Unauthorized") {
-                setToken("");
-                showDash(false);
-              }
-              var msg = (ga.body && ga.body.error) || "GA report failed";
-              if (ga.body && ga.body.hint) msg += " — " + ga.body.hint;
-              throw new Error(msg);
-            }
-            renderSummary(ga.body);
-            renderSiteTraffic(ga.body);
-            renderTrend(ga.body.dailyTrend);
-            return ga.body;
-          })
-          .catch(function (err) {
-            if (trafficStatus) {
-              trafficStatus.textContent = err.message || "Failed to load analytics";
-              trafficStatus.className = "status err";
-            }
-            renderSiteTraffic(null);
-            throw err;
-          });
-      }
-
       function loadReport() {
         dashStatus.textContent = "Loading…";
         dashStatus.className = "status";
@@ -1153,54 +901,30 @@
           magicStatus.textContent = "Loading magic link resets…";
           magicStatus.className = "status";
         }
-        var trafficStatus = document.getElementById("trafficStatus");
-        if (trafficStatus) {
-          trafficStatus.textContent = "Loading GA4 analytics…";
-          trafficStatus.className = "status";
-        }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
 
         loadVisitorQuestions();
 
-        Promise.all([
-          postJson("/api/analytics-report", { range: rangeEl.value }),
-          postJson("/api/portal-users-report", { range: rangeEl.value }),
-        ])
-          .then(function (results) {
-            var ga = results[0];
-            var portal = results[1];
-
-            if (!ga.ok) {
-              if (ga.body && ga.body.error === "Unauthorized") {
+        postJson("/api/portal-users-report", { range: rangeEl.value })
+          .then(function (portal) {
+            if (!portal.ok) {
+              if (portal.body && portal.body.error === "Unauthorized") {
                 setToken("");
                 showDash(false);
               }
-              var msg = (ga.body && ga.body.error) || "GA report failed";
-              if (ga.body && ga.body.hint) msg += " — " + ga.body.hint;
-              throw new Error(msg);
-            }
-
-            renderSummary(ga.body);
-            renderSiteTraffic(ga.body);
-            var stripeData =
-              portal.ok && portal.body && portal.body.purchasesInRange
-                ? portal.body.purchasesInRange
-                : null;
-            stripePurchasesCache = stripeData;
-            renderTrend(ga.body.dailyTrend);
-            dashStatus.textContent = "";
-            dashStatus.className = "status ok";
-
-            if (!portal.ok) {
               clearPortalPanels();
               var pmsg = (portal.body && portal.body.error) || "Portal list failed";
               if (portal.body && portal.body.hint) pmsg += " — " + portal.body.hint;
-              portalStatus.textContent = pmsg;
-              portalStatus.className = "status err";
-            } else {
-              renderPortalUsers(portal.body);
+              throw new Error(pmsg);
             }
+
+            var stripeData =
+              portal.body && portal.body.purchasesInRange ? portal.body.purchasesInRange : null;
+            stripePurchasesCache = stripeData;
+            renderPortalUsers(portal.body);
+            dashStatus.textContent = "";
+            dashStatus.className = "status ok";
           })
           .catch(function (err) {
             dashStatus.textContent = err.message || "Failed to load report";
@@ -1208,8 +932,6 @@
             portalStatus.textContent = "";
             if (stripeStatus) stripeStatus.textContent = "";
             if (magicStatus) magicStatus.textContent = "";
-            if (trafficStatus) trafficStatus.textContent = "";
-            renderSiteTraffic(null);
           });
       }
 
@@ -1290,13 +1012,6 @@
           .then(function (res) {
             if (!res.ok) throw new Error((res.body && res.body.error) || "Login failed");
             setToken(res.body.token);
-            if (typeof window.bccSetAnalyticsExclude === "function") {
-              window.bccSetAnalyticsExclude(true);
-            } else {
-              try {
-                localStorage.setItem("bcc_analytics_exclude_v1", "1");
-              } catch (_) {}
-            }
             document.getElementById("password").value = "";
             showDash(true);
             loginStatus.textContent = "";
@@ -1310,12 +1025,6 @@
       });
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
-      var trafficRefreshBtn = document.getElementById("trafficRefreshBtn");
-      if (trafficRefreshBtn) {
-        trafficRefreshBtn.addEventListener("click", function () {
-          loadTrafficReport().catch(function () {});
-        });
-      }
       document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {

@@ -148,7 +148,7 @@ export default async function handler(req, res) {
       scanTruncated: listed.scanTruncated,
       fetchedAt: new Date().toISOString(),
       note:
-        "Security+ portal emails from Stripe checkout (10-day or 30-day access). One row per email. Not live browsing — use GA4 Realtime for anonymous visitors.",
+        "Security+ portal emails from Stripe checkout (10-day or 30-day access). One row per email.",
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Stripe API error";
