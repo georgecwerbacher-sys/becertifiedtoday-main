@@ -89,9 +89,16 @@ async function vercelAnalyticsGet(path, params, env = getVercelAnalyticsEnv()) {
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
+    const errObj = body && body.error;
     const msg =
-      (body && (body.error?.message || body.error)) ||
+      (typeof errObj === "object" && errObj?.message) ||
+      (typeof errObj === "string" ? errObj : null) ||
       `Vercel Web Analytics API error (${res.status})`;
+    if (res.status === 403 && errObj && errObj.invalidToken) {
+      throw new Error(
+        "Vercel access token rejected (expired or wrong type). Create a new token at vercel.com/account/tokens and set BCC_VERCEL_ACCESS_TOKEN on Vercel, then redeploy."
+      );
+    }
     throw new Error(typeof msg === "string" ? msg : "Vercel Web Analytics API error");
   }
   return body;
