@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="CompTIA Security+ SY0-701 exam prep in your browser: practice questions, PBQ scenarios, timed exam, and free samples. Not a training course."
+    content="Cisco CCNA, CCNP ENCOR, and CompTIA Security+ exam prep in your browser: practice tests, labs, drag-and-drop, PBQ scenarios, and timed simulations. Not a training course."
   />
   <link rel="canonical" href="https://becertifiedtoday.com/" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
@@ -253,6 +253,48 @@
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
+    .path-card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .path-card .cta--disabled {
+      cursor: not-allowed;
+      opacity: 0.92;
+      border-color: rgba(167, 139, 250, 0.5);
+      background: linear-gradient(165deg, rgba(109, 40, 217, 0.55) 0%, rgba(59, 20, 120, 0.75) 100%);
+      box-shadow: none;
+      color: #e9d5ff;
+      pointer-events: none;
+    }
+    .path-card .cta--ccnaauto {
+      border-color: rgba(45, 212, 191, 0.55);
+      background: linear-gradient(165deg, rgba(20, 184, 166, 0.95) 0%, rgba(13, 116, 110, 0.98) 100%);
+      box-shadow: 0 4px 18px rgba(13, 148, 136, 0.35);
+      color: #f0fdfa;
+    }
+    .path-card .cta--ccnaauto:hover {
+      filter: brightness(1.06);
+    }
+    .path-card .cta--ccnaauto:focus-visible {
+      outline-color: #5eead4;
+    }
+    .path-card--encor .cta {
+      border-color: rgba(61, 157, 114, 0.75);
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.95) 0%, rgba(24, 94, 66, 0.98) 100%);
+      box-shadow: 0 4px 18px rgba(24, 94, 66, 0.35);
+      color: #f0fdf4;
+    }
+    .path-card--encor .cta:focus-visible {
+      outline-color: #86efac;
+    }
+    .path-card--encor .badge {
+      background: linear-gradient(165deg, rgba(52, 168, 118, 0.35) 0%, rgba(24, 94, 66, 0.5) 100%);
+      color: #ecfdf5;
+      border: 1px solid rgba(61, 157, 114, 0.75);
+      box-shadow: 0 2px 10px rgba(24, 94, 66, 0.28);
+    }
     .badge {
       display: inline-block;
       margin-bottom: 10px;
@@ -420,12 +462,52 @@
         ></video>
       </figure>
       <div class="intro">
-        <h1>CompTIA Security+ SY0-701 Exam Prep</h1>
+        <h1>Certification Exam Prep: Choose Your Track</h1>
         <p>
-          Practice questions, PBQ scenarios, and a timed exam simulation in your browser. Open the Security+ prep page for free samples before you buy access. This is exam prep, not instructor-led courses.
+          Pick CCNA 200-301, CCNP ENCOR 350-401, or Security+ SY0-701. Open that track&apos;s prep page for free samples, practice questions, labs, drag-and-drop items, and timed simulations. This is exam prep, not instructor-led courses.
         </p>
       </div>
-      <ul class="paths" aria-label="Exam prep">
+      <ul class="paths" aria-label="Exam prep tracks">
+        <li>
+          <article class="path-card" aria-labelledby="path-ccna-title">
+            <span class="badge">Associate</span>
+            <h2 id="path-ccna-title">CCNA</h2>
+            <p>
+              CCNA 200-301 exam prep in your browser — labs, drag-and-drop, timed simulation, and free samples.
+              CCNA Automation 200-901 is in development.
+            </p>
+            <div class="path-card-actions">
+              <a
+                class="cta"
+                id="path-ccna"
+                href="/ccna-home.html#home-ccna-samples-title"
+                >CCNA 200-301 exam prep</a
+              >
+              <span
+                class="cta cta--ccnaauto cta--disabled"
+                id="path-ccnaauto"
+                role="status"
+                aria-label="CCNA Automation 200-901 - coming soon"
+                >CCNA Automation 200-901 · Coming soon</span
+              >
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="path-card path-card--encor" aria-labelledby="path-encor-title">
+            <span class="badge">Professional</span>
+            <h2 id="path-encor-title">CCNP</h2>
+            <p>
+              CCNP ENCOR 350-401 exam prep — CLI labs, drag-and-drop, timed simulation, and free samples on the ENCOR page. No GNS3 required.
+            </p>
+            <a
+              class="cta"
+              id="path-encor"
+              href="/ccnp-home.html#home-encor-samples-title"
+              >ENCOR exam prep &amp; samples</a
+            >
+          </article>
+        </li>
         <li>
           <article class="path-card path-card--secplus" aria-labelledby="path-secplus-title">
             <span class="badge">Security</span>
@@ -493,7 +575,7 @@
             <article class="why-choose-item">
               <h3>Updated Questions</h3>
               <p>
-                The question bank and PBQ scenarios stay tied to current SY0-701 objectives, not stale PDF-era content.
+                The question bank and labs stay updated so topics and wording align with current CCNA, CCNP ENCOR, and Security+ objectives, not stale PDF-era content.
                 <a href="/how-we-verify-questions.html">See how questions are verified</a>.
               </p>
             </article>

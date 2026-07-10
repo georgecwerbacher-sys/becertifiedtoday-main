@@ -96,7 +96,13 @@ async function vercelAnalyticsGet(path, params, env = getVercelAnalyticsEnv()) {
       `Vercel Web Analytics API error (${res.status})`;
     if (res.status === 403 && errObj && errObj.invalidToken) {
       throw new Error(
-        "Vercel access token rejected (expired or wrong type). Create a new token at vercel.com/account/tokens and set BCC_VERCEL_ACCESS_TOKEN on Vercel, then redeploy."
+        "Vercel access token rejected (expired or wrong team scope). Create a team-scoped token at vercel.com/account/tokens for werby1s-projects, set BCC_VERCEL_ACCESS_TOKEN on Vercel (production + preview), then redeploy. CLI login tokens (vca_…) expire when you sign out of the Vercel CLI."
+      );
+    }
+    if (res.status === 403) {
+      throw new Error(
+        (typeof msg === "string" ? msg : "Vercel Web Analytics API forbidden (403)") +
+          ". Confirm Web Analytics is enabled for this project and the token is scoped to team werby1s-projects."
       );
     }
     throw new Error(typeof msg === "string" ? msg : "Vercel Web Analytics API error");

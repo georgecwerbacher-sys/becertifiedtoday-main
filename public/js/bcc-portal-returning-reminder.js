@@ -43,7 +43,7 @@
         return Promise.resolve(false);
       },
       requestLinkHref: "/CCNP-ENCOR-Study/encor-portal-request-link.html",
-      restoreHref: null,
+      restoreHref: "/CCNP-ENCOR-Study/encor-portal-restore-access.html",
     },
     {
       pathMatch: "SEC+_Training_Portal",

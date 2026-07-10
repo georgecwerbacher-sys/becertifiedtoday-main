@@ -292,7 +292,7 @@
       <div class="panel" id="portalPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-register">Stripe checkout · New Register</h2>
         <p class="section-note" style="margin-top:0">
-          Paid Security+ checkouts from Stripe in the selected date range (UTC).
+          Paid CCNA, ENCOR, and Security+ checkouts from Stripe in the selected date range (UTC).
           This section is <strong>completed purchases only</strong> (email + product + checkout session).
           <strong>New Register</strong> = distinct checkout emails in the range.
         </p>
@@ -337,8 +337,44 @@
 
         <h3 class="portal-product-title" style="margin-top:20px">Active portal access (all time)</h3>
         <p style="margin:0 0 12px;font-size:0.85rem;color:var(--muted)">
-          Current and expired Security+ library passes from Stripe metadata — not limited to the date range above.
+          Current and expired CCNA, ENCOR, and Security+ library passes from Stripe metadata — not limited to the date range above.
         </p>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNA (200-301)</h3>
+          <div class="cards" id="portalSummaryCcna"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Magic link resets</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersCcna"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="portal-product-block">
+          <h3 class="portal-product-title">CCNP ENCOR (350-401)</h3>
+          <div class="cards" id="portalSummaryEncor"></div>
+          <div class="portal-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Email</th>
+                  <th>Magic link resets</th>
+                  <th>Access until (UTC)</th>
+                  <th>Checkout session</th>
+                </tr>
+              </thead>
+              <tbody id="portalUsersEncor"></tbody>
+            </table>
+          </div>
+        </div>
         <div class="portal-product-block">
           <h3 class="portal-product-title">CompTIA Security+ (SY0-701)</h3>
           <div class="cards" id="portalSummarySecplus"></div>
@@ -453,6 +489,8 @@
       var rangeEl = document.getElementById("range");
       var portalStatus = document.getElementById("portalStatus");
       var PORTAL_PRODUCTS = [
+        { key: "ccna", summaryId: "portalSummaryCcna", bodyId: "portalUsersCcna" },
+        { key: "encor", summaryId: "portalSummaryEncor", bodyId: "portalUsersEncor" },
         { key: "secplus", summaryId: "portalSummarySecplus", bodyId: "portalUsersSecplus" },
       ];
       var SAMPLE_PRODUCT_LABELS = {
@@ -695,12 +733,10 @@
           })
           .join("");
 
-        var items = (data.items || []).filter(function (r) {
-          return String(r.track || "").toLowerCase() === "secplus";
-        });
+        var items = data.items || [];
         if (!items.length) {
           bodyEl.innerHTML =
-            '<tr><td colspan="6" style="color:var(--muted)">No Security+ magic link requests in this range yet.</td></tr>';
+            '<tr><td colspan="6" style="color:var(--muted)">No magic link requests in this range yet.</td></tr>';
         } else {
           bodyEl.innerHTML = items
             .slice(0, 100)
@@ -726,7 +762,7 @@
 
         if (statusEl) {
           statusEl.textContent =
-            "Logged when learners submit Request magic link for Security+.";
+            "Logged when learners submit Request magic link (CCNA, Security+, and other tracks).";
           statusEl.className = "status ok";
         }
       }
@@ -749,6 +785,8 @@
         cardsEl.innerHTML = [
           ["New Register", fmt(data.newRegister != null ? data.newRegister : data.uniqueCustomers)],
           ["Total purchases", fmt(data.totalPurchases)],
+          ["CCNA purchases", fmt(byProduct.ccna)],
+          ["ENCOR purchases", fmt(byProduct.encor)],
           ["Security+ purchases", fmt(byProduct.secplus)],
         ]
           .map(function (c) {
@@ -1137,7 +1175,7 @@
         var status = document.getElementById("portalBypassStatus");
         status.textContent = "Generating bypass links…";
         status.className = "status";
-        return postJson("/api/admin-portal-bypass", { action: "link", track: "secplus" })
+        return postJson("/api/admin-portal-bypass", { action: "link", track: "all" })
           .then(function (res) {
             if (!res.ok) throw new Error((res.body && res.body.error) || "Bypass links failed");
             renderPortalBypassLinks(res.body.links || []);

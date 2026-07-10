@@ -834,6 +834,13 @@
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="formats-inner">
+          <p id="portal-checkout-activated-banner" class="portal-checkout-activated-banner" hidden role="status">
+            <strong>Access activated.</strong>
+            Your pass is stored in <strong>this browser</strong> until the end date Stripe tied to your payment. Clearing site data for this domain removes it—you can recover with a checkout session ID, your Stripe success URL, or an email magic link:
+            <a href="/CCNP-ENCOR-Study/encor-portal-request-link.html">Email me a portal link</a>
+            ·
+            <a href="/CCNP-ENCOR-Study/encor-portal-restore-access.html">Restore access</a>
+          </p>
           <p class="formats-head">CCNP ENCOR practice formats</p>
           <h2 id="formats-title">Choose your practice mode</h2>
           <p class="formats-lead">
@@ -1134,9 +1141,24 @@
       }
 
       if (typeof bccRestoreEncorPortalAccess === "function") {
-        bccRestoreEncorPortalAccess().then(refreshPortalSimGate);
+        bccRestoreEncorPortalAccess().then(function () {
+          refreshPortalSimGate();
+          bootCheckoutReturn();
+        });
       } else {
         refreshPortalSimGate();
+        bootCheckoutReturn();
+      }
+
+      function bootCheckoutReturn() {
+        if (typeof bccApplyEncorPortalCheckoutFromUrl !== "function") return;
+        bccApplyEncorPortalCheckoutFromUrl(null, true).then(function (ok) {
+          if (ok) {
+            var banner = document.getElementById("portal-checkout-activated-banner");
+            if (banner) banner.hidden = false;
+            refreshPortalSimGate();
+          }
+        });
       }
     });
   </script>

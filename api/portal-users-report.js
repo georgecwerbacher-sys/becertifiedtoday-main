@@ -2,13 +2,14 @@
  * POST /api/portal-users-report
  * Authorization: Bearer <admin JWT>
  *
- * Lists Security+ portal purchasers from Stripe Customer metadata.
+ * Lists CCNA, ENCOR, and Security+ portal purchasers from Stripe Customer metadata.
  * Env: STRIPE_SECRET_KEY, ADMIN_ANALYTICS_JWT_SECRET
  */
 import Stripe from "stripe";
 import { verifyAnalyticsAdminToken } from "../server-lib/analytics-admin-jwt.js";
+import { enrichPortalRowsWithCheckout as enrichCcnaRows } from "../server-lib/ccna-portal-customers.js";
 import { filterPortalSubscriberRows } from "../server-lib/analytics-internal.js";
-import { isSecplusPortalProduct } from "../server-lib/ccna-portal-stripe.js";
+import { isEncorPortalProduct, isSecplusPortalProduct } from "../server-lib/ccna-portal-stripe.js";
 import { filterRowsFromUtcStart } from "../server-lib/google-analytics.js";
 import {
   aggregateMagicLinkRequestsReport,
@@ -117,38 +118,56 @@ export default async function handler(req, res) {
       magicLinkResetsError = magicLinkAllRows?.error || "Magic link requests unavailable";
     }
 
+    let ccna = applyCounts(filterProductBlock(listed.ccna));
+    let encor = applyCounts(filterProductBlock(listed.encor));
     let secplus = applyCounts(filterProductBlock(listed.secplus));
 
     if (magicLinkEmailCounts) {
+      enrichPortalBlockWithMagicLinkCounts(ccna, magicLinkEmailCounts);
+      enrichPortalBlockWithMagicLinkCounts(encor, magicLinkEmailCounts);
       enrichPortalBlockWithMagicLinkCounts(secplus, magicLinkEmailCounts);
     }
 
     if (verifyCheckout) {
-      if (secplus.active.length > 0 && secplus.active.length <= 40) {
-        secplus.active = await enrichPortalRowsWithCheckout(stripe, secplus.active, {
+      const enrichIfSmall = async (block, enrichFn) => {
+        if (block.active.length > 0 && block.active.length <= 40) {
+          block.active = await enrichFn(stripe, block.active);
+          applyCounts(block);
+        }
+      };
+      await enrichIfSmall(ccna, enrichCcnaRows);
+      await enrichIfSmall(encor, (s, rows) =>
+        enrichPortalRowsWithCheckout(s, rows, {
+          isPortalProduct: isEncorPortalProduct,
+          notProductNote: "not encor portal access",
+        })
+      );
+      await enrichIfSmall(secplus, (s, rows) =>
+        enrichPortalRowsWithCheckout(s, rows, {
           isPortalProduct: isSecplusPortalProduct,
           notProductNote: "not security+ portal access",
-        });
-        applyCounts(secplus);
-      }
+        })
+      );
     }
 
     return res.status(200).json({
       ok: true,
+      ccna,
+      encor,
       secplus,
       purchasesInRange:
         purchasesInRange && !purchasesInRange.error ? purchasesInRange : null,
       purchasesInRangeError: purchasesInRange?.error || null,
       magicLinkResets,
       magicLinkResetsError,
-      active: secplus.active,
-      expired: secplus.expired,
-      counts: secplus.counts,
+      active: ccna.active,
+      expired: ccna.expired,
+      counts: ccna.counts,
       customersScanned: listed.customersScanned,
       scanTruncated: listed.scanTruncated,
       fetchedAt: new Date().toISOString(),
       note:
-        "Security+ portal emails from Stripe checkout (10-day or 30-day access). One row per email.",
+        "Emails from Stripe checkout (CCNA, ENCOR, and Security+ portal access). One row per email per product.",
     });
   } catch (err) {
     const message = err && err.message ? String(err.message) : "Stripe API error";
