@@ -1070,9 +1070,9 @@
       ".cisco-sample-upsell-primary:hover{filter:brightness(1.08)}" +
       ".cisco-sample-upsell-secondary{border:1px solid rgba(159,176,204,.45);background:transparent;color:#e6edf3;border-radius:10px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}" +
       ".cisco-sample-upsell-secondary:hover{background:rgba(255,255,255,.06)}" +
-      ".sample-subjects-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid rgba(159,176,204,.28)}" +
-      ".sample-subjects-footer__title{margin:0 0 .5rem;font-size:.85rem;font-weight:700;color:#9fb0cc}" +
-      ".sample-subjects-footer__list{margin:0;padding:0 0 0 1.25rem;font-size:.82rem;line-height:1.5;color:#b8c3d6}" +
+      ".sample-subjects-footer{margin-top:1.25rem;padding:18px 16px 20px;background:#0d1b3d;border:1px solid #2a4a7a;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25)}" +
+      ".sample-subjects-footer__title{margin:0 0 .5rem;font-size:.85rem;font-weight:800;color:#d8e4f8}" +
+      ".sample-subjects-footer__list{margin:0;padding:0 0 0 1.25rem;font-size:.82rem;line-height:1.5;color:#c5d4f0}" +
       ".sample-subjects-footer__list li+li{margin-top:.2rem}" +
       ".cisco-sample-scorecard-root{position:fixed;inset:0;z-index:20003;display:flex;align-items:center;justify-content:center;padding:16px}" +
       ".cisco-sample-scorecard-backdrop{position:absolute;inset:0;background:rgba(8,12,24,.78);backdrop-filter:blur(4px)}" +
@@ -1124,6 +1124,18 @@
     var index = reconcileLocation(session);
     if (index < 0) return;
     applyNav(session, index);
+    if (window.bccEnsurePageFeedback) {
+      window.bccEnsurePageFeedback();
+    } else if (!document.querySelector("script[data-bcc-page-feedback]")) {
+      var pf = document.createElement("script");
+      pf.src = "/js/page-feedback-widget.js";
+      pf.defer = true;
+      pf.setAttribute("data-bcc-page-feedback", "1");
+      pf.onload = function () {
+        if (window.bccEnsurePageFeedback) window.bccEnsurePageFeedback();
+      };
+      (document.head || document.body).appendChild(pf);
+    }
   }
 
   function onHashChange() {

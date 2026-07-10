@@ -984,6 +984,18 @@
     navBooted = true;
     if (isMultiPbqSample(session)) ensurePbqTimer(session, index);
     applyNav(session, index);
+    if (window.bccEnsurePageFeedback) {
+      window.bccEnsurePageFeedback();
+    } else if (!document.querySelector("script[data-bcc-page-feedback]")) {
+      var pf = document.createElement("script");
+      pf.src = "/js/page-feedback-widget.js";
+      pf.defer = true;
+      pf.setAttribute("data-bcc-page-feedback", "1");
+      pf.onload = function () {
+        if (window.bccEnsurePageFeedback) window.bccEnsurePageFeedback();
+      };
+      (document.head || document.body).appendChild(pf);
+    }
   }
 
   function onHashChange() {

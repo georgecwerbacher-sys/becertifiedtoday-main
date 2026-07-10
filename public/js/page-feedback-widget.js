@@ -8,17 +8,87 @@
   var ROOT_ID = "bccPageFeedback";
   var STORAGE_PREFIX = "bccPageFeedbackDone:";
 
+  function practicePathForMatch() {
+    var path = (location.pathname || "").toLowerCase();
+    try {
+      var remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+      if (
+        (path === "/sample" ||
+          path === "/sample/" ||
+          path === "/secplus-sample" ||
+          path === "/secplus-sample/") &&
+        remembered
+      ) {
+        return remembered;
+      }
+    } catch (e) {}
+    return path;
+  }
+
+  function pathMatchesPracticeContent(p) {
+    return (
+      p.indexOf("/ccna-study/ccna_questions/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_samples/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      p.indexOf("/ccna_sim_exam/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/encor_questions/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-labs/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/encor_samples/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_samples/") !== -1 ||
+      p.indexOf("/ccnaauto-study/") !== -1
+    );
+  }
+
+  function isMaskedSamplePath() {
+    var path = (location.pathname || "").toLowerCase();
+    return (
+      path === "/sample" ||
+      path === "/sample/" ||
+      path === "/secplus-sample" ||
+      path === "/secplus-sample/"
+    );
+  }
+
+  function isActiveSampleSession() {
+    try {
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+      if (sessionStorage.getItem("encorHomeSample")) return true;
+      if (sessionStorage.getItem("secplusHomeSample")) return true;
+      var kind = sessionStorage.getItem("ccnpSampleKind") || "";
+      if (kind.indexOf("ccna") === 0 || kind.indexOf("encor") === 0) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function isPracticeFeedbackPage() {
+    var path = practicePathForMatch();
+    if (pathMatchesPracticeContent(path)) return true;
+    return isMaskedSamplePath() && isActiveSampleSession();
+  }
+
   function detectProduct() {
-    var p = (location.pathname || "").toLowerCase();
+    var p = practicePathForMatch();
     if (p.indexOf("comptia-sec") !== -1 || p.indexOf("/comp_tia_sec+/") !== -1) return "secplus";
     if (p.indexOf("ccnp-encor") !== -1 || p.indexOf("/ccnp-encor-study/") !== -1) return "encor";
     if (p.indexOf("ccnaauto") !== -1 || p.indexOf("/ccnaauto-study/") !== -1) return "ccnaauto";
     if (p.indexOf("ccna") !== -1 || p.indexOf("/ccna-study/") !== -1) return "ccna";
+    if (isMaskedSamplePath()) {
+      try {
+        var kind = sessionStorage.getItem("ccnpSampleKind") || "";
+        if (kind.indexOf("encor") === 0) return "encor";
+        if (kind.indexOf("ccna") === 0) return "ccna";
+        if (sessionStorage.getItem("secplusHomeSample")) return "secplus";
+      } catch (e) {}
+    }
     return "general";
   }
 
   function detectContentType() {
-    var p = (location.pathname || "").toLowerCase();
+    var p = practicePathForMatch();
     if (
       p.indexOf("/ccna_d_d/") !== -1 ||
       p.indexOf("/ccnp-encor-drag-drop/") !== -1 ||
@@ -36,6 +106,10 @@
     return "question";
   }
 
+  function feedbackStorageKey() {
+    return STORAGE_PREFIX + practicePathForMatch();
+  }
+
   function injectStyles() {
     if (document.getElementById(STYLE_ID)) return;
     var style = document.createElement("style");
@@ -44,6 +118,9 @@
       ".bcc-page-feedback{margin:32px auto 24px;padding:18px 16px 20px;max-width:min(720px,calc(100vw - 32px));" +
       "background:#0d1b3d;border:1px solid #2a4a7a;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);" +
       "color:#9fb0cc;font-size:.88rem;line-height:1.5}" +
+      "body.cisco-home-sample-active .bcc-page-feedback," +
+      "body:has(.secplus-sample-sim-nav) .bcc-page-feedback{" +
+      "margin-bottom:calc(96px + env(safe-area-inset-bottom,0px))}" +
       ".bcc-page-feedback h3{margin:0 0 10px;font-size:.95rem;font-weight:800;color:#d8e4f8}" +
       ".bcc-pf-toggle{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:700;color:#c5d4f0}" +
       ".bcc-pf-toggle input{width:auto;margin:3px 0 0;flex-shrink:0}" +
@@ -64,7 +141,7 @@
 
   function alreadySubmitted() {
     try {
-      return sessionStorage.getItem(STORAGE_PREFIX + location.pathname) === "1";
+      return sessionStorage.getItem(feedbackStorageKey()) === "1";
     } catch (e) {
       return false;
     }
@@ -72,7 +149,7 @@
 
   function markSubmitted() {
     try {
-      sessionStorage.setItem(STORAGE_PREFIX + location.pathname, "1");
+      sessionStorage.setItem(feedbackStorageKey(), "1");
     } catch (e) {}
   }
 
@@ -163,7 +240,7 @@
           action: "submit_page_feedback",
           product: detectProduct(),
           content_type: detectContentType(),
-          page_path: location.pathname || "",
+          page_path: practicePathForMatch(),
           page_title: (document.title || "").trim(),
           comment: comment,
           email: email,
@@ -203,6 +280,7 @@
   }
 
   function ensureWidget() {
+    if (!isPracticeFeedbackPage()) return;
     if (window.bccPageFeedbackMounted) return;
     window.bccPageFeedbackMounted = true;
     createWidget();

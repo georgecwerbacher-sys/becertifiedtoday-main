@@ -968,10 +968,27 @@
     document.head.appendChild(s);
   }
 
-  function isPracticeFeedbackPath() {
-    var p = (location.pathname || "").toLowerCase();
+  function practicePathForMatch() {
+    var path = (location.pathname || "").toLowerCase();
+    try {
+      var remembered = (sessionStorage.getItem("ccnaLastRealPath") || "").toLowerCase();
+      if (
+        (path === "/sample" ||
+          path === "/sample/" ||
+          path === "/secplus-sample" ||
+          path === "/secplus-sample/") &&
+        remembered
+      ) {
+        return remembered;
+      }
+    } catch (e) {}
+    return path;
+  }
+
+  function pathMatchesPracticeContent(p) {
     return (
       p.indexOf("/ccna-study/ccna_questions/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_samples/") !== -1 ||
       p.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
       p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
       p.indexOf("/ccna_sim_exam/") !== -1 ||
@@ -984,6 +1001,33 @@
       p.indexOf("/comp_tia_sec+/sec+_samples/") !== -1 ||
       p.indexOf("/ccnaauto-study/") !== -1
     );
+  }
+
+  function isMaskedSamplePath() {
+    var path = (location.pathname || "").toLowerCase();
+    return (
+      path === "/sample" ||
+      path === "/sample/" ||
+      path === "/secplus-sample" ||
+      path === "/secplus-sample/"
+    );
+  }
+
+  function isActiveSampleSession() {
+    try {
+      if (sessionStorage.getItem("ccnaHomeSample")) return true;
+      if (sessionStorage.getItem("encorHomeSample")) return true;
+      if (sessionStorage.getItem("secplusHomeSample")) return true;
+      var kind = sessionStorage.getItem("ccnpSampleKind") || "";
+      if (kind.indexOf("ccna") === 0 || kind.indexOf("encor") === 0) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  function isPracticeFeedbackPath() {
+    var path = practicePathForMatch();
+    if (pathMatchesPracticeContent(path)) return true;
+    return isMaskedSamplePath() && isActiveSampleSession();
   }
 
   function ensurePageFeedbackWidget() {
