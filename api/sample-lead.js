@@ -24,6 +24,12 @@ import {
   confirmVisitorQuestionVerification,
   requestVisitorQuestionVerification,
 } from "../server-lib/visitor-question-verify.js";
+import {
+  aggregatePageFeedbackReport,
+  appendPageFeedback,
+  readPageFeedback,
+  updatePageFeedbackCompleted,
+} from "../server-lib/page-feedback.js";
 
 function readJsonBody(req) {
   try {
@@ -270,6 +276,131 @@ async function handleQuestionsReport(req, res, body) {
   }
 }
 
+async function handlePageFeedbackSubmit(req, res, body) {
+  try {
+    const result = await appendPageFeedback(body);
+    if (result.skipped === "honeypot") {
+      return res.status(200).json({ ok: true, skipped: "honeypot" });
+    }
+    if (!result.ok) {
+      const status =
+        result.reason === "not_configured"
+          ? 503
+          : result.reason === "missing_page_path"
+            ? 400
+            : 502;
+      return res.status(status).json({
+        ok: false,
+        error: mapPageFeedbackReason(result.reason),
+        reason: result.reason || "error",
+        detail: result.detail || null,
+        hint:
+          result.reason === "not_configured"
+            ? "Set GITHUB_LEADS_TOKEN on Vercel to persist page feedback."
+            : null,
+      });
+    }
+    return res.status(200).json({ ok: true, backend: result.backend || null });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Page feedback submit error";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
+function mapPageFeedbackReason(reason) {
+  const map = {
+    missing_page_path: "Missing page path.",
+    not_configured: "Page feedback is not configured on this server.",
+  };
+  return map[reason] || "Could not save feedback";
+}
+
+async function handlePageFeedbackUpdate(req, res, body) {
+  const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
+  const token = bearerToken(req) || (body.token || "");
+
+  if (!jwtSecret) {
+    return res.status(503).json({ ok: false, error: "Admin analytics is not configured" });
+  }
+
+  if (!verifyAnalyticsAdminToken(token, jwtSecret)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+
+  const feedbackId = typeof body.feedback_id === "string" ? body.feedback_id.trim() : "";
+  const completed = body.completed === true || body.completed === "true" || body.completed === 1;
+
+  if (!feedbackId) {
+    return res.status(400).json({ ok: false, error: "Missing feedback_id" });
+  }
+
+  try {
+    const result = await updatePageFeedbackCompleted(feedbackId, completed);
+    if (!result.ok) {
+      const status = result.reason === "not_found" ? 404 : result.reason === "not_configured" ? 503 : 502;
+      return res.status(status).json({
+        ok: false,
+        error: result.reason === "not_found" ? "Feedback not found" : "Could not save completed status",
+        reason: result.reason || "error",
+        detail: result.detail || null,
+      });
+    }
+    return res.status(200).json({
+      ok: true,
+      feedbackId: result.feedbackId,
+      completed: result.completed,
+      backend: result.backend || null,
+    });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Update failed";
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
+async function handlePageFeedbackReport(req, res, body) {
+  const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
+  const token = bearerToken(req) || (body.token || "");
+
+  if (!jwtSecret) {
+    return res.status(503).json({ ok: false, error: "Admin analytics is not configured" });
+  }
+
+  if (!verifyAnalyticsAdminToken(token, jwtSecret)) {
+    return res.status(401).json({ ok: false, error: "Unauthorized" });
+  }
+
+  const range = normalizeRangePreset(body.range);
+
+  try {
+    const allRows = await readPageFeedback();
+    const rows = filterRowsFromUtcStart(allRows, range);
+    const report = aggregatePageFeedbackReport(rows);
+    const repoInfo = resolveGithubRepo();
+    return res.status(200).json({
+      ok: true,
+      ...report,
+      range,
+      rangeLabel: rangePresetLabel(range),
+      fetchedAt: new Date().toISOString(),
+      note: `In-page practice feedback (${rangePresetLabel(range)}). Submitted from question, lab, scenario, and drag-and-drop pages.`,
+      csvPath: "data/leads/page-feedback.csv",
+      storageRepo: repoInfo ? `${repoInfo.owner}/${repoInfo.repo}` : null,
+      rawRowCount: rows.length,
+      totalRowCount: allRows.length,
+    });
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Page feedback report error";
+    if (err && err.code === "github_not_configured") {
+      return res.status(503).json({
+        ok: false,
+        error: "Page feedback storage is not configured",
+        hint: "Set GITHUB_LEADS_TOKEN on Vercel (Contents read/write on this repo). Feedback saves to data/leads/page-feedback.csv via the GitHub API.",
+      });
+    }
+    return res.status(502).json({ ok: false, error: message });
+  }
+}
+
 async function handleReport(req, res, body) {
   const jwtSecret = (process.env.ADMIN_ANALYTICS_JWT_SECRET || "").trim();
   const token = bearerToken(req) || (body.token || "");
@@ -332,6 +463,18 @@ export default async function handler(req, res) {
 
   if (action === "update_question") {
     return handleQuestionUpdate(req, res, body);
+  }
+
+  if (action === "submit_page_feedback") {
+    return handlePageFeedbackSubmit(req, res, body);
+  }
+
+  if (action === "page_feedback_report") {
+    return handlePageFeedbackReport(req, res, body);
+  }
+
+  if (action === "update_page_feedback") {
+    return handlePageFeedbackUpdate(req, res, body);
   }
 
   const isReport =

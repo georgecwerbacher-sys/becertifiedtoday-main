@@ -237,6 +237,7 @@
         <a href="#section-register">Stripe checkout</a>
         <a href="#section-magic-link">Magic link reset</a>
         <a href="#section-questions">Questions</a>
+        <a href="#section-page-feedback">Page feedback</a>
         <a href="#section-portal-access">Portal access</a>
       </nav>
 
@@ -427,6 +428,39 @@
         <p id="visitorQuestionsStatus" class="status" aria-live="polite"></p>
       </div>
 
+      <div class="panel" id="pageFeedbackPanel">
+        <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-page-feedback">Page feedback</h2>
+        <p class="section-note">
+          Feedback from the checkbox at the bottom of practice <strong>questions</strong>, <strong>labs</strong>,
+          <strong>scenarios</strong>, and <strong>drag-and-drop</strong> pages across all courses.
+          Check <strong>Done</strong> when addressed (saved to CSV). <strong>Reply</strong> opens your email client when the visitor left an address.
+          Filtered by the <strong>date range</strong> selector above (UTC).
+        </p>
+        <div class="row" style="margin-bottom:12px">
+          <button type="button" id="pageFeedbackRefreshBtn" class="secondary">Refresh page feedback</button>
+        </div>
+        <div class="cards" id="pageFeedbackSummaryCards"></div>
+        <div class="portal-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Done</th>
+                <th>When (UTC)</th>
+                <th>Email</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Page</th>
+                <th>Comment</th>
+                <th>Open</th>
+                <th>Reply</th>
+              </tr>
+            </thead>
+            <tbody id="pageFeedbackBody"></tbody>
+          </table>
+        </div>
+        <p id="pageFeedbackStatus" class="status" aria-live="polite"></p>
+      </div>
+
       <div class="panel" id="portalAccessPanel">
         <h2 style="margin:0 0 6px;font-size:1.05rem" id="section-portal-access">Training portal access (admin bypass)</h2>
         <p class="section-note">
@@ -497,7 +531,16 @@
         ccna: "CCNA",
         encor: "ENCOR",
         secplus: "Security+",
+        ccnaauto: "CCNA Auto",
         general: "General",
+      };
+      var CONTENT_TYPE_LABELS = {
+        question: "Question",
+        drag_drop: "Drag-drop",
+        lab: "Lab",
+        scenario: "Scenario",
+        pbq: "PBQ",
+        other: "Other",
       };
       var portalBypassCache = [];
       var stripePurchasesCache = null;
@@ -1064,6 +1107,186 @@
           });
       }
 
+      function pageFeedbackReplyHref(item) {
+        if (!item.email) return "";
+        var track = SAMPLE_PRODUCT_LABELS[item.product] || "exam prep";
+        var subject = "Re: Your " + track + " page feedback — Be Certified Today";
+        var body =
+          "Hi,\n\nThanks for your feedback on Be Certified Today (" +
+          track +
+          ").\n\nYou wrote:\n> " +
+          String(item.comment || "").replace(/\r?\n/g, "\n> ") +
+          "\n\nPage: " +
+          (item.pagePath || "") +
+          "\n\n[Your reply here]\n\n— Be Certified Today\nhttps://becertifiedtoday.com";
+        return (
+          "mailto:" +
+          encodeURIComponent(item.email) +
+          "?subject=" +
+          encodeURIComponent(subject) +
+          "&body=" +
+          encodeURIComponent(body)
+        );
+      }
+
+      function bindPageFeedbackActions() {
+        document.querySelectorAll("[data-pf-done]").forEach(function (cb) {
+          if (cb.dataset.pfBound === "1") return;
+          cb.dataset.pfBound = "1";
+          cb.addEventListener("change", function () {
+            var row = cb.closest("tr");
+            var id = cb.getAttribute("data-pf-id");
+            var completed = cb.checked;
+            var statusEl = document.getElementById("pageFeedbackStatus");
+            if (statusEl) {
+              statusEl.textContent = "Saving…";
+              statusEl.className = "status";
+            }
+            cb.disabled = true;
+            postJson("/api/sample-lead", {
+              action: "update_page_feedback",
+              feedback_id: id,
+              completed: completed,
+            })
+              .then(function (res) {
+                if (!res.ok || !res.body || res.body.ok === false) {
+                  cb.checked = !completed;
+                  throw new Error(
+                    (res.body && (res.body.error || res.body.reason)) || "Could not save Done status"
+                  );
+                }
+                if (row) row.classList.toggle("vq-completed", completed);
+                if (statusEl) {
+                  statusEl.textContent = completed ? "Marked done." : "Marked open.";
+                  statusEl.className = "status ok";
+                }
+              })
+              .catch(function (err) {
+                if (statusEl) {
+                  statusEl.textContent = err.message || "Could not save Done status";
+                  statusEl.className = "status err";
+                }
+              })
+              .finally(function () {
+                cb.disabled = false;
+              });
+          });
+        });
+      }
+
+      function renderPageFeedbackReport(data) {
+        var items = data.items || [];
+        document.getElementById("pageFeedbackSummaryCards").innerHTML = [
+          ["Open", fmt(data.openCount != null ? data.openCount : data.total)],
+          ["Done", fmt(data.completedCount || 0)],
+          ["Questions", fmt((data.byContentType && data.byContentType.question) || 0)],
+          ["Labs", fmt((data.byContentType && data.byContentType.lab) || 0)],
+        ]
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="val">' +
+              c[1] +
+              '</div><div class="lbl">' +
+              c[0] +
+              "</div></div>"
+            );
+          })
+          .join("");
+
+        var body = document.getElementById("pageFeedbackBody");
+        if (!items.length) {
+          body.innerHTML =
+            '<tr><td colspan="9" style="color:var(--muted)">No page feedback yet.</td></tr>';
+        } else {
+          body.innerHTML = items
+            .map(function (item) {
+              var done = Boolean(item.adminCompleted);
+              var rowClass = done ? " class=\"vq-completed\"" : "";
+              var pageHref = item.pagePath || "#";
+              var replyHref = pageFeedbackReplyHref(item);
+              var replyCell = replyHref
+                ? '<a class="vq-reply-btn" href="' + escapeAttr(replyHref) + '">Reply</a>'
+                : "—";
+              return (
+                "<tr" +
+                rowClass +
+                '><td class="vq-done-cell"><input type="checkbox" data-pf-done="1" data-pf-id="' +
+                escapeAttr(item.id || "") +
+                '" title="Mark addressed"' +
+                (done ? " checked" : "") +
+                " /></td><td>" +
+                fmtIsoUtcShort(item.capturedAt) +
+                '</td><td class="email">' +
+                (item.email || "—") +
+                "</td><td>" +
+                (SAMPLE_PRODUCT_LABELS[item.product] || item.product) +
+                "</td><td>" +
+                (CONTENT_TYPE_LABELS[item.contentType] || item.contentType) +
+                '</td><td class="path" title="' +
+                escapeAttr(item.pageTitle || "") +
+                '">' +
+                (item.pagePath || "—") +
+                '</td><td class="path vq-message">' +
+                (item.comment || "").replace(/</g, "&lt;") +
+                '</td><td><a class="vq-reply-btn" href="' +
+                escapeAttr(pageHref) +
+                '" target="_blank" rel="noopener noreferrer">Open</a></td><td>' +
+                replyCell +
+                "</td></tr>"
+              );
+            })
+            .join("");
+          bindPageFeedbackActions();
+        }
+
+        var note = data.note || "";
+        if (data.storageRepo) {
+          note += " Repo: " + data.storageRepo + ".";
+        }
+        if (typeof data.rawRowCount === "number") {
+          note += " Showing " + data.rawRowCount + " in range";
+          if (typeof data.totalRowCount === "number" && data.totalRowCount !== data.rawRowCount) {
+            note += " (" + data.totalRowCount + " all time)";
+          }
+          note += ".";
+        }
+        if (!items.length) {
+          note += " Feedback appears when visitors check the box at the bottom of practice pages.";
+        }
+        document.getElementById("pageFeedbackStatus").textContent = note;
+        document.getElementById("pageFeedbackStatus").className = "status ok";
+      }
+
+      function loadPageFeedback() {
+        document.getElementById("pageFeedbackStatus").textContent = "Loading page feedback…";
+        document.getElementById("pageFeedbackStatus").className = "status";
+        return postJson("/api/sample-lead", {
+          action: "page_feedback_report",
+          range: rangeEl.value,
+        })
+          .then(function (res) {
+            if (!res.ok) {
+              document.getElementById("pageFeedbackSummaryCards").innerHTML = "";
+              document.getElementById("pageFeedbackBody").innerHTML =
+                '<tr><td colspan="9" style="color:var(--muted)">Could not load page feedback.</td></tr>';
+              var msg = (res.body && res.body.error) || "Page feedback failed";
+              if (res.body && res.body.hint) msg += " — " + res.body.hint;
+              document.getElementById("pageFeedbackStatus").textContent = msg;
+              document.getElementById("pageFeedbackStatus").className = "status err";
+              return;
+            }
+            renderPageFeedbackReport(res.body);
+          })
+          .catch(function (err) {
+            document.getElementById("pageFeedbackSummaryCards").innerHTML = "";
+            document.getElementById("pageFeedbackBody").innerHTML =
+              '<tr><td colspan="9" style="color:var(--muted)">Could not load page feedback.</td></tr>';
+            document.getElementById("pageFeedbackStatus").textContent =
+              err.message || "Failed to load page feedback";
+            document.getElementById("pageFeedbackStatus").className = "status err";
+          });
+      }
+
       function loadReport() {
         dashStatus.textContent = "Loading…";
         dashStatus.className = "status";
@@ -1086,8 +1309,11 @@
         }
         document.getElementById("visitorQuestionsStatus").textContent = "Loading visitor questions…";
         document.getElementById("visitorQuestionsStatus").className = "status";
+        document.getElementById("pageFeedbackStatus").textContent = "Loading page feedback…";
+        document.getElementById("pageFeedbackStatus").className = "status";
 
         loadVisitorQuestions();
+        loadPageFeedback();
 
         Promise.all([
           postJson("/api/analytics-report", { range: rangeEl.value }),
@@ -1223,6 +1449,7 @@
 
       document.getElementById("refreshBtn").addEventListener("click", loadReport);
       document.getElementById("visitorQuestionsRefreshBtn").addEventListener("click", loadVisitorQuestions);
+      document.getElementById("pageFeedbackRefreshBtn").addEventListener("click", loadPageFeedback);
       document.getElementById("portalBypassRefreshBtn").addEventListener("click", loadPortalBypassLinks);
       document.getElementById("logoutBtn").addEventListener("click", function () {
         setToken("");

@@ -968,10 +968,47 @@
     document.head.appendChild(s);
   }
 
+  function isPracticeFeedbackPath() {
+    var p = (location.pathname || "").toLowerCase();
+    return (
+      p.indexOf("/ccna-study/ccna_questions/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
+      p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
+      p.indexOf("/ccna_sim_exam/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/encor_questions/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/ccnp-encor-labs/") !== -1 ||
+      p.indexOf("/ccnp-encor-study/encor_samples/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_sim_hot_spot/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_samples/") !== -1 ||
+      p.indexOf("/ccnaauto-study/") !== -1
+    );
+  }
+
+  function ensurePageFeedbackWidget() {
+    if (!isPracticeFeedbackPath()) return;
+    if (window.bccPageFeedbackMounted) return;
+    if (window.bccEnsurePageFeedback) {
+      window.bccEnsurePageFeedback();
+      return;
+    }
+    if (document.querySelector("script[data-bcc-page-feedback]")) return;
+    var s = document.createElement("script");
+    s.src = "/js/page-feedback-widget.js";
+    s.defer = true;
+    s.setAttribute("data-bcc-page-feedback", "1");
+    s.onload = function () {
+      if (window.bccEnsurePageFeedback) window.bccEnsurePageFeedback();
+    };
+    document.head.appendChild(s);
+  }
+
   function applySampleLogoChrome() {
     if (window.cliLabContainer && typeof window.cliLabContainer.initCcnaLabTopChrome === "function") {
       window.cliLabContainer.initCcnaLabTopChrome();
     }
+    ensurePageFeedbackWidget();
     if (!isSampleExperience()) return;
     document.body.classList.add("bcc-sample-experience");
     injectSampleLogoStyles();
