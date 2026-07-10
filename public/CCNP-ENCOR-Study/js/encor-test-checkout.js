@@ -31,7 +31,11 @@
         btn.dataset.loading = "1";
         btn.textContent = "Redirecting…";
         btn.disabled = true;
-        window.location.href = ENCOR_TEST_SIM_STRIPE_PAYMENT_LINK;
+        var checkoutUrl = ENCOR_TEST_SIM_STRIPE_PAYMENT_LINK;
+        if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+          checkoutUrl = window.bccBuildCheckoutUrlWithSave50(checkoutUrl);
+        }
+        window.location.href = checkoutUrl;
       });
     });
   });

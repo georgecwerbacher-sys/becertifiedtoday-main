@@ -25,7 +25,11 @@
         btn.dataset.loading = "1";
         btn.textContent = "Redirecting…";
         btn.disabled = true;
-        window.location.href = SECPLUS_TEST_SIM_STRIPE_PAYMENT_LINK;
+        var checkoutUrl = SECPLUS_TEST_SIM_STRIPE_PAYMENT_LINK;
+        if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+          checkoutUrl = window.bccBuildCheckoutUrlWithSave50(checkoutUrl);
+        }
+        window.location.href = checkoutUrl;
       });
     });
   });

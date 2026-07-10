@@ -630,7 +630,14 @@
       btn.disabled = true;
       btn.textContent = "Redirecting…";
       clearSampleSession(session);
-      window.location.href = product.url;
+      var checkoutUrl = product.url;
+      if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+        checkoutUrl = window.bccBuildCheckoutUrlWithSave50(checkoutUrl);
+      } else if (Date.now() < new Date("2026-07-14T00:00:00-04:00").getTime()) {
+        checkoutUrl +=
+          (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=SAVE50PERCENT";
+      }
+      window.location.href = checkoutUrl;
     });
   }
 

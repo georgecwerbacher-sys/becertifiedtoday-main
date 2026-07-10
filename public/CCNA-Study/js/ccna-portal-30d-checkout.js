@@ -25,6 +25,9 @@
     var product = PRODUCTS[tier];
     var url = LINKS[tier];
     if (!product || !url) return;
+    if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+      url = window.bccBuildCheckoutUrlWithSave50(url);
+    }
 
     if (!btn.dataset[product.labelKey]) {
       btn.dataset[product.labelKey] = btn.textContent.trim() || product.defaultLabel;
@@ -36,7 +39,12 @@
       if (typeof window.bccTrackBeginCheckout === "function") {
         btn.setAttribute("data-bcc-item-id", product.id);
         btn.setAttribute("data-bcc-item-name", product.name);
-        btn.setAttribute("data-bcc-value", product.value);
+        btn.setAttribute(
+          "data-bcc-value",
+          typeof window.bccSave50DiscountedValue === "function"
+            ? window.bccSave50DiscountedValue(product.value)
+            : product.value
+        );
         btn.setAttribute("data-bcc-currency", "USD");
         window.bccTrackBeginCheckout(btn);
       }

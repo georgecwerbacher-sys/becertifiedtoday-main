@@ -53,6 +53,9 @@
   };
 
   function shouldApplyLaunchPromo(tier, options) {
+    if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
+      return false;
+    }
     if (tier !== "30d" || !LAUNCH_PROMO_CODE) return false;
     if (options && options.applyLaunchPromo === true) return true;
     if (options && options.applyLaunchPromo === false) return false;
@@ -62,13 +65,22 @@
   function checkoutValueFor(tier, applyLaunchPromo) {
     var product = PRODUCTS[tier];
     if (!product) return "0";
-    if (tier === "30d" && applyLaunchPromo) return product.launchValue;
-    return product.value;
+    var raw;
+    if (tier === "30d" && applyLaunchPromo) raw = product.launchValue;
+    else raw = product.value;
+    if (typeof window.bccSave50DiscountedValue === "function") {
+      return window.bccSave50DiscountedValue(raw);
+    }
+    return raw;
   }
 
   function buildCheckoutUrl(tier, applyLaunchPromo) {
     var url = LINKS[tier];
     if (!url) return url;
+    if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+      var withSave50 = window.bccBuildCheckoutUrlWithSave50(url);
+      if (withSave50 !== url) return withSave50;
+    }
     if (!applyLaunchPromo || tier !== "30d" || !LAUNCH_PROMO_CODE) return url;
     var sep = url.indexOf("?") >= 0 ? "&" : "?";
     return url + sep + "prefilled_promo_code=" + encodeURIComponent(LAUNCH_PROMO_CODE);
