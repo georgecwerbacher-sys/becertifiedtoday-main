@@ -1,0 +1,30 @@
+---
+description: Verify Sec+ practice answers on Tier A CompTIA/NIST/IETF sources; keep non-Tier-A URLs out of published question files.
+globs: public/COMP_TIA_SEC+/**/*.html,public/comptia-sec+-home.html,scripts/**/*secplus*
+alwaysApply: false
+---
+
+# Answer verification — Security+ Tier A sources only
+
+Confirm stems, distractors, keys, and explanations using **official / Tier A** material for SY0-701 — not dumps, random blogs, or unvetted forums.
+
+**Good places to verify (examples):**
+
+- CompTIA (`comptia.org`, `learn.comptia.org`) — exam objectives and official learning
+- NIST (`nist.gov`, `csrc.nist.gov`)
+- IETF / RFC Editor (`ietf.org`, `rfc-editor.org`)
+- OWASP (`owasp.org`) where relevant
+
+Prefer paraphrase tied to those sources. Do not treat third-party “brain dumps” as authoritative.
+
+## Published site files (guardrail)
+
+Question and PBQ pages should **not** embed `http(s)://` links to non-Tier-A hosts in explanations or stems. If a citation link is needed in HTML, use hosts allowed for Sec+ in `.cursor/rules/question-bank-template.mdc`.
+
+After edits that might introduce URLs:
+
+```bash
+python3 scripts/lint-practice-question-urls.py
+# or
+npm run lint:question-urls
+```

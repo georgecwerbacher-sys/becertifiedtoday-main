@@ -1,5 +1,5 @@
 ---
-description: Question bank template — 100-question banks, blueprint domain weights, objective tags, Tier A verification per track.
+description: Question bank template — 100-question banks, blueprint domain weights, objective tags, Tier A verification for Sec+.
 globs: public/**/data/*-practice-bank-blueprint.json,public/**/data/*-question-topic-map.json,templates/question-bank/**,public/**/js/*-practice-hub.js
 alwaysApply: false
 ---
@@ -8,37 +8,37 @@ alwaysApply: false
 
 When adding or editing certification question banks, follow `templates/question-bank/README.md`.
 
+Active track: **Sec+ SY0-701** only.
+
 ## Required for every published question
 
-1. **Blueprint version** — matches the official exam topics PDF (`v1.1`, `v5.0`, …).
+1. **Blueprint version** — matches the official exam topics PDF (`v5.0`, …).
 2. **Objective** — at least one ID from that PDF (`2.4`, `5.6`, …).
 3. **Sub-objective** — when the PDF lists children (`1.8.c`, `3.9.a`, …).
-4. **Verification** — keys confirmed on **Tier A sources for that track** (see blueprint `verificationPolicy`). Never Reddit, forums, Discord, or competitor dumps.
-5. **Topic map entry** — schema v2 in `{track}-question-topic-map.json` before the HTML ships.
+4. **Verification** — keys confirmed on **Tier A sources** (see below / blueprint `verificationPolicy`). Never Reddit, forums, Discord, or competitor dumps.
+5. **Topic map entry** — schema v2 in `secplus-question-topic-map.json` (or track equivalent) before the HTML ships.
 
-## Tier A by track
+## Tier A (Sec+)
 
 | Track | Allowed verification hosts |
 |-------|---------------------------|
-| CCNA / CCNP / CCNAAUTO | `cisco.com`, `developer.cisco.com`, `learningnetwork.cisco.com` |
 | **Sec+ SY0-701** | `comptia.org`, `learn.comptia.org`, `nist.gov`, `csrc.nist.gov`, `ietf.org`, `rfc-editor.org`, `owasp.org` |
 
 ## Bank sizing and mix
 
 - **100 questions per bank**; bank 2 starts at question 101.
-- Each bank targets **exam domain weights** from `{track}-practice-bank-blueprint.json`.
+- Each bank targets **exam domain weights** from `secplus-practice-bank-blueprint.json`.
 - Sec+ SY0-701 v5.0: **12 / 22 / 18 / 28 / 20** per 100 questions.
 
 ## After adding questions
 
 ```bash
-python3 scripts/build-question-bank-tracker.py --track ccnaauto
 python3 scripts/build-question-bank-tracker.py --track secplus
 npm run lint:question-urls
 ```
 
-Append slug to `{track}-practice-hub.js` `SLUGS` array (or generator equivalent).
+Append slug to the Sec+ practice hub `SLUGS` array (or generator equivalent).
 
 ## Published HTML
 
-Do not embed non-Tier-A `http(s)://` URLs in question pages. Cisco tracks: `.cursor/rules/answer-verification-cisco-sources.mdc`.
+Do not embed non-Tier-A `http(s)://` URLs in question pages. See `.cursor/rules/answer-verification-secplus-sources.mdc`.
