@@ -558,7 +558,7 @@
   scheduleBootExamSimEmbed();
 })();
 
-/** Google tag + Vercel insights — marketing URLs and free-sample sessions only */
+/** Google tag + Vercel insights - marketing URLs and free-sample sessions only */
 (function () {
   "use strict";
   var head = document.head || document.documentElement;

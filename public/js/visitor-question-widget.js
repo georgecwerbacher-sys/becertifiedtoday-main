@@ -1,5 +1,5 @@
 /**
- * Footer "Ask a question" modal — email verification before admin sees the message.
+ * Footer "Ask a question" modal - email verification before admin sees the message.
  */
 (function () {
   "use strict";
@@ -50,7 +50,7 @@
       '<div class="bcc-vq-backdrop" data-bcc-vq-dismiss tabindex="-1"></div>' +
       '<div class="bcc-vq-panel" role="dialog" aria-modal="true" aria-labelledby="bccVqTitle" tabindex="-1">' +
       '<h2 id="bccVqTitle">Ask a question</h2>' +
-      '<p class="bcc-vq-lead">Send a message about exam prep, access, or the practice site. We email you a confirmation link — your question is only submitted after you verify your address.</p>' +
+      '<p class="bcc-vq-lead">Send a message about exam prep, access, or the practice site. We email you a confirmation link - your question is only submitted after you verify your address.</p>' +
       '<form id="bccVqForm">' +
       '<label for="bccVqEmail">Your email</label>' +
       '<input id="bccVqEmail" name="email" type="email" autocomplete="email" required maxlength="254" />' +

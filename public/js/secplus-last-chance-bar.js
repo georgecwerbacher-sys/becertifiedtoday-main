@@ -1,5 +1,5 @@
 /**
- * Bottom “last chance” offer on comptia-sec+-home.html — opens 5s after #faq is in view.
+ * Bottom “last chance” offer on comptia-sec+-home.html - opens 5s after #faq is in view.
  */
 (function () {
   "use strict";

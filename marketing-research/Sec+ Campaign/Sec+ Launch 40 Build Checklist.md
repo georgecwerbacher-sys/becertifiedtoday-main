@@ -97,18 +97,19 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 ## G · Launch & week 1
 
-- [ ] G1 · Pause/archive old Sec+ Search campaigns if still live
-- [ ] G2 · Pre-flight: $35 · 4 ad groups · UTMs · negatives · RSA
+- [x] G1 · Pause/archive old Sec+ Search campaigns if still live
+- [x] G2 · Pre-flight: $35 · 4 ad groups · UTMs · negatives · RSA
 - [ ] G3 · Preview URL → landing → banner → sample → checkout (GA4 Realtime)
-- [ ] G4 · Enable campaign · log launch in admin daily campaign log
+- [x] G4 · Enable campaign · **running 2026-08-10**
 - [ ] G5 · Day 3: search terms → negatives only · Day 7: prune / checkout review
 
 **Kill rule:** After $150–200 clean spend with 0 `begin_checkout`, pause and fix before burning more budget.
 
 ---
 
-## Suggested order (parallel today)
+## Suggested order (now that ads are live)
 
-1. **You:** Build **C–F** in Google Ads (paused) from paste sheets  
-2. **You:** Confirm **A6–A8** Stripe $15.99 + magic link  
-3. **Then:** Confirm **B** tracking · **G** enable when green  
+1. Confirm **A6–A8** + **B** if not already (Stripe $15.99 · GA4 begin_checkout)  
+2. **Daily:** Search terms → add negatives only  
+3. **Day 7:** Prune by ad group / keyword · checkout quality  
+4. Hold budget, CPC, and structure for 7 days unless junk or broken tracking  

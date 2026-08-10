@@ -11,7 +11,7 @@
     return (location.pathname || "").toLowerCase();
   }
 
-  /** Staging / noindex PBQ work under Sim_Hot_Spot — open for local authoring without portal or sample hijack. */
+  /** Staging / noindex PBQ work under Sim_Hot_Spot - open for local authoring without portal or sample hijack. */
   function isSecplusSimStagingPath(p) {
     return (
       p.indexOf("/sec+_sim_hot_spot/pbq_production/") !== -1 ||

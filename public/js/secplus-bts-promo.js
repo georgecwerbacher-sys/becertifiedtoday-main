@@ -1,5 +1,5 @@
 /**
- * Security+ Back to School promo — August 2026.
+ * Security+ Back to School promo - August 2026.
  * Public 20% (AUGUSTPROMO2026 → $15.99). Calendar window through Aug 31;
  * UI pushes a this-visit decision with a session hold timer + checkout CTAs.
  */
@@ -119,7 +119,7 @@
     if (barSub) {
       if (visitHoldExpired()) {
         barSub.textContent =
-          "Still $" + SALE_PRICE + " this August — claim it before you leave this page.";
+          "Still $" + SALE_PRICE + " this August - claim it before you leave this page.";
       } else {
         barSub.innerHTML =
           "Claim <strong>$" +
@@ -131,7 +131,7 @@
     var dockCopy = document.querySelector("[data-secplus-bts-dock-copy]");
     if (dockCopy) {
       dockCopy.innerHTML = visitHoldExpired()
-        ? "Back to School <strong>$" + SALE_PRICE + "</strong> is still available — checkout now."
+        ? "Back to School <strong>$" + SALE_PRICE + "</strong> is still available - checkout now."
         : "Finish checkout on this visit · <strong>$" + SALE_PRICE + "</strong> locked in at Stripe";
     }
   }
@@ -191,7 +191,7 @@
         SALE_PRICE +
         " while you're on this page.</strong> Back to School 20% off $" +
         LIST_PRICE +
-        " through August — code <code>" +
+        " through August - code <code>" +
         PROMO_CODE +
         "</code> is applied at Stripe. No subscription. Access is tied to this browser. " +
         'Eligible for a deeper verified discount? ' +
@@ -209,7 +209,7 @@
     bar.id = BAR_ID;
     bar.className = "secplus-bts-promo-bar";
     bar.setAttribute("role", "region");
-    bar.setAttribute("aria-label", "Back to School offer — claim while on this page");
+    bar.setAttribute("aria-label", "Back to School offer - claim while on this page");
     bar.innerHTML =
       '<div class="secplus-bts-promo-bar__inner">' +
       '<div class="secplus-bts-promo-bar__main">' +

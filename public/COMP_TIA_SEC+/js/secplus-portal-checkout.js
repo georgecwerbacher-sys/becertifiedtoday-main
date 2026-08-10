@@ -4,8 +4,8 @@
  * 30-day list price: $19.99 on the Payment Link (same pattern as CCNA/ENCOR portal pricing).
  * Paste the live Payment Link URL into LINKS["30d"] below.
  *
- * Stripe product name: CompTIA Security+ SY0-701 — 30-day all-access pass
- * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (SY0-701 objectives), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam—all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
+ * Stripe product name: CompTIA Security+ SY0-701 - 30-day all-access pass
+ * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (SY0-701 objectives), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam - all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
  *
  * Redirect after payment:
  *   /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
@@ -24,7 +24,7 @@
   };
 
   /**
-   * AUGUSTPROMO2026 — 20% off Sec+ 30-day ($15.99 on $19.99).
+   * AUGUSTPROMO2026 - 20% off Sec+ 30-day ($15.99 on $19.99).
    * Public Back to School for all of August 2026 (see /js/secplus-bts-promo.js).
    * Also used when an older launch-deal session is still active.
    */

@@ -1,5 +1,5 @@
 /**
- * CompTIA Security+ home — Google Ads paid traffic callout.
+ * CompTIA Security+ home - Google Ads paid traffic callout.
  * Detects utm_source=google or gclid; shows course-contrast note for Messer/Dion shoppers.
  */
 (function () {

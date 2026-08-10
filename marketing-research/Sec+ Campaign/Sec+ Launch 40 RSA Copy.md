@@ -73,8 +73,8 @@ $15.99 Back to School
 
 ```
 Sim exams + scorecard. Verified SY0-701 bank. Stripe checkout, then magic-link access.
-Already studied? Skip another course. Preview samples, then unlock 30 days—August $15.99.
-Browser practice with adaptive review. Not a PDF dump. Pay once—no subscription.
+Already studied? Skip another course. Preview samples, then unlock 30 days - August $15.99.
+Browser practice with adaptive review. Not a PDF dump. Pay once - no subscription.
 Timed 90-min sim included. Practice on phone, tablet, or desktop.
 ```
 
@@ -138,8 +138,8 @@ Magic Link Access
 ### Descriptions (4) — paste
 
 ```
-Already finished free videos or a course? Get timed sim practice—not another bootcamp.
-Verified bank + adaptive review. No signup form—pay with Stripe, open via magic link.
+Already finished free videos or a course? Get timed sim practice - not another bootcamp.
+Verified bank + adaptive review. No signup form - pay with Stripe, open via magic link.
 August Back to School: $15.99 for 30 days. Preview samples first, then unlock full prep.
 Browser-only practice. Not a PDF. Scorecard shows what still needs work.
 ```
@@ -177,7 +177,7 @@ Educator-Aligned Prep
 
 ```
 Need Security+ for graduation or capstone? Timed sim + verified SY0-701 bank in browser.
-College programs require the cert. Practice with scorecard review—not another course.
+College programs require the cert. Practice with scorecard review - not another course.
 August Back to School: $15.99 / 30 days. Stripe checkout, then magic-link access.
 No site registration. Preview free samples, then unlock full exam prep.
 ```

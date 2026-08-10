@@ -325,7 +325,7 @@
           " (" +
           rowPct +
           "%)</td><td>" +
-          (row.incorrect ? row.incorrect + " missed" : "—") +
+          (row.incorrect ? row.incorrect + " missed" : " - ") +
           (row.unanswered ? (row.incorrect ? ", " : "") + row.unanswered + " unanswered" : "") +
           "</td></tr>"
         );
@@ -579,7 +579,7 @@
       return (
         "You finished the sample CLI lab. Unlock <strong>" +
         labs +
-        " browser CLI lab simulations</strong>—the same interactive format you just used—plus <strong>" +
+        " browser CLI lab simulations</strong> - the same interactive format you just used - plus <strong>" +
         q +
         " practice questions</strong> and <strong>" +
         dnd +
@@ -594,7 +594,7 @@
         q +
         " practice questions</strong> and <strong>" +
         labs +
-        " CLI labs</strong>—all in your browser on phone, tablet, or desktop."
+        " CLI labs</strong> - all in your browser on phone, tablet, or desktop."
       );
     }
     return (
@@ -947,7 +947,7 @@
       if (item && (item.type === "lab" || item.type === "dnd")) {
         els.progressEl.textContent =
           (item.type === "lab" ? "Lab" : "Drag-and-drop") +
-          " — item " +
+          " - item " +
           (index + 1) +
           " of " +
           order.length;

@@ -1,5 +1,5 @@
 /**
- * Security+ sample completion upsell — routes to paid portal access (no free timed simulation).
+ * Security+ sample completion upsell - routes to paid portal access (no free timed simulation).
  */
 (function () {
   "use strict";
@@ -70,7 +70,7 @@
     }
     if (freeSimWasConsumed()) {
       if (startBtn) {
-        startBtn.textContent = "Free sample completed — see paid options";
+        startBtn.textContent = "Free sample completed - see paid options";
         startBtn.setAttribute("href", "#purchase");
         startBtn.removeAttribute("data-secplus-start-free-sim");
         startBtn.classList.add("cta-main--muted");
@@ -155,7 +155,7 @@
   function configureLeadStickyCta(link) {
     if (!link) return;
     if (freeSimWasConsumed()) {
-      link.textContent = "Unlock 700+ questions — $24.99";
+      link.textContent = "Unlock 700+ questions - $24.99";
       link.setAttribute("href", "#purchase");
       link.removeAttribute("data-secplus-start-free-sim");
       link.removeAttribute("data-secplus-start-method");

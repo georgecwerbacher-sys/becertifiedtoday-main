@@ -1,0 +1,28 @@
+---
+description: Never use em dashes (—) or en dashes (–) on guest-facing public pages.
+globs: public/**/*.{html,js,css}
+alwaysApply: false
+---
+
+# No em dashes on guest pages
+
+Do **not** place em dashes (`—` U+2014) or en dashes (`–` U+2013) in guest-facing copy under `public/`.
+
+## Guest surfaces
+
+Includes (not limited to):
+
+- Cert homes (`comptia-sec+-home.html`, and other `*-home.html`)
+- About, verify, discounts, sample landings
+- `public/secplus/`, `COMP_TIA_SEC+/SEC+_Samples/`
+- Guest JS that injects visible strings (promo banners, sample nav, conversion copy)
+
+## Use instead
+
+| Avoid | Prefer |
+|-------|--------|
+| `Tier A sources—not dumps` | `Tier A sources - not dumps` or rephrase with a comma/period |
+| `Research First — Not AI` | `Research First: Not AI` or `Research First - Not AI` |
+| `August — claim it` | `August - claim it` |
+
+ASCII hyphen-minus (`-`) or normal punctuation only. Do not use `—` or `–` in HTML text, `aria-label`, JSON-LD, meta descriptions, or JS string literals shown to guests.

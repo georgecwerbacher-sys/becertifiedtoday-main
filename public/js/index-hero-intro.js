@@ -20,7 +20,7 @@
     } catch (e) {}
   }
 
-  /** Pause on the final logo frame — keep video visible, no static header image. */
+  /** Pause on the final logo frame - keep video visible, no static header image. */
   function freezeIntro() {
     hero.classList.add("is-intro-done");
     videoEl.hidden = false;

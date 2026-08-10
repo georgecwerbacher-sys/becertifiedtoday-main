@@ -14,11 +14,12 @@ tags:
 
 # Sec+ Launch Campaign Plan — $1k performance flight
 
-**Status:** Active build · **Back to School August** · Stripe code **`AUGUSTPROMO2026`** (20% for everyone through Aug 31)  
+**Status:** Live in Google Ads · **Back to School August** · Stripe code **`AUGUSTPROMO2026`** (20% for everyone through Aug 31)  
 **Goal:** Conversions (checkout → purchase) during back-to-school  
 **Offer:** list **$19.99** / 30 days · **public 20% → $15.99** all August (banner + prefilled checkout)  
 **Daily budget:** **$35** (locked) · ~29 days on $1,000 if spend is steady  
-**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title
+**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title  
+**Launched:** 2026-08-10 · ads updated and running
 
 Related: [[Sec+ Positioning]] · [[Sec+ Keywords]] · [[Sec+ Launch 40 Keyword Lists]] · [[Sec+ Launch 40 RSA Copy]] · [[Sec+ Notes]] · prior spend [[Google Ads Spend Promo]]
 
@@ -204,6 +205,7 @@ Verified learner discounts page stays separate for deeper eligibility discounts.
 - [x] Public August **20%** Back to School for everyone (`AUGUSTPROMO2026`)
 - [x] Site banner + checkout prefill (`secplus-bts-promo.js`)
 - [x] Add **Student College** as 4th ad group (BTS)
-- [ ] Confirm Stripe coupon live → $15.99
-- [ ] Tracking (GA4 + Ads Primary)
-- [ ] Build campaign in Google Ads (paused → enable)
+- [x] Build campaign in Google Ads · **running 2026-08-10**
+- [ ] Confirm Stripe coupon live → $15.99 (spot-check if not done)
+- [ ] Week 1: search terms daily · negatives only · hold structure 7 days
+- [ ] Kill check: after $150–200 clean spend with 0 `begin_checkout`, pause and fix

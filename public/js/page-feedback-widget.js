@@ -171,7 +171,7 @@
 
     if (alreadySubmitted()) {
       root.innerHTML =
-        "<h3>Page feedback</h3><p class=\"bcc-pf-thanks\">Thanks — your feedback was received.</p>";
+        "<h3>Page feedback</h3><p class=\"bcc-pf-thanks\">Thanks - your feedback was received.</p>";
       document.body.appendChild(root);
       return root;
     }
@@ -183,7 +183,7 @@
       '<div class="bcc-pf-form" id="bccPfForm" hidden>' +
       '<label for="bccPfComment">Comment</label>' +
       '<textarea id="bccPfComment" maxlength="2000" placeholder="What is wrong, unclear, or needs fixing on this page?"></textarea>' +
-      '<label for="bccPfEmail">Email <span style="font-weight:400">(optional — only if you want a reply)</span></label>' +
+      '<label for="bccPfEmail">Email <span style="font-weight:400">(optional - only if you want a reply)</span></label>' +
       '<input id="bccPfEmail" type="email" autocomplete="email" maxlength="254" />' +
       '<input class="bcc-pf-hp" type="text" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true" />' +
       '<button type="button" class="bcc-pf-btn" id="bccPfSubmit">Send feedback</button>' +
@@ -265,7 +265,7 @@
           }
           markSubmitted();
           root.innerHTML =
-            "<h3>Page feedback</h3><p class=\"bcc-pf-thanks\">Thanks — your feedback was received.</p>";
+            "<h3>Page feedback</h3><p class=\"bcc-pf-thanks\">Thanks - your feedback was received.</p>";
         })
         .catch(function () {
           if (status) {

@@ -177,7 +177,7 @@
     return ok;
   }
 
-  /** Paid before but access inactive on this browser — use magic/request link, not a new launch checkout. */
+  /** Paid before but access inactive on this browser - use magic/request link, not a new launch checkout. */
   function bccSecplusPortalNeedsRestoreLink() {
     if (bccSecplusPortalAccessActive()) return false;
     if (bccReadSecplusPortalCheckoutSessionId()) return true;

@@ -1,5 +1,5 @@
 /**
- * index.html — "Open study hub" cards: portal if access active on this browser, else gate dialog.
+ * index.html - "Open study hub" cards: portal if access active on this browser, else gate dialog.
  */
 (function () {
   function hasCcnaPortalAccess() {

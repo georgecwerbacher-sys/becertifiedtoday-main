@@ -1,4 +1,4 @@
-/** Be Certified Today brand — logos and tagline (logo v2, 2026). */
+/** Be Certified Today brand - logos and tagline (logo v2, 2026). */
 window.SITE_BRAND = {
   tagline: "Practice Like Test Day. Walk In Ready",
   taglineShort: "Walk In Ready",

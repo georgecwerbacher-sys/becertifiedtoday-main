@@ -345,7 +345,7 @@
   function portalUpsellLead(session) {
     var kind = sampleKindLabel();
     var access =
-      "Get <strong>30-day full access</strong> for <strong>$19.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review—all in your browser.";
+      "Get <strong>30-day full access</strong> for <strong>$19.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review - all in your browser.";
     if (isMultiPbqSample(session)) {
       var remaining = remainingPbqCount(session);
       return (
@@ -355,7 +355,7 @@
         PBQ_LIBRARY_TOTAL +
         " PBQ scenarios</strong>. <strong>" +
         remaining +
-        " more are waiting for you to give them a try</strong>—plus <strong>1000+ SY0-701 questions</strong>. " +
+        " more are waiting for you to give them a try</strong> - plus <strong>1000+ SY0-701 questions</strong>. " +
         access
       );
     }
@@ -427,7 +427,7 @@
               "<li><strong>" +
               row.title +
               "</strong>" +
-              (row.objectives ? " — objectives " + row.objectives : "") +
+              (row.objectives ? " - objectives " + row.objectives : "") +
               (!row.checked ? " · use Check Answer before moving on" : "") +
               "</li>"
             );
@@ -776,7 +776,7 @@
         } else if (isDarkWebSampleSim(session)) {
           els.progressEl.textContent = "BeCertifiedToday.com IR · guest sample";
         } else {
-          els.progressEl.textContent = "Simulation — item " + (index + 1) + " of " + order.length;
+          els.progressEl.textContent = "Simulation - item " + (index + 1) + " of " + order.length;
         }
       } else {
         var mcqNum = 0;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: BeCertifiedToday.com case IR-2024-0847 — review dark-web leak artifacts, identify weak password practices, and select FIDO containment that preserves kiosk forensic evidence." />
+  <meta name="description" content="CompTIA Security+ SY0-701 PBQ: BeCertifiedToday.com case IR-2024-0847 - review dark-web leak artifacts, identify weak password practices, and select FIDO containment that preserves kiosk forensic evidence." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Samples/pbq/dark-web-account-protection/dark-web-account-protection.html" />
   <title>Security+: SEC+ Dark Web Incident Response | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
@@ -42,7 +42,7 @@
           <article class="pbq-suite-section is-active" id="dark-web-account-protection" data-scenario="dark-web-account-protection"><div class="pbq-suite-section__inner"><div class="sim-frame pbq-dark-web-sim">
     <section class="layout pbq-dark-web-layout" aria-label="Dark web IR simulation">
       <article class="panel" aria-label="Observed data">
-        <h2>BeCertifiedToday.com — leaked bundle (IR-2024-0847)</h2>
+        <h2>BeCertifiedToday.com - leaked bundle (IR-2024-0847)</h2>
         <p class="artifact-hint">Review each artifact from the dark-web listing before you submit containment recommendations.</p>
         <div class="artifact-grid">
           <button type="button" class="artifact" data-doc="directory" aria-haspopup="dialog">
@@ -146,7 +146,7 @@
     Length: "Short passwords are weak; the evidence shows many accounts at the minimum length only.",
     Complexity: "Passwords lack required numbers, symbols, or mixed character types.",
     Expiration:
-      "Not selected here. Forced expiration can encourage weak patterns, but the leaked audit shows 90-day rotation is active — the main weaknesses are age, reuse, length, and complexity."
+      "Not selected here. Forced expiration can encourage weak patterns, but the leaked audit shows 90-day rotation is active - the main weaknesses are age, reuse, length, and complexity."
   };
 
   var CONTAINMENT_EXPLAIN = {
@@ -161,8 +161,8 @@
   var SOLUTION_RECAP_HTML =
     "<h3>Solution recap</h3>" +
     "<ul>" +
-    "<li><strong>Weak password practices:</strong> Age, Reuse, Length, and Complexity — passwords were reused, too short, insufficiently complex, and kept too long.</li>" +
-    "<li><strong>Best containment:</strong> Deploy FIDO security keys — the most secure listed option, resistant to phishing and interception, and it does not require wiping or altering host evidence on potentially compromised kiosks.</li>" +
+    "<li><strong>Weak password practices:</strong> Age, Reuse, Length, and Complexity - passwords were reused, too short, insufficiently complex, and kept too long.</li>" +
+    "<li><strong>Best containment:</strong> Deploy FIDO security keys - the most secure listed option, resistant to phishing and interception, and it does not require wiping or altering host evidence on potentially compromised kiosks.</li>" +
     "</ul>";
 
   var DOC_CONTENT = {
@@ -185,7 +185,7 @@
         '<div class="doc-sop-head">' +
         '<img src="/images/logo/becertifiedtoday_logo_trans.png" width="40" height="40" alt="" />' +
         "<div>" +
-        '<p class="doc-sop-title">Standard Operating Procedure — Active Directory Password Policy</p>' +
+        '<p class="doc-sop-title">Standard Operating Procedure - Active Directory Password Policy</p>' +
         '<p class="doc-sop-meta">BeCertifiedToday.com · SOP-ID: IAM-PWD-001 · Rev. 2024-03 · Workforce accounts</p>' +
         "</div></div>" +
         '<div class="doc-sop-body">' +
@@ -202,7 +202,7 @@
         "</div></article>" +
         '<p class="doc-exhibit-label">shared_drive_index.csv (partial export)</p>' +
         '<div class="doc-csv-wrap" aria-label="Partial CSV file listing">' +
-        '<div class="doc-csv-bar">shared_drive_index.csv — rows 1–3 of 847 · UTF-8 · exported 2024-10-01</div>' +
+        '<div class="doc-csv-bar">shared_drive_index.csv - rows 1-3 of 847 · UTF-8 · exported 2024-10-01</div>' +
         '<table class="doc-csv-table"><thead><tr><th>path</th><th>size_kb</th><th>modified</th><th>owner</th></tr></thead><tbody>' +
         "<tr><td>HR/Policies/password-guidelines.docx</td><td>128</td><td>2024-08-12</td><td>hr-admin</td></tr>" +
         "<tr><td>Finance/compensation_report_Q3.pdf</td><td>2048</td><td>2024-09-28</td><td>finance-payroll</td></tr>" +
@@ -211,13 +211,13 @@
         '<p class="doc-csv-trunc">… 844 additional rows not shown</p></div>'
     },
     compensation: {
-      title: "Compensation report — Q3 FY2024",
+      title: "Compensation report - Q3 FY2024",
       report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/compensation-report-q3-ir-addendum.html",
       reportRoot: "compensationReportSample",
       reportLinkLabel: "compensation report"
     },
     userdata: {
-      title: "User data — employee_credential_audit.csv",
+      title: "User data - employee_credential_audit.csv",
       report: "/COMP_TIA_SEC+/SEC+_Sim_Hot_Spot/reports/employee-credential-audit.html",
       reportRoot: "credentialAuditSample",
       reportLinkLabel: "credential audit export"
@@ -260,9 +260,9 @@
 
   function weakFeedback(weak, weakOk) {
     if (weakOk) {
-      return "<strong>Step 2 — Weak password practices:</strong> Correct. Select Age, Reuse, Length, and Complexity.";
+      return "<strong>Step 2 - Weak password practices:</strong> Correct. Select Age, Reuse, Length, and Complexity.";
     }
-    var lines = ["<strong>Step 2 — Weak password practices:</strong> Expected Age, Reuse, Length, and Complexity."];
+    var lines = ["<strong>Step 2 - Weak password practices:</strong> Expected Age, Reuse, Length, and Complexity."];
     ["Age", "Reuse", "Length", "Complexity", "Expiration"].forEach(function (key) {
       var selected = weak.indexOf(key) !== -1;
       var should = weakCorrect.indexOf(key) !== -1;
@@ -275,13 +275,13 @@
 
   function containmentFeedback(containment, containmentOk) {
     if (containmentOk) {
-      return "<strong>Step 3 — Containment:</strong> Correct. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+      return "<strong>Step 3 - Containment:</strong> Correct. " + CONTAINMENT_EXPLAIN[containmentCorrect];
     }
     if (!containment) {
-      return "<strong>Step 3 — Containment:</strong> Choose one option. " + CONTAINMENT_EXPLAIN[containmentCorrect];
+      return "<strong>Step 3 - Containment:</strong> Choose one option. " + CONTAINMENT_EXPLAIN[containmentCorrect];
     }
     return (
-      "<strong>Step 3 — Containment:</strong> Expected FIDO security key. " +
+      "<strong>Step 3 - Containment:</strong> Expected FIDO security key. " +
       CONTAINMENT_EXPLAIN[containmentCorrect] +
       " Your choice (" +
       containment +
@@ -338,8 +338,8 @@
     resultBox.className = "result pass";
     resultBox.textContent = "Answers shown. Review the recap below, then Reset to practice again.";
     feedback.innerHTML =
-      "<strong>Step 2:</strong> Age — passwords kept too long. Reuse — same password on multiple accounts. " +
-      "Length — too short. Complexity — missing numbers/symbols.<br><br>" +
+      "<strong>Step 2:</strong> Age - passwords kept too long. Reuse - same password on multiple accounts. " +
+      "Length - too short. Complexity - missing numbers/symbols.<br><br>" +
       "<strong>Step 3:</strong> " +
       CONTAINMENT_EXPLAIN[containmentCorrect];
     showRecap(true);

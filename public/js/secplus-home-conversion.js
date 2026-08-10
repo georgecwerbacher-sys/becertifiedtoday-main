@@ -1,9 +1,9 @@
 /**
- * Security+ home landing — conversion-first headline matching + sticky mobile CTA.
+ * Security+ home landing - conversion-first headline matching + sticky mobile CTA.
  *
  * Default hero: free samples. Headline changes when ?hl=, utm_content, or utm_term maps to a variant.
  *
- * Ad setup: marketing-research/Sec+ Campaign/ — Sec+ Notes.md · Sec+ RSA Copy.md · secplus-campaign-checklist.csv
+ * Ad setup: marketing-research/Sec+ Campaign/ - Sec+ Notes.md · Sec+ RSA Copy.md · secplus-campaign-checklist.csv
  */
 (function () {
   "use strict";
@@ -15,22 +15,22 @@
   var SAMPLE_PBQ = "/secplus-sample?track=sim-dark-web";
 
   var PAID_30D_SUFFIX =
-    "Try the free MCQ or PBQ samples below, then unlock <strong>30-day full access for $19.99</strong>—PBQs, timed sim, and scorecard included.";
+    "Try the free MCQ or PBQ samples below, then unlock <strong>30-day full access for $19.99</strong> - PBQs, timed sim, and scorecard included.";
 
   var WEDGE_LEAD =
-    "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
+    "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong> - included with full access. " +
     PAID_30D_SUFFIX;
 
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. <strong>No PDFs.</strong> " +
-    "Try free samples first—same UI as full access.";
+    "Try free samples first - same UI as full access.";
 
   var GOOGLE_PAID_PURCHASE_CTA = "Get 30-day access";
 
   var PAID_VARIANT_OVERRIDES = {
     "pbq-wedge": {
       lead:
-        "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
+        "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser - no download or VM. " +
         "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
       ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
       stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
@@ -49,7 +49,7 @@
       stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
       lead:
-        "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong>—included with full access. " +
+        "Build Security+ readiness with <strong>34 PBQ scenarios</strong> (chain labs, drag-and-drop, IR exhibits) and a <strong>90-minute timed simulation with scorecard review</strong> - included with full access. " +
         PAID_30D_SUFFIX,
     },
     federal: {
@@ -83,7 +83,7 @@
       id: "portal-10d",
       adHeadline: "Security+ Practice Test",
       eyebrow: "SY0-701 · 30-day access · $19.99",
-      headline: "Security+ Practice Test — 1000+ SY0-701 Questions & PBQ Scenarios",
+      headline: "Security+ Practice Test - 1000+ SY0-701 Questions & PBQ Scenarios",
       lead: BASE_LEAD + " Unlock <strong>30-day full access for $19.99</strong> when you are ready.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Get 30-day access",
@@ -93,9 +93,9 @@
       id: "pbq-wedge",
       adHeadline: "Security+ PBQ Practice",
       eyebrow: "SY0-701 PBQ · browser · no download",
-      headline: "Security+ PBQ Practice in Your Browser — Chain Labs & IR Scenarios",
+      headline: "Security+ PBQ Practice in Your Browser - Chain Labs & IR Scenarios",
       lead:
-        "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser—no download or VM. " +
+        "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser - no download or VM. " +
         "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios + 1000+ questions for <strong>$19.99 / 30 days</strong>.",
       ctaPrimary: "Try free 3-scenario PBQ preview",
       ctaHref: SAMPLE_PBQ,
@@ -105,7 +105,7 @@
       id: "timed-sim",
       adHeadline: "Security+ Timed Practice Test",
       eyebrow: "SY0-701 timed simulation · 90 minutes",
-      headline: "90-Minute Security+ Timed Simulation — MCQ + PBQ + Scorecard Review",
+      headline: "90-Minute Security+ Timed Simulation - MCQ + PBQ + Scorecard Review",
       lead:
         "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
         "Included with <strong>30-day full access for $19.99</strong>.",
@@ -116,9 +116,9 @@
       id: "federal",
       adHeadline: "Security+ DoD Exam Prep",
       eyebrow: "SY0-701 · federal & contractor roles",
-      headline: "Security+ SY0-701 Prep — Browser Practice for DoD & Contractor Requirements",
+      headline: "Security+ SY0-701 Prep - Browser Practice for DoD & Contractor Requirements",
       lead:
-        "Many federal and defense-contractor roles expect Security+ before you start work. Practice <strong>1000+ SY0-701 questions</strong> and <strong>34 PBQ scenarios</strong> in your browser on duty laptop, CONUS, or TDY—no install. " +
+        "Many federal and defense-contractor roles expect Security+ before you start work. Practice <strong>1000+ SY0-701 questions</strong> and <strong>34 PBQ scenarios</strong> in your browser on duty laptop, CONUS, or TDY - no install. " +
         "Confirm your requirement with your manager. Try <strong>free samples</strong> first.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
@@ -127,7 +127,7 @@
       id: "practice-test",
       adHeadline: "Security+ Practice Test",
       eyebrow: "Security+ SY0-701 · online practice test",
-      headline: "Security+ Practice Test — SY0-701 Questions & PBQs Online",
+      headline: "Security+ Practice Test - SY0-701 Questions & PBQs Online",
       lead: BASE_LEAD,
       ctaPrimary: "Start free Security+ sample questions",
       ctaHref: SAMPLE_QUESTIONS,
@@ -137,9 +137,9 @@
       id: "question-bank",
       adHeadline: "SY0-701 Question Bank",
       eyebrow: "Security+ question bank · SY0-701 objectives",
-      headline: "SY0-701 Question Bank — 1000+ Interactive Security+ Questions",
+      headline: "SY0-701 Question Bank - 1000+ Interactive Security+ Questions",
       lead:
-        "Work through a large <strong>SY0-701 question bank</strong> with verified explanations—not static PDF answer keys. " +
+        "Work through a large <strong>SY0-701 question bank</strong> with verified explanations - not static PDF answer keys. " +
         "Includes PBQ scenarios and adaptive review. <strong>Try free sample questions in your browser.</strong>",
       ctaPrimary: "Try free Security+ sample questions",
       ctaHref: SAMPLE_QUESTIONS,
@@ -149,7 +149,7 @@
       id: "free-practice",
       adHeadline: "Free Security+ Practice",
       eyebrow: "Free Security+ practice · browser samples",
-      headline: "Free Security+ Practice — MCQ & 3-Scenario PBQ Preview",
+      headline: "Free Security+ Practice - MCQ & 3-Scenario PBQ Preview",
       lead:
         "Try free Security+ samples in your browser: multiple-choice questions and a 3-scenario PBQ preview (dark web IR, WLAN, firewall ACL). " +
         "<strong>No PDFs</strong>, no membership, and no app install.",

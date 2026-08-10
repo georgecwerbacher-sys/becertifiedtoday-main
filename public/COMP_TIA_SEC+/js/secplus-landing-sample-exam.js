@@ -4,7 +4,7 @@
   var EXAM_MINUTES = 25;
 
   var QUESTIONS = [
-    // Domain 1.0 – General Security Concepts
+    // Domain 1.0 - General Security Concepts
     {
       id: "Q1",
       domainId: "1.0",
@@ -78,7 +78,7 @@
       ],
     },
 
-    // Domain 2.0 – Threats, Vulnerabilities, and Mitigations
+    // Domain 2.0 - Threats, Vulnerabilities, and Mitigations
     {
       id: "Q5",
       domainId: "2.0",
@@ -152,7 +152,7 @@
       ],
     },
 
-    // Domain 3.0 – Security Architecture
+    // Domain 3.0 - Security Architecture
     {
       id: "Q9",
       domainId: "3.0",
@@ -210,7 +210,7 @@
       ],
     },
 
-    // Domain 4.0 – Security Operations
+    // Domain 4.0 - Security Operations
     {
       id: "Q13",
       domainId: "4.0",
@@ -268,7 +268,7 @@
       ],
     },
 
-    // Domain 5.0 – Governance, Risk, and Compliance
+    // Domain 5.0 - Governance, Risk, and Compliance
     {
       id: "Q17",
       domainId: "5.0",
@@ -335,7 +335,7 @@
       previewOnly: true,
       stem:
         "Performance-based scenario: You are reviewing a three-tier web application protected by a perimeter, application, and database firewall. " +
-        "Use the <strong>Three-Tier Firewall — ACL Rule Builder</strong> simulation below (Open firewall PBQ) to experiment with rules, then answer: " +
+        "Use the <strong>Three-Tier Firewall - ACL Rule Builder</strong> simulation below (Open firewall PBQ) to experiment with rules, then answer: " +
         "Which TWO rule design choices BEST follow least-privilege principles for the application tier?",
       choices: [],
     },
@@ -741,7 +741,7 @@
       var tdTotal = document.createElement("td");
       tdTotal.textContent = String(row.total);
       var tdPct = document.createElement("td");
-      tdPct.textContent = row.total ? row.pct + "%" : "—";
+      tdPct.textContent = row.total ? row.pct + "%" : " - ";
       tr.appendChild(tdDomain);
       tr.appendChild(tdCorrect);
       tr.appendChild(tdTotal);

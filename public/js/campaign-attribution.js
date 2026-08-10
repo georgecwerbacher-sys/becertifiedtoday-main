@@ -27,7 +27,7 @@
     var out = paramsFromSearchString(window.location.search || "");
     if (Object.keys(out).length) return out;
 
-    // Google Ads sitelinks often use ccna-home.html#purchase?utm_source=… — UTMs after # are not in location.search.
+    // Google Ads sitelinks often use ccna-home.html#purchase?utm_source=… - UTMs after # are not in location.search.
     var hash = window.location.hash || "";
     var qIndex = hash.indexOf("?");
     if (qIndex >= 0) {
