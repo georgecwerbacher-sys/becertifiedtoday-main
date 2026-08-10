@@ -2,7 +2,8 @@
 
 Match: `[exact]` · `"phrase"`  
 Campaign: `Security+ SY0-701 · US Search · Launch 40`  
-Plan: [[Sec+ Launch 40 Campaign Plan]]
+Plan: [[Sec+ Launch 40 Campaign Plan]]  
+utm_campaign: `secplus_portal_launch40`
 
 ---
 
@@ -75,6 +76,39 @@ Plan: [[Sec+ Launch 40 Campaign Plan]]
 "security+ exam readiness practice"
 "security+ practice instead of course"
 "security+ self study practice exam"
+```
+
+---
+
+## Ad group 4 — Student College (`student-college`)
+
+College / degree / capstone intent for back-to-school. No creator brands. No naked practice-questions.
+
+### Exact
+
+```
+[security+ for college students]
+[security+ capstone requirement]
+[security+ required for graduation]
+```
+
+### Phrase
+
+```
+"security+ required for graduation"
+"security+ capstone requirement"
+"security+ cybersecurity degree"
+"security+ college requirement"
+"security+ for college students"
+"comptia security+ student prep"
+"security+ community college cyber"
+"security+ required for college"
+"security+ for cybersecurity students"
+"security+ for it students"
+"security+ educator prep"
+"sy0-701 college prep"
+"security+ back to school"
+"security+ fall semester prep"
 ```
 
 ---

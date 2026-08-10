@@ -24,7 +24,7 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 
 **Full exam prep, not samples-only.** **1,000+ SY0-701 questions** with verified explanations, **adaptive review** that loops weak domains, a **90-minute timed simulation with domain scorecard**, and **34 PBQ scenarios** (chain labs, hot spots, IR exhibits)—one portal, one sprint price.
 
-**Verified against the current blueprint.** Each item is tagged to a **SY0-701 objective ID** and checked on Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 stays out of active study pools. See the verification block on the cert home and [[how-we-verify-questions.html]].
+**Verified against the current blueprint — not AI-generated.** Topics are researched across **dozens of discussion sites**, weighted for still-valid SY0-701 coverage, then each item is tagged to a **SY0-701 objective ID** and checked on highly ranked Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 stays out of active study pools. See the verification block on the cert home and [[how-we-verify-questions.html]].
 
 **Interactive scenarios online.** Performance-based items run in the browser with the same engine as paid access. No VCE, no PDF, no desktop install. Study on phone, tablet, or laptop between shifts—especially military, first responders, and commuters.
 

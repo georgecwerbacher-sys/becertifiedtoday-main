@@ -1,6 +1,6 @@
 /**
  * Security+ Google Search ad groups — shared by marketing docs, registry, and /admin GA4.
- * Obsidian source: marketing-research/Sec+ Campaign/Sec+ One-Campaign Ad Group Plan.md
+ * Current flight: Launch 40 (Back to School) — marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md
  */
 
 /** @typedef {object} SecplusGoogleAdGroupDef */
@@ -16,74 +16,116 @@
  */
 
 export const SECPLUS_GOOGLE_CAMPAIGN = {
-  id: "secplus_portal",
-  googleAdsCampaignName: "Security+ SY0-701 · US Search",
+  id: "secplus_portal_launch40",
+  googleAdsCampaignName: "Security+ SY0-701 · US Search · Launch 40",
   /** Legacy GA4 / Ads names still seen in historical data */
   campaignAliases: [
+    "secplus_portal_launch40",
     "secplus_portal",
+    "Security+ SY0-701 · US Search · Launch 40",
     "Security+ SY0-701 · US Search",
     "Security+ SY0-701 · Exam prep · becertifiedtoday",
     "Security+ PBQ Practice",
   ],
-  utmCampaign: "secplus_portal",
+  utmCampaign: "secplus_portal_launch40",
   utmSource: "google",
   utmMedium: "cpc",
-  dailyBudgetUsd: 25,
+  dailyBudgetUsd: 35,
   maxCpcUsd: 2.75,
-  landingPath: "/comptia-sec+-home.html",
+  landingPath: "/comptia-sec+-home.html#home-secplus-samples-title",
   primaryConversion: "begin_checkout",
   conversionItemIds: ["secplus_portal_30d"],
-  primaryOffer: "30-day $19.99 — one US Search campaign, three ad groups, $25/day shared",
-  planDoc: "marketing-research/Sec+ Campaign/Sec+ One-Campaign Ad Group Plan.md",
-  rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy.md",
-  keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
-  checklistDoc: "marketing-research/Sec+ Campaign/Sec+ Google Ads Build Checklist.md",
+  primaryOffer: "30-day Back to School $15.99 (AUGUSTPROMO2026) — Launch 40, four ad groups, $35/day shared",
+  planDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md",
+  rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+  keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  checklistDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Build Checklist.md",
   adminAnalyticsPath: "/admin#section-secplus-ad-groups",
 };
 
 /** @type {SecplusGoogleAdGroupDef[]} */
 export const SECPLUS_GOOGLE_AD_GROUPS = [
   {
-    slug: "core-exam-prep",
-    adGroupName: "Core Exam Prep",
-    utmContent: "core-exam-prep",
-    displayPath: "Security+ / Exam-Prep",
+    slug: "timed-sim",
+    adGroupName: "Timed Simulation",
+    utmContent: "timed-sim",
+    displayPath: "Security+ / Exam-Sim",
     pinH1: "SY0-701 Exam Prep Online",
-    intent: "Timed sim, readiness, adaptive review, browser prep",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+    intent: "Timed sim, readiness, scorecard",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
   },
   {
-    slug: "mil-gov-8140",
-    adGroupName: "Military Gov 8140",
-    utmContent: "mil-gov-8140",
-    displayPath: "Security+ / DoD-8140",
-    pinH1: "Security+ for DoD 8140",
-    intent: "DoD 8140, federal, contractor, military job requirement",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy - Military Gov 8140.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+    slug: "verified-adaptive",
+    adGroupName: "Verified Adaptive Prep",
+    utmContent: "verified-adaptive",
+    displayPath: "Security+ / Verified-Prep",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "Verified bank, adaptive review, PBQs, not PDF",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
   },
   {
-    slug: "student-workforce",
-    adGroupName: "Student Workforce",
-    utmContent: "student-workforce",
-    displayPath: "Security+ / Career-Prep",
-    pinH1: "Security+ Career Prep",
-    intent: "Students, educators, veterans, workforce / career transition",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy - Student Workforce.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+    slug: "after-study",
+    adGroupName: "After Study Sprint",
+    utmContent: "after-study",
+    displayPath: "Security+ / After-Study",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "After free samples/courses — practice for the exam",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
+  {
+    slug: "student-college",
+    adGroupName: "Student College",
+    utmContent: "student-college",
+    displayPath: "Security+ / College-Prep",
+    pinH1: "Security+ College Prep",
+    intent: "College / capstone / graduation requirement — Back to School",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
   },
 ];
 
 /** Legacy utm_content values — show in admin when still receiving traffic */
 export const SECPLUS_LEGACY_UTM_CONTENT = [
   {
+    slug: "core-exam-prep",
+    adGroupName: "Legacy · Core Exam Prep",
+    utmContent: "core-exam-prep",
+    displayPath: "Security+ / Exam-Prep",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "Prior one-campaign build",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+  },
+  {
+    slug: "mil-gov-8140",
+    adGroupName: "Legacy · Military Gov 8140",
+    utmContent: "mil-gov-8140",
+    displayPath: "Security+ / DoD-8140",
+    pinH1: "Security+ for DoD 8140",
+    intent: "Prior mil/gov ad group",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy - Military Gov 8140.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+  },
+  {
+    slug: "student-workforce",
+    adGroupName: "Legacy · Student Workforce",
+    utmContent: "student-workforce",
+    displayPath: "Security+ / Career-Prep",
+    pinH1: "Security+ Career Prep",
+    intent: "Prior student/workforce ad group — replaced by Student College for BTS",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy - Student Workforce.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+  },
+  {
     slug: "pbq-wedge",
     adGroupName: "Legacy · PBQ Practice",
     utmContent: "pbq-wedge",
     displayPath: "—",
     pinH1: "Security+ PBQ Practice",
-    intent: "Phase 1 wedge (replace RSA when ad group is migrated)",
+    intent: "Phase 1 wedge",
     rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy.md",
     keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
   },
@@ -97,7 +139,7 @@ export function normalizeUtmContent(raw) {
 
 export function secplusFinalUrl(utmContent) {
   const content = String(utmContent || "").trim();
-  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=${encodeURIComponent(content)}`;
+  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=${encodeURIComponent(content)}#home-secplus-samples-title`;
 }
 
 export function allSecplusAdGroupDefs() {

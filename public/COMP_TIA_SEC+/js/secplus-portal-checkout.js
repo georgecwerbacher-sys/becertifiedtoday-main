@@ -23,8 +23,12 @@
     "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
   };
 
-  /** Must match a live Stripe promotion code tied to a $7.00-off coupon on the 30-day price. */
-  var LAUNCH_PROMO_CODE = "ONETIMEDEAL";
+  /**
+   * AUGUSTPROMO2026 — 20% off Sec+ 30-day ($15.99 on $19.99).
+   * Public Back to School for all of August 2026 (see /js/secplus-bts-promo.js).
+   * Also used when an older launch-deal session is still active.
+   */
+  var LAUNCH_PROMO_CODE = "AUGUSTPROMO2026";
 
   var PRODUCTS = {
     "3d": {
@@ -45,12 +49,16 @@
       id: "secplus_portal_30d",
       name: "CompTIA Security+ 30-day access",
       listValue: "19.99",
-      launchValue: "17.99",
+      launchValue: "15.99",
       value: "19.99",
       defaultLabel: "Get 30-day access",
       labelKey: "secplusPortal30dCheckoutLabel",
     },
   };
+
+  function btsPromoActive() {
+    return typeof window.bccSecplusBtsPromoActive === "function" && window.bccSecplusBtsPromoActive();
+  }
 
   function shouldApplyLaunchPromo(tier, options) {
     if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
@@ -59,6 +67,7 @@
     if (tier !== "30d" || !LAUNCH_PROMO_CODE) return false;
     if (options && options.applyLaunchPromo === true) return true;
     if (options && options.applyLaunchPromo === false) return false;
+    if (btsPromoActive()) return true;
     return typeof window.bccSecplusLaunchDealActive === "function" && window.bccSecplusLaunchDealActive();
   }
 
@@ -71,6 +80,9 @@
     if (typeof window.bccSave50DiscountedValue === "function") {
       return window.bccSave50DiscountedValue(raw);
     }
+    if (typeof window.bccSecplusBtsDiscountedValue === "function") {
+      return window.bccSecplusBtsDiscountedValue(raw);
+    }
     return raw;
   }
 
@@ -80,6 +92,10 @@
     if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
       var withSave50 = window.bccBuildCheckoutUrlWithSave50(url);
       if (withSave50 !== url) return withSave50;
+    }
+    if (typeof window.bccBuildCheckoutUrlWithBts === "function") {
+      var withBts = window.bccBuildCheckoutUrlWithBts(url);
+      if (withBts !== url) return withBts;
     }
     if (!applyLaunchPromo || tier !== "30d" || !LAUNCH_PROMO_CODE) return url;
     var sep = url.indexOf("?") >= 0 ? "&" : "?";

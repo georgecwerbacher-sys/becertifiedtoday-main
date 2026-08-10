@@ -1,0 +1,270 @@
+/* Security+ Back to School — visit-urgency promo bar + claim dock */
+.secplus-bts-promo-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  background: #0f3d4c;
+  border-bottom: 2px solid #1a6b7c;
+  color: #f0f7f8;
+}
+
+.secplus-bts-promo-bar__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 12px clamp(14px, 3vw, 28px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+}
+
+.secplus-bts-promo-bar__main {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.secplus-bts-promo-bar__eyebrow {
+  margin: 0 0 2px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9fd4dc;
+}
+
+.secplus-bts-promo-bar__headline {
+  margin: 0 0 4px;
+  font-size: clamp(1rem, 2.6vw, 1.28rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.secplus-bts-promo-bar__sub {
+  margin: 0;
+  font-size: clamp(0.84rem, 2vw, 0.94rem);
+  line-height: 1.45;
+  color: #d5eef1;
+  font-weight: 600;
+}
+
+.secplus-bts-promo-bar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px 16px;
+}
+
+.secplus-bts-promo-bar__timer {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9fd4dc;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.secplus-bts-promo-bar__timer strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.15rem;
+  color: #ffe08a;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.secplus-bts-promo-bar__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border: none;
+  background: #f4c430;
+  color: #0f3d4c;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
+  animation: secplus-bts-cta-pulse 2.4s ease-in-out infinite;
+}
+
+.secplus-bts-promo-bar__cta:hover {
+  background: #ffd95a;
+  color: #0a2e39;
+}
+
+.secplus-bts-promo-bar__cta:focus-visible {
+  outline: 3px solid #ffe08a;
+  outline-offset: 2px;
+}
+
+@keyframes secplus-bts-cta-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secplus-bts-promo-bar__cta,
+  .secplus-bts-claim-dock__cta {
+    animation: none;
+  }
+}
+
+html.secplus-bts-promo-active body {
+  padding-top: calc(var(--secplus-bts-promo-h, 84px) + env(safe-area-inset-top, 0px));
+}
+
+/* Sticky claim dock — pushes checkout without leaving the page */
+.secplus-bts-claim-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99990;
+  padding: 0 max(12px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px))
+    max(12px, env(safe-area-inset-left, 0px));
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.secplus-bts-claim-dock__inner {
+  pointer-events: auto;
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 14px;
+  align-items: center;
+  padding: 12px 14px 12px 16px;
+  border-radius: 12px 12px 0 0;
+  border: 1px solid #1a6b7c;
+  border-bottom: none;
+  background: #0f3d4c;
+  color: #f0f7f8;
+}
+
+.secplus-bts-claim-dock__close {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  margin: 0;
+  padding: 2px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #9fd4dc;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.secplus-bts-claim-dock__close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.secplus-bts-claim-dock__copy {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
+.secplus-bts-claim-dock__eyebrow {
+  margin: 0 0 2px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffe08a;
+}
+
+.secplus-bts-claim-dock__text {
+  margin: 0;
+  font-size: clamp(0.88rem, 2.2vw, 0.98rem);
+  line-height: 1.35;
+  color: #e7f4f6;
+  font-weight: 600;
+}
+
+.secplus-bts-claim-dock__text strong {
+  color: #fff;
+}
+
+.secplus-bts-claim-dock__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.secplus-bts-claim-dock__timer {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffe08a;
+  font-variant-numeric: tabular-nums;
+  min-width: 3.2rem;
+}
+
+.secplus-bts-claim-dock__cta {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #f4c430;
+  color: #0f3d4c;
+  font-size: 0.98rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  animation: secplus-bts-cta-pulse 2.4s ease-in-out infinite;
+}
+
+.secplus-bts-claim-dock__cta:hover {
+  background: #ffd95a;
+}
+
+html.secplus-bts-dock-visible {
+  padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 720px) {
+  .secplus-bts-promo-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .secplus-bts-promo-bar__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .secplus-bts-promo-bar__timer {
+    text-align: center;
+  }
+
+  .secplus-bts-promo-bar__cta,
+  .secplus-bts-claim-dock__cta {
+    width: 100%;
+  }
+
+  .secplus-bts-claim-dock__inner {
+    grid-template-columns: 1fr auto;
+  }
+}

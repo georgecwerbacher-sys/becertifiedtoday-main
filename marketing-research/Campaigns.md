@@ -9,15 +9,16 @@ tags:
 
 Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 
-## Active: Security+ Google Search Setup
+## Active: Security+ Google Search · Launch 40 (Back to School)
 
-**Campaign:** `Security+ SY0-701 · US Search`  
-**Ad groups:** `Core Exam Prep` · `Military Gov 8140` · `Student Workforce`  
-**Budget:** **$25/day shared** · max CPC **$2.75**  
-**Landing:** `/comptia-sec+-home.html`  
-**utm_campaign:** `secplus_portal` · **utm_content:** ad-group specific
+**Campaign:** `Security+ SY0-701 · US Search · Launch 40`  
+**Ad groups:** `Timed Simulation` · `Verified Adaptive Prep` · `After Study Sprint` · `Student College`  
+**Budget:** **$35/day shared** · max CPC **$2.50–$2.75**  
+**Offer:** August Back to School **20%** → **$15.99** (`AUGUSTPROMO2026`) for everyone  
+**Landing:** `/comptia-sec+-home.html#home-secplus-samples-title`  
+**utm_campaign:** `secplus_portal_launch40` · **utm_content:** `timed-sim` · `verified-adaptive` · `after-study` · `student-college`
 
-**Obsidian home:** [[Sec+ Campaign/README|Sec+ Campaign]] — all setup copy in one folder
+**Start here:** [[Sec+ Campaign/Sec+ Launch 40 Build Checklist|Launch 40 checklist]] · [[Sec+ Campaign/Sec+ Launch 40 Campaign Plan|Campaign plan]] · [[Sec+ Campaign/Sec+ Launch 40 RSA Copy|RSA paste]]
 
 ## Analytics & improvement loop
 
