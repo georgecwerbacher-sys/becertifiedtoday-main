@@ -227,7 +227,7 @@
       '">--</strong></span>' +
       '<button type="button" class="secplus-bts-promo-bar__cta" data-secplus-bts-checkout>Claim $' +
       SALE_PRICE +
-      " now</button>" +
+      "</button>" +
       "</div></div>";
 
     document.body.insertBefore(bar, document.body.firstChild);
