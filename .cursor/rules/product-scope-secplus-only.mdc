@@ -1,21 +1,23 @@
 ---
-description: Be Certified Today product scope for Cursor — Security+ only; do not build CCNA/ENCOR/CCNP offerings.
+description: Be Certified Today product scope — multi-track (Sec+, CCNA, ENCOR); prefer explicit user ask for new product expansion.
 alwaysApply: true
 ---
 
-# Product scope — Security+ only
+# Product scope — multi-track active
 
-Be Certified Today’s active product for Cursor work is **CompTIA Security+ SY0-701**.
+Be Certified Today’s public landing is the **three-track chooser** (`public/index.html`): **CompTIA Security+ SY0-701**, **CCNA 200-301**, and **CCNP ENCOR 350-401**.
 
 ## Do
 
-- Implement new practice, PBQ, portal, ads, and marketing work under **`public/COMP_TIA_SEC+/`**, **`public/comptia-sec+-home.html`**, and Sec+ campaign docs.
+- Keep `/` serving `public/index.html` with track cards to `comptia-sec+-home.html`, `ccna-home.html`, and `ccnp-home.html`.
+- Implement Sec+ practice/PBQ/portal/ads under **`public/COMP_TIA_SEC+/`**, **`public/comptia-sec+-home.html`**, and Sec+ campaign docs.
+- Preserve CCNA/ENCOR portal homes, magic-link restore, and admin reporting for all three tracks.
 - Follow `.cursor/rules/secplus-pbq-dragdrop-pages.mdc` and `.cursor/rules/question-bank-template.mdc` for Sec+ banks.
 
-## Do not (unless the user explicitly asks to archive, redirect, or delete legacy files)
+## Do not (unless the user explicitly asks)
 
-- Add or expand **CCNA**, **CCNP ENCOR**, or **CCNA Automation** products, portals, question pages, ads, or launchers.
-- Create `public/question-{N}.html` CCNP launcher items, `public/CCNA-Study/` chain questions, or ENCOR study flows as new offerings.
-- Treat CCNA/ENCOR home pages or portals as current products in copy, CTAs, or Cursor guidance.
+- Redirect `/` or `/index.html` only to Security+ (hide the chooser).
+- Remove CCNA/ENCOR track cards, portal access, or restore-access flows.
+- Treat legacy Cisco files as deleted; they are live products again alongside Sec+.
 
-Legacy Cisco files may still exist in the repo. Prefer Sec+ paths; do not revive multi-track positioning on the public landing.
+When adding a **new** cert track or expanding CCNA Automation beyond “coming soon,” wait for an explicit user request.
