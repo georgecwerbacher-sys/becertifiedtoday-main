@@ -137,6 +137,8 @@ Also pause any Broad containing: `601` · `pdf` · `questions and answers`
 **Do not paste any positive keywords here.**  
 **Do not use** bare `practice test` / `practice exam` / `[security+ practice exam]` as campaign negatives — they conflict with Timed Simulation positives.
 
+**Not blocked (by design):** dump / brain dump / PDF study-guide queries (including 601 and 701 variants). Do **not** add campaign negatives for `pdf`, `dump`, `dumps`, `brain dump`, `braindump`, or `jason dion` if you want those searches eligible. Add those terms as **positives** in an ad group if you want to bid on them.
+
 ```
 free
 bootcamp
@@ -154,16 +156,9 @@ ceh
 a+
 network+
 examtopics
-pdf
 ebook
 kindle
 voucher
-brain dump
-braindump
-exam dump
-examdump
-dump
-dumps
 torrent
 reddit
 cheat
@@ -175,8 +170,6 @@ quizlet
 "real exam questions"
 "exam questions and answers"
 "questions and answers"
-"jason dion"
-"dion training"
 "professor messer"
 messer
 "mike meyers"
@@ -191,13 +184,6 @@ pass4sure
 "sy0-701 practice questions"
 "free practice test"
 "free practice exam"
-"practice test pdf"
-"practice exam pdf"
-"practice questions pdf"
 "practice test free"
 "practice exam free"
-sy0-601
-"security+ 601"
-"security plus 601"
-"601 practice"
 ```
