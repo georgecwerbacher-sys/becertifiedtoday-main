@@ -18,7 +18,7 @@ tags:
 **Goal:** Conversions (checkout → purchase) during back-to-school  
 **Offer:** list **$19.99** / 30 days · **public 20% → $15.99** all August (banner + prefilled checkout)  
 **Daily budget:** **$35** (locked) · ~29 days on $1,000 if spend is steady  
-**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title  
+**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html (top of fold · no samples hash)  
 **Launched:** 2026-08-10 · ads updated and running
 
 Related: [[Sec+ Positioning]] · [[Sec+ Keywords]] · [[Sec+ Launch 40 Keyword Lists]] · [[Sec+ Launch 40 RSA Copy]] · [[Sec+ Notes]] · prior spend [[Google Ads Spend Promo]]
@@ -98,7 +98,7 @@ Security+ is entry-level. Many **college cyber / IT programs** require passing S
 Final URL pattern:
 
 ```text
-https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=<slug>#home-secplus-samples-title
+https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=<slug>
 ```
 
 ---

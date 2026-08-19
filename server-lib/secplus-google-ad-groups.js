@@ -32,7 +32,7 @@ export const SECPLUS_GOOGLE_CAMPAIGN = {
   utmMedium: "cpc",
   dailyBudgetUsd: 35,
   maxCpcUsd: 2.75,
-  landingPath: "/comptia-sec+-home.html#home-secplus-samples-title",
+  landingPath: "/comptia-sec+-home.html",
   primaryConversion: "begin_checkout",
   conversionItemIds: ["secplus_portal_30d"],
   primaryOffer: "30-day Back to School $15.99 (AUGUSTPROMO2026) — Launch 40, four ad groups, $35/day shared",
@@ -139,7 +139,7 @@ export function normalizeUtmContent(raw) {
 
 export function secplusFinalUrl(utmContent) {
   const content = String(utmContent || "").trim();
-  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=${encodeURIComponent(content)}#home-secplus-samples-title`;
+  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=${encodeURIComponent(content)}`;
 }
 
 export function allSecplusAdGroupDefs() {

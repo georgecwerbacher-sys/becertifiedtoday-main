@@ -15,10 +15,21 @@ Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
 **Ad groups:** `Timed Simulation` · `Verified Adaptive Prep` · `After Study Sprint` · `Student College`  
 **Budget:** **$35/day shared** · max CPC **$2.50–$2.75**  
 **Offer:** August Back to School **20%** → **$15.99** (`AUGUSTPROMO2026`) for everyone  
-**Landing:** `/comptia-sec+-home.html#home-secplus-samples-title`  
+**Landing:** `/comptia-sec+-home.html` (top of fold)  
 **utm_campaign:** `secplus_portal_launch40` · **utm_content:** `timed-sim` · `verified-adaptive` · `after-study` · `student-college`
 
 **Start here:** [[Sec+ Campaign/Sec+ Launch 40 Build Checklist|Launch 40 checklist]] · [[Sec+ Campaign/Sec+ Launch 40 Campaign Plan|Campaign plan]] · [[Sec+ Campaign/Sec+ Launch 40 RSA Copy|RSA paste]]
+
+## Ready: Security+ Google Search · Dump Intercept
+
+**Campaign:** `Security+ SY0-701 · US Search · Dump Intercept`  
+**Ad group:** `Dump Alternative`  
+**Budget:** **$10–15/day** · Target IS **top of page 60%** · max CPC limit **$5**  
+**Job:** Intercept dump/PDF searchers → browser prep (policy-safe RSA; do not advertise dumps)  
+**Landing:** `/comptia-sec+-home.html` (top of fold)  
+**utm_campaign:** `secplus_portal_dump_intercept` · **utm_content:** `dump-intercept`
+
+**Start here:** [[Sec+ Campaign/Sec+ Dump Intercept Build Checklist|Dump Intercept checklist]] · [[Sec+ Campaign/Sec+ Dump Intercept Campaign Plan|Plan]] · [[Sec+ Campaign/Sec+ Dump Intercept Keyword Lists|Keywords]] · [[Sec+ Campaign/Sec+ Dump Intercept RSA Copy|RSA]]
 
 ## Analytics & improvement loop
 

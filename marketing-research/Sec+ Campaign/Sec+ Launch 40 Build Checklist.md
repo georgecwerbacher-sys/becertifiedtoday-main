@@ -15,7 +15,7 @@ tags:
 
 **Locked:** $35/day · **public August 20%** (`AUGUSTPROMO2026`) · 4 ad groups · `utm_campaign=secplus_portal_launch40`  
 **Plan:** [[Sec+ Launch 40 Campaign Plan]]  
-**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html#home-secplus-samples-title
+**Landing:** https://becertifiedtoday.com/comptia-sec+-home.html
 
 Clickable canvas: use Cursor canvas `secplus-campaign-build-checklist` beside chat.
 
@@ -66,12 +66,12 @@ Clickable canvas: use Cursor canvas `secplus-campaign-build-checklist` beside ch
 - [ ] D2 · Create Verified Adaptive Prep
 - [ ] D3 · Create After Study Sprint
 - [ ] D4 · Create Student College
-- [ ] D5 · Final URLs → cert home `#home-secplus-samples-title` + UTMs
+- [ ] D5 · Final URLs → cert home (top of fold, no samples hash) + UTMs
 
 Example final URL:
 
 ```text
-https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=student-college#home-secplus-samples-title
+https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=student-college
 ```
 
 ---

@@ -141,10 +141,10 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     dailyBudgetUsd: 35,
     maxCpcUsd: 2.75,
     landingPath: "/comptia-sec+-home.html",
-    landingHash: "#home-secplus-samples-title",
+    landingHash: "",
     utmContentPrimary: "timed-sim",
     finalUrl:
-      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=timed-sim#home-secplus-samples-title",
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=timed-sim",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_30d"],
     primaryOffer:
@@ -154,6 +154,31 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     sampleTracks: ["sim-dark-web", "questions"],
     adsDashboardUrl:
       "https://ads.google.com/aw/overview?ocid=8235244277&euid=277397985&__u=6466314265&uscid=8235244277&__c=3900876173&authuser=0&workspaceId=0&subid=us-en-awhp-g-aw-c-home-signin-bgc!o2-aluminum%7Cib:2387565277%7Cib:8016481541%7Cib:6079319977%7C-ahpm-0000000209-0000000001%7C-ahpm-0000000179-0000000001",
+  },
+  {
+    id: "secplus_portal_dump_intercept",
+    channel: "google",
+    product: "secplus",
+    label: "Security+ SY0-701 · US Search · Dump Intercept",
+    googleAdsCampaignName: "Security+ SY0-701 · US Search · Dump Intercept",
+    utmCampaign: "secplus_portal_dump_intercept",
+    utmSource: "google",
+    utmMedium: "cpc",
+    adGroup: "Dump Alternative",
+    dailyBudgetUsd: 15,
+    maxCpcUsd: 5,
+    landingPath: "/comptia-sec+-home.html",
+    landingHash: "",
+    utmContentPrimary: "dump-intercept",
+    finalUrl:
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_dump_intercept&utm_content=dump-intercept",
+    primaryConversion: "begin_checkout",
+    conversionItemIds: ["secplus_portal_30d"],
+    primaryOffer:
+      "Dump/PDF intercept → browser prep · Target IS top of page · August $15.99 (AUGUSTPROMO2026)",
+    setupDoc: "marketing-research/Sec+ Campaign/Sec+ Dump Intercept Campaign Plan.md",
+    setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Dump Intercept Build Checklist.md",
+    sampleTracks: ["questions"],
   },
   {
     id: "secplus_portal",
