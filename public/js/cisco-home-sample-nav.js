@@ -613,16 +613,28 @@
     if (!product || !btn) return;
     btn.type = "button";
     btn.className = "cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured";
-    btn.textContent = product.label;
+    var label = product.label;
+    if (
+      typeof window.bccCcnaPassPromoActive === "function" &&
+      window.bccCcnaPassPromoActive() &&
+      typeof window.bccCcnaPassSalePrice === "function"
+    ) {
+      label = "Claim $" + window.bccCcnaPassSalePrice() + " now";
+    }
+    btn.textContent = label;
     btn.setAttribute("data-ccna-portal-checkout-tier", tier);
     btn.addEventListener("click", function (ev) {
       ev.preventDefault();
       if (btn.dataset.loading === "1") return;
       logSampleEvent(session, "ccna_portal_offer_checkout", { tier: tier });
+      var checkoutValue = product.value;
+      if (typeof window.bccCcnaPassDiscountedValue === "function") {
+        checkoutValue = window.bccCcnaPassDiscountedValue(product.value);
+      }
       if (typeof window.bccTrackBeginCheckout === "function") {
         btn.setAttribute("data-bcc-item-id", product.id);
         btn.setAttribute("data-bcc-item-name", product.name);
-        btn.setAttribute("data-bcc-value", product.value);
+        btn.setAttribute("data-bcc-value", checkoutValue);
         btn.setAttribute("data-bcc-currency", "USD");
         window.bccTrackBeginCheckout(btn);
       }
@@ -632,7 +644,20 @@
       clearSampleSession(session);
       var checkoutUrl = product.url;
       if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
-        checkoutUrl = window.bccBuildCheckoutUrlWithSave50(checkoutUrl);
+        var withSave50 = window.bccBuildCheckoutUrlWithSave50(checkoutUrl);
+        if (withSave50 !== checkoutUrl) {
+          checkoutUrl = withSave50;
+        } else if (typeof window.bccBuildCheckoutUrlWithCcnaPass === "function") {
+          checkoutUrl = window.bccBuildCheckoutUrlWithCcnaPass(checkoutUrl);
+        }
+      } else if (typeof window.bccBuildCheckoutUrlWithCcnaPass === "function") {
+        checkoutUrl = window.bccBuildCheckoutUrlWithCcnaPass(checkoutUrl);
+      } else if (
+        Date.now() >= new Date("2026-08-01T00:00:00-04:00").getTime() &&
+        Date.now() < new Date("2026-09-01T00:00:00-04:00").getTime()
+      ) {
+        checkoutUrl +=
+          (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=CCNAPASSTODY";
       } else if (Date.now() < new Date("2026-07-21T00:00:00-04:00").getTime()) {
         checkoutUrl +=
           (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=SAVE50PERCENT";
@@ -699,7 +724,13 @@
       '<div class="cisco-ccna-offer-tiers" aria-label="CCNA access option">' +
       '<div class="cisco-ccna-offer-tier cisco-ccna-offer-tier--featured">' +
       '<p class="cisco-ccna-offer-tier-label">30-day full access</p>' +
-      '<p class="cisco-ccna-offer-tier-price">$19.99 <span>/ 30 days</span></p>' +
+      (typeof window.bccCcnaPassPromoActive === "function" &&
+      window.bccCcnaPassPromoActive() &&
+      typeof window.bccCcnaPassSalePrice === "function"
+        ? '<p class="cisco-ccna-offer-tier-price"><s>$19.99</s> $' +
+          window.bccCcnaPassSalePrice() +
+          " <span>/ 30 days · 30% off</span></p>"
+        : '<p class="cisco-ccna-offer-tier-price">$19.99 <span>/ 30 days</span></p>') +
       '<p class="cisco-ccna-offer-tier-note">One-time · no subscription</p>' +
       '<button type="button" class="cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured" data-tier="30d"></button>' +
       "</div>" +

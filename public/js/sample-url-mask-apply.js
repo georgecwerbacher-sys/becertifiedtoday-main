@@ -134,6 +134,17 @@
       (document.head || document.body).appendChild(analytics);
     }
 
+    if (
+      onCcnaSample &&
+      !document.head.querySelector('script[src*="ccna-pass-promo.js"]') &&
+      !document.querySelector('script[src*="ccna-pass-promo.js"]')
+    ) {
+      var passPromo = document.createElement("script");
+      passPromo.src = "/js/ccna-pass-promo.js";
+      passPromo.defer = true;
+      (document.head || document.body).appendChild(passPromo);
+    }
+
     if (document.head.querySelector('script[src*="cisco-home-sample-nav.js"]')) return;
     var s = document.createElement("script");
     s.src = "/js/cisco-home-sample-nav.js";
