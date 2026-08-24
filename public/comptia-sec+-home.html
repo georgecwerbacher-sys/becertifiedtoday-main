@@ -443,21 +443,128 @@
       max-width: none;
       display: flex;
       flex-direction: column;
+      gap: clamp(20px, 3.2vw, 36px);
     }
     .funnel > .funnel-intro {
-      order: 1;
-    }
-    .funnel > #purchase {
-      order: 3;
-    }
-    .funnel > .secplus-home-verify {
-      order: 2;
+      order: 0;
     }
     .funnel > .samples-stack {
-      order: 4;
+      order: 1;
     }
     .funnel > #secplus-compare {
-      order: 5;
+      order: 4;
+    }
+    .funnel-intro.hero-conversion {
+      margin: 0;
+    }
+    .landing-page-intro h1 {
+      font-size: clamp(1.85rem, 4.8vw, 2.55rem);
+      max-width: none;
+    }
+    .landing-page-intro .lead {
+      max-width: none;
+      width: 100%;
+      font-size: clamp(1.02rem, 2.2vw, 1.12rem);
+      line-height: 1.55;
+    }
+    .landing-page-intro__who {
+      margin-bottom: clamp(16px, 2.5vw, 20px);
+      color: var(--page-text, #0b1020);
+    }
+    .landing-page-intro__offer {
+      margin-bottom: clamp(20px, 3vw, 26px);
+      color: var(--page-muted);
+    }
+    .secplus-pricing-modal-trigger {
+      order: 3;
+      height: 1px;
+      margin: 0;
+      pointer-events: none;
+    }
+    .secplus-pricing-modal {
+      display: none;
+    }
+    .secplus-pricing-modal.is-open {
+      position: fixed;
+      inset: 0;
+      z-index: 21000;
+      display: grid;
+      place-items: center;
+      padding-top: max(16px, var(--secplus-bts-promo-h, 0px), env(safe-area-inset-top, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      box-sizing: border-box;
+    }
+    .secplus-pricing-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 8, 18, 0.72);
+      backdrop-filter: blur(6px);
+    }
+    .secplus-pricing-modal-dialog {
+      position: relative;
+      z-index: 1;
+      width: min(520px, 100%);
+      max-height: min(92vh, 880px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      border-radius: 16px;
+    }
+    @supports (max-height: 92dvh) {
+      .secplus-pricing-modal-dialog {
+        max-height: min(92dvh, 880px);
+      }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .secplus-pricing-modal.is-open .secplus-pricing-modal-dialog {
+        animation: ccnaDialogIn 0.28s ease-out;
+      }
+    }
+    .secplus-pricing-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e8eef8;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .secplus-pricing-modal-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+    .secplus-pricing-modal-close:focus-visible {
+      outline: 2px solid #c4b5fd;
+      outline-offset: 2px;
+    }
+    .secplus-pricing-modal .purchase-card {
+      margin: 0;
+      padding: 48px clamp(16px, 3vw, 24px) clamp(18px, 3vw, 24px);
+    }
+    .secplus-pricing-modal .purchase-cta-stack--single {
+      max-width: none;
+    }
+    .secplus-pricing-modal .purchase-track-cta-wrap {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      background: var(--surface, #121a2b);
+      box-shadow: 0 -12px 18px rgba(18, 26, 43, 0.95);
+    }
+    html.secplus-pricing-modal-open {
+      overflow: hidden;
+    }
+    html.secplus-pricing-modal-open .secplus-mobile-sticky-cta {
+      display: none !important;
     }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
@@ -1691,8 +1798,11 @@
     .samples-stack {
       display: flex;
       flex-direction: column;
-      gap: clamp(28px, 5vw, 40px);
-      margin: 0 0 clamp(28px, 5vw, 40px);
+      gap: clamp(16px, 3vw, 22px);
+      margin: 0;
+    }
+    .samples-stack .secplus-home-verify {
+      margin: 0;
     }
     .samples-block {
       margin: 0;
@@ -1985,6 +2095,15 @@
       max-width: 100%;
       object-fit: cover;
       object-position: center top;
+    }
+    @media (min-width: 900px) {
+      .samples-stack .format-card-thumb {
+        aspect-ratio: auto;
+      }
+      .samples-stack .format-card-thumb img {
+        height: auto;
+        max-height: 148px;
+      }
     }
     .format-card-device-note {
       margin: 0 0 10px;
@@ -2797,56 +2916,98 @@
             This is browser practice with PBQs and a <strong>90-minute timed simulation</strong>, not another video bootcamp.
             Unlock <strong>30-day access for $19.99</strong> when you are ready.
           </div>
-          <div class="funnel-intro hero-conversion" data-secplus-hl-pending="1">
-            <div class="secplus-hero-header">
-              <p class="eyebrow" id="hero-conversion-eyebrow">CompTIA Security+ SY0-701</p>
-              <p class="landing-tagline">Practice Like Test Day. Walk In Ready.</p>
-              <h1 id="hero-conversion-title">CompTIA Security+ SY0-701 Exam Prep: 1000+ Questions, PBQs, and Adaptive Study</h1>
-              <p class="lead lead--full" id="hero-conversion-lead">
-                <strong>1000+ interactive questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a
-                <strong>90-minute timed exam</strong> in your browser.
-                <strong>Not AI-generated</strong> &mdash; pulled from PDFs, forums, and study groups, then verified on Tier A sources.
-                Mobile-friendly PBQ labs. No VCE. No static PDF dump. One Stripe payment. No subscription.
-              </p>
-            </div>
-            <div class="secplus-hero-highlights">
-              <ul class="secplus-value-pillars" aria-label="Security+ library highlights">
-                <li>
-                  <strong>1000+ Practice Questions</strong>
-                  Not AI-generated. Pulled from PDFs, forums, and study groups, then verified on Tier A sources.
-                </li>
-                <li>
-                  <strong>34 PBQ Scenarios and Timed Exam</strong>
-                  Chain labs, hot spots, and IR exhibits in the browser. Mobile-friendly. No VCE or app install.
-                </li>
-                <li>
-                  <strong>Adaptive Review</strong>
-                  Missed topics loop back. Domain study targets weak areas before test day.
-                </li>
-                <li>
-                  <strong>Phone, Tablet, and Desktop</strong>
-                  Same interactive UI everywhere. PDF dump sites charge 3&ndash;4&times; more for a static file.
-                </li>
-              </ul>
-            </div>
+          <div class="funnel-intro hero-conversion landing-page-intro" data-secplus-hl-pending="1">
+            <p class="eyebrow" id="hero-conversion-eyebrow">Be Certified Today · CompTIA Security+ SY0-701 exam prep in your browser</p>
+            <p class="landing-tagline">Practice Like Test Day. Walk In Ready.</p>
+            <h1 id="hero-conversion-title">Are you ready?</h1>
+            <p class="lead lead--full landing-page-intro__who" id="hero-conversion-who">
+              Fully online SY0-701 bank: PBQ labs, questions, adaptive review, and a 90-minute timed exam.
+              <strong>Not AI-generated</strong> &mdash; pulled from PDFs, forums, and study groups, then verified on Tier A sources.
+              No VCE. Works on your phone.
+            </p>
+            <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead" hidden></p>
           </div>
 
-          <section class="secplus-home-verify" aria-labelledby="secplus-home-verify-title">
-            <p class="secplus-home-verify-eyebrow">Question Bank Audit</p>
-            <h2 class="secplus-home-verify-title" id="secplus-home-verify-title">These Are Not AI-Generated Test Questions</h2>
-            <p class="secplus-home-verify-lead">
-              Items are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then each one is weighted for still-valid
-              <strong>SY0-701</strong> coverage, tagged to an objective ID, and verified against highly ranked Tier A sources (CompTIA, NIST, RFCs) &mdash; not dump answer keys.
-              This is a fully online, immersive bank: questions, drag-and-drop PBQs, and simple labs in the browser.
-              No software to install. PDF dump sites sell a static file of the same kind of bank at <strong>three to four times this price</strong>.
-              Legacy SY0-601 items stay out of active Random and Review pools.
-            </p>
-            <p class="secplus-home-verify-meta">
-              <span class="secplus-home-verify-date">SY0-701 Bank Verified 2026-06-27</span>
-              <a class="secplus-home-verify-link" href="/how-we-verify-questions.html">Always verified Questions</a>
-            </p>
-          </section>
+          <div class="samples-stack" id="secplus-samples">
+            <section class="samples-block" aria-labelledby="secplus-home-verify-title">
+              <section class="secplus-home-verify" id="home-secplus-samples-title" aria-labelledby="secplus-home-verify-title">
+                <p class="secplus-home-verify-eyebrow">Question Bank Audit</p>
+                <h2 class="secplus-home-verify-title" id="secplus-home-verify-title">These Are Not AI-Generated Test Questions</h2>
+                <p class="secplus-home-verify-lead">
+                  Items are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then each one is weighted for still-valid
+                  <strong>SY0-701</strong> coverage, tagged to an objective ID, and verified against highly ranked Tier A sources (CompTIA, NIST, RFCs).
+                  This is a fully online, immersive bank: questions, drag-and-drop PBQs, and simple labs in the browser.
+                  No software to install. PDF dump sites sell a static file of the same kind of bank at <strong>three to four times this price</strong>.
+                  Legacy SY0-601 items stay out of active Random and Review pools.
+                </p>
+                <p class="secplus-home-verify-meta">
+                  <span class="secplus-home-verify-date">SY0-701 Bank Verified 2026-06-27</span>
+                  <a class="secplus-home-verify-link" href="/how-we-verify-questions.html">Always verified Questions</a>
+                </p>
+              </section>
+              <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
+                    <h3 id="home-secplus-q-title">Sample Multiple-Choice Questions</h3>
+                    <p class="format-card-device-note">Works on phone, tablet &amp; desktop</p>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="images/secplus-sample-questions-thumbnail.jpg"
+                        width="1024"
+                        height="919"
+                        alt="Security+ sample multiple-choice question with Back, Home, and Next navigation and instant feedback."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      You answer ten items from the <strong>1000+ SY0-701 bank</strong>, shuffled each run with domain tags and verified explanations.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-secondary" href="/secplus-sample?track=questions">Start sample questions →</a>
+                    </p>
+                  </article>
+                </li>
+                <li>
+                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
+                    <h3 id="home-secplus-darkweb-title">PBQ Preview: 3 Scenarios</h3>
+                    <p class="format-card-device-note">Touch-friendly on phone &amp; tablet</p>
+                    <figure class="format-card-thumb">
+                      <img
+                        src="images/secplus-dark-web-sim-thumbnail.jpg"
+                        width="1024"
+                        height="779"
+                        alt="Security+ dark web simulation with draggable compensation report window, leaked artifact tiles, and weak password practice checkboxes."
+                        decoding="async"
+                        loading="lazy"
+                      />
+                    </figure>
+                    <p>
+                      Try <strong>three performance-based scenarios</strong> from the paid library: dark web IR, WLAN configuration, and firewall ACL rules.
+                      Use <strong>Check Answer</strong> on each, then view a <strong>sample scorecard</strong>. Works on a phone. No VCE or other software.
+                    </p>
+                    <p class="format-sample format-sample--main-cta">
+                      <a class="cta-secondary" href="/secplus-sample?track=sim-dark-web">Start PBQ preview →</a>
+                    </p>
+                  </article>
+                </li>
+              </ul>
+            </section>
+          </div>
 
+          <div id="secplusPricingModalTrigger" class="secplus-pricing-modal-trigger" aria-hidden="true"></div>
+          <div id="secplusPricingModal" class="secplus-pricing-modal" hidden>
+            <div class="secplus-pricing-modal-backdrop" data-secplus-pricing-dismiss></div>
+            <div
+              class="secplus-pricing-modal-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="purchase-fold-title"
+              tabindex="-1"
+            >
+              <button type="button" class="secplus-pricing-modal-close" data-secplus-pricing-dismiss aria-label="Close">
+                ×
+              </button>
           <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
             <div class="purchase-card-inner">
               <div class="purchase-card-main purchase-card-main--30d" id="secplusPurchaseDefault">
@@ -2903,71 +3064,7 @@
               </div>
             </div>
           </section>
-
-          <div class="samples-stack">
-            <section class="samples-block" aria-labelledby="home-secplus-samples-title">
-              <div class="samples-block-intro">
-                <p class="samples-first-visit">New here? These are not AI-generated. Same layout as full access.</p>
-                <h2 class="samples-block-title" id="home-secplus-samples-title">Preview Quality on Phone, Tablet, or Desktop</h2>
-                <p class="samples-block-lead">
-                  Free MCQ preview plus a <strong>3-scenario PBQ preview</strong> from the full library. Same verified explanations and browser UI as paid access.
-                  Open a sample on your phone to confirm layout before you buy.
-                </p>
-                <p class="samples-block-source">
-                  Questions are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then checked against Tier A sources (CompTIA, NIST, RFCs).
-                  This is a fully online dump-style bank you actually practice in: simple PBQ labs that run on a phone with <strong>no software to install</strong>.
-                  PDF dump sites sell a static file of the same idea at <strong>three to four times the price</strong> ($60&ndash;$80 vs $19.99 for 30 days).
-                </p>
-              </div>
-              <ul class="formats-grid formats-grid--pair" aria-label="Security+ sample activities">
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-q-title">
-                    <h3 id="home-secplus-q-title">Sample Multiple-Choice Questions</h3>
-                    <p class="format-card-device-note">Works on phone, tablet &amp; desktop</p>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="images/secplus-sample-questions-thumbnail.jpg"
-                        width="1024"
-                        height="919"
-                        alt="Security+ sample multiple-choice question with Back, Home, and Next navigation and instant feedback."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      You answer ten items from the <strong>1000+ SY0-701 bank</strong>, shuffled each run with domain tags and verified explanations.
-                      Not AI-generated &mdash; sourced from PDFs, forums, and groups, then Tier A verified.
-                    </p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-secondary" href="/secplus-sample?track=questions">Start sample questions →</a>
-                    </p>
-                  </article>
-                </li>
-                <li>
-                  <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-secplus-darkweb-title">
-                    <h3 id="home-secplus-darkweb-title">PBQ Preview: 3 Scenarios</h3>
-                    <p class="format-card-device-note">Touch-friendly on phone &amp; tablet</p>
-                    <figure class="format-card-thumb">
-                      <img
-                        src="images/secplus-dark-web-sim-thumbnail.jpg"
-                        width="1024"
-                        height="779"
-                        alt="Security+ dark web simulation with draggable compensation report window, leaked artifact tiles, and weak password practice checkboxes."
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <p>
-                      Try <strong>three performance-based scenarios</strong> from the paid library: dark web IR, WLAN configuration, and firewall ACL rules.
-                      Use <strong>Check Answer</strong> on each, then view a <strong>sample scorecard</strong>. Works on a phone. No VCE or other software.
-                    </p>
-                    <p class="format-sample format-sample--main-cta">
-                      <a class="cta-secondary" href="/secplus-sample?track=sim-dark-web">Start PBQ preview →</a>
-                    </p>
-                  </article>
-                </li>
-              </ul>
-            </section>
+            </div>
           </div>
 
           <section class="landing-gns3-compare" id="secplus-compare" aria-labelledby="secplus-compare-title">
@@ -3425,6 +3522,7 @@
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/js/bcc-save50-promo.js" defer></script>
   <script src="/js/secplus-bts-promo.js" defer></script>
+  <script src="/js/secplus-pricing-modal.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/js/secplus-google-paid-landing.js" defer></script>
   <script src="/js/secplus-home-conversion.js" defer></script>

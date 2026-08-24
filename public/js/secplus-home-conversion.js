@@ -49,7 +49,6 @@
       ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
       stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
-      lead: WEDGE_LEAD,
     },
     federal: {
       ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
@@ -71,10 +70,10 @@
   var VARIANTS = {
     "wedge-default": {
       id: "wedge-default",
-      adHeadline: "Security+ Practice Test",
-      eyebrow: "CompTIA Security+ SY0-701",
-      headline: "CompTIA Security+ SY0-701 Exam Prep: 1000+ Questions, PBQs, and Adaptive Study",
-      lead: WEDGE_LEAD,
+      adHeadline: "Are you ready?",
+      eyebrow: "Be Certified Today · CompTIA Security+ SY0-701 exam prep in your browser",
+      headline: "Are you ready?",
+      lead: "",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
     },
@@ -357,7 +356,12 @@
     if (!isDefault || hero.getAttribute("data-secplus-hl-pending") === "1") {
       if (eyebrow) eyebrow.textContent = variant.eyebrow;
       if (title) title.textContent = variant.headline;
-      if (lead) lead.innerHTML = variant.lead;
+      if (lead) {
+        var leadHtml = variant.lead || "";
+        lead.innerHTML = leadHtml;
+        if (leadHtml) lead.removeAttribute("hidden");
+        else lead.setAttribute("hidden", "");
+      }
       if (ctaPrimary) ctaPrimary.textContent = variant.ctaPrimary;
     }
 
