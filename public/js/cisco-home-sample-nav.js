@@ -657,7 +657,7 @@
         Date.now() < new Date("2026-09-01T00:00:00-04:00").getTime()
       ) {
         checkoutUrl +=
-          (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=CCNAPASSTODY";
+          (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=CCNAPASSTODAY";
       } else if (Date.now() < new Date("2026-07-21T00:00:00-04:00").getTime()) {
         checkoutUrl +=
           (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=SAVE50PERCENT";

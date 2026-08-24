@@ -1,12 +1,12 @@
 /**
- * CCNA landing promo - 30% off (CCNAPASSTODY → $13.99).
+ * CCNA landing promo - 30% off (CCNAPASSTODAY → $13.99).
  * Same visit-urgency bar + claim dock as Security+ Back to School.
  * Calendar window through Aug 31, 2026.
  */
 (function () {
   "use strict";
 
-  var PROMO_CODE = "CCNAPASSTODY";
+  var PROMO_CODE = "CCNAPASSTODAY";
   var LIST_PRICE = "19.99";
   var SALE_PRICE = "13.99";
   var PROMO_START_MS = new Date("2026-08-01T00:00:00-04:00").getTime();

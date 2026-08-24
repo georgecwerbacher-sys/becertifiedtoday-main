@@ -6,7 +6,7 @@
  *
  * Optional metadata on the link: productId = ccna-portal-30d
  *
- * CCNAPASSTODY - 30% off CCNA 30-day ($13.99 on $19.99). Public offer through
+ * CCNAPASSTODAY - 30% off CCNA 30-day ($13.99 on $19.99). Public offer through
  * August 2026 (see /js/ccna-pass-promo.js).
  */
 (function () {
@@ -14,7 +14,7 @@
     "30d": "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03",
   };
 
-  var LAUNCH_PROMO_CODE = "CCNAPASSTODY";
+  var LAUNCH_PROMO_CODE = "CCNAPASSTODAY";
 
   var PRODUCTS = {
     "30d": {
