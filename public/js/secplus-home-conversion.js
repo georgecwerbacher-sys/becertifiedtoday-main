@@ -19,12 +19,12 @@
 
   var WEDGE_LEAD =
     "<strong>1000+ interactive questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed exam</strong> in your browser. " +
-    "Mobile-friendly. One Stripe payment. No subscription. " +
+    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. Mobile-friendly PBQ labs. No VCE. No PDF dump. " +
     PAID_30D_SUFFIX;
 
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. " +
-    "No PDF pack. No VCE install.";
+    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. No PDF pack. No VCE install.";
 
   var GOOGLE_PAID_PURCHASE_CTA = "Get 30-day access";
 

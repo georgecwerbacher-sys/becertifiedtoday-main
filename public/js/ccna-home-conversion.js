@@ -18,7 +18,8 @@
     "<strong>Try the free samples below</strong> to judge quality first, then unlock <strong>30-day access for $19.99</strong> when you want the full library.";
 
   var BASE_LEAD =
-    "Practice CCNA online with labs, drag-and-drop, and questions in your browser. <strong>No PDFs.</strong> " +
+    "Practice CCNA online with labs, drag-and-drop, and questions in your browser. " +
+    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. <strong>No PDFs.</strong> " +
     "Try free samples first—same UI as full access.";
 
   var VARIANTS = {
