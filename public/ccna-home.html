@@ -153,7 +153,7 @@
               "name": "How do you verify questions match the current exam?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Not AI-generated. Questions are pulled from PDFs, forums, and study groups across the web, then each CCNA item is tagged to a 200-301 blueprint objective (V_2025 and V_2026) and verified on official Cisco documentation - not dump answer keys. You can filter practice to the newest blueprint versions in the portal when you want to focus on the current test only."
+                "text": "Not AI-generated. Questions are pulled from PDFs, forums, and study groups across the web, then each CCNA item is tagged to a 200-301 blueprint objective (V_2025 and V_2026) and verified on official Cisco documentation. You can filter practice to the newest blueprint versions in the portal when you want to focus on the current test only."
               }
             },
             {
@@ -447,7 +447,7 @@
       max-width: none;
       display: flex;
       flex-direction: column;
-      gap: clamp(40px, 6vw, 72px);
+      gap: clamp(20px, 3.2vw, 36px);
     }
     .hero-conversion {
       order: 1;
@@ -609,16 +609,22 @@
       line-height: 1.55;
     }
     .landing-page-intro__who {
-      margin-bottom: 0.55em;
+      margin-bottom: clamp(16px, 2.5vw, 20px);
       color: var(--page-text, #0b1020);
+    }
+    .landing-page-intro .hero-atf-ctas {
+      max-width: 440px;
+      margin: 0 0 8px;
+    }
+    .landing-page-intro .hero-atf-upgrade {
+      margin: 0;
     }
     .landing-page-intro__offer {
       margin-bottom: clamp(20px, 3vw, 26px);
       color: var(--page-muted);
     }
     .ccna-home-verify {
-      order: 1;
-      margin: 0;
+      margin: 0 0 clamp(16px, 3vw, 22px);
       padding: clamp(16px, 2.5vw, 20px) clamp(18px, 3vw, 22px);
       border-radius: 12px;
       border: 1px solid rgba(79, 132, 216, 0.35);
@@ -682,7 +688,7 @@
       color: #1e3a8a;
     }
     .samples-stack {
-      order: 2;
+      order: 1;
       margin: 0;
     }
     #purchase.home-pricing-section {
@@ -898,6 +904,104 @@
       color: #8a94a6;
       text-align: center;
       line-height: 1.5;
+    }
+    .ccna-pricing-modal-trigger {
+      order: 3;
+      height: 1px;
+      margin: 0;
+      pointer-events: none;
+    }
+    .ccna-pricing-modal {
+      display: none;
+    }
+    .ccna-pricing-modal.is-open {
+      position: fixed;
+      inset: 0;
+      z-index: 21000;
+      display: grid;
+      place-items: center;
+      padding-top: max(16px, var(--secplus-bts-promo-h, 0px), env(safe-area-inset-top, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      box-sizing: border-box;
+    }
+    .ccna-pricing-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 8, 18, 0.72);
+      backdrop-filter: blur(6px);
+    }
+    .ccna-pricing-modal-dialog {
+      position: relative;
+      z-index: 1;
+      width: min(440px, 100%);
+      max-height: min(92vh, 880px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      border-radius: 16px;
+    }
+    @supports (max-height: 92dvh) {
+      .ccna-pricing-modal-dialog {
+        max-height: min(92dvh, 880px);
+      }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .ccna-pricing-modal.is-open .ccna-pricing-modal-dialog {
+        animation: ccnaDialogIn 0.28s ease-out;
+      }
+    }
+    .ccna-pricing-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e8eef8;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .ccna-pricing-modal-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+    .ccna-pricing-modal-close:focus-visible {
+      outline: 2px solid #9ec0ff;
+      outline-offset: 2px;
+    }
+    .ccna-pricing-modal .home-pricing-section {
+      margin: 0;
+      padding: 48px clamp(14px, 2.5vw, 20px) clamp(18px, 3vw, 26px);
+    }
+    .ccna-pricing-modal .home-pricing-grid {
+      grid-template-columns: 1fr;
+    }
+    .ccna-pricing-modal .home-pricing-inner {
+      width: 100%;
+    }
+    .ccna-pricing-modal .home-pricing-cta {
+      position: sticky;
+      bottom: 0;
+      z-index: 1;
+      margin-bottom: 0;
+      background: #121a2b;
+      box-shadow: 0 -12px 18px rgba(18, 26, 43, 0.95);
+    }
+    .ccna-pricing-modal .home-pricing-footnote {
+      margin-top: 14px;
+    }
+    html.ccna-pricing-modal-open {
+      overflow: hidden;
+    }
+    html.ccna-pricing-modal-open .ccna-mobile-sticky-cta {
+      display: none !important;
     }
     .landing-gns3-compare h2 {
       margin: 0 0 12px;
@@ -1962,6 +2066,11 @@
       object-fit: cover;
       object-position: center top;
     }
+    @media (min-width: 900px) {
+      .samples-stack .format-card-thumb img {
+        max-height: 148px;
+      }
+    }
     .format-sample {
       margin: 14px 0 0;
       padding-top: 14px;
@@ -2973,78 +3082,29 @@
             <p class="landing-tagline">Practice Like Test Day. Walk In Ready.</p>
             <h1 id="hero-conversion-title">Are you ready?</h1>
             <p class="lead lead--full landing-page-intro__who" id="hero-conversion-who">
-              <strong>Be Certified Today</strong>: a fully online CCNA 200-301 bank with <strong>CLI labs</strong>, <strong>drag-and-drop</strong>,
-              <strong>question banks</strong>, and a <strong>120-minute timed simulation</strong> (V_2025 &amp; V_2026).
+              Fully online CCNA 200-301 bank: CLI labs, drag-and-drop, questions, and a 120-minute timed sim.
               <strong>Not AI-generated</strong> &mdash; pulled from PDFs, forums, and study groups, then checked against official Cisco docs.
-              No GNS3, Packet Tracer, or static PDF dump. Use it on phone, tablet, or desktop.
+              No GNS3. Works on your phone.
             </p>
-            <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead">
-              Courses and videos done - next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site.
-              <strong>Practice for test day here</strong> with <strong>30-day access for $19.99</strong> (less than $1/day).
-              <strong>Try the NGTE previews below before checkout.</strong> If the layout works for you, unlock the library with one payment.
-            </p>
-            <div class="landing-hero-highlights">
-              <ul class="landing-value-pillars" aria-label="What Be Certified Today includes">
-                <li>
-                  <strong>CLI labs &amp; drag-and-drop</strong>
-                  Simple VLAN and routing labs in the browser. Mobile-friendly. No GNS3, Packet Tracer, or app install.
-                </li>
-                <li>
-                  <strong>120-min timed simulation</strong>
-                  Mixed MCQ, drag-and-drop, and lab pressure across all six CCNA domains.
-                </li>
-                <li>
-                  <strong>Not AI-generated</strong>
-                  Pulled from PDFs, forums, and study groups, then verified on official Cisco sources.
-                </li>
-                <li>
-                  <strong>Phone, tablet &amp; desktop</strong>
-                  Same interactive UI everywhere. PDF dump sites charge 3&ndash;4&times; more for a static file.
-                </li>
-              </ul>
-              <p class="hero-atf-upgrade">
-                Ready for full access? <a href="#purchase">Get 30-day CCNA access · $19.99</a>
-              </p>
-            </div>
-            <ul class="hero-atf-trust" aria-label="Quick facts">
-              <li>Not AI-generated</li>
-              <li>No GNS3</li>
-              <li>Mobile labs</li>
-              <li>No subscription</li>
-            </ul>
+            <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead" hidden></p>
           </div>
 
-          <section class="ccna-home-verify" aria-labelledby="ccna-home-verify-title">
-            <p class="ccna-home-verify-eyebrow">Question Bank Audit</p>
-            <h2 class="ccna-home-verify-title" id="ccna-home-verify-title">These Are Not AI-Generated Test Questions</h2>
-            <p class="ccna-home-verify-lead">
-              Items are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then each one is tagged to a
-              <strong>CCNA 200-301</strong> objective and verified against official Cisco documentation &mdash; not dump answer keys.
-              This is a fully online, immersive bank: questions, drag-and-drop, and simple CLI labs in the browser.
-              No software to install. PDF dump sites sell a static file of the same kind of bank at <strong>three to four times this price</strong>.
-            </p>
-            <p class="ccna-home-verify-meta">
-              <span class="ccna-home-verify-date">CCNA 200-301 &middot; V_2025 &amp; V_2026</span>
-              <a class="ccna-home-verify-link" href="/how-we-verify-questions.html">Always verified Questions</a>
-            </p>
-          </section>
-
           <div class="samples-stack" id="ccna-samples">
-            <section class="samples-block" aria-labelledby="home-ccna-samples-title">
-              <div class="samples-block-intro">
-                <p class="samples-first-visit">New here? These are not AI-generated. Same layout as full access.</p>
-                <h2 class="samples-block-title" id="home-ccna-samples-title">Three NGTE Previews: Train Like It&rsquo;s Test Day</h2>
-                <p class="samples-block-lead">
-                  Try the <strong>Next Generation Testing Engine (NGTE)</strong>, the same browser UI you use with full access.
-                  Preview <strong>questions</strong>, <strong>drag-and-drop</strong>, and a <strong>VLAN CLI lab</strong> before checkout.
-                  Open one on your phone to confirm layout, then try the others. Each activity has <strong>Home</strong> back here and <strong>Next</strong> (or <strong>Finish sample</strong>).
+            <section class="samples-block" aria-labelledby="ccna-home-verify-title">
+              <section class="ccna-home-verify" id="home-ccna-samples-title" aria-labelledby="ccna-home-verify-title">
+                <p class="ccna-home-verify-eyebrow">Question Bank Audit</p>
+                <h2 class="ccna-home-verify-title" id="ccna-home-verify-title">These Are Not AI-Generated Test Questions</h2>
+                <p class="ccna-home-verify-lead">
+                  Items are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then each one is tagged to a
+                  <strong>CCNA 200-301</strong> objective and verified against official Cisco documentation.
+                  This is a fully online, immersive bank: questions, drag-and-drop, and simple CLI labs in the browser.
+                  No software to install. PDF dump sites sell a static file of the same kind of bank at <strong>three to four times this price</strong>.
                 </p>
-                <p class="samples-block-source">
-                  Questions are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then checked against official Cisco sources.
-                  This is a fully online dump-style bank you actually practice in: simple labs that run on a phone with <strong>no software to install</strong>.
-                  PDF dump sites sell a static file of the same idea at <strong>three to four times the price</strong> ($60&ndash;$80 vs $19.99 for 30 days).
+                <p class="ccna-home-verify-meta">
+                  <span class="ccna-home-verify-date">CCNA 200-301 &middot; V_2025 &amp; V_2026</span>
+                  <a class="ccna-home-verify-link" href="/how-we-verify-questions.html">Always verified Questions</a>
                 </p>
-              </div>
+              </section>
               <ul class="formats-grid formats-grid--tri" aria-label="CCNA sample activities">
                 <li>
                   <article class="format-card format-card--path-cta-bottom" aria-labelledby="home-ccna-q-title">
@@ -3063,7 +3123,6 @@
                     </figure>
                     <p>
                       You answer <strong>18 multiple-choice items</strong>, three random questions per CCNA domain, then review a <strong>scorecard</strong> when you finish. Select an answer for instant feedback, then <strong>Next</strong>.
-                      Not AI-generated &mdash; sourced from PDFs, forums, and groups, then Cisco-verified.
                     </p>
                     <p class="format-sample format-sample--main-cta">
                       <a class="cta-main cta-main--block" href="/sample?track=ccna-questions">Start sample questions →</a>
@@ -3114,6 +3173,19 @@
             </section>
           </div>
 
+          <div id="ccnaPricingModalTrigger" class="ccna-pricing-modal-trigger" aria-hidden="true"></div>
+          <div id="ccnaPricingModal" class="ccna-pricing-modal" hidden>
+            <div class="ccna-pricing-modal-backdrop" data-ccna-pricing-dismiss></div>
+            <div
+              class="ccna-pricing-modal-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="ccna-pricing-heading"
+              tabindex="-1"
+            >
+              <button type="button" class="ccna-pricing-modal-close" data-ccna-pricing-dismiss aria-label="Close">
+                ×
+              </button>
           <section class="home-pricing-section purchase-fold" id="purchase" aria-labelledby="ccna-pricing-heading">
             <div class="home-pricing-inner">
               <h2 id="ccna-pricing-heading" class="home-pricing-choose-heading">Choose your access</h2>
@@ -3165,6 +3237,8 @@
               </p>
             </div>
           </section>
+            </div>
+          </div>
 
           <section class="landing-gns3-compare" id="ccna-gns3-compare" aria-labelledby="ccna-gns3-compare-title">
             <h2 id="ccna-gns3-compare-title">Browser Labs vs. GNS3 / Packet Tracer</h2>
@@ -3412,7 +3486,7 @@
                     These are <strong>not AI-generated test questions</strong>. Items are pulled from
                     <strong>PDFs, forums, and study groups</strong> across the web, then each one is tagged to a
                     <strong>CCNA 200-301</strong> blueprint objective (<strong>V_2025</strong> and <strong>V_2026</strong> where applicable)
-                    and verified against <strong>Cisco official documentation</strong> &mdash; not dump answer keys.
+                    and verified against <strong>Cisco official documentation</strong>.
                   </p>
                   <p>
                     When Cisco updates tested subjects, I compare official blueprint changes and keep practice aligned to what is live today.
@@ -3572,6 +3646,7 @@
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script src="/js/bcc-save50-promo.js" defer></script>
   <script src="/js/ccna-pass-promo.js" defer></script>
+  <script src="/js/ccna-pricing-modal.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
   <script>
     (function () {

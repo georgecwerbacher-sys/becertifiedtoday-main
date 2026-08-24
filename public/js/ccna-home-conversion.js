@@ -28,10 +28,7 @@
       adHeadline: "Are you ready?",
       eyebrow: "Be Certified Today · CCNA 200-301 exam prep in your browser",
       headline: "Are you ready?",
-      lead:
-        "Courses and videos done—next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site. " +
-        "<strong>Practice for test day here</strong> with <strong>30-day access for $19.99</strong> (less than $1/day). " +
-        "<strong>Preview NGTE below</strong>—no payment, same test-day experience as full access—then unlock the library with one payment.",
+      lead: "",
       ctaPrimary: "Preview NGTE samples",
       stickyPrimary: "NGTE previews",
     },
@@ -65,9 +62,8 @@
       eyebrow: "CCNA 200-301 · exam scheduled · NGTE",
       headline: "Exam Scheduled? CCNA Test Prep",
       lead:
-        "Courses and videos done—next is the <strong>~$330 CCNA exam at Pearson</strong>, not this site. " +
-        "<strong>Practice for test day here</strong> with CLI labs, drag-and-drop, and a 120-minute timed simulation from " +
-        "<strong>$19.99/30 days</strong> (less than $1/day). Preview NGTE on this page, then unlock the library with one payment.",
+        "<strong>Practice for test day here</strong> with CLI labs, drag-and-drop, and a 120-minute timed simulation. " +
+        "Preview NGTE on this page, then unlock the library with one payment.",
       ctaPrimary: "Get 30-day CCNA access",
       ctaHref: "#purchase",
       stickyPrimary: "30-day access",
@@ -454,7 +450,12 @@
     if (!isDefault || hero.getAttribute("data-ccna-hl-pending") === "1") {
       if (eyebrow) eyebrow.textContent = variant.eyebrow;
       if (title) title.textContent = variant.headline;
-      if (lead) lead.innerHTML = variant.lead;
+      if (lead) {
+        var leadHtml = variant.lead || "";
+        lead.innerHTML = leadHtml;
+        if (leadHtml) lead.removeAttribute("hidden");
+        else lead.setAttribute("hidden", "");
+      }
       if (ctaPrimary) ctaPrimary.textContent = variant.ctaPrimary;
     }
 
