@@ -27,6 +27,8 @@
  * @property {string} setupDocTxt
  * @property {string[]} sampleTracks
  * @property {string} [adsDashboardUrl]
+ * @property {'active'|'legacy'|'retired'} [status]
+ * @property {string} [retiredReason]
  */
 
 /** @type {CampaignMarketingDefinition[]} */
@@ -137,18 +139,18 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     utmCampaign: "secplus_portal_launch40",
     utmSource: "google",
     utmMedium: "cpc",
-    adGroup: "Timed Simulation, Verified Adaptive Prep, After Study Sprint, Student College",
-    dailyBudgetUsd: 35,
+    adGroup: "24h Trial (primary) · Timed Simulation · Verified Adaptive Prep · After Study Sprint · Student College",
+    dailyBudgetUsd: 15,
     maxCpcUsd: 2.75,
     landingPath: "/comptia-sec+-home.html",
     landingHash: "",
-    utmContentPrimary: "timed-sim",
+    utmContentPrimary: "24h-trial",
     finalUrl:
-      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=timed-sim",
+      "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=24h-trial",
     primaryConversion: "begin_checkout",
-    conversionItemIds: ["secplus_portal_30d"],
+    conversionItemIds: ["secplus_portal_24h", "secplus_portal_30d"],
     primaryOffer:
-      "August Back to School $15.99 (AUGUSTPROMO2026) — Launch 40 · $35/day · 4 ad groups incl. Student College",
+      "$465 total · $15/day · 24h free then $15.99 trial upgrade · list $19.99",
     setupDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md",
     setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Build Checklist.md",
     sampleTracks: ["sim-dark-web", "questions"],
@@ -159,13 +161,16 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
     id: "secplus_portal_dump_intercept",
     channel: "google",
     product: "secplus",
-    label: "Security+ SY0-701 · US Search · Dump Intercept",
+    status: "retired",
+    retiredReason:
+      "Do not bid on dump or cheat intent. Pause this campaign in Google Ads if it is still enabled.",
+    label: "RETIRED · Dump Intercept (do not run)",
     googleAdsCampaignName: "Security+ SY0-701 · US Search · Dump Intercept",
     utmCampaign: "secplus_portal_dump_intercept",
     utmSource: "google",
     utmMedium: "cpc",
     adGroup: "Dump Alternative",
-    dailyBudgetUsd: 15,
+    dailyBudgetUsd: 0,
     maxCpcUsd: 5,
     landingPath: "/comptia-sec+-home.html",
     landingHash: "",
@@ -174,8 +179,7 @@ export const CAMPAIGN_MARKETING_REGISTRY = [
       "https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_dump_intercept&utm_content=dump-intercept",
     primaryConversion: "begin_checkout",
     conversionItemIds: ["secplus_portal_30d"],
-    primaryOffer:
-      "Dump/PDF intercept → browser prep · Target IS top of page · August $15.99 (AUGUSTPROMO2026)",
+    primaryOffer: "RETIRED — do not enable. Dump and cheat intercept is off-policy.",
     setupDoc: "marketing-research/Sec+ Campaign/Sec+ Dump Intercept Campaign Plan.md",
     setupDocTxt: "marketing-research/Sec+ Campaign/Sec+ Dump Intercept Build Checklist.md",
     sampleTracks: ["questions"],

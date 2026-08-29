@@ -131,11 +131,11 @@ export async function sendSecplusPortalMagicEmail({ to, magicUrl }) {
       from,
       to: [to],
       subject,
-      html: `<p>Open your CompTIA Security+ training portal on any device during your paid access window:</p>
+      html: `<p>Open your CompTIA Security+ training portal on any device during your access window:</p>
 <p><a href="${escapeAttr(magicUrl)}"><strong>Open Security+ training portal</strong></a></p>
 <p>If the button does not work, paste this URL into your browser:</p>
 <p style="word-break:break-all;font-size:13px;color:#444">${plainUrl}</p>
-<p>This link stops working when your paid access window ends. While access is still active, you can request another email from the Security+ portal restore page.</p>`,
+<p>This link stops working when your access window ends. While access is still active, you can request another email from the Security+ portal restore page.</p>`,
     }),
   });
 

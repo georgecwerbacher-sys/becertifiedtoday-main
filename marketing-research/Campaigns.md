@@ -7,29 +7,32 @@ tags:
 
 # Campaigns
 
-Source of truth: [[Site Mission]] · `server-lib/campaign-marketing-registry.js`
+Source of truth: [[Site Mission]] · [[Advertising Ethics]] · `server-lib/campaign-marketing-registry.js`
 
-## Active: Security+ Google Search · Launch 40 (Back to School)
+## Ethics (required)
+
+Do **not** bid on dump, brain dump, cheat, actual-exam, or pass-guaranteed queries. Those terms are **campaign negatives**, not positives. Do not run a dump-intercept campaign.
+
+**In Google Ads now:** pause `Security+ SY0-701 · US Search · Dump Intercept` if it exists. Paste dump/cheat negatives from [[Sec+ Campaign/Sec+ Launch 40 Keyword Lists]] onto Launch 40. Full policy: [[Advertising Ethics]].
+
+## Active: Security+ Google Search · Launch 40 (24h trial)
 
 **Campaign:** `Security+ SY0-701 · US Search · Launch 40`  
-**Ad groups:** `Timed Simulation` · `Verified Adaptive Prep` · `After Study Sprint` · `Student College`  
-**Budget:** **$35/day shared** · max CPC **$2.50–$2.75**  
-**Offer:** August Back to School **20%** → **$15.99** (`AUGUSTPROMO2026`) for everyone  
+**Ad groups:** `24h Trial` (primary) · `Timed Simulation` · `Verified Adaptive Prep` · `After Study Sprint` · `Student College`  
+**Budget:** **$465 total** · **$15/day shared** · no end date · pause at cap · max CPC **$2.50–$2.75**  
+**Offer:** **24 hours free**, then **$15.99** / 30 days (`SECPLUS24`) while the trial is active · list **$19.99** without trial  
 **Landing:** `/comptia-sec+-home.html` (top of fold)  
-**utm_campaign:** `secplus_portal_launch40` · **utm_content:** `timed-sim` · `verified-adaptive` · `after-study` · `student-college`
+**utm_campaign:** `secplus_portal_launch40` · **utm_content:** `24h-trial` · `timed-sim` · `verified-adaptive` · `after-study` · `student-college`
 
 **Start here:** [[Sec+ Campaign/Sec+ Launch 40 Build Checklist|Launch 40 checklist]] · [[Sec+ Campaign/Sec+ Launch 40 Campaign Plan|Campaign plan]] · [[Sec+ Campaign/Sec+ Launch 40 RSA Copy|RSA paste]]
 
-## Ready: Security+ Google Search · Dump Intercept
+## Retired: Dump Intercept (do not run)
 
 **Campaign:** `Security+ SY0-701 · US Search · Dump Intercept`  
-**Ad group:** `Dump Alternative`  
-**Budget:** **$10–15/day** · Target IS **top of page 60%** · max CPC limit **$5**  
-**Job:** Intercept dump/PDF searchers → browser prep (policy-safe RSA; do not advertise dumps)  
-**Landing:** `/comptia-sec+-home.html` (top of fold)  
-**utm_campaign:** `secplus_portal_dump_intercept` · **utm_content:** `dump-intercept`
+**Status:** **Retired.** Pause in Google Ads. Do not rebuild.  
+**Why:** Bidding on dump/cheat searches is off-policy even if ads never say “dump.” See [[Advertising Ethics]].
 
-**Start here:** [[Sec+ Campaign/Sec+ Dump Intercept Build Checklist|Dump Intercept checklist]] · [[Sec+ Campaign/Sec+ Dump Intercept Campaign Plan|Plan]] · [[Sec+ Campaign/Sec+ Dump Intercept Keyword Lists|Keywords]] · [[Sec+ Campaign/Sec+ Dump Intercept RSA Copy|RSA]]
+Archive only: [[Sec+ Campaign/Sec+ Dump Intercept Campaign Plan]] · [[Sec+ Campaign/Sec+ Dump Intercept Keyword Lists]]
 
 ## Analytics & improvement loop
 
@@ -53,7 +56,7 @@ Full workflow: [[Sec+ Campaign/Sec+ One-Campaign Ad Group Plan#Analytics monitor
 | Checklist CSV | [[Sec+ Campaign/secplus-campaign-checklist.csv\|secplus-campaign-checklist.csv]] |
 | Landing | https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal&utm_content=core-exam-prep |
 
-Use Google Ads for campaign spend/clicks and Stripe checkout/admin purchase records for completed Sec+ purchases. Add campaign negatives only for obvious junk search terms.
+Use Google Ads for campaign spend/clicks and Stripe checkout/admin purchase records for completed Sec+ purchases. Add campaign negatives for dump, cheat, actual-exam, and other junk search terms. See [[Advertising Ethics]].
 
 ## Landing page
 

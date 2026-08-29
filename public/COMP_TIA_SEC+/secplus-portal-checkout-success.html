@@ -57,7 +57,8 @@
       border-color: rgba(248, 113, 113, 0.45);
       color: #fecaca;
     }
-    a.cta {
+    a.cta,
+    button.cta {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -73,7 +74,14 @@
       background: linear-gradient(165deg, #8b5cf6 0%, #6d28d9 48%, #5b21b6 100%);
       touch-action: manipulation;
     }
-    a.cta:hover { filter: brightness(1.06); color: #fff; }
+    button.cta {
+      cursor: pointer;
+      appearance: none;
+      font-family: inherit;
+      width: 100%;
+    }
+    a.cta:hover,
+    button.cta:hover { filter: brightness(1.06); color: #fff; }
     a.link-muted {
       display: inline-block;
       margin-top: 16px;
@@ -98,6 +106,20 @@
     <p id="actions" hidden>
       <a class="cta" href="/COMP_TIA_SEC+/SEC+_Training_Portal.html">Open Security+ training portal</a>
     </p>
+    <p id="upgradeActions" hidden>
+      <button
+        type="button"
+        class="cta"
+        id="secplus24hUpgradeBtn"
+        data-secplus-portal-30d-checkout
+        data-bcc-item-id="secplus_portal_30d"
+        data-bcc-item-name="CompTIA Security+ 30-day access"
+        data-bcc-value="15.99"
+        data-bcc-currency="USD"
+      >
+        Continue with 30 days at $15.99
+      </button>
+    </p>
     <p class="help-links" id="helpLinks" hidden>
       Didn’t get email?
       <a href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Request a portal link</a>
@@ -107,10 +129,12 @@
     <a class="link-muted" href="/comptia-sec+-home.html#purchase">&larr; Back to Security+ home</a>
   </div>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js"></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js"></script>
   <script>
     (function () {
       var statusEl = document.getElementById("status");
       var actionsEl = document.getElementById("actions");
+      var upgradeEl = document.getElementById("upgradeActions");
       var helpLinksEl = document.getElementById("helpLinks");
       var leadEl = document.getElementById("lead");
 
@@ -129,7 +153,7 @@
         if (helpLinksEl) helpLinksEl.hidden = false;
       }
 
-      function showOk(label) {
+      function showOk(label, productId) {
         statusEl.textContent =
           "Access is active for " +
           label +
@@ -137,6 +161,7 @@
         statusEl.classList.add("status--ok");
         if (actionsEl) actionsEl.hidden = false;
         if (helpLinksEl) helpLinksEl.hidden = false;
+        if (upgradeEl && productId === "secplus-portal-24h") upgradeEl.hidden = false;
       }
 
       function appendEmailNote(note, asWarning) {
@@ -187,22 +212,24 @@
           });
       }
 
-      function finishPortalAccess(label, sessionId) {
-        showOk(label);
+      function finishPortalAccess(label, sessionId, productId) {
+        showOk(label, productId);
         void sendCheckoutMagicEmail(sessionId);
       }
 
       function purchaseValueForProduct(productId) {
         if (productId === "secplus-test-simulation") return 9.99;
-        if (productId === "secplus-portal-3d") return 0;
+        if (productId === "secplus-portal-24h" || productId === "secplus-portal-3d") return 0;
         if (productId === "secplus-portal-10d") return 9.99;
         if (productId === "secplus-portal-30d") return 19.99;
         return undefined;
       }
 
       function trackAdsPurchase(sessionId, productId) {
-        if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function") return;
+        if (productId === "secplus-portal-24h" || productId === "secplus-portal-3d") return;
         var value = purchaseValueForProduct(productId);
+        if (typeof value === "number" && value <= 0) return;
+        if (typeof window.bccTrackGoogleAdsPurchaseConversion !== "function") return;
         var opts = { currency: "USD" };
         if (typeof value === "number") opts.value = value;
         window.bccTrackGoogleAdsPurchaseConversion(sessionId, opts);
@@ -212,20 +239,24 @@
         return (
           productId === "secplus-portal-30d" ||
           productId === "secplus-portal-10d" ||
-          productId === "secplus-portal-3d"
+          productId === "secplus-portal-3d" ||
+          productId === "secplus-portal-24h"
         );
       }
 
       function portalAccessLabel(productId) {
+        if (productId === "secplus-portal-24h") return "24 hours";
         if (productId === "secplus-portal-3d") return "3 days";
         if (productId === "secplus-portal-10d") return "10 days";
-        return "30 days";
+        if (productId === "secplus-portal-30d") return "30 days";
+        return "your access window";
       }
 
-      function portalAccessDays(productId) {
-        if (productId === "secplus-portal-3d") return 3;
-        if (productId === "secplus-portal-10d") return 10;
-        return 30;
+      function portalAccessDurationMs(productId) {
+        if (productId === "secplus-portal-24h") return 24 * 60 * 60 * 1000;
+        if (productId === "secplus-portal-3d") return 3 * 86400000;
+        if (productId === "secplus-portal-10d") return 10 * 86400000;
+        return 30 * 86400000;
       }
 
       async function run() {
@@ -246,8 +277,8 @@
                 var stored = JSON.parse(localStorage.getItem("bcc_secplus_portal_v1") || "null");
                 if (stored && stored.productId) storedProductId = stored.productId;
               } catch (_) {}
-              finishPortalAccess("your paid window", sessionId);
-              trackAdsPurchase(sessionId, storedProductId || "secplus-portal-30d");
+              finishPortalAccess(portalAccessLabel(storedProductId) || "your access window", sessionId, storedProductId);
+              trackAdsPurchase(sessionId, storedProductId);
               return;
             }
           }
@@ -288,12 +319,12 @@
           if (
             typeof window.bccSetSecplusPortalEntitlement === "function" &&
             window.bccSetSecplusPortalEntitlement(
-              typeof data.accessExpiresAt === "number" ? data.accessExpiresAt : Date.now() + portalAccessDays(data.productId) * 86400000,
+              typeof data.accessExpiresAt === "number" ? data.accessExpiresAt : Date.now() + portalAccessDurationMs(data.productId),
               sessionId,
               data.productId
             )
           ) {
-            finishPortalAccess(label, sessionId);
+            finishPortalAccess(label, sessionId, data.productId);
             trackAdsPurchase(sessionId, data.productId);
             return;
           }

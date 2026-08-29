@@ -70,7 +70,7 @@ Free samples use the **same UI and testing engine** as paid access. Judge qualit
 
 - You are **2–3 weeks from test day**, you have already studied, and you are asking: *Am I ready?*
 - Your employer, contract, or clearance path **requires the certification**—DoD baseline, contractor role, government mandate, job posting—and you need **realistic prep**, not another bootcamp.
-- You were burned by a **PDF dump** or a **random question bank** with no review loop and want **interactive, timed, adaptive practice** instead.
+- You were burned by a **static PDF pack** or a **random question bank** with no review loop and want **interactive, timed, adaptive practice** instead.
 
 ## Who this is not for
 

@@ -76,17 +76,21 @@ export async function fulfillPortalCheckoutSession(stripe, session, opts = {}) {
     return { ok: false, error: "track_mismatch", productId, track, expectedTrack };
   }
 
-  const accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
-  if (accessExpiresAtMs <= Date.now()) {
-    return { ok: false, error: "access_expired", productId, track, accessExpiresAtMs };
-  }
+  let accessExpiresAtMs = portalAccessExpiresAtMs(session, productId);
 
   if (track === "encor") {
     await upsertEncorCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
   } else if (track === "secplus") {
-    await upsertSecplusCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+    const upserted = await upsertSecplusCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+    if (upserted && typeof upserted.accessExpiresAtMs === "number") {
+      accessExpiresAtMs = upserted.accessExpiresAtMs;
+    }
   } else {
     await upsertCustomerPortalMetadata(stripe, session, accessExpiresAtMs);
+  }
+
+  if (accessExpiresAtMs <= Date.now()) {
+    return { ok: false, error: "access_expired", productId, track, accessExpiresAtMs };
   }
 
   const email = (session.customer_details?.email || "").trim().toLowerCase();

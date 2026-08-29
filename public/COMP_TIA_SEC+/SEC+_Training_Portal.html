@@ -33,6 +33,23 @@
       </a>
     </header>
     <main id="main">
+      <div id="secplus24hUpgradeBanner" class="trial-upgrade-banner" hidden>
+        <p>
+          Your <strong>24-hour free access</strong> is active on this browser.
+          Continue with 30-day access at <strong>$15.99</strong> (20% off) while this window is open.
+        </p>
+        <button
+          type="button"
+          class="cta-main"
+          data-secplus-portal-30d-checkout
+          data-bcc-item-id="secplus_portal_30d"
+          data-bcc-item-name="CompTIA Security+ 30-day access"
+          data-bcc-value="15.99"
+          data-bcc-currency="USD"
+        >
+          Get 30-day access · $15.99
+        </button>
+      </div>
       <div class="funnel">
         <p class="eyebrow">Welcome</p>
           <h1>Security+ Training Portal</h1>
@@ -500,6 +517,7 @@
     </footer>
   </div>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
+  <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/js/admin-portal-bypass-redeem.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-test-sim-storage.js" defer></script>
   <script src="/js/bcc-question-bank-utils.js" defer></script>
@@ -563,6 +581,9 @@
         });
       }
       chain.finally(function () {
+        if (typeof window.bccMountSecplus24hUpgradeBanner === "function") {
+          window.bccMountSecplus24hUpgradeBanner();
+        }
         if (window.SECPLUS_PRACTICE && typeof window.SECPLUS_PRACTICE.injectPortalPracticeBanks === "function") {
           window.SECPLUS_PRACTICE.injectPortalPracticeBanks();
         }

@@ -46,8 +46,9 @@ Think: A senior engineer mentoring a junior colleague at the whiteboard.
    - Use commas, periods, colons, or parentheses instead.
    - *(Note: Em/en dashes are allowed in internal Markdown notes and tables).*
 
-6. **No dump or competitor talk**
+6. **No dump, cheat, or competitor talk**
    - Do not describe scraping, hunts, or third-party dumps.
+   - Do not bid on dump, brain dump, cheat, or “actual exam” searches. See [[Advertising Ethics]].
    - Focus on what *we* do: official blueprints and Tier A documentation only.
 
 7. **Light bolding**

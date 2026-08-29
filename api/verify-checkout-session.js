@@ -65,11 +65,14 @@ async function handleGet(req, res, stripe, sessionId) {
 
   const paid = checkoutSessionIsPaid(session);
   const productId = inferProductIdFromCheckoutSession(session);
-  const accessExpiresAt = paid ? portalAccessExpiresAtMs(session, productId) : null;
+  let accessExpiresAt = paid ? portalAccessExpiresAtMs(session, productId) : null;
 
   if (paid && trackForPortalProductId(productId)) {
     try {
-      await fulfillPortalCheckoutSession(stripe, session, { sendEmail: false });
+      const result = await fulfillPortalCheckoutSession(stripe, session, { sendEmail: false });
+      if (result && typeof result.accessExpiresAtMs === "number") {
+        accessExpiresAt = result.accessExpiresAtMs;
+      }
     } catch (e) {
       console.warn("[verify-checkout-session] portal metadata backfill:", e.message);
     }

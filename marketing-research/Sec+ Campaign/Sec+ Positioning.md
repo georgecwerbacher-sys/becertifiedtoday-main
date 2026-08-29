@@ -20,17 +20,17 @@ Use this voice in RSA, landing pages, and outreach. **Not** “biggest question 
 
 *Source voice for ads, landing copy, and keyword intent. Aligns with `/comptia-sec+-home.html` and `/how-we-verify-questions.html` (when live).*
 
-Most Security+ prep still sells static PDFs and question dumps for $50–$100—or pushes you into a course you do not need. Be Certified Today is a **Test Preparation Site** for a different buyer: someone who needs **exam-realistic practice in the browser** because **Security+ is required** — DoD 8140 baseline, defense contract, federal role, college graduation gate, military MOS path, or employer mandate.
+Most Security+ prep still sells static PDFs for $50–$100, or pushes you into a course you do not need. Be Certified Today is a **Test Preparation Site** for a different buyer: someone who needs **exam-realistic practice in the browser** because **Security+ is required** — DoD 8140 baseline, defense contract, federal role, college graduation gate, military MOS path, or employer mandate.
 
 **Full exam prep, not samples-only.** **1,000+ SY0-701 questions** with verified explanations, **adaptive review** that loops weak domains, a **90-minute timed simulation with domain scorecard**, and **34 PBQ scenarios** (chain labs, hot spots, IR exhibits)—one portal, one sprint price.
 
-**Verified against the current blueprint — not AI-generated.** Topics are researched across **dozens of discussion sites**, weighted for still-valid SY0-701 coverage, then each item is tagged to a **SY0-701 objective ID** and checked on highly ranked Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 stays out of active study pools. See the verification block on the cert home and [[how-we-verify-questions.html]].
+**Verified against the current blueprint — not AI-generated.** Each item is tagged to a **SY0-701 objective ID** and checked on highly ranked Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 stays out of active study pools. See the verification block on the cert home and [[how-we-verify-questions.html]].
 
 **Interactive scenarios online.** Performance-based items run in the browser with the same engine as paid access. No VCE, no PDF, no desktop install. Study on phone, tablet, or laptop between shifts—especially military, first responders, and commuters.
 
 **Adaptive testing that pushes what needs work.** Miss a question in review mode and it **shuffles to the end of the queue**. Run random full-bank sessions or focused review—same engine.
 
-**Timed online simulation.** A **90-minute** mixed MCQ + PBQ run with a **detailed domain scorecard** answers *Am I ready?*—not flipping through a dump.
+**Timed online simulation.** A **90-minute** mixed MCQ + PBQ run with a **detailed domain scorecard** answers *Am I ready?* — not flipping through a static PDF.
 
 **Price that matches a sprint.** **30 days for $19.99**—one payment, no subscription. **Verified discount** on a separate path for **students, educators, veterans, workforce-program participants**, military, first responders, federal, and contractors — school/work email or partner code verifies eligibility; checkout email receives account and access links ([[Sec+ Phase 2 Institutional Targeting#Eligibility email verification — rules]]).
 
@@ -46,7 +46,7 @@ Most Security+ prep still sells static PDFs and question dumps for $50–$100—
 | **Taylor — veteran / job seeker** | Civilian hire, SkillBridge, VR&E, job center | Veteran or workforce partner discount |
 | **Riley — first responder / local gov** | State cyber training mandate | Public-service discount |
 
-**Who we are not for:** PDF/dump shoppers, zero-to-hero bootcamp seekers, or “free practice test only” traffic.
+**Who we are not for:** PDF-only shoppers, zero-to-hero bootcamp seekers, or “free practice test only” traffic. Do not bid on dump or cheat intent ([[Advertising Ethics]]).
 
 **Campaign implication:** Lead with **exam prep, timed simulation, verification, work-required cert** — PBQ and free samples are **proof**, not the headline. Institutional geo and discount are **Phase 2** ([[Sec+ Phase 2 Institutional Targeting]]); Phase 1 Google tracking stays on existing keywords and `secplus_portal`.
 
@@ -85,7 +85,7 @@ Lead ads with **exam prep + timed sim + verification**. Samples support conversi
 
 **One sentence:** SY0-701 exam prep in your browser—1000+ verified questions, timed simulation, adaptive review—for $19.99/30 days, not a $99 PDF.
 
-**Two sentences:** Test Preparation Site for Security+ SY0-701: blueprint-verified bank, 90-minute timed exam with scorecard, and adaptive review on any device. **$19.99 for 30 days**—built for military, federal, college, and contract candidates who must pass, not dump shoppers.
+**Two sentences:** Test Preparation Site for Security+ SY0-701: blueprint-verified bank, 90-minute timed exam with scorecard, and adaptive review on any device. **$19.99 for 30 days**—built for military, federal, college, and contract candidates who must pass.
 
 **Tagline (site / logo v2):** Practice Like Test Day. Walk In Ready.
 
@@ -95,7 +95,7 @@ Lead ads with **exam prep + timed sim + verification**. Samples support conversi
 
 | Competitors | You |
 |-------------|-----|
-| PDF / static dump for **$49–$99+** | **$19.99 / 30 days** — full portal access |
+| Static PDF pack for **$49–$99+** | **$19.99 / 30 days** — full portal access |
 | Download desktop sim | **Online interactive scenarios** — same testing engine as paid access |
 | Random 1000-question banks, no loop | **Adaptive review** — weak domains pushed; missed items shuffle to end to retry |
 | Read-only or flat MCQ | **PBQ chain labs, drag-drop, IR scenarios** — like test day |
@@ -124,7 +124,7 @@ Lead ads with **exam prep + timed sim + verification**. Samples support conversi
 |--------|------|----------------|
 | **Sam — 2–3 weeks out** | “Will PBQs sink me?” | PBQ practice, performance-based, simulation online |
 | **Alex — needs pass for job** | Cert required by employer / contract | DoD, 8140, government, contractor, job requirement |
-| **Jordan — burned by PDF** | Realistic practice, not static dump | interactive, exam simulation, not pdf, online portal |
+| **Jordan — burned by PDF** | Realistic practice, not a static PDF | interactive, exam simulation, not pdf, online portal |
 | **Last-mile reviewer** | Timed run + weak-area loop | timed practice test, mock exam online, adaptive review |
 
 **Avoid bidding alone on:** `security+ question bank`, `security+ practice test`, **`"* practice questions"`** (course-vendor CPC war · shoppers comparing Dion/Udemy/exam bundles — not last-mile prep). Pair **timed/sim/PBQ** keywords with **interactive**, **simulation**, **online**, **timed**, **PBQ**, **not pdf**, **adaptive**, **mobile**, or **work/federal** modifiers.

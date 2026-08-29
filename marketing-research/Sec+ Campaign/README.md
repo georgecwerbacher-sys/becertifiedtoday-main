@@ -12,7 +12,7 @@ tags:
 
 **Security+ SY0-701** — Google Search campaign setup for the paid acquisition test.
 
-**Current direction (2026-06-27):** Build **one US-only Search campaign** with **three intent-matched ad groups** and a shared **$25/day** campaign budget. Let Google determine the spend split based on ad group output. Do not split into separate campaigns until conversion data proves a reason.
+**Current flight:** Launch 40 (`secplus_portal_launch40`) · **$465 total** · **$15/day**. Dump intercept is **retired**. Ads policy: [[Advertising Ethics]].
 
 | Setting | Value |
 |---------|-------|

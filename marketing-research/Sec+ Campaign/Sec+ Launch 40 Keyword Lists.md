@@ -2,9 +2,11 @@
 
 Match: exact `[ ]` · phrase `" "` · **no Broad**  
 Campaign: `Security+ SY0-701 · US Search · Launch 40`  
-Revised: 2026-08-12
+Revised: 2026-08-29 · public offer is **24 hours free**, then **$15.99** (`SECPLUS24`)
 
 Copy one block at a time into each ad group (Keywords → Add keywords).
+
+**In Google Ads now:** pause `"security+ back to school"` and `"security+ fall semester prep"`. Remove the campaign negative `free` if it is still live.
 
 ---
 
@@ -21,6 +23,42 @@ exam quiz test quiz and exam
 ```
 
 Also pause any Broad containing: `601` · `pdf` · `questions and answers`
+
+---
+
+## Primary — 24h trial (`24h-trial`)
+
+```
+[security+ free trial]
+[sy0-701 free trial]
+[security+ exam prep]
+[sy0-701 exam prep]
+[sy0-701 prep]
+[security+ practice exam]
+[security+ practice test]
+[sy0-701 practice test]
+[sy0-701 practice exam]
+[security+ mock exam]
+[security+ timed practice test]
+"security+ free trial"
+"sy0-701 free trial"
+"comptia security+ trial"
+"security+ exam prep"
+"sy0-701 exam prep"
+"security+ exam prep online"
+"sy0-701 exam prep online"
+"security+ practice exam"
+"security+ practice test"
+"sy0-701 practice test"
+"sy0-701 practice exam"
+"comptia security+ practice exam"
+"comptia security+ practice test"
+"security plus practice exam"
+"security plus practice test"
+"security+ timed practice test"
+"security+ exam simulation"
+"security+ mock exam"
+```
 
 ---
 
@@ -126,8 +164,6 @@ Also pause any Broad containing: `601` · `pdf` · `questions and answers`
 "security+ capstone requirement"
 "comptia security+ student prep"
 "sy0-701 college prep"
-"security+ back to school"
-"security+ fall semester prep"
 ```
 
 ---
@@ -137,10 +173,26 @@ Also pause any Broad containing: `601` · `pdf` · `questions and answers`
 **Do not paste any positive keywords here.**  
 **Do not use** bare `practice test` / `practice exam` / `[security+ practice exam]` as campaign negatives — they conflict with Timed Simulation positives.
 
-**Not blocked (by design):** dump / brain dump / PDF study-guide queries (including 601 and 701 variants). Do **not** add campaign negatives for `pdf`, `dump`, `dumps`, `brain dump`, `braindump`, or `jason dion` if you want those searches eligible. Add those terms as **positives** in an ad group if you want to bid on them.
+**Required (ethics):** Block dump, cheat, actual-exam, and static-PDF intent. Do **not** bid on these as positives. If they appear in Search terms, add them as negatives. See [[Advertising Ethics]].
+
+**Do not use** a bare `free` campaign negative. That blocks 24-hour trial searches.
 
 ```
-free
+dump
+dumps
+"brain dump"
+braindump
+"exam dump"
+"test dump"
+"pdf dump"
+pdf
+vce
+ete
+"guaranteed pass"
+"pass guaranteed"
+"cheat sheet"
+cheat
+cheating
 bootcamp
 udemy
 coursera
@@ -161,8 +213,6 @@ kindle
 voucher
 torrent
 reddit
-cheat
-cheating
 cram
 flashcards
 quizlet
@@ -186,4 +236,6 @@ pass4sure
 "free practice exam"
 "practice test free"
 "practice exam free"
+"free pdf"
+"free voucher"
 ```

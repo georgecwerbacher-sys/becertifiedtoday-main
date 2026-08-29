@@ -1,7 +1,8 @@
 /**
- * Security+ Back to School promo - August 2026.
- * Public 20% (AUGUSTPROMO2026 → $15.99). Calendar window through Aug 31;
- * UI pushes a this-visit decision with a session hold timer + checkout CTAs.
+ * Security+ Back to School promo - retired.
+ * Public offer is now 24-hour free access, then SECPLUS24 ($15.99) while that
+ * window is active. isActive() stays false so leftover includes cannot remount
+ * the banner. CCNA still uses /css/secplus-bts-promo.css for its own pass promo.
  */
 (function () {
   "use strict";
@@ -37,11 +38,7 @@
   }
 
   function isActive() {
-    if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
-      return false;
-    }
-    var now = Date.now();
-    return now >= PROMO_START_MS && now < PROMO_END_MS;
+    return false;
   }
 
   function isPortalMember() {

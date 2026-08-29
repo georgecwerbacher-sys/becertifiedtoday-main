@@ -36,18 +36,26 @@
     return (
       productId === "secplus-portal-30d" ||
       productId === "secplus-portal-10d" ||
-      productId === "secplus-portal-3d"
+      productId === "secplus-portal-3d" ||
+      productId === "secplus-portal-24h"
     );
   }
 
   function secplusPortalAccessDays(productId) {
+    if (productId === "secplus-portal-24h") return 1;
     if (productId === "secplus-portal-3d") return 3;
     if (productId === "secplus-portal-10d") return 10;
     if (productId === "secplus-portal-30d") return 30;
     return 0;
   }
 
+  function secplusPortalAccessDurationMs(productId) {
+    if (productId === "secplus-portal-24h") return 24 * 60 * 60 * 1000;
+    return secplusPortalAccessDays(productId) * 86400000;
+  }
+
   function tierToProductId(tier) {
+    if (tier === "24h") return "secplus-portal-24h";
     if (tier === "3d") return "secplus-portal-3d";
     if (tier === "10d") return "secplus-portal-10d";
     if (tier === "30d") return "secplus-portal-30d";
@@ -62,7 +70,7 @@
   }
 
   function bccSetSecplusPendingPortalTier(tier) {
-    if (tier !== "3d" && tier !== "10d" && tier !== "30d") return false;
+    if (tier !== "24h" && tier !== "3d" && tier !== "10d" && tier !== "30d") return false;
     try {
       localStorage.setItem(KEY_PENDING_TIER, tier);
       localStorage.setItem(KEY_PENDING_AT, String(Date.now()));
@@ -77,7 +85,7 @@
       var tier = localStorage.getItem(KEY_PENDING_TIER);
       var at = parseInt(localStorage.getItem(KEY_PENDING_AT) || "0", 10);
       if (!tier || !Number.isFinite(at) || Date.now() - at > PENDING_MAX_MS) return null;
-      return tier === "3d" || tier === "10d" || tier === "30d" ? tier : null;
+      return tier === "24h" || tier === "3d" || tier === "10d" || tier === "30d" ? tier : null;
     } catch (e) {
       return null;
     }
@@ -168,7 +176,7 @@
     var exp =
       typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
         ? data.accessExpiresAt
-        : Date.now() + secplusPortalAccessDays(productId) * 86400000;
+        : Date.now() + secplusPortalAccessDurationMs(productId);
     if (exp <= Date.now()) {
       return false;
     }
@@ -206,6 +214,11 @@
     });
   }
 
+  function bccGetSecplusPortalProductId() {
+    var o = readEntitlement(KEY);
+    return o && typeof o.productId === "string" ? o.productId : null;
+  }
+
   function bccApplySecplusPortalCheckoutFromUrl(searchParams, stripSessionQuery) {
     var sessionId = null;
     try {
@@ -238,6 +251,7 @@
     window.bccReadSecplusPortalCheckoutSessionId = bccReadSecplusPortalCheckoutSessionId;
     window.bccSaveSecplusPortalCheckoutSessionId = bccSaveSecplusPortalCheckoutSessionId;
     window.bccSetSecplusPendingPortalTier = bccSetSecplusPendingPortalTier;
+    window.bccGetSecplusPortalProductId = bccGetSecplusPortalProductId;
     window.bccRestoreSecplusPortalAccess = bccRestoreSecplusPortalAccess;
     window.bccApplySecplusPortalCheckoutFromUrl = bccApplySecplusPortalCheckoutFromUrl;
     window.bccSecplusPortalNeedsRestoreLink = bccSecplusPortalNeedsRestoreLink;

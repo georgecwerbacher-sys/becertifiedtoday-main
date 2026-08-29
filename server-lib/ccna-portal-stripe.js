@@ -24,6 +24,7 @@ const PRODUCT_ID_ALIASES = {
   encor_portal_10d: "encor-portal-10d",
   encor_portal_30d: "encor-portal-30d",
   secplus_portal_3d: "secplus-portal-3d",
+  secplus_portal_24h: "secplus-portal-24h",
   secplus_portal_10d: "secplus-portal-10d",
   secplus_portal_30d: "secplus-portal-30d",
   secplus_test_simulation: "secplus-test-simulation",
@@ -112,6 +113,7 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
     const encorTestSim = (env.STRIPE_PRICE_ENCOR_TEST_SIM || "").trim();
     const secplusPortal30 = (env.STRIPE_PRICE_SECPLUS_PORTAL_30D || "").trim();
     const secplusPortal10 = (env.STRIPE_PRICE_SECPLUS_PORTAL_10D || "").trim();
+    const secplusPortal24 = (env.STRIPE_PRICE_SECPLUS_PORTAL_24H || "").trim();
     const secplusTestSim = (env.STRIPE_PRICE_SECPLUS_TEST_SIM || "").trim();
     const lines = session.line_items?.data || [];
     for (let i = 0; i < lines.length; i++) {
@@ -149,6 +151,10 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
         productId = "secplus-portal-10d";
         break;
       }
+      if (secplusPortal24 && pid === secplusPortal24) {
+        productId = "secplus-portal-24h";
+        break;
+      }
       if (secplusTestSim && pid === secplusTestSim) {
         productId = "secplus-test-simulation";
         break;
@@ -165,6 +171,10 @@ export function inferProductIdFromCheckoutSession(session, env = process.env) {
       const name = String(line?.description || line?.price?.product?.name || "");
       if (/encor/i.test(name) && /10.?day|10 day/i.test(name)) {
         productId = "encor-portal-10d";
+        break;
+      }
+      if (/security\+|secplus|sy0-701/i.test(name) && /24.?hour|24 hour|24-hour/i.test(name)) {
+        productId = "secplus-portal-24h";
         break;
       }
       if (/security\+|secplus|sy0-701/i.test(name) && /3.?day|3 day/i.test(name)) {
@@ -245,11 +255,18 @@ export function isSecplusPortalProduct(productId) {
   return (
     productId === "secplus-portal-30d" ||
     productId === "secplus-portal-10d" ||
-    productId === "secplus-portal-3d"
+    productId === "secplus-portal-3d" ||
+    productId === "secplus-portal-24h"
   );
 }
 
+export function portalAccessDurationMsForProductId(productId) {
+  if (productId === "secplus-portal-24h") return 24 * 60 * 60 * 1000;
+  return portalAccessDaysForProductId(productId) * 86400000;
+}
+
 export function portalAccessDaysForProductId(productId) {
+  if (productId === "secplus-portal-24h") return 1;
   if (productId === "secplus-portal-3d") return 3;
   if (
     productId === "ccna-portal-10d" ||
@@ -289,12 +306,21 @@ export function portalAccessExpiresAtMs(sess, productId = null) {
       anchorSec = Math.max(anchorSec, pi.created);
     }
   } catch (_) {}
-  const days = portalAccessDaysForProductId(productId);
-  return anchorSec * 1000 + days * 86400000;
+  return anchorSec * 1000 + portalAccessDurationMsForProductId(productId);
 }
 
 export function checkoutSessionIsPaid(session) {
   return session.payment_status === "paid" || session.payment_status === "no_payment_required";
+}
+
+/** One 24h window per email: reuse the original expiry instead of stacking a new day. */
+export function clampSecplus24hExpiryMs(existingMeta, proposedExpiresAtMs) {
+  const prevExp = parseInt(existingMeta?.secplus_24h_expires_ms || "0", 10);
+  const used = existingMeta?.secplus_24h_used === "1";
+  if (used && Number.isFinite(prevExp) && prevExp > 0) {
+    return prevExp > Date.now() ? Math.min(proposedExpiresAtMs, prevExp) : prevExp;
+  }
+  return proposedExpiresAtMs;
 }
 
 /**
@@ -372,13 +398,18 @@ export async function upsertEncorCustomerPortalMetadata(stripe, session, accessE
  */
 export async function upsertSecplusCustomerPortalMetadata(stripe, session, accessExpiresAtMs) {
   const email = (session.customer_details?.email || "").trim().toLowerCase();
-  if (!email) return null;
+  if (!email) return { customerId: null, accessExpiresAtMs };
+
+  const productId = inferProductIdFromCheckoutSession(session);
+  let expires = accessExpiresAtMs;
 
   let customerId = session.customer || null;
+  let existingMeta = {};
   if (!customerId) {
     const existing = await stripe.customers.list({ email, limit: 5 });
     if (existing.data.length > 0) {
       customerId = existing.data[0].id;
+      existingMeta = existing.data[0].metadata || {};
     } else {
       const c = await stripe.customers.create({
         email,
@@ -386,15 +417,46 @@ export async function upsertSecplusCustomerPortalMetadata(stripe, session, acces
       });
       customerId = c.id;
     }
+  } else {
+    try {
+      const cust = await stripe.customers.retrieve(String(customerId));
+      if (cust && !cust.deleted) existingMeta = cust.metadata || {};
+    } catch (_) {}
   }
+
+  let usedMeta = existingMeta;
+  try {
+    const listed = await stripe.customers.list({ email, limit: 10 });
+    for (let i = 0; i < (listed.data || []).length; i++) {
+      const meta = listed.data[i].metadata || {};
+      if (meta.secplus_24h_used === "1") {
+        usedMeta = meta;
+        break;
+      }
+    }
+  } catch (_) {}
+
+  if (productId === "secplus-portal-24h") {
+    expires = clampSecplus24hExpiryMs(usedMeta, expires);
+  }
+
+  const extra24h =
+    productId === "secplus-portal-24h"
+      ? {
+          secplus_24h_used: "1",
+          secplus_24h_cs: usedMeta.secplus_24h_cs || existingMeta.secplus_24h_cs || session.id,
+          secplus_24h_expires_ms: String(expires),
+        }
+      : {};
 
   await stripe.customers.update(customerId, {
     metadata: {
       secplus_portal_customer: "1",
       secplus_portal_last_cs: session.id,
-      secplus_portal_access_expires_ms: String(accessExpiresAtMs),
+      secplus_portal_access_expires_ms: String(expires),
+      ...extra24h,
     },
   });
 
-  return customerId;
+  return { customerId, accessExpiresAtMs: expires };
 }

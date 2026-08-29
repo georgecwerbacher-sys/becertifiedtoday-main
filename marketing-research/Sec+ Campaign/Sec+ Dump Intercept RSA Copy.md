@@ -2,16 +2,21 @@
 type: ad-copy
 product: secplus
 phase: dump-intercept
-status: ready-to-paste
+status: retired
 tags:
   - marketing
   - google-ads
   - secplus
   - rsa
   - dump-intercept
+  - retired
 ---
 
-# Sec+ Dump Intercept — RSA copy
+# Sec+ Dump Intercept — RETIRED RSA (do not paste)
+
+> **Do not use this RSA.** Dump intercept is off-policy. Launch 40 copy: [[Sec+ Launch 40 RSA Copy]]. Policy: [[Advertising Ethics]].
+
+# Archive — RSA copy (do not paste)
 
 **Rule:** Headlines **≤30** · Descriptions **≤90** · Pin **H1 + H2** only.  
 **Never say:** dump, braindump, real exam, actual exam, pass guaranteed.

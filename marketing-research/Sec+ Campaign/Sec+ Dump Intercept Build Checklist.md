@@ -2,15 +2,20 @@
 type: campaign-checklist
 product: secplus
 phase: dump-intercept
-status: ready-to-build
+status: retired
 tags:
   - marketing
   - google-ads
   - secplus
   - checklist
+  - retired
 ---
 
-# Sec+ Dump Intercept — build checklist
+# Sec+ Dump Intercept — RETIRED
+
+**Do not complete this checklist.** Pause the campaign in Google Ads. Add dump/cheat negatives on Launch 40 instead ([[Sec+ Launch 40 Keyword Lists]] · [[Advertising Ethics]]).
+
+# Archive — do not build
 
 **Plan:** [[Sec+ Dump Intercept Campaign Plan]] · **Keywords:** [[Sec+ Dump Intercept Keyword Lists]] · **RSA:** [[Sec+ Dump Intercept RSA Copy]]
 

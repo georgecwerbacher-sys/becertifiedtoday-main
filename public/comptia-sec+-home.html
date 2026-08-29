@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta
     name="description"
-    content="SY0-701 exam prep: questions pulled from PDFs, forums, and study groups — not AI-generated. 1000+ items, 34 mobile PBQs, no software. $19.99/30 days."
+    content="SY0-701 exam prep in your browser: 1000+ verified questions, 34 mobile PBQs, timed simulation. Not AI-generated. $19.99 / 30 days."
   />
   <meta
     name="keywords"
@@ -25,7 +25,7 @@
   <meta property="og:title" content="Security+ SY0-701 Exam Prep | 1000+ Questions &amp; Timed Simulation | Be Certified Today" />
   <meta
     property="og:description"
-    content="Not AI-generated. Security+ questions from PDFs, forums, and study groups, plus mobile PBQs — no VCE. $19.99 / 30 days vs PDF dumps at 3–4× the price."
+    content="Not AI-generated. SY0-701 questions tagged to official objectives and verified on CompTIA, NIST, and RFC sources. 1000+ items, 34 mobile PBQs. $19.99 / 30 days."
   />
   <meta property="og:site_name" content="Be Certified Today" />
   <meta property="og:url" content="https://becertifiedtoday.com/comptia-sec+-home.html" />
@@ -51,7 +51,7 @@
   <meta name="twitter:title" content="Security+ SY0-701 Exam Prep | 1000+ Questions &amp; Timed Simulation | Be Certified Today" />
   <meta
     name="twitter:description"
-    content="Not AI-generated. Security+ questions from PDFs, forums, and study groups, plus mobile PBQs — no VCE. $19.99 / 30 days vs PDF dumps at 3–4× the price."
+    content="Not AI-generated. SY0-701 questions tagged to official objectives and verified on CompTIA, NIST, and RFC sources. 1000+ items, 34 mobile PBQs. $19.99 / 30 days."
   />
   <link rel="icon" href="/images/logo/becertifiedtoday_logo_image_trans.png" type="image/png" />
   <meta property="og:locale" content="en_US" />
@@ -66,7 +66,7 @@
           "name": "CompTIA Security+ SY0-701 Exam Prep: Practice Tests and Simulation",
           "url": "https://becertifiedtoday.com/comptia-sec+-home.html",
           "inLanguage": "en-US",
-          "description": "Not AI-generated. SY0-701 questions pulled from PDFs, forums, and study groups, then Tier A verified. 1000+ items, 34 mobile PBQs, no VCE. Free samples. 30-day access $19.99.",
+          "description": "Not AI-generated. SY0-701 questions tagged to official objectives and verified on CompTIA, NIST, and RFC sources. 1000+ items, 34 mobile PBQs, no VCE. Free samples. 30-day access $19.99.",
           "isPartOf": {
             "@type": "WebSite",
             "@id": "https://becertifiedtoday.com/#website",
@@ -108,7 +108,7 @@
               "name": "Do you sell PDF downloads or printable question banks?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. This is a fully online, immersive question bank instead of a static PDF dump. Practice runs in the browser: SY0-701 questions, PBQ labs, and timed review. PBQs work on a phone with no VCE or other software to install. PDF dump sites often sell a file of the same kind of bank at three to four times the price."
+                "text": "No. This is a fully online question bank, not a printable PDF. Practice runs in the browser: SY0-701 questions, PBQ labs, and timed review. PBQs work on a phone with no VCE or other software to install."
               }
             },
             {
@@ -132,7 +132,7 @@
               "name": "How do you verify questions match the current exam?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Not AI-generated. Questions are pulled from PDFs, forums, and study groups across the web, then each Security+ question and PBQ is weighted for still-valid SY0-701 coverage, tagged to an objective ID, and verified on highly ranked Tier A sources (CompTIA, NIST, RFCs) - not dump answer keys. Legacy SY0-601 items stay in a separate audit bank. SY0-701 Bank Verified 2026-06-27."
+                "text": "Not AI-generated. Each Security+ question and PBQ is tagged to a SY0-701 objective ID and verified on highly ranked Tier A sources (CompTIA, NIST, RFCs). Legacy SY0-601 items stay in a separate audit bank. SY0-701 Bank Verified 2026-06-27."
               }
             },
             {
@@ -1465,6 +1465,12 @@
     .purchase-track-box--thirty-day .purchase-access-disclaimer strong {
       color: #fff;
     }
+    .purchase-track-box--thirty-day .purchase-alt-tier-note {
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .purchase-track-box--thirty-day .purchase-alt-tier-note strong {
+      color: #fff;
+    }
     .purchase-track-box--encor-live {
       padding: clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
       border-color: rgba(47, 102, 191, 0.35);
@@ -1569,6 +1575,9 @@
     }
     .purchase-track-cta-wrap {
       margin: 16px 0 0;
+    }
+    .purchase-trial-cta-wrap {
+      margin: 10px 0 0;
     }
     .format-sample a.cta-main {
       color: #f4f7ff;
@@ -2031,7 +2040,8 @@
       background: linear-gradient(165deg, #5a6a7a 0%, #475569 100%);
       box-shadow: none;
     }
-    a.cta-secondary {
+    a.cta-secondary,
+    button.cta-secondary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -2049,12 +2059,19 @@
       box-sizing: border-box;
       transition: border-color 0.15s ease, background 0.15s ease;
     }
-    a.cta-secondary:hover {
+    button.cta-secondary {
+      cursor: pointer;
+      appearance: none;
+      font-family: inherit;
+    }
+    a.cta-secondary:hover,
+    button.cta-secondary:hover {
       border-color: rgba(167, 139, 250, 0.85);
       background: rgba(91, 33, 182, 0.2);
       color: #fff;
     }
-    a.cta-secondary:focus-visible {
+    a.cta-secondary:focus-visible,
+    button.cta-secondary:focus-visible {
       outline: 2px solid var(--accent-border);
       outline-offset: 3px;
     }
@@ -2858,7 +2875,6 @@
     }
   </style>
   <link rel="stylesheet" href="/css/bcc-save50-promo.css" />
-  <link rel="stylesheet" href="/css/secplus-bts-promo.css" />
 </head>
 <body>
   <div class="page">
@@ -2922,7 +2938,7 @@
             <h1 id="hero-conversion-title">Are you ready?</h1>
             <p class="lead lead--full landing-page-intro__who" id="hero-conversion-who">
               Fully online SY0-701 bank: PBQ labs, questions, adaptive review, and a 90-minute timed exam.
-              <strong>Not AI-generated</strong> &mdash; pulled from PDFs, forums, and study groups, then verified on Tier A sources.
+              <strong>Not AI-generated</strong>. Tagged to official objectives and verified on CompTIA, NIST, and RFC sources.
               No VCE. Works on your phone.
             </p>
             <p class="lead lead--full landing-page-intro__offer" id="hero-conversion-lead" hidden></p>
@@ -2934,10 +2950,9 @@
                 <p class="secplus-home-verify-eyebrow">Question Bank Audit</p>
                 <h2 class="secplus-home-verify-title" id="secplus-home-verify-title">These Are Not AI-Generated Test Questions</h2>
                 <p class="secplus-home-verify-lead">
-                  Items are pulled from <strong>PDFs, forums, and study groups</strong> across the web, then each one is weighted for still-valid
-                  <strong>SY0-701</strong> coverage, tagged to an objective ID, and verified against highly ranked Tier A sources (CompTIA, NIST, RFCs).
+                  Each item is tagged to a <strong>SY0-701</strong> objective ID and verified against highly ranked Tier A sources (CompTIA, NIST, RFCs).
                   This is a fully online, immersive bank: questions, drag-and-drop PBQs, and simple labs in the browser.
-                  No software to install. PDF dump sites sell a static file of the same kind of bank at <strong>three to four times this price</strong>.
+                  No software to install.
                   Legacy SY0-601 items stay out of active Random and Review pools.
                 </p>
                 <p class="secplus-home-verify-meta">
@@ -3036,7 +3051,7 @@
                         <strong>90-minute timed exam</strong> on phone, tablet, or desktop.
                       </p>
                       <p class="purchase-track-sub">
-                        Not AI-generated. PDFs, forums, and study groups. Mobile PBQs. One Stripe payment - no email signup required to buy.
+                        Not AI-generated. Objective-tagged, Tier A verified. Mobile PBQs. One Stripe payment - no email signup required to buy.
                       </p>
                       <p class="purchase-track-cta-wrap">
                         <button
@@ -3052,6 +3067,25 @@
                         >
                           Get 30-Day Access
                         </button>
+                      </p>
+                      <p class="purchase-trial-cta-wrap">
+                        <button
+                          type="button"
+                          class="cta-secondary"
+                          id="secplusPortal24hCheckoutBtn"
+                          data-secplus-portal-24h-checkout
+                          data-bcc-item-id="secplus_portal_24h"
+                          data-bcc-item-name="CompTIA Security+ 24-hour free access"
+                          data-bcc-value="0.00"
+                          data-bcc-currency="USD"
+                          aria-label="Start 24-hour free Security+ library access through Stripe"
+                        >
+                          Try 24 hours free
+                        </button>
+                      </p>
+                      <p class="purchase-alt-tier-note">
+                        Full library for 24 hours through Stripe Checkout. Card not required. One free window per email.
+                        During that window, 30-day access is <strong>$15.99</strong> (20% off $19.99).
                       </p>
                       <p class="purchase-access-disclaimer">
                         <strong>$19.99 / 30 days.</strong> No subscription. Access is tied to this browser. Use the same device when you study.
@@ -3070,9 +3104,9 @@
           <section class="landing-gns3-compare" id="secplus-compare" aria-labelledby="secplus-compare-title">
             <h2 id="secplus-compare-title">Browser Exam Prep vs. Static PDFs and Desktop Test Engines</h2>
             <p class="landing-gns3-lead">
-              Many Security+ sites sell a <strong>printable PDF dump</strong> at three to four times this price, or require
+              Many Security+ sites sell a <strong>printable PDF pack</strong>, or require
               <strong>VCE, ETE, or desktop test engines</strong>.
-              This is the same kind of full bank, except it is interactive in the browser, mobile-friendly, and includes simple PBQ labs with no software to install.
+              This is a full interactive bank in the browser, mobile-friendly, with PBQ labs and no software to install.
             </p>
             <div class="landing-gns3-table-wrap">
               <table class="landing-gns3-table" aria-describedby="secplus-compare-caption">
@@ -3124,13 +3158,13 @@
                   </tr>
                   <tr>
                     <th scope="row">Price for a full bank</th>
-                    <td>PDF dump files commonly $60&ndash;$80</td>
-                    <td class="landing-gns3-cell-bct">$19.99 / 30 days &mdash; about a third to a quarter of those PDFs</td>
+                    <td>Static PDF packs commonly $60-$80</td>
+                    <td class="landing-gns3-cell-bct">$19.99 / 30 days - about a third to a quarter of those PDFs</td>
                   </tr>
                   <tr>
                     <th scope="row">Exam policy</th>
-                    <td>Often a static dump PDF to memorize</td>
-                    <td class="landing-gns3-cell-bct">Not AI-generated. PDFs, forums, and study groups, then Tier A verified</td>
+                    <td>Often a static PDF to memorize</td>
+                    <td class="landing-gns3-cell-bct">Not AI-generated. Objective-tagged, then Tier A verified</td>
                   </tr>
                 </tbody>
               </table>
@@ -3141,14 +3175,14 @@
             <div class="landing-mission-pitch" id="secplus-mission" aria-labelledby="secplus-mission-title">
               <h3 id="secplus-mission-title">Why I Choose BeCertifiedToday.com</h3>
               <p class="landing-mission-lead">
-                PDF dump sites sell a static file at three to four times this price. This SY0-701 bank is fully online: questions, PBQs, and a timed sim on your phone with no software to install.
-                Items are <strong>not AI-generated</strong>. They are pulled from PDFs, forums, and study groups, then checked against Tier A sources.
+                This SY0-701 bank is fully online: questions, PBQs, and a timed sim on your phone with no software to install.
+                Items are <strong>not AI-generated</strong>. They are tagged to official objectives and checked against Tier A sources.
                 No membership, no portal ads, no email list to join.
               </p>
               <ul class="landing-mission-pillars" aria-label="What I promise">
                 <li><strong>Current Material</strong>: Audited against the SY0-701 exam outline; legacy SY0-601 kept out of active pools.</li>
                 <li><strong>Certification-Style Practice</strong>: Timed sim, PBQ chains, hot spots, and adaptive weak-area review.</li>
-                <li><strong>Verified Answers</strong>: Not AI-generated. PDFs, forums, and groups, then Tier A verification.</li>
+                <li><strong>Verified Answers</strong>: Not AI-generated. Objective-tagged, then Tier A verification.</li>
                 <li><strong>No Membership Games</strong>: One-time access. Stripe checkout only.</li>
               </ul>
               <p class="landing-mission-cta">
@@ -3167,8 +3201,8 @@
           <p class="formats-head">FAQ</p>
           <h2 id="faq-title">Security+ SY0-701 Exam Prep</h2>
           <p class="formats-lead">
-            <strong>Exam prep in your browser.</strong> Not static PDF dumps, desktop test engines, or AI-generated banks.
-            Questions are pulled from PDFs, forums, and study groups, then verified on Tier A sources.
+            <strong>Exam prep in your browser.</strong> Not static PDFs, desktop test engines, or AI-generated banks.
+            Questions are tagged to SY0-701 objectives and verified on Tier A sources.
             <a class="faq-cta-link" href="#secplus-compare">See the comparison table</a>
             or read answers below.
           </p>
@@ -3209,8 +3243,7 @@
                 <summary class="faq-summary">Do you sell PDF downloads or printable question banks?</summary>
                 <div class="faq-answer">
                   <p>
-                    <strong>No.</strong> Many sites sell a printable PDF dump you memorize, often at three to four times this price.
-                    This is a fully online, immersive bank: <strong>1000+</strong> SY0-701 items with <strong>verified explanations</strong>,
+                    <strong>No.</strong> This is a fully online, immersive bank: <strong>1000+</strong> SY0-701 items with <strong>verified explanations</strong>,
                     plus simple PBQ labs that run on a phone with no VCE or other software to install.
                   </p>
                   <p>
@@ -3253,9 +3286,8 @@
                 <summary class="faq-summary">How do you verify questions match the current exam?</summary>
                 <div class="faq-answer">
                   <p>
-                    These are <strong>not AI-generated test questions</strong>. Items are pulled from
-                    <strong>PDFs, forums, and study groups</strong> across the web, then each one is weighted for still-valid SY0-701 coverage and
-                    verified against highly ranked Tier A sources (CompTIA, NIST, RFCs) &mdash; not dump answer keys.
+                    These are <strong>not AI-generated test questions</strong>. Each one is weighted for still-valid SY0-701 coverage and
+                    verified against highly ranked Tier A sources (CompTIA, NIST, RFCs).
                     Every question and PBQ is tagged to a <strong>SY0-701 objective ID</strong>.
                     Legacy <strong>SY0-601</strong> items stay in a separate audit bank, not in active Random and Review pools.
                     <strong>SY0-701 Bank Verified 2026-06-27.</strong>
@@ -3470,7 +3502,7 @@
       <h2 id="secplusPortalGateTitle">Practice portal access required</h2>
       <p class="ccna-sim-promo-lead">
         The Security+ practice portal is for learners with <strong>active library access</strong> on
-        <strong>this browser</strong> (after checkout on this site). To open the portal, verify the email you used at checkout.
+        <strong>this browser</strong> (after checkout on this site). You can try 24 hours free through Stripe, or verify the email you used at checkout.
       </p>
       <p class="ccna-portal-gate-help">
         <a class="ccna-portal-gate-email-link" href="/COMP_TIA_SEC+/secplus-portal-request-link.html">Verify your email for a portal link</a>.
@@ -3480,8 +3512,19 @@
         Already paid but blocked on this device? Submit the same checkout email from this browser and we’ll restore access here.
       </p>
       <div class="ccna-sim-promo-actions">
-        <a
+        <button
+          type="button"
           class="ccna-sim-promo-primary"
+          data-secplus-portal-24h-checkout
+          data-bcc-item-id="secplus_portal_24h"
+          data-bcc-item-name="CompTIA Security+ 24-hour free access"
+          data-bcc-value="0.00"
+          data-bcc-currency="USD"
+        >
+          Try 24 hours free
+        </button>
+        <a
+          class="ccna-sim-promo-secondary"
           href="/COMP_TIA_SEC+/secplus-portal-request-link.html"
           >Get a portal link</a
         >
@@ -3521,7 +3564,6 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/js/bcc-save50-promo.js" defer></script>
-  <script src="/js/secplus-bts-promo.js" defer></script>
   <script src="/js/secplus-pricing-modal.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/js/secplus-google-paid-landing.js" defer></script>

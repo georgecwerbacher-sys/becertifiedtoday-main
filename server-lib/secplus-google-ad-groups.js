@@ -1,6 +1,6 @@
 /**
  * Security+ Google Search ad groups — shared by marketing docs, registry, and /admin GA4.
- * Current flight: Launch 40 (Back to School) — marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md
+ * Current flight: Launch 40 (24h trial) — marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md
  */
 
 /** @typedef {object} SecplusGoogleAdGroupDef */
@@ -26,16 +26,18 @@ export const SECPLUS_GOOGLE_CAMPAIGN = {
     "Security+ SY0-701 · US Search",
     "Security+ SY0-701 · Exam prep · becertifiedtoday",
     "Security+ PBQ Practice",
+    "Security+ SY0-701 · US Search · Dump Intercept",
+    "secplus_portal_dump_intercept",
   ],
   utmCampaign: "secplus_portal_launch40",
   utmSource: "google",
   utmMedium: "cpc",
-  dailyBudgetUsd: 35,
+  dailyBudgetUsd: 15,
   maxCpcUsd: 2.75,
   landingPath: "/comptia-sec+-home.html",
   primaryConversion: "begin_checkout",
-  conversionItemIds: ["secplus_portal_30d"],
-  primaryOffer: "30-day Back to School $15.99 (AUGUSTPROMO2026) — Launch 40, four ad groups, $35/day shared",
+  conversionItemIds: ["secplus_portal_24h", "secplus_portal_30d"],
+  primaryOffer: "$465 total · $15/day · 24h free then $15.99 trial upgrade · list $19.99",
   planDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md",
   rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
   keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
@@ -45,6 +47,16 @@ export const SECPLUS_GOOGLE_CAMPAIGN = {
 
 /** @type {SecplusGoogleAdGroupDef[]} */
 export const SECPLUS_GOOGLE_AD_GROUPS = [
+  {
+    slug: "24h-trial",
+    adGroupName: "24h Trial",
+    utmContent: "24h-trial",
+    displayPath: "SY0-701 / 24h-Free",
+    pinH1: "Try 24 Hours Free",
+    intent: "24 hours free, then 30 days at $15.99",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
   {
     slug: "timed-sim",
     adGroupName: "Timed Simulation",
@@ -81,7 +93,7 @@ export const SECPLUS_GOOGLE_AD_GROUPS = [
     utmContent: "student-college",
     displayPath: "Security+ / College-Prep",
     pinH1: "Security+ College Prep",
-    intent: "College / capstone / graduation requirement — Back to School",
+    intent: "College / capstone / graduation requirement",
     rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
     keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
   },
@@ -115,9 +127,19 @@ export const SECPLUS_LEGACY_UTM_CONTENT = [
     utmContent: "student-workforce",
     displayPath: "Security+ / Career-Prep",
     pinH1: "Security+ Career Prep",
-    intent: "Prior student/workforce ad group — replaced by Student College for BTS",
+    intent: "Prior student/workforce ad group",
     rsaDoc: "marketing-research/Sec+ Campaign/Sec+ RSA Copy - Student Workforce.md",
     keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Keywords.md",
+  },
+  {
+    slug: "dump-intercept",
+    adGroupName: "Retired · Dump Intercept",
+    utmContent: "dump-intercept",
+    displayPath: "—",
+    pinH1: "—",
+    intent: "Retired. Do not bid on dump or cheat intent.",
+    rsaDoc: "marketing-research/Advertising Ethics.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
   },
   {
     slug: "pbq-wedge",

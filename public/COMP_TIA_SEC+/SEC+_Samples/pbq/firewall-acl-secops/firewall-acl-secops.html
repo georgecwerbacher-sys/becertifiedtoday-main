@@ -6,7 +6,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="description" content="CompTIA Security+ SY0-701 PBQ: BeCertifiedToday needs inbound web access and database isolation between DMZ tiers. Write four top-down ACL rows: separate HTTP and HTTPS permits, scoped MySQL, then explicit deny-all." />
   <link rel="canonical" href="https://becertifiedtoday.com/COMP_TIA_SEC+/SEC+_Samples/pbq/firewall-acl-secops/firewall-acl-secops.html" />
-  <title>Security+ Simulation: Three-Tier Firewall - ACL Rule Builder | Be Certified Today</title>
+  <title>Security+ Simulation: Three-Tier Firewall — ACL Rule Builder | Be Certified Today</title>
   <link rel="stylesheet" href="/css/bcc-question-link-nav.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/SEC+_Samples/secplus-sample-touch.css" />
   <link rel="stylesheet" href="/COMP_TIA_SEC+/js/secplus-sim-page.css" />
@@ -27,7 +27,7 @@
         <p class="pbq-suite-eyebrow">SY0-701 PBQ · BeCertifiedToday</p>
         <p class="pbq-suite-objectives" aria-label="SY0-701 exam objectives covered">Covers SY0-701 objectives: 3.3 · 4.1</p>
         <p class="pbq-suite-verified" aria-label="SY0-701 blueprint compliance">SY0-701 outline verified 2026-06-27</p>
-        <h1>Simulation: Three-Tier Firewall - ACL Rule Builder</h1>
+        <h1>Simulation: Three-Tier Firewall — ACL Rule Builder</h1>
         <p class="lead pbq-sub">BeCertifiedToday needs inbound web access and database isolation between DMZ tiers. Write four top-down ACL rows: separate HTTP and HTTPS permits, scoped MySQL, then explicit deny-all.</p>
         <p class="instructions pbq-instructions">
           Review the <strong>three-tier topology</strong>, then build ACL rules top-down with explicit deny-all last.
@@ -37,7 +37,7 @@
       <div class="pbq-suite-layout pbq-suite-layout--single">
         
         <div class="pbq-suite-main" id="pbqSuiteMain">
-          <article class="pbq-suite-section is-active" id="firewall-acl-config" data-scenario="firewall-acl-secops"><div class="pbq-suite-section__inner"><h1>Firewall ACL Configuration - Security Operations</h1>
+          <article class="pbq-suite-section is-active" id="firewall-acl-config" data-scenario="firewall-acl-secops"><div class="pbq-suite-section__inner"><h1>Firewall ACL Configuration — Security Operations</h1>
   <p class="pbq-sub">
     Configure inbound firewall ACL rules for BeCertifiedToday internal hosts. Rules are evaluated <strong>top-down</strong>.
     The first match wins.
@@ -68,7 +68,7 @@
 
     <div class="pbq-acl-table-wrap">
       <p class="pbq-acl-table-banner">
-        Configure rules - select action, protocol, source, destination, and port for each rule
+        Configure rules — select action, protocol, source, destination, and port for each rule
       </p>
       <table class="pbq-acl-table">
         <thead>
@@ -264,7 +264,7 @@
     4: { action: "deny", protocol: "any", src: "any", dst: "any", port: "any" }
   };
   var CORRECT_MSG =
-    "Correct. Rule 1: permit HTTP to the web server from any source. Rule 2: permit HTTPS to the web server. Rule 3: permit MySQL (3306) only from the web server to the database. Rule 4: explicit deny all (implicit deny). Order matters - permits must appear before the catch-all deny.";
+    "Correct. Rule 1: permit HTTP to the web server from any source. Rule 2: permit HTTPS to the web server. Rule 3: permit MySQL (3306) only from the web server to the database. Rule 4: explicit deny all (implicit deny). Order matters — permits must appear before the catch-all deny.";
 
   var root = document.getElementById("firewall-acl-config");
   if (!root) return;

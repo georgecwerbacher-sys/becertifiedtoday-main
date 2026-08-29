@@ -228,11 +228,13 @@
               return;
             }
             var productLabel =
-              data.productId === "secplus-portal-3d"
-                ? "3-day"
-                : data.productId === "secplus-portal-10d"
-                  ? "10-day"
-                  : "30-day";
+              data.productId === "secplus-portal-24h"
+                ? "24-hour"
+                : data.productId === "secplus-portal-3d"
+                  ? "3-day"
+                  : data.productId === "secplus-portal-10d"
+                    ? "10-day"
+                    : "30-day";
             if (data.accessExpired) {
               showErr(
                 "This purchase's " + productLabel + " access window has already ended. Purchase again from Security+ home if you want another pass."
@@ -242,7 +244,8 @@
             if (
               data.productId !== "secplus-portal-30d" &&
               data.productId !== "secplus-portal-10d" &&
-              data.productId !== "secplus-portal-3d"
+              data.productId !== "secplus-portal-3d" &&
+              data.productId !== "secplus-portal-24h"
             ) {
               showErr(
                 "That checkout is not for library access (wrong product). Use the timed simulation flow if you bought the one-time test instead."
@@ -252,7 +255,8 @@
             var exp =
               typeof data.accessExpiresAt === "number" && Number.isFinite(data.accessExpiresAt)
                 ? data.accessExpiresAt
-                : Date.now() + 30 * 86400000;
+                : Date.now() +
+                  (data.productId === "secplus-portal-24h" ? 24 * 60 * 60 * 1000 : 30 * 86400000);
             if (exp <= Date.now()) {
               showErr("Access from this checkout has expired.");
               return;

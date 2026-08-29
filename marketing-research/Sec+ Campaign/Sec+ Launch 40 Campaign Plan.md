@@ -2,42 +2,49 @@
 type: campaign-strategy
 product: secplus
 phase: launch-40
-status: active-bts-august
+status: active
 tags:
   - marketing
   - google-ads
   - secplus
   - budget
   - conversions
-  - back-to-school
+  - 24h-trial
 ---
 
-# Sec+ Launch Campaign Plan — $1k performance flight
+# Sec+ Launch Campaign Plan — $465 Search budget
 
-**Status:** Live in Google Ads · **Back to School August** · Stripe code **`AUGUSTPROMO2026`** (20% for everyone through Aug 31)  
-**Goal:** Conversions (checkout → purchase) during back-to-school  
-**Offer:** list **$19.99** / 30 days · **public 20% → $15.99** all August (banner + prefilled checkout)  
-**Daily budget:** **$35** (locked) · ~29 days on $1,000 if spend is steady  
+**Status:** Live in Google Ads · **total budget $465** · **no end date**  
+**Goal:** Conversions (checkout → purchase) on ethical Search traffic only  
+**Offer:** **24 hours free**, then **$15.99** / 30 days (`SECPLUS24`) while the trial is active · list **$19.99** without trial  
+**Daily budget:** **$15** shared  
 **Landing:** https://becertifiedtoday.com/comptia-sec+-home.html (top of fold · no samples hash)  
-**Launched:** 2026-08-10 · ads updated and running
+**Launched:** 2026-08-10 · budget reset 2026-08-29 · BTS paused 2026-08-29
 
-Related: [[Sec+ Positioning]] · [[Sec+ Keywords]] · [[Sec+ Launch 40 Keyword Lists]] · [[Sec+ Launch 40 RSA Copy]] · [[Sec+ Notes]] · prior spend [[Google Ads Spend Promo]]
+Related: [[Advertising Ethics]] · [[Sec+ Positioning]] · [[Sec+ Launch 40 Keyword Lists]] · [[Sec+ Launch 40 RSA Copy]] · prior spend [[Google Ads Spend Promo]]
 
 ---
 
-## Budget pacing (locked)
+## Budget pacing ($465 · no time limit)
+
+All **$465** stays on this one Search campaign. Do **not** split to Dump Intercept or a second Search campaign.
+
+Google Search has **no lifetime campaign cap**. Set **$15/day**, watch cumulative spend, and **pause when you hit ~$450–$465**. Google can spend up to about **2×** the daily budget on a given day, so drop the daily cap to **$5–$10** when remaining budget is under **$40**.
 
 | Item | Value |
 |------|------:|
-| Total | $1,000 |
-| Daily | **$35** (locked) |
-| Expected flight | **~29 days** if spend is steady |
+| Total | **$465** |
+| Daily | **$15** shared |
+| Expected runway | **~31 days** if spend is steady |
+| Clicks / day (at $2.50–$2.75 CPC) | ~5–6 |
 | List price | $19.99 |
-| Back to School (August) | **20% → $15.99** for everyone |
-| Purchases to recover $1k (at $15.99) | ~63 |
-| Stripe coupon | **`AUGUSTPROMO2026`** (20% off Sec+ 30-day) |
+| 24h trial then 30-day | **$15.99** (`SECPLUS24`) |
+| Purchases to recover $465 (at $19.99) | ~23 |
+| Stripe coupon | **`SECPLUS24`** on 30-day while 24h access is active |
 
-**Kill rule:** After **$150–200** on clean (negatived) traffic with **0 `begin_checkout`**, pause and fix landing/offer/tracking before burning the rest.
+**Kill rule:** After **$70–90** on clean (negatived) traffic with **0 `begin_checkout`**, pause and fix landing/offer/tracking before spending the rest.
+
+**Google Ads swap:** pause Back to School RSA headlines. Paste [[Sec+ Launch 40 RSA Copy]]. Remove the campaign negative `free`. Pause `"security+ back to school"` and `"security+ fall semester prep"`.
 
 ---
 
@@ -50,7 +57,7 @@ Security+ is entry-level. Many **college cyber / IT programs** require passing S
 | Free samples → paid course | Free samples → timed sim + verified bank |
 | Video bootcamps | Browser simulated exams + scorecard |
 | Account signup + email list | **No site registration** — pay in **Stripe**, access via **magic link** |
-| PDF dumps / static packs | Adaptive review, not a PDF |
+| Static PDF packs | Adaptive review, not a PDF |
 
 **Access friction (RSA + landing proof):**
 
@@ -58,10 +65,11 @@ Security+ is entry-level. Many **college cyber / IT programs** require passing S
 - Checkout is Stripe only
 - Portal access is magic-link after purchase
 
-**August offer (public):** Back to School banner + purchase card show **$15.99**. RSA may mention Back to School / $15.99. Code **`AUGUSTPROMO2026`** is prefilled at Stripe — do not require shoppers to hunt for it.
+**Public offer:** 24 hours free through Stripe Checkout (card not required). List 30-day is **$19.99**. While 24-hour access is active, 30-day checkout prefills **`SECPLUS24`** → **$15.99**. Do not advertise $15.99 as a sitewide sale.
 
 **Policy-safe:** verified, SY0-701-aligned, reputable sources, timed simulation, adaptive.  
-**Never in ads:** actual exam questions, real exam, dumps, competitor brand names.
+**Never in ads:** actual exam questions, real exam, dumps, braindump, cheat, pass guaranteed, competitor brand names.  
+**Never bid on dump or cheat searches.** Those terms are campaign negatives. Dump intercept is retired. See [[Advertising Ethics]].
 
 ---
 
@@ -71,29 +79,32 @@ Security+ is entry-level. Many **college cyber / IT programs** require passing S
 |---------|-------|
 | Name | `Security+ SY0-701 · US Search · Launch 40` |
 | Type | Search only |
-| Daily budget | **$35 shared** (locked) |
+| Daily budget | **$15 shared** |
 | Bidding (days 1–10) | Maximize clicks · max CPC **$2.50–$2.75** |
 | Bidding (after signal) | Maximize conversions when ≥15–20 `begin_checkout` |
 | Geo | US only · Presence |
 | Networks | Partners Off · Display Off · AI Max Off |
 | Primary conversion | GA4 `begin_checkout` |
-| Promo | **Public August 20%** — code **`AUGUSTPROMO2026`** · banner on cert home |
+| Promo | **24 hours free**, then **$15.99** / 30 days (`SECPLUS24`) · list **$19.99** |
 | utm_campaign | `secplus_portal_launch40` |
 
 **Hold rule:** No structure / bid drama for 7 days unless junk traffic or broken tracking.
 
 ---
 
-## Four ad groups (shared budget)
+## Ad groups (shared budget)
 
 | # | Ad group | Intent | `utm_content` | Lead message |
 |---|----------|--------|---------------|--------------|
-| 1 | `Timed Simulation` | Am I ready? | `timed-sim` | 90-min simulated exam + scorecard |
-| 2 | `Verified Adaptive Prep` | Not PDF / not AI junk | `verified-adaptive` | Verified bank + adaptive review |
-| 3 | `After Study Sprint` | Already used free samples/courses | `after-study` | Skip another course — practice for the exam |
-| 4 | `Student College` | Degree / capstone / required for graduation | `student-college` | College cyber programs that require Security+ |
+| 1 | `24h Trial` | Try before buying | `24h-trial` | 24 hours free, then 30 days at $15.99 |
+| 2 | `Timed Simulation` | Am I ready? | `timed-sim` | 90-min simulated exam + scorecard |
+| 3 | `Verified Adaptive Prep` | Not PDF / not AI junk | `verified-adaptive` | Verified bank + adaptive review |
+| 4 | `After Study Sprint` | Already used free samples/courses | `after-study` | Skip another course — practice for the exam |
+| 5 | `Student College` | Degree / capstone / required for graduation | `student-college` | College cyber programs that require Security+ |
 
-**Defer to later:** Military/DoD 8140, workforce/WIOA (keep college-focused for BTS).
+Prefer one live RSA in `24h Trial`. Pause Back to School headlines in the older groups if they stay enabled.
+
+**Defer to later:** Military/DoD 8140, workforce/WIOA.
 
 Final URL pattern:
 
@@ -113,43 +124,11 @@ See [[Sec+ Launch 40 Keyword Lists]] (includes Student College).
 
 ## Campaign negatives (paste first)
 
-```
-free
-bootcamp
-udemy
-coursera
-boson
-jobs
-salary
-ccna
-cissp
-ceh
-examtopics
-pdf
-ebook
-voucher
-brain dump
-exam dump
-"actual exam"
-"real exam questions"
-"jason dion"
-"dion training"
-"professor messer"
-messer
-"mike meyers"
-pass4sure
-"training course"
-"online course"
-"video course"
-"instructor led"
-"security+ practice questions"
-"sy0-701 practice questions"
-[security+ practice exam]
-```
+Paste from [[Sec+ Launch 40 Keyword Lists]] (includes dump / cheat / actual-exam / PDF). Do not omit dump or cheat negatives.
 
 ---
 
-## RSA direction (1 RSA per ad group)
+## RSA direction
 
 **Headlines ≤30 characters** · Descriptions ≤90 · Pin H1 + H2 only
 
@@ -157,29 +136,21 @@ Full paste sheets: [[Sec+ Launch 40 RSA Copy]]
 
 | Pin | Headline | Chars |
 |-----|----------|------:|
-| H1 | `SY0-701 Exam Prep Online` | 24 |
-| H2 | `Timed 90-Min Exam Sim` | 21 |
+| H1 | `Try 24 Hours Free` | 17 |
+| H2 | `Then 30 Days at $15.99` | 22 |
 
-**August BTS headlines allowed** (public promo):
-
-```
-Back to School · 20% Off
-August: $15.99 / 30 Days
-$15.99 Back to School
-```
-
-Student College pins: H1 `Security+ College Prep` · H2 `Timed 90-Min Exam Sim`
+Do not run Back to School / public $15.99 sale headlines.
 
 ---
 
-## Site offer (August — everyone)
+## Site offer
 
 | Surface | Behavior |
 |---------|----------|
-| Top banner on `/comptia-sec+-home.html` | Back to School · 20% off · code + CTA to `#purchase` |
-| Purchase card | Strike $19.99 · show $15.99 |
-| Stripe checkout | Prefill `AUGUSTPROMO2026` |
-| Ends | **2026-09-01 00:00 ET** |
+| Purchase card | $19.99 / 30 days · secondary CTA Try 24 hours free |
+| 24h checkout | $0 Stripe Checkout Session · card not required |
+| 30-day after trial | Prefill `SECPLUS24` → $15.99 |
+| 30-day without trial | $19.99 · no promo prefill |
 
 Verified learner discounts page stays separate for deeper eligibility discounts.
 
@@ -190,10 +161,10 @@ Verified learner discounts page stays separate for deeper eligibility discounts.
 | Window | Action |
 |--------|--------|
 | Pre-launch | Offer + tracking + negatives ready · Stripe 20% code live |
-| Days 1–7 | **$35/day** · search terms daily · negatives only |
+| Days 1–7 | **$15/day** · search terms daily · negatives only (dump/cheat first) |
 | Days 8–14 | Prune spenders · exact-match promote converters |
-| Days 15+ | Scale winners or pause if no checkout after clean traffic |
-| End | When $1k spent, CPA unacceptable, or August ends — not day 60 |
+| Days 15+ | Keep $15/day until **$465** cumulative, or pause if no checkout after clean traffic |
+| End | Pause at **~$450–$465** spent · or after the kill rule |
 
 ---
 
@@ -201,11 +172,11 @@ Verified learner discounts page stays separate for deeper eligibility discounts.
 
 **Build checklist:** [[Sec+ Launch 40 Build Checklist]] · CSV `secplus-launch40-build-checklist.csv`
 
-- [x] Lock **$35/day** performance pacing
-- [x] Public August **20%** Back to School for everyone (`AUGUSTPROMO2026`)
-- [x] Site banner + checkout prefill (`secplus-bts-promo.js`)
-- [x] Add **Student College** as 4th ad group (BTS)
+- [x] Set **$15/day** · **$465** total · no end date (pause at cap)
+- [x] Public offer: 24 hours free, then $15.99 (`SECPLUS24`) while trial is active
+- [x] Back to School banner removed (`secplus-bts-promo.js` retired)
+- [ ] Pause Back to School RSA headlines in Google Ads · paste [[Sec+ Launch 40 RSA Copy]]
 - [x] Build campaign in Google Ads · **running 2026-08-10**
 - [ ] Confirm Stripe coupon live → $15.99 (spot-check if not done)
 - [ ] Week 1: search terms daily · negatives only · hold structure 7 days
-- [ ] Kill check: after $150–200 clean spend with 0 `begin_checkout`, pause and fix
+- [ ] Kill check: after $70–90 clean spend with 0 `begin_checkout`, pause and fix

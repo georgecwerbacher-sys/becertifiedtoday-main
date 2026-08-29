@@ -74,7 +74,7 @@ Contractor Baseline Prep
 | 11  | 1000+ Verified SY0-701 Qs     | 25    | Bank trust                    |
 | 12  | Blueprint-Verified Bank       | 23    | Objective alignment           |
 | 13  | 30-Day Access · $19.99        | 22    | Paid Search price             |
-| 14  | Not a PDF · Browser Prep      | 24    | Anti-dump                     |
+| 14  | Not a PDF · Browser Prep      | 24    | Browser vs static PDF         |
 | 15  | Contractor Baseline Prep      | 23    | Cleared-contractor path       |
 
 ---

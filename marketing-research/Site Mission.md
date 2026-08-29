@@ -95,7 +95,7 @@ That is the line on logo v2 and what I want you to remember. It ties the site na
 
 I am not selling you an instructor-led **course** or bootcamp. I am not selling **PDF braindumps** or printable cheat sheets. I am not asking you to install GNS3 or Packet Tracer just to get through a lab. Be Certified Today is **independent exam prep** — not sponsored by Cisco, CompTIA, or Pearson — built for practice and education.
 
-*(For ads: filter course/bootcamp/dump intent with negatives; on guest pages, lead with what I offer, not what I am not.)*
+*(For ads: filter course, bootcamp, dump, and cheat intent with negatives. Never bid on dump or cheat queries. See [[Advertising Ethics]]. On guest pages, lead with what I offer, not what I am not.)*
 
 ---
 
