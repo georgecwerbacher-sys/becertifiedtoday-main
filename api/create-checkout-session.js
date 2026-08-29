@@ -140,8 +140,9 @@ export default async function handler(req, res) {
   };
 
   if (isFreeAccess) {
+    // $0 one-time Checkout. Do not set payment_method_collection — Stripe only
+    // allows that with recurring prices. Card is skipped because the total is $0.
     sessionParams.customer_creation = "always";
-    sessionParams.payment_method_collection = "if_required";
   } else {
     sessionParams.allow_promotion_codes = true;
     sessionParams.payment_intent_data = {

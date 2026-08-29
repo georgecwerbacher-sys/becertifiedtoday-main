@@ -181,7 +181,7 @@
           window.location.href = data.url;
           return true;
         }
-        var msg = data.hint || data.error || data.detail || "Could not start 24-hour checkout.";
+        var msg = data.hint || data.detail || data.error || "Could not start 24-hour checkout.";
         throw new Error(msg);
       });
   }
@@ -228,6 +228,7 @@
 
     btn.addEventListener("click", function (ev) {
       if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
+      if (ev && typeof ev.stopPropagation === "function") ev.stopPropagation();
       if (btn.dataset.loading === "1") return;
       btn.dataset.loading = "1";
       var busyLabel = "Redirecting…";

@@ -556,7 +556,12 @@
     .secplus-pricing-modal .purchase-track-cta-wrap {
       position: sticky;
       bottom: 0;
-      z-index: 1;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 8px;
+      padding-bottom: 4px;
       background: var(--surface, #121a2b);
       box-shadow: 0 -12px 18px rgba(18, 26, 43, 0.95);
     }
@@ -3053,7 +3058,7 @@
                       <p class="purchase-track-sub">
                         Not AI-generated. Objective-tagged, Tier A verified. Mobile PBQs. One Stripe payment - no email signup required to buy.
                       </p>
-                      <p class="purchase-track-cta-wrap">
+                      <div class="purchase-track-cta-wrap">
                         <button
                           type="button"
                           class="cta-main cta-main--block"
@@ -3067,8 +3072,6 @@
                         >
                           Get 30-Day Access
                         </button>
-                      </p>
-                      <p class="purchase-trial-cta-wrap">
                         <button
                           type="button"
                           class="cta-secondary"
@@ -3082,7 +3085,7 @@
                         >
                           Try 24 hours free
                         </button>
-                      </p>
+                      </div>
                       <p class="purchase-alt-tier-note">
                         Full library for 24 hours through Stripe Checkout. Card not required. One free window per email.
                         During that window, 30-day access is <strong>$15.99</strong> (20% off $19.99).
