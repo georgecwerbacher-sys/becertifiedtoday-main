@@ -583,7 +583,7 @@
         q +
         " practice questions</strong> and <strong>" +
         dnd +
-        " drag-and-drop</strong> items with verified explanations."
+        " drag-and-drop</strong> items with explanations."
       );
     }
     if (kind === "dnd") {
@@ -600,7 +600,7 @@
     return (
       "You finished the sample questions. Unlock <strong>" +
       q +
-      " CCNA 200-301 practice questions</strong> with verified explanations, plus <strong>" +
+      " CCNA 200-301 practice questions</strong> with explanations, plus <strong>" +
       labs +
       " CLI labs</strong>, <strong>" +
       dnd +

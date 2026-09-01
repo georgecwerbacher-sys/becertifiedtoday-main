@@ -33,23 +33,6 @@
       </a>
     </header>
     <main id="main">
-      <div id="secplus24hUpgradeBanner" class="trial-upgrade-banner" hidden>
-        <p>
-          Your <strong>24-hour free access</strong> is active on this browser.
-          Continue with 30-day access at <strong>$15.99</strong> (20% off) while this window is open.
-        </p>
-        <button
-          type="button"
-          class="cta-main"
-          data-secplus-portal-30d-checkout
-          data-bcc-item-id="secplus_portal_30d"
-          data-bcc-item-name="CompTIA Security+ 30-day access"
-          data-bcc-value="15.99"
-          data-bcc-currency="USD"
-        >
-          Get 30-day access · $15.99
-        </button>
-      </div>
       <div class="funnel">
         <p class="eyebrow">Welcome</p>
           <h1>Security+ Training Portal</h1>
@@ -67,7 +50,7 @@
             <strong>Security+ bank 1 is open.</strong>
             Questions publish in banks of <strong>100</strong>, mixed to match
             <strong>SY0-701 domain weights</strong> (12% / 22% / 18% / 28% / 20%).
-            Every item is tagged to an official objective and verified on CompTIA Tier A sources—not competitor dumps or forums.
+            Every item is tagged to an official objective.
           </p>
       </div>
 
@@ -76,25 +59,6 @@
           <p class="study-meta">Loading SY0-601 → SY0-701 study path comparison…</p>
         </div>
       </div>
-
-      <section class="funnel secplus-verify-process" aria-labelledby="secplus-verify-process-title">
-        <p class="secplus-verify-process-eyebrow">Question Bank Audit</p>
-        <h2 id="secplus-verify-process-title" class="secplus-verify-process-title">How We Clean Up and Check Outdated Material</h2>
-        <p class="secplus-verify-process-lead">
-          Many Test Preparation Sites with large item banks rarely show what still matches today&apos;s official blueprint.
-          This Security+ bank is actively audited: domain targets, legacy gaps, and SY0-601 items removed from the active study path.
-        </p>
-        <ul class="secplus-verify-process-list">
-          <li>Compare official CompTIA exam objective PDFs when the blueprint changes (for example SY0-601 to SY0-701).</li>
-          <li>Tag every item to a blueprint version and objective ID, then verify keys on Tier A sources only (CompTIA, NIST, RFCs).</li>
-          <li>Keep retired or mis-tagged items out of weighted Random and Review pools; bank them separately for audit (see the green SY0-601 Outdated box below).</li>
-          <li>Publish domain weight targets and gap counts on this portal so you know what is live versus still in review.</li>
-        </ul>
-        <p class="secplus-verify-process-more">
-          <span class="secplus-verify-process-more__label">Read the full verification workflow:</span>
-          <a href="/how-we-verify-questions.html" class="secplus-verify-process-link">How we verify questions</a>
-        </p>
-      </section>
 
       <section class="formats-section" aria-labelledby="formats-title">
         <div class="funnel">
@@ -141,7 +105,6 @@
               <p id="secplus-practice-domain-hint" class="secplus-practice-subject-hint">
                 <strong>Random</strong> shuffles once at start.
                 <strong>Review</strong> sends misses to the back of the queue.
-                Keys verified on CompTIA documentation, NIST, and RFCs—not Reddit or third-party dumps.
               </p>
             </div>
                         <div class="sim-grid" id="secplus-practice-banks-grid" aria-label="Practice question banks: 11 banks of up to 100 questions each (1005 total)">
@@ -581,9 +544,6 @@
         });
       }
       chain.finally(function () {
-        if (typeof window.bccMountSecplus24hUpgradeBanner === "function") {
-          window.bccMountSecplus24hUpgradeBanner();
-        }
         if (window.SECPLUS_PRACTICE && typeof window.SECPLUS_PRACTICE.injectPortalPracticeBanks === "function") {
           window.SECPLUS_PRACTICE.injectPortalPracticeBanks();
         }

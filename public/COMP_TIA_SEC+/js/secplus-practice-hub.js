@@ -1316,18 +1316,6 @@
     }
 
     grid.innerHTML = html;
-
-    var summary = document.getElementById("secplus-practice-banks-summary");
-    if (summary && tracker && tracker.totals) {
-      var mv = tracker.missingVerificationFiles ? tracker.missingVerificationFiles.length : 0;
-      if (mv > 0) {
-        summary.textContent =
-          summary.textContent +
-          " Tier A verification in progress: " +
-          mv +
-          " item(s) pending official source citations.";
-      }
-    }
   }
 
   function refreshSecplusPracticeUI() {

@@ -148,7 +148,7 @@
       checkoutBtn.addEventListener("click", function (ev) {
         ev.preventDefault();
         if (typeof window.bccStartSecplusPortalCheckout === "function") {
-          window.bccStartSecplusPortalCheckout("24h", checkoutBtn);
+          window.bccStartSecplusPortalCheckout("30d", checkoutBtn);
         } else {
           var fallback = document.querySelector("[data-secplus-portal-30d-checkout]");
           if (fallback) fallback.click();

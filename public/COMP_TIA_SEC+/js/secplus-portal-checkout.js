@@ -15,10 +15,6 @@
  * 3-day free trial Payment Link (promo / partner):
  *   https://buy.stripe.com/6oU3cu7gF5Ovglq1xac3m0b
  * Optional metadata: productId = secplus-portal-3d
- *
- * 24-hour free access uses Checkout Sessions API (POST /api/create-checkout-session),
- * not a Payment Link, so duration is 24 hours and Stripe Customer metadata can enforce
- * one free window per email.
  */
 (function () {
   var LINKS = {
@@ -31,19 +27,18 @@
 
   /**
    * Legacy launch-deal / fence-sitter code. Not a public promo.
-   * 24-hour trial upgrades use SECPLUS24 instead.
    */
   var LAUNCH_PROMO_CODE = "AUGUSTPROMO2026";
 
-  /** 20% off 30-day while 24h trial access is active. */
+  /** 20% off 30-day while an existing 24h entitlement is still active. */
   var TRIAL_PROMO_CODE = "SECPLUS24";
 
   var PRODUCTS = {
     "24h": {
       id: "secplus_portal_24h",
-      name: "CompTIA Security+ 24-hour free access",
+      name: "CompTIA Security+ 24-hour access",
       value: "0.00",
-      defaultLabel: "Try 24 hours free",
+      defaultLabel: "Open portal",
       labelKey: "secplusPortal24hCheckoutLabel",
     },
     "3d": {
@@ -156,34 +151,27 @@
     window.bccTrackBeginCheckout(trackEl);
   }
 
+  function resetAllCheckoutButtons() {
+    document.querySelectorAll("[data-secplus-portal-24h-checkout]").forEach(function (btn) {
+      resetCheckoutButton(btn, PRODUCTS["24h"]);
+    });
+    document.querySelectorAll("[data-secplus-portal-30d-checkout]").forEach(function (btn) {
+      resetCheckoutButton(btn, PRODUCTS["30d"]);
+    });
+  }
+
+  function leavePricingPopup() {
+    if (typeof window.bccCloseSecplusPricingModal === "function") {
+      window.bccCloseSecplusPricingModal(true);
+    }
+  }
+
   function startSecplus24hCheckout(triggerEl) {
     if (hasPaidPortalAccess() || is24hEntitlementActive()) {
       window.location.href = PORTAL_URL;
       return Promise.resolve(true);
     }
-    trackBeginCheckout("24h", triggerEl, false, false);
-    if (typeof window.bccSetSecplusPendingPortalTier === "function") {
-      window.bccSetSecplusPendingPortalTier("24h");
-    }
-    return fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId: "secplus-portal-24h" }),
-    })
-      .then(function (res) {
-        return res.json().then(function (data) {
-          return { res: res, data: data };
-        });
-      })
-      .then(function (pair) {
-        var data = pair.data || {};
-        if (pair.res.ok && data.url) {
-          window.location.href = data.url;
-          return true;
-        }
-        var msg = data.hint || data.detail || data.error || "Could not start 24-hour checkout.";
-        throw new Error(msg);
-      });
+    return Promise.resolve(false);
   }
 
   function startSecplusPortalCheckout(tier, triggerEl, options) {
@@ -218,34 +206,43 @@
     }
   }
 
-  function wireCheckout(btn, tier) {
+  function beginWiredCheckout(btn, tier) {
     var product = PRODUCTS[tier];
-    if (!product) return;
-
+    if (!btn || !product) return;
     if (!btn.dataset[product.labelKey]) {
       btn.dataset[product.labelKey] = btn.textContent.trim() || product.defaultLabel;
     }
+    if (btn.dataset.loading === "1") {
+      resetCheckoutButton(btn, product);
+      leavePricingPopup();
+      return;
+    }
+    btn.dataset.loading = "1";
+    var busyLabel = "Redirecting…";
+    if (btn.tagName === "BUTTON") {
+      btn.disabled = true;
+      btn.textContent = busyLabel;
+    } else {
+      btn.setAttribute("aria-busy", "true");
+      btn.textContent = busyLabel;
+    }
+    var started = startSecplusPortalCheckout(tier, btn);
+    if (started && typeof started.then === "function") {
+      started.catch(function (err) {
+        resetCheckoutButton(btn, product);
+        leavePricingPopup();
+        window.alert(err && err.message ? err.message : "Could not start checkout.");
+      });
+    }
+  }
 
+  function wireCheckout(btn, tier) {
+    var product = PRODUCTS[tier];
+    if (!product) return;
     btn.addEventListener("click", function (ev) {
       if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
       if (ev && typeof ev.stopPropagation === "function") ev.stopPropagation();
-      if (btn.dataset.loading === "1") return;
-      btn.dataset.loading = "1";
-      var busyLabel = "Redirecting…";
-      if (btn.tagName === "BUTTON") {
-        btn.disabled = true;
-        btn.textContent = busyLabel;
-      } else {
-        btn.setAttribute("aria-busy", "true");
-        btn.textContent = busyLabel;
-      }
-      var started = startSecplusPortalCheckout(tier, btn);
-      if (started && typeof started.then === "function") {
-        started.catch(function (err) {
-          resetCheckoutButton(btn, product);
-          window.alert(err && err.message ? err.message : "Could not start checkout.");
-        });
-      }
+      beginWiredCheckout(btn, tier);
     });
   }
 
@@ -253,15 +250,13 @@
     if (location.pathname.indexOf("comptia-sec+-home") < 0) return;
     var qs = new URLSearchParams(location.search);
     if (qs.get("checkout") === "24h" || qs.get("start_checkout") === "24h") {
-      startSecplusPortalCheckout("24h", null);
       return;
     }
     if (qs.get("checkout") !== "30d" && qs.get("start_checkout") !== "30d") return;
     startSecplusPortalCheckout("30d", null);
   }
 
-  function hide24hCtasIfPaid() {
-    if (!hasPaidPortalAccess()) return;
+  function hide24hCtas() {
     document.querySelectorAll("[data-secplus-portal-24h-checkout]").forEach(function (el) {
       el.hidden = true;
     });
@@ -274,19 +269,33 @@
     banner.hidden = false;
   }
 
+  document.addEventListener(
+    "click",
+    function (ev) {
+      var btn =
+        ev.target && ev.target.closest ? ev.target.closest("[data-secplus-portal-24h-checkout]") : null;
+      if (!btn) return;
+      if (ev.preventDefault) ev.preventDefault();
+      if (ev.stopPropagation) ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      if (hasPaidPortalAccess() || is24hEntitlementActive()) {
+        window.location.href = PORTAL_URL;
+      }
+    },
+    true
+  );
+
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("[data-secplus-portal-24h-checkout]").forEach(function (btn) {
-      wireCheckout(btn, "24h");
-    });
     document.querySelectorAll("[data-secplus-portal-3d-checkout]").forEach(function (btn) {
       wireCheckout(btn, "3d");
     });
     document.querySelectorAll("[data-secplus-portal-30d-checkout]").forEach(function (btn) {
+      if (btn.hasAttribute("data-secplus-portal-24h-checkout")) return;
       wireCheckout(btn, "30d");
     });
-    hide24hCtasIfPaid();
-    mount24hUpgradeBanner();
+    hide24hCtas();
     maybeAutoCheckoutFromUrl();
+    window.addEventListener("pageshow", resetAllCheckoutButtons);
   });
 
   window.bccStartSecplusPortalCheckout = startSecplusPortalCheckout;

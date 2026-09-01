@@ -19,8 +19,8 @@
 
   var BASE_LEAD =
     "Practice CCNA online with labs, drag-and-drop, and questions in your browser. " +
-    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. <strong>No PDFs.</strong> " +
-    "Try free samples first—same UI as full access.";
+    "<strong>No PDFs.</strong> " +
+    "Try free samples first - same UI as full access.";
 
   var VARIANTS = {
     "wedge-default": {
@@ -148,7 +148,7 @@
       id: "pass-exam",
       adHeadline: "Pass The CCNA Exam",
       eyebrow: "Pass the CCNA · practice with feedback",
-      headline: "Pass the CCNA Exam — timed practice with verified answers",
+      headline: "Pass the CCNA Exam - timed practice with explanations",
       lead:
         "Build exam-day confidence with timed CCNA practice and review modes that loop weak topics back. " +
         "<strong>No PDFs.</strong> Runs entirely in your browser—try free samples first.",

@@ -1,7 +1,7 @@
 /**
  * POST /api/create-checkout-session
  * Body (JSON, optional): {
- *   "productId": "ccna-test-simulation" | "ccna-portal-10d" | "ccna-portal-30d" | "secplus-portal-24h"
+ *   "productId": "ccna-test-simulation" | "ccna-portal-10d" | "ccna-portal-30d"
  * }
  *
  * Env:
@@ -9,14 +9,11 @@
  *   STRIPE_PRICE_CCNA_TEST_SIM     — price_… for one-time timed test simulation
  *   STRIPE_PRICE_CCNA_PORTAL_10D   — price_… for 10-day training portal / library access
  *   STRIPE_PRICE_CCNA_PORTAL_30D   — price_… for 30-day training portal / library access
- *   STRIPE_PRICE_SECPLUS_PORTAL_24H — optional $0 price_… for 24-hour Security+ trial; if unset, uses price_data
  *   PUBLIC_SITE_URL                — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
  *                                    trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
  *
  * Checkout shows a promotion-code field when allow_promotion_codes is true. Create
  * coupons + promotion codes in Stripe Dashboard (Product catalog → Coupons, or Billing → Coupons).
- *
- * secplus-portal-24h is $0 payment mode (no PaymentIntent). Do not set payment_intent_data.
  */
 import Stripe from "stripe";
 import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
@@ -42,13 +39,6 @@ const PRODUCTS = {
     successPath: "/CCNA-Study/CCNA_Training_Portal.html?session_id={CHECKOUT_SESSION_ID}",
     cancelPath: "/ccna-home.html#purchase",
     blueprint: "ccna-portal-10d@v1",
-  },
-  "secplus-portal-24h": {
-    priceEnv: "STRIPE_PRICE_SECPLUS_PORTAL_24H",
-    successPath: "/COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}",
-    cancelPath: "/comptia-sec+-home.html#purchase",
-    blueprint: "secplus-portal-24h@v1",
-    freeAccess: true,
   },
 };
 
@@ -90,6 +80,13 @@ export default async function handler(req, res) {
   const rawPid = typeof body.productId === "string" ? body.productId.trim() : "";
   const productId = rawPid || DEFAULT_PRODUCT;
 
+  if (productId === "secplus-portal-24h") {
+    return res.status(410).json({
+      error: "This offer is no longer available",
+      hint: "Use 30-day Security+ access from the product page.",
+    });
+  }
+
   if (!PRODUCTS[productId]) {
     return res.status(400).json({
       error: "Unknown productId",
@@ -99,9 +96,8 @@ export default async function handler(req, res) {
 
   const cfg = PRODUCTS[productId];
   const priceId = (process.env[cfg.priceEnv] || "").trim();
-  const isFreeAccess = cfg.freeAccess === true;
 
-  if (!isFreeAccess && !priceId) {
+  if (!priceId) {
     return res.status(503).json({
       error: "Checkout is not configured",
       hint: `Set ${cfg.priceEnv} in Vercel (Stripe Dashboard → Products → Price API id). PUBLIC_SITE_URL must match the hostname customers use after checkout.`,
@@ -110,47 +106,22 @@ export default async function handler(req, res) {
 
   const stripe = new Stripe(sk.secret);
 
-  const lineItems =
-    isFreeAccess && !priceId
-      ? [
-          {
-            price_data: {
-              currency: "usd",
-              unit_amount: 0,
-              product_data: {
-                name: "CompTIA Security+ SY0-701 - 24-hour free access",
-                description:
-                  "24 hours of SY0-701 exam prep on Be Certified Today. One free window per email. No subscription.",
-              },
-            },
-            quantity: 1,
-          },
-        ]
-      : [{ price: priceId, quantity: 1 }];
-
   const sessionParams = {
     mode: "payment",
-    line_items: lineItems,
+    line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${site}${cfg.successPath}`,
     cancel_url: `${site}${cfg.cancelPath}`,
+    allow_promotion_codes: true,
     metadata: {
       productId,
       blueprint: cfg.blueprint,
     },
-  };
-
-  if (isFreeAccess) {
-    // $0 one-time Checkout. Do not set payment_method_collection — Stripe only
-    // allows that with recurring prices. Card is skipped because the total is $0.
-    sessionParams.customer_creation = "always";
-  } else {
-    sessionParams.allow_promotion_codes = true;
-    sessionParams.payment_intent_data = {
+    payment_intent_data: {
       metadata: {
         productId,
       },
-    };
-  }
+    },
+  };
 
   try {
     const session = await stripe.checkout.sessions.create(sessionParams);

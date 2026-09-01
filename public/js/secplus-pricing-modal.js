@@ -88,6 +88,11 @@
     root.hidden = true;
     document.documentElement.classList.remove("secplus-pricing-modal-open");
     if (fromUser) markDismissed();
+    if (location.hash === "#purchase") {
+      try {
+        history.replaceState(null, "", location.pathname + location.search);
+      } catch (_) {}
+    }
     if (lastFocus && typeof lastFocus.focus === "function") {
       try {
         lastFocus.focus();
@@ -164,6 +169,7 @@
   }
 
   window.bccOpenSecplusPricingModal = openModal;
+  window.bccCloseSecplusPricingModal = closeModal;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);

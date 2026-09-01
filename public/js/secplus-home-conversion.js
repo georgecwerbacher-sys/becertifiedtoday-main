@@ -19,12 +19,12 @@
 
   var WEDGE_LEAD =
     "<strong>1000+ interactive questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed exam</strong> in your browser. " +
-    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. Mobile-friendly PBQ labs. No VCE. No PDF dump. " +
+    "Mobile-friendly PBQ labs. No VCE. No PDF dump. " +
     PAID_30D_SUFFIX;
 
   var BASE_LEAD =
     "Practice Security+ SY0-701 online with 1000+ questions and performance-based scenarios in your browser. " +
-    "<strong>Not AI-generated</strong> — pulled from PDFs, forums, and study groups. No PDF pack. No VCE install.";
+    "No PDF pack. No VCE install.";
 
   var GOOGLE_PAID_PURCHASE_CTA = "Get 30-day access";
 
@@ -137,7 +137,7 @@
       eyebrow: "Security+ question bank · SY0-701 objectives",
       headline: "SY0-701 Question Bank - 1000+ Interactive Security+ Questions",
       lead:
-        "Work through a large <strong>SY0-701 question bank</strong> with verified explanations - not static PDF answer keys. " +
+        "Work through a large <strong>SY0-701 question bank</strong> with explanations - not static PDF answer keys. " +
         "Includes PBQ scenarios and adaptive review. <strong>Try free sample questions in your browser.</strong>",
       ctaPrimary: "Try free Security+ sample questions",
       ctaHref: SAMPLE_QUESTIONS,
