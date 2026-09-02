@@ -489,6 +489,10 @@
       document.body.classList.remove("secplus-sample-scorecard-open");
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
+      if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
+        navigateAfterSample(finishHome || FINISH_HOME);
+        return;
+      }
       showPortalUpsellModal(finishHome);
     }
 
@@ -522,12 +526,8 @@
       typeof window.bccSave50DiscountedValue === "function"
     ) {
       var sale = window.bccSave50DiscountedValue("29.99");
-      var renewing =
-        typeof window.bccSave50IsRenewingMember === "function" && window.bccSave50IsRenewingMember();
-      saleLabel = renewing
-        ? "Renew 30-day access · $" + sale + " · 50% off"
-        : "New 30-day access · $" + sale + " · 50% off";
-      eyebrow = renewing ? "Renew · 50% off · $" + sale : "New one-time access · 50% off · $" + sale;
+      saleLabel = "Get 30-day access · $" + sale + " · 50% off";
+      eyebrow = "First visit · 50% off · $" + sale;
     }
 
     var root = document.createElement("div");
@@ -613,6 +613,10 @@
       return;
     }
     if (shouldOfferPortalUpsell(session)) {
+      if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
+        navigateAfterSample(finishHome || FINISH_HOME);
+        return;
+      }
       showPortalUpsellModal(finishHome);
       return;
     }

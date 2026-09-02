@@ -1,12 +1,12 @@
 /**
- * September 50% off: SEP50PERCENTOFF through the end of Sept 2026 ET.
+ * First-visit 50% off: SEP50PERCENTOFF for 15 minutes on a new browser.
  *
- * Same one-time 30-day Payment Link for:
- *   - new first-time access (not a subscription)
- *   - members renewing current or expired access
+ * Not a renewal. One-time 30-day access only. Clock starts on the first
+ * page view in this browser and does not reset on refresh.
  *
- * Prefills Stripe Payment Links via prefilled_promo_code. Create the same
- * promotion code in Stripe Dashboard (50% off) or checkout will reject it.
+ * Prefills Stripe via prefilled_promo_code / Checkout Session promoCode.
+ * Create the same promotion code in Stripe Dashboard (50% off) or checkout
+ * will reject it.
  */
 (function () {
   "use strict";
@@ -14,9 +14,12 @@
   var PROMO_CODE = "SEP50PERCENTOFF";
   var PROMO_START_MS = new Date("2026-09-01T00:00:00-04:00").getTime();
   var PROMO_END_MS = new Date("2026-10-01T00:00:00-04:00").getTime();
+  var OFFER_MS = 15 * 60 * 1000;
+  var OFFER_END_KEY = "bcc_save50_first_visit_15m_end_v1";
   var BAR_ID = "bccSave50PromoBar";
   var COUNTDOWN_ID = "bccSave50Countdown";
   var timerId = null;
+  var memoryOfferEndMs = 0;
 
   function landingPathKey() {
     var p = (location.pathname || "").toLowerCase().replace(/\/$/, "") || "/";
@@ -34,26 +37,6 @@
       p === "/comptia-sec+-home" ||
       p === "/ccnaauto-home"
     );
-  }
-
-  function currentTrack() {
-    var p = (location.pathname || "").toLowerCase();
-    if (
-      p.indexOf("comptia-sec") >= 0 ||
-      p.indexOf("/comp_tia_sec") >= 0 ||
-      p.indexOf("/secplus") >= 0
-    ) {
-      return "secplus";
-    }
-    if (p.indexOf("/ccnp") >= 0 || p.indexOf("encor") >= 0) return "encor";
-    if (p.indexOf("ccnaauto") >= 0) return "ccnaauto";
-    if (p.indexOf("ccna") >= 0) return "ccna";
-    var land = landingPathKey();
-    if (land === "/comptia-sec+-home") return "secplus";
-    if (land === "/ccnp-home") return "encor";
-    if (land === "/ccnaauto-home") return "ccnaauto";
-    if (land === "/ccna-home") return "ccna";
-    return null;
   }
 
   function readJson(key) {
@@ -128,15 +111,36 @@
     return false;
   }
 
-  function isRenewingMember() {
-    var track = currentTrack();
-    if (track) return trackHasMembership(track);
+  function alreadyHasAccess() {
     return (
       trackHasMembership("secplus") ||
       trackHasMembership("ccna") ||
       trackHasMembership("encor") ||
       trackHasMembership("ccnaauto")
     );
+  }
+
+  function readStoredOfferEnd() {
+    try {
+      var n = parseInt(localStorage.getItem(OFFER_END_KEY) || "", 10);
+      if (!isNaN(n) && n > 0) return n;
+    } catch (e) {}
+    return memoryOfferEndMs || 0;
+  }
+
+  function writeStoredOfferEnd(ms) {
+    memoryOfferEndMs = ms;
+    try {
+      localStorage.setItem(OFFER_END_KEY, String(ms));
+    } catch (e) {}
+  }
+
+  function firstVisitOfferEndMs() {
+    var stored = readStoredOfferEnd();
+    if (stored) return stored;
+    var end = Date.now() + OFFER_MS;
+    writeStoredOfferEnd(end);
+    return end;
   }
 
   function purchaseHref() {
@@ -146,39 +150,36 @@
     return "#purchase";
   }
 
-  function purchaseCtaLabel(renewing) {
+  function purchaseCtaLabel() {
     var p = landingPathKey();
     if (p === "/" || p === "/index") return "Choose track · 50% off →";
-    return renewing ? "Renew 30 days · 50% off →" : "New 30-day access · 50% off →";
+    return "Get 30-day access · 50% off →";
   }
 
   function promoEndMs() {
-    return PROMO_END_MS;
+    return firstVisitOfferEndMs();
   }
 
   function inCalendarWindow() {
     var now = Date.now();
-    return now >= PROMO_START_MS && now < promoEndMs();
+    return now >= PROMO_START_MS && now < PROMO_END_MS;
   }
 
   function isActive() {
-    return inCalendarWindow();
+    if (!inCalendarWindow()) return false;
+    if (alreadyHasAccess()) return false;
+    return Date.now() < firstVisitOfferEndMs();
   }
 
   function formatCountdown(msLeft) {
     if (msLeft <= 0) return "Ended";
     var totalSec = Math.floor(msLeft / 1000);
-    var days = Math.floor(totalSec / 86400);
-    var hours = Math.floor((totalSec % 86400) / 3600);
-    var mins = Math.floor((totalSec % 3600) / 60);
+    var mins = Math.floor(totalSec / 60);
     var secs = totalSec % 60;
     function pad(n) {
       return n < 10 ? "0" + n : String(n);
     }
-    if (days > 0) {
-      return days + "d " + pad(hours) + "h " + pad(mins) + "m " + pad(secs) + "s";
-    }
-    return pad(hours) + ":" + pad(mins) + ":" + pad(secs);
+    return pad(mins) + ":" + pad(secs);
   }
 
   function updateCountdown() {
@@ -235,29 +236,18 @@
   function mountBanner() {
     if (!isLandingPage() || !isActive() || document.getElementById(BAR_ID)) return;
 
-    var renewing = isRenewingMember();
     document.documentElement.classList.add("bcc-save50-promo-active");
 
     var bar = document.createElement("div");
     bar.id = BAR_ID;
     bar.className = "bcc-save50-promo-bar";
     bar.setAttribute("role", "region");
-    bar.setAttribute(
-      "aria-label",
-      renewing
-        ? "Renew 30-day access at 50 percent off"
-        : "New one-time 30-day access at 50 percent off"
-    );
+    bar.setAttribute("aria-label", "First visit 50 percent off for 15 minutes");
     bar.innerHTML =
       '<div class="bcc-save50-promo-bar__inner">' +
       '<div class="bcc-save50-promo-bar__main">' +
-      '<p class="bcc-save50-promo-bar__headline">' +
-      (renewing ? "Renew at 50% off" : "50% off 30-day access") +
-      "</p>" +
-      '<p class="bcc-save50-promo-bar__sub">' +
-      (renewing
-        ? "One-time renewal · Use code "
-        : "New one-time access · Use code ") +
+      '<p class="bcc-save50-promo-bar__headline">First visit: 50% off</p>' +
+      '<p class="bcc-save50-promo-bar__sub">15 minutes only · Use code ' +
       "<code>" +
       PROMO_CODE +
       '</code> at checkout <button type="button" class="bcc-save50-promo-bar__copy" data-bcc-save50-copy>Copy code</button></p>' +
@@ -265,12 +255,12 @@
       '<div class="bcc-save50-promo-bar__actions">' +
       '<span class="bcc-save50-promo-bar__timer">Offer ends in<br /><strong id="' +
       COUNTDOWN_ID +
-      '">--:--:--</strong></span>' +
+      '">--:--</strong></span>' +
       '<div class="bcc-save50-promo-bar__cta-row">' +
       '<a class="bcc-save50-promo-bar__cta" href="' +
       purchaseHref() +
       '">' +
-      purchaseCtaLabel(renewing) +
+      purchaseCtaLabel() +
       "</a>" +
       "</div></div></div>";
 
@@ -284,13 +274,26 @@
     }
 
     var purchaseLink = bar.querySelector(".bcc-save50-promo-bar__cta");
-    if (
-      purchaseLink &&
-      landingPathKey() !== "/" &&
-      landingPathKey() !== "/index" &&
-      !document.getElementById("purchase")
-    ) {
-      purchaseLink.style.display = "none";
+    if (purchaseLink) {
+      purchaseLink.addEventListener("click", function (ev) {
+        var started = null;
+        var land = landingPathKey();
+        if (land === "/comptia-sec+-home" && typeof window.bccStartSecplusPortalCheckout === "function") {
+          started = window.bccStartSecplusPortalCheckout("30d", purchaseLink);
+        } else if (land === "/ccna-home" && typeof window.bccStartCcnaPortalCheckout === "function") {
+          started = window.bccStartCcnaPortalCheckout("30d", purchaseLink);
+        }
+        if (!started) return;
+        ev.preventDefault();
+        if (typeof started.then === "function") {
+          started.catch(function (err) {
+            window.alert(err && err.message ? err.message : "Could not start checkout.");
+          });
+        }
+      });
+      if (landingPathKey() !== "/" && landingPathKey() !== "/index" && !document.getElementById("purchase")) {
+        purchaseLink.style.display = "none";
+      }
     }
 
     updateCountdown();
@@ -316,7 +319,6 @@
     return PROMO_CODE;
   };
   window.bccSave50PromoEndMs = promoEndMs;
-  window.bccSave50IsRenewingMember = isRenewingMember;
   window.bccBuildCheckoutUrlWithSave50 = appendPromoToCheckoutUrl;
   window.bccSave50DiscountedValue = discountedValue;
 

@@ -123,8 +123,13 @@
     openModal();
   }
 
+  function firstVisitBannerActive() {
+    return typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive();
+  }
+
   function maybeAutoOpen() {
     if (open || isPortalMember() || dismissed() || autoShown()) return;
+    if (firstVisitBannerActive()) return;
     if (!pastFold()) return;
     markAutoShown();
     openModal();

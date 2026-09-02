@@ -168,9 +168,7 @@
     }
     link.textContent =
       typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()
-        ? typeof window.bccSave50IsRenewingMember === "function" && window.bccSave50IsRenewingMember()
-          ? "Renew 30-day access · 50% off"
-          : "New 30-day access · 50% off"
+        ? "Get 30-day access · 50% off"
         : "Get 30-day access · $29.99";
     link.setAttribute("href", HOME_PATH + PURCHASE_HASH);
     link.removeAttribute("data-secplus-start-free-sim");
