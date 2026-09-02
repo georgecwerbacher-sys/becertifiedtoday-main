@@ -1,9 +1,9 @@
 /**
  * September 50% off: SEP50PERCENTOFF through the end of Sept 2026 ET.
  *
- * Eligible only for:
- *   - first-time visits (this browser has not been here before)
- *   - people renewing a current or expired membership on this browser
+ * Same one-time 30-day Payment Link for:
+ *   - new first-time access (not a subscription)
+ *   - members renewing current or expired access
  *
  * Prefills Stripe Payment Links via prefilled_promo_code. Create the same
  * promotion code in Stripe Dashboard (50% off) or checkout will reject it.
@@ -14,8 +14,6 @@
   var PROMO_CODE = "SEP50PERCENTOFF";
   var PROMO_START_MS = new Date("2026-09-01T00:00:00-04:00").getTime();
   var PROMO_END_MS = new Date("2026-10-01T00:00:00-04:00").getTime();
-  var FIRST_SEEN_KEY = "bcc_save50_first_visit_seen_v1";
-  var FIRST_SESSION_KEY = "bcc_save50_first_visit_session_v1";
   var BAR_ID = "bccSave50PromoBar";
   var COUNTDOWN_ID = "bccSave50Countdown";
   var timerId = null;
@@ -141,18 +139,6 @@
     );
   }
 
-  function isFirstVisitEligible() {
-    try {
-      if (sessionStorage.getItem(FIRST_SESSION_KEY) === "1") return true;
-      if (localStorage.getItem(FIRST_SEEN_KEY)) return false;
-      sessionStorage.setItem(FIRST_SESSION_KEY, "1");
-      localStorage.setItem(FIRST_SEEN_KEY, String(Date.now()));
-      return true;
-    } catch (e) {
-      return true;
-    }
-  }
-
   function purchaseHref() {
     var p = landingPathKey();
     if (p === "/" || p === "/index") return "#main";
@@ -163,7 +149,7 @@
   function purchaseCtaLabel(renewing) {
     var p = landingPathKey();
     if (p === "/" || p === "/index") return "Choose track · 50% off →";
-    return renewing ? "Renew 50% off →" : "Get 50% off →";
+    return renewing ? "Renew 30 days · 50% off →" : "New 30-day access · 50% off →";
   }
 
   function promoEndMs() {
@@ -176,9 +162,7 @@
   }
 
   function isActive() {
-    if (!inCalendarWindow()) return false;
-    if (isRenewingMember()) return true;
-    return isFirstVisitEligible();
+    return inCalendarWindow();
   }
 
   function formatCountdown(msLeft) {
@@ -260,16 +244,20 @@
     bar.setAttribute("role", "region");
     bar.setAttribute(
       "aria-label",
-      renewing ? "Renewal 50 percent off offer" : "First visit September 50 percent off offer"
+      renewing
+        ? "Renew 30-day access at 50 percent off"
+        : "New one-time 30-day access at 50 percent off"
     );
     bar.innerHTML =
       '<div class="bcc-save50-promo-bar__inner">' +
       '<div class="bcc-save50-promo-bar__main">' +
       '<p class="bcc-save50-promo-bar__headline">' +
-      (renewing ? "Renew at 50% off" : "September 50% off") +
+      (renewing ? "Renew at 50% off" : "50% off 30-day access") +
       "</p>" +
       '<p class="bcc-save50-promo-bar__sub">' +
-      (renewing ? "Current members · Use code " : "First visit · Use code ") +
+      (renewing
+        ? "One-time renewal · Use code "
+        : "New one-time access · Use code ") +
       "<code>" +
       PROMO_CODE +
       '</code> at checkout <button type="button" class="bcc-save50-promo-bar__copy" data-bcc-save50-copy>Copy code</button></p>' +

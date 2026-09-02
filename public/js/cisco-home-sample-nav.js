@@ -668,23 +668,8 @@
         Date.now() >= new Date("2026-09-01T00:00:00-04:00").getTime() &&
         Date.now() < new Date("2026-10-01T00:00:00-04:00").getTime()
       ) {
-        var sep50Ok = false;
-        try {
-          sep50Ok =
-            sessionStorage.getItem("bcc_save50_first_visit_session_v1") === "1" ||
-            !localStorage.getItem("bcc_save50_first_visit_seen_v1") ||
-            !!localStorage.getItem("bcc_ccna_portal_30d_v1") ||
-            !!(
-              localStorage.getItem("bcc_ccna_portal_30d_cs_v1") &&
-              String(localStorage.getItem("bcc_ccna_portal_30d_cs_v1")).indexOf("cs_") === 0
-            );
-        } catch (e) {
-          sep50Ok = true;
-        }
-        if (sep50Ok) {
-          checkoutUrl +=
-            (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=SEP50PERCENTOFF";
-        }
+        checkoutUrl +=
+          (checkoutUrl.indexOf("?") >= 0 ? "&" : "?") + "prefilled_promo_code=SEP50PERCENTOFF";
       } else if (
         Date.now() >= new Date("2026-08-01T00:00:00-04:00").getTime() &&
         Date.now() < new Date("2026-09-01T00:00:00-04:00").getTime()
