@@ -585,7 +585,19 @@
     });
 
     root.querySelector(".secplus-sample-upsell-primary").addEventListener("click", function () {
+      var btn = this;
       closeModal();
+      if (typeof window.bccStartSecplusPortalCheckout === "function") {
+        var started = window.bccStartSecplusPortalCheckout("30d", btn);
+        if (started && typeof started.then === "function") {
+          started.catch(function (err) {
+            window.alert(err && err.message ? err.message : "Could not start checkout.");
+            navigateAfterSample(purchaseUrl);
+          });
+          return;
+        }
+        if (started) return;
+      }
       navigateAfterSample(purchaseUrl);
     });
 

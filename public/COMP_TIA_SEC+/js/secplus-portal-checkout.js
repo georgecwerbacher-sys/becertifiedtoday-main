@@ -1,8 +1,8 @@
 /**
  * Stripe checkout for CompTIA Security+ portal access.
  *
- * 30-day list price: $29.99 on the Payment Link (same pattern as CCNA/ENCOR portal pricing).
- * Paste the live Payment Link URL into LINKS["30d"] below.
+ * 30-day list price: $29.99 via POST /api/create-checkout-session (productId secplus-portal-30d).
+ * Do not send buyers to the deactivated Payment Link buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07.
  *
  * Stripe product name: CompTIA Security+ SY0-701 - 30-day all-access pass
  * Stripe description (≤500 chars): 30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (SY0-701 objectives), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam - all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.
@@ -10,7 +10,7 @@
  * Redirect after payment:
  *   /COMP_TIA_SEC+/secplus-portal-checkout-success.html?session_id={CHECKOUT_SESSION_ID}
  *
- * Optional metadata on the link: productId = secplus-portal-30d
+ * Optional metadata on the session: productId = secplus-portal-30d
  *
  * 3-day free trial Payment Link (promo / partner):
  *   https://buy.stripe.com/6oU3cu7gF5Ovglq1xac3m0b
@@ -20,7 +20,6 @@
   var LINKS = {
     "3d": "https://buy.stripe.com/6oU3cu7gF5Ovglq1xac3m0b",
     "10d": "https://buy.stripe.com/8x28wObwVfp54CIgs4c3m06",
-    "30d": "https://buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07",
   };
 
   var PORTAL_URL = "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
@@ -125,6 +124,18 @@
     return raw;
   }
 
+  function requestedPromoCode(tier, applyLaunchPromo, applyTrialPromo) {
+    if (tier !== "30d") return "";
+    if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
+      return typeof window.bccSave50PromoCode === "function"
+        ? window.bccSave50PromoCode()
+        : "SEP50PERCENTOFF";
+    }
+    if (applyLaunchPromo && LAUNCH_PROMO_CODE) return LAUNCH_PROMO_CODE;
+    if (applyTrialPromo && TRIAL_PROMO_CODE) return TRIAL_PROMO_CODE;
+    return "";
+  }
+
   function buildCheckoutUrl(tier, applyLaunchPromo, applyTrialPromo) {
     var url = LINKS[tier];
     if (!url) return url;
@@ -138,6 +149,36 @@
     if (!promo) return url;
     var sep = url.indexOf("?") >= 0 ? "&" : "?";
     return url + sep + "prefilled_promo_code=" + encodeURIComponent(promo);
+  }
+
+  function startSecplusPortalCheckoutViaApi(tier, triggerEl, applyLaunchPromo, applyTrialPromo) {
+    trackBeginCheckout(tier, triggerEl, applyLaunchPromo, applyTrialPromo);
+    if (typeof window.bccSetSecplusPendingPortalTier === "function") {
+      window.bccSetSecplusPendingPortalTier(tier);
+    }
+    var payload = { productId: "secplus-portal-30d" };
+    var promo = requestedPromoCode(tier, applyLaunchPromo, applyTrialPromo);
+    if (promo) payload.promoCode = promo;
+    return fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    }).then(function (res) {
+      return res
+        .json()
+        .catch(function () {
+          return {};
+        })
+        .then(function (data) {
+          if (!res.ok || !data || !data.url) {
+            throw new Error(
+              (data && (data.error || data.detail)) || "Could not start checkout."
+            );
+          }
+          window.location.href = data.url;
+          return true;
+        });
+    });
   }
 
   function trackBeginCheckout(tier, triggerEl, applyLaunchPromo, applyTrialPromo) {
@@ -182,8 +223,12 @@
     var product = PRODUCTS[tier];
     var applyLaunchPromo = shouldApplyLaunchPromo(tier, options);
     var applyTrialPromo = shouldApplyTrialPromo(tier, options);
+    if (!product) return false;
+    if (tier === "30d") {
+      return startSecplusPortalCheckoutViaApi(tier, triggerEl, applyLaunchPromo, applyTrialPromo);
+    }
     var url = buildCheckoutUrl(tier, applyLaunchPromo, applyTrialPromo);
-    if (!product || !url) return false;
+    if (!url) return false;
 
     trackBeginCheckout(tier, triggerEl, applyLaunchPromo, applyTrialPromo);
     if (typeof window.bccSetSecplusPendingPortalTier === "function") {
