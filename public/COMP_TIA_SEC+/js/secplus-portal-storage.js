@@ -64,8 +64,10 @@
 
   function productIdFromAmountCentsSecplus(amount) {
     if (amount === 0) return "secplus-portal-3d";
-    if (amount === 999) return "secplus-portal-10d";
-    if (amount === 1999 || amount === 1499) return "secplus-portal-30d";
+    if (amount === 999 || amount === 500) return "secplus-portal-10d";
+    if (amount === 2999 || amount === 1999 || amount === 1500 || amount === 1499) {
+      return "secplus-portal-30d";
+    }
     return null;
   }
 

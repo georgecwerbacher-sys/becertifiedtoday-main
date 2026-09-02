@@ -1,7 +1,7 @@
 /**
  * Stripe checkout for CompTIA Security+ portal access.
  *
- * 30-day list price: $19.99 on the Payment Link (same pattern as CCNA/ENCOR portal pricing).
+ * 30-day list price: $29.99 on the Payment Link (same pattern as CCNA/ENCOR portal pricing).
  * Paste the live Payment Link URL into LINKS["30d"] below.
  *
  * Stripe product name: CompTIA Security+ SY0-701 - 30-day all-access pass
@@ -58,9 +58,9 @@
     "30d": {
       id: "secplus_portal_30d",
       name: "CompTIA Security+ 30-day access",
-      listValue: "19.99",
+      listValue: "29.99",
       launchValue: "15.99",
-      value: "19.99",
+      value: "29.99",
       defaultLabel: "Get 30-day access",
       labelKey: "secplusPortal30dCheckoutLabel",
     },

@@ -7,7 +7,7 @@
   "use strict";
 
   var PROMO_CODE = "AUGUSTPROMO2026";
-  var LIST_PRICE = "19.99";
+  var LIST_PRICE = "29.99";
   var SALE_PRICE = "15.99";
   var PROMO_START_MS = new Date("2026-08-01T00:00:00-04:00").getTime();
   var PROMO_END_MS = new Date("2026-09-01T00:00:00-04:00").getTime();

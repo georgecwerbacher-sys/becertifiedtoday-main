@@ -1,11 +1,21 @@
 /**
- * SAVE50 promo: 50% off everything with SAVE50PERCENT until midnight Jul 21, 2026 ET.
+ * September 50% off: SEP50PERCENTOFF through the end of Sept 2026 ET.
+ *
+ * Eligible only for:
+ *   - first-time visits (this browser has not been here before)
+ *   - people renewing a current or expired membership on this browser
+ *
+ * Prefills Stripe Payment Links via prefilled_promo_code. Create the same
+ * promotion code in Stripe Dashboard (50% off) or checkout will reject it.
  */
 (function () {
   "use strict";
 
-  var PROMO_CODE = "SAVE50PERCENT";
-  var PROMO_END_MS = new Date("2026-07-21T00:00:00-04:00").getTime();
+  var PROMO_CODE = "SEP50PERCENTOFF";
+  var PROMO_START_MS = new Date("2026-09-01T00:00:00-04:00").getTime();
+  var PROMO_END_MS = new Date("2026-10-01T00:00:00-04:00").getTime();
+  var FIRST_SEEN_KEY = "bcc_save50_first_visit_seen_v1";
+  var FIRST_SESSION_KEY = "bcc_save50_first_visit_session_v1";
   var BAR_ID = "bccSave50PromoBar";
   var COUNTDOWN_ID = "bccSave50Countdown";
   var timerId = null;
@@ -28,6 +38,121 @@
     );
   }
 
+  function currentTrack() {
+    var p = (location.pathname || "").toLowerCase();
+    if (
+      p.indexOf("comptia-sec") >= 0 ||
+      p.indexOf("/comp_tia_sec") >= 0 ||
+      p.indexOf("/secplus") >= 0
+    ) {
+      return "secplus";
+    }
+    if (p.indexOf("/ccnp") >= 0 || p.indexOf("encor") >= 0) return "encor";
+    if (p.indexOf("ccnaauto") >= 0) return "ccnaauto";
+    if (p.indexOf("ccna") >= 0) return "ccna";
+    var land = landingPathKey();
+    if (land === "/comptia-sec+-home") return "secplus";
+    if (land === "/ccnp-home") return "encor";
+    if (land === "/ccnaauto-home") return "ccnaauto";
+    if (land === "/ccna-home") return "ccna";
+    return null;
+  }
+
+  function readJson(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function hasCheckoutSession(key) {
+    try {
+      var s = localStorage.getItem(key);
+      return typeof s === "string" && s.indexOf("cs_") === 0;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function looksLikeMembership(obj) {
+    return !!(obj && (typeof obj.expiresAt === "number" || obj.productId));
+  }
+
+  function trackHasMembership(track) {
+    if (track === "secplus") {
+      if (
+        typeof window.bccSecplusPortalAccessActive === "function" &&
+        window.bccSecplusPortalAccessActive()
+      ) {
+        return true;
+      }
+      if (
+        typeof window.bccSecplusPortalNeedsRestoreLink === "function" &&
+        window.bccSecplusPortalNeedsRestoreLink()
+      ) {
+        return true;
+      }
+      return (
+        looksLikeMembership(readJson("bcc_secplus_portal_v1")) ||
+        hasCheckoutSession("bcc_secplus_portal_cs_v1")
+      );
+    }
+    if (track === "ccna") {
+      if (typeof window.bccPortalAccessActive === "function" && window.bccPortalAccessActive()) {
+        return true;
+      }
+      return (
+        looksLikeMembership(readJson("bcc_ccna_portal_30d_v1")) ||
+        hasCheckoutSession("bcc_ccna_portal_30d_cs_v1")
+      );
+    }
+    if (track === "encor") {
+      if (
+        typeof window.bccEncorPortalAccessActive === "function" &&
+        window.bccEncorPortalAccessActive()
+      ) {
+        return true;
+      }
+      return (
+        looksLikeMembership(readJson("bcc_encor_portal_v1")) ||
+        hasCheckoutSession("bcc_encor_portal_cs_v1")
+      );
+    }
+    if (track === "ccnaauto") {
+      return (
+        looksLikeMembership(readJson("bcc_ccnaauto_portal_v1")) ||
+        hasCheckoutSession("bcc_ccnaauto_portal_cs_v1")
+      );
+    }
+    return false;
+  }
+
+  function isRenewingMember() {
+    var track = currentTrack();
+    if (track) return trackHasMembership(track);
+    return (
+      trackHasMembership("secplus") ||
+      trackHasMembership("ccna") ||
+      trackHasMembership("encor") ||
+      trackHasMembership("ccnaauto")
+    );
+  }
+
+  function isFirstVisitEligible() {
+    try {
+      if (sessionStorage.getItem(FIRST_SESSION_KEY) === "1") return true;
+      if (localStorage.getItem(FIRST_SEEN_KEY)) return false;
+      sessionStorage.setItem(FIRST_SESSION_KEY, "1");
+      localStorage.setItem(FIRST_SEEN_KEY, String(Date.now()));
+      return true;
+    } catch (e) {
+      return true;
+    }
+  }
+
   function purchaseHref() {
     var p = landingPathKey();
     if (p === "/" || p === "/index") return "#main";
@@ -35,18 +160,25 @@
     return "#purchase";
   }
 
-  function purchaseCtaLabel() {
+  function purchaseCtaLabel(renewing) {
     var p = landingPathKey();
     if (p === "/" || p === "/index") return "Choose track · 50% off →";
-    return "Get 50% off →";
+    return renewing ? "Renew 50% off →" : "Get 50% off →";
   }
 
   function promoEndMs() {
     return PROMO_END_MS;
   }
 
+  function inCalendarWindow() {
+    var now = Date.now();
+    return now >= PROMO_START_MS && now < promoEndMs();
+  }
+
   function isActive() {
-    return Date.now() < promoEndMs();
+    if (!inCalendarWindow()) return false;
+    if (isRenewingMember()) return true;
+    return isFirstVisitEligible();
   }
 
   function formatCountdown(msLeft) {
@@ -119,18 +251,26 @@
   function mountBanner() {
     if (!isLandingPage() || !isActive() || document.getElementById(BAR_ID)) return;
 
+    var renewing = isRenewingMember();
     document.documentElement.classList.add("bcc-save50-promo-active");
 
     var bar = document.createElement("div");
     bar.id = BAR_ID;
     bar.className = "bcc-save50-promo-bar";
     bar.setAttribute("role", "region");
-    bar.setAttribute("aria-label", "50% off limited-time offer");
+    bar.setAttribute(
+      "aria-label",
+      renewing ? "Renewal 50 percent off offer" : "First visit September 50 percent off offer"
+    );
     bar.innerHTML =
       '<div class="bcc-save50-promo-bar__inner">' +
       '<div class="bcc-save50-promo-bar__main">' +
-      '<p class="bcc-save50-promo-bar__headline">50% off everything</p>' +
-      '<p class="bcc-save50-promo-bar__sub">Limited time · Use code <code>' +
+      '<p class="bcc-save50-promo-bar__headline">' +
+      (renewing ? "Renew at 50% off" : "September 50% off") +
+      "</p>" +
+      '<p class="bcc-save50-promo-bar__sub">' +
+      (renewing ? "Current members · Use code " : "First visit · Use code ") +
+      "<code>" +
       PROMO_CODE +
       '</code> at checkout <button type="button" class="bcc-save50-promo-bar__copy" data-bcc-save50-copy>Copy code</button></p>' +
       "</div>" +
@@ -142,7 +282,7 @@
       '<a class="bcc-save50-promo-bar__cta" href="' +
       purchaseHref() +
       '">' +
-      purchaseCtaLabel() +
+      purchaseCtaLabel(renewing) +
       "</a>" +
       "</div></div></div>";
 
@@ -156,7 +296,12 @@
     }
 
     var purchaseLink = bar.querySelector(".bcc-save50-promo-bar__cta");
-    if (purchaseLink && landingPathKey() !== "/" && landingPathKey() !== "/index" && !document.getElementById("purchase")) {
+    if (
+      purchaseLink &&
+      landingPathKey() !== "/" &&
+      landingPathKey() !== "/index" &&
+      !document.getElementById("purchase")
+    ) {
       purchaseLink.style.display = "none";
     }
 
@@ -183,6 +328,7 @@
     return PROMO_CODE;
   };
   window.bccSave50PromoEndMs = promoEndMs;
+  window.bccSave50IsRenewingMember = isRenewingMember;
   window.bccBuildCheckoutUrlWithSave50 = appendPromoToCheckoutUrl;
   window.bccSave50DiscountedValue = discountedValue;
 

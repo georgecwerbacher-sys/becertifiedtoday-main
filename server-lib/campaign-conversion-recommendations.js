@@ -75,7 +75,7 @@ export function buildCampaignConversionRecommendations(report) {
       title: "Traffic but zero checkout clicks on Security+ home",
       detail: `${landingViews} page views on ${primary.path || "/comptia-sec+-home.html"} with no begin_checkout.`,
       action:
-        "Put one purchase CTA above the fold (30-day $19.99). Test PBQ sample → scroll to #purchase. Confirm GA4 Realtime fires begin_checkout on click.",
+        "Put one purchase CTA above the fold (30-day $29.99). Test PBQ sample → scroll to #purchase. Confirm GA4 Realtime fires begin_checkout on click.",
     });
   } else if (landingViews >= 50 && landingCheckoutRate != null && landingCheckoutRate < 0.02) {
     push(recs, {
@@ -133,7 +133,7 @@ export function buildCampaignConversionRecommendations(report) {
       title: "Free sim starts without enough checkouts",
       detail: `${freeSim} secplus_free_sim_start vs ${landingCheckout} begin_checkout.`,
       action:
-        "After sim completion, surface a single CTA (Continue studying — 30 days $19.99). Email capture if they abandon. Retarget sim starters in ads if volume allows.",
+        "After sim completion, surface a single CTA (Continue studying — 30 days $29.99). Email capture if they abandon. Retarget sim starters in ads if volume allows.",
     });
   }
 

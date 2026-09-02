@@ -45,7 +45,9 @@
   }
 
   function productIdFromAmountCentsEncor(amount) {
-    if (amount === 1999 || amount === 1499) return "encor-portal-30d";
+    if (amount === 2999 || amount === 1999 || amount === 1500 || amount === 1499) {
+      return "encor-portal-30d";
+    }
     return null;
   }
 

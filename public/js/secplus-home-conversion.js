@@ -15,7 +15,7 @@
   var SAMPLE_PBQ = "/secplus-sample?track=sim-dark-web";
 
   var PAID_30D_SUFFIX =
-    "Unlock <strong>30-day full access for $19.99</strong> when you are ready - PBQs, timed sim, and scorecard included.";
+    "Unlock <strong>30-day full access for $29.99</strong> when you are ready - PBQs, timed sim, and scorecard included.";
 
   var WEDGE_LEAD =
     "<strong>1000+ interactive questions</strong>, <strong>34 PBQ scenarios</strong>, adaptive review, and a <strong>90-minute timed exam</strong> in your browser. " +
@@ -32,7 +32,7 @@
     "pbq-wedge": {
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser - no download or VM. " +
-        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$19.99 / 30 days</strong>.",
+        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios, 1000+ questions, and the timed sim for <strong>$29.99 / 30 days</strong>.",
       ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
       stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
@@ -40,7 +40,7 @@
     "timed-sim": {
       lead:
         "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
-        "Included with <strong>30-day full access for $19.99</strong>.",
+        "Included with <strong>30-day full access for $29.99</strong>.",
       ctaPrimary: GOOGLE_PAID_PURCHASE_CTA,
       stickyPrimary: GOOGLE_PAID_PURCHASE_CTA,
       ctaHref: "#purchase",
@@ -80,9 +80,9 @@
     "portal-10d": {
       id: "portal-10d",
       adHeadline: "Security+ Practice Test",
-      eyebrow: "SY0-701 · 30-day access · $19.99",
+      eyebrow: "SY0-701 · 30-day access · $29.99",
       headline: "Security+ Practice Test - 1000+ SY0-701 Questions & PBQ Scenarios",
-      lead: BASE_LEAD + " Unlock <strong>30-day full access for $19.99</strong> when you are ready.",
+      lead: BASE_LEAD + " Unlock <strong>30-day full access for $29.99</strong> when you are ready.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Get 30-day access",
       ctaHref: "#purchase",
@@ -94,7 +94,7 @@
       headline: "Security+ PBQ Practice in Your Browser - Chain Labs & IR Scenarios",
       lead:
         "Rehearse performance-based items the way CompTIA tests them: <strong>drag-and-drop chain labs</strong>, hot spots, and IR report exhibits in your browser - no download or VM. " +
-        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios + 1000+ questions for <strong>$19.99 / 30 days</strong>.",
+        "Try <strong>three free PBQ scenarios</strong> (dark web IR, WLAN configuration, firewall ACL), then unlock 34 PBQ scenarios + 1000+ questions for <strong>$29.99 / 30 days</strong>.",
       ctaPrimary: "Try free 3-scenario PBQ preview",
       ctaHref: SAMPLE_PBQ,
       stickyPrimary: "Free PBQ preview",
@@ -106,7 +106,7 @@
       headline: "90-Minute Security+ Timed Simulation - MCQ + PBQ + Scorecard Review",
       lead:
         "Rehearse test-day pacing with a <strong>90-minute timed Security+ simulation</strong>: multiple-choice and performance-based items in one session, plus a <strong>detailed domain scorecard</strong> when you finish. " +
-        "Included with <strong>30-day full access for $19.99</strong>.",
+        "Included with <strong>30-day full access for $29.99</strong>.",
       ctaPrimary: "Preview free Security+ samples",
       stickyPrimary: "Free samples",
     },

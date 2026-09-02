@@ -166,7 +166,10 @@
       }
       return;
     }
-    link.textContent = "Get 30-day access · $19.99";
+    link.textContent =
+      typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()
+        ? "Get 30-day access · 50% off"
+        : "Get 30-day access · $29.99";
     link.setAttribute("href", HOME_PATH + PURCHASE_HASH);
     link.removeAttribute("data-secplus-start-free-sim");
     link.removeAttribute("data-secplus-start-method");

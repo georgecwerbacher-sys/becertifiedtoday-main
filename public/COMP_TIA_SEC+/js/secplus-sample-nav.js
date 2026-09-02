@@ -342,10 +342,27 @@
     return usesMaskedNav(session) && (isQuestionsOnlySample(session) || isSimOnlySample(session));
   }
 
+  function portalAccessPriceHtml() {
+    if (
+      typeof window.bccSave50PromoActive === "function" &&
+      window.bccSave50PromoActive() &&
+      typeof window.bccSave50DiscountedValue === "function"
+    ) {
+      return (
+        "<s>$29.99</s> <strong>$" +
+        window.bccSave50DiscountedValue("29.99") +
+        "</strong> (50% off)"
+      );
+    }
+    return "<strong>$29.99</strong>";
+  }
+
   function portalUpsellLead(session) {
     var kind = sampleKindLabel();
     var access =
-      "Get <strong>30-day full access</strong> for <strong>$19.99</strong>: adaptive review, practice portal modes, and the full timed exam with domain scorecard review - all in your browser.";
+      "Get <strong>30-day full access</strong> for " +
+      portalAccessPriceHtml() +
+      ": adaptive review, practice portal modes, and the full timed exam with domain scorecard review - all in your browser.";
     if (isMultiPbqSample(session)) {
       var remaining = remainingPbqCount(session);
       return (
@@ -497,6 +514,18 @@
     var purchaseUrl = (finishHome || FINISH_HOME).split("#")[0] + "#purchase";
     var lead = portalUpsellLead(session);
 
+    var saleLabel = "Get 30-day access · $29.99";
+    var eyebrow = "30-day full access · $29.99";
+    if (
+      typeof window.bccSave50PromoActive === "function" &&
+      window.bccSave50PromoActive() &&
+      typeof window.bccSave50DiscountedValue === "function"
+    ) {
+      var sale = window.bccSave50DiscountedValue("29.99");
+      saleLabel = "Get 30-day access · $" + sale + " · 50% off";
+      eyebrow = "September 50% off · $" + sale;
+    }
+
     var root = document.createElement("div");
     root.id = "secplusSamplePortalUpsell";
     root.className = "secplus-sample-upsell-root";
@@ -505,13 +534,17 @@
       '<div class="secplus-sample-upsell-backdrop" data-secplus-upsell-dismiss tabindex="-1"></div>' +
       '<div class="secplus-sample-upsell-panel" role="dialog" aria-modal="true" aria-labelledby="secplusSamplePortalUpsellTitle" tabindex="-1">' +
       '<button type="button" class="secplus-sample-upsell-close" data-secplus-upsell-dismiss aria-label="Close dialog">×</button>' +
-      '<p class="secplus-sample-upsell-eyebrow">30-day full access · $19.99</p>' +
+      '<p class="secplus-sample-upsell-eyebrow">' +
+      eyebrow +
+      "</p>" +
       '<h2 id="secplusSamplePortalUpsellTitle">Are you ready?</h2>' +
       '<p class="secplus-sample-upsell-lead">' +
       lead +
       "</p>" +
       '<div class="secplus-sample-upsell-actions">' +
-      '<button type="button" class="secplus-sample-upsell-primary">Get 30-day access · $19.99</button>' +
+      '<button type="button" class="secplus-sample-upsell-primary">' +
+      saleLabel +
+      "</button>" +
       '<button type="button" class="secplus-sample-upsell-secondary" data-secplus-upsell-home>Return to Security+ home</button>' +
       "</div>" +
       "</div>";

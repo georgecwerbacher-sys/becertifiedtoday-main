@@ -91,13 +91,13 @@ Current Stripe-backed products in repo (non-exhaustive — verify in Stripe Dash
 | Track | productId | Price (USD) |
 |-------|-----------|-------------|
 | CCNA | `ccna-portal-10d` | $9.99 |
-| CCNA | `ccna-portal-30d` | $19.99 |
+| CCNA | `ccna-portal-30d` | $29.99 |
 | CCNA | `ccna-test-simulation` | (check Stripe) |
 | ENCOR | `encor-portal-10d` | $9.99 |
-| ENCOR | `encor-portal-30d` | $19.99 |
+| ENCOR | `encor-portal-30d` | $29.99 |
 | ENCOR | `encor-test-simulation` | (check Stripe) |
 | Sec+ | `secplus-portal-10d` | $9.99 |
-| Sec+ | `secplus-portal-30d` | $19.99 |
+| Sec+ | `secplus-portal-30d` | $29.99 |
 | Sec+ | `secplus-test-simulation` | (check Stripe) |
 
 - [ ] Export current Stripe **Products + Prices** (Dashboard → Product catalog)

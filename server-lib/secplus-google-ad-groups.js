@@ -37,7 +37,7 @@ export const SECPLUS_GOOGLE_CAMPAIGN = {
   landingPath: "/comptia-sec+-home.html",
   primaryConversion: "begin_checkout",
   conversionItemIds: ["secplus_portal_24h", "secplus_portal_30d"],
-  primaryOffer: "$465 total · $15/day · 24h free then $15.99 trial upgrade · list $19.99",
+  primaryOffer: "$465 total · $15/day · 24h free then $15.99 trial upgrade · list $29.99",
   planDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md",
   rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
   keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",

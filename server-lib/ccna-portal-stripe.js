@@ -77,7 +77,7 @@ function productIdFromAmountCents(amount, track, session = null) {
   if (amount === 0 && track === "secplus") {
     return "secplus-portal-3d";
   }
-  if (amount === 999) {
+  if (amount === 999 || amount === 500) {
     if (track === "encor") return "encor-portal-10d";
     if (track === "secplus") return "secplus-portal-10d";
     return "ccna-portal-10d";
@@ -85,7 +85,7 @@ function productIdFromAmountCents(amount, track, session = null) {
   if (amount === 1799 && track === "secplus") {
     return "secplus-portal-30d";
   }
-  if (amount === 1999 || amount === 1499) {
+  if (amount === 2999 || amount === 1999 || amount === 1500 || amount === 1499) {
     if (track === "encor") return "encor-portal-30d";
     if (track === "secplus") return "secplus-portal-30d";
     return "ccna-portal-30d";

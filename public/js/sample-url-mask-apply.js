@@ -136,6 +136,17 @@
 
     if (
       onCcnaSample &&
+      !document.head.querySelector('script[src*="bcc-save50-promo.js"]') &&
+      !document.querySelector('script[src*="bcc-save50-promo.js"]')
+    ) {
+      var save50 = document.createElement("script");
+      save50.src = "/js/bcc-save50-promo.js";
+      save50.defer = true;
+      (document.head || document.body).appendChild(save50);
+    }
+
+    if (
+      onCcnaSample &&
       !document.head.querySelector('script[src*="ccna-pass-promo.js"]') &&
       !document.querySelector('script[src*="ccna-pass-promo.js"]')
     ) {
@@ -183,6 +194,16 @@
       analytics.src = "/js/sample-lead-analytics.js";
       analytics.defer = true;
       (document.head || document.body).appendChild(analytics);
+    }
+
+    if (
+      !document.head.querySelector('script[src*="bcc-save50-promo.js"]') &&
+      !document.querySelector('script[src*="bcc-save50-promo.js"]')
+    ) {
+      var save50 = document.createElement("script");
+      save50.src = "/js/bcc-save50-promo.js";
+      save50.defer = true;
+      (document.head || document.body).appendChild(save50);
     }
 
     if (document.querySelector('script[src*="secplus-sample-nav.js"]')) return;

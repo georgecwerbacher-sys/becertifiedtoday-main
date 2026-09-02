@@ -28,11 +28,11 @@ Single source of truth for **Stripe ↔ PayPal parity**. Fill PayPal columns dur
 | productId | Display name | USD | Stripe price env / link | PayPal amount | PayPal notes |
 |-----------|--------------|-----|-------------------------|---------------|--------------|
 | `ccna-portal-10d` | CCNA 10-day portal | 9.99 | `STRIPE_PRICE_CCNA_PORTAL_10D` / Payment Link | 9.99 | |
-| `ccna-portal-30d` | CCNA 30-day portal | 19.99 | `STRIPE_PRICE_CCNA_PORTAL_30D` / Payment Link | 19.99 | |
+| `ccna-portal-30d` | CCNA 30-day portal | 29.99 | `STRIPE_PRICE_CCNA_PORTAL_30D` / Payment Link | 29.99 | |
 | `encor-portal-10d` | ENCOR 10-day portal | 9.99 | Stripe Payment Link | 9.99 | |
-| `encor-portal-30d` | ENCOR 30-day portal | 19.99 | Stripe Payment Link | 19.99 | |
+| `encor-portal-30d` | ENCOR 30-day portal | 29.99 | Stripe Payment Link | 29.99 | |
 | `secplus-portal-10d` | Security+ 10-day portal | 9.99 | Stripe Payment Link | 9.99 | |
-| `secplus-portal-30d` | Security+ 30-day portal | 19.99 | Stripe Payment Link | 19.99 | |
+| `secplus-portal-30d` | Security+ 30-day portal | 29.99 | Stripe Payment Link | 29.99 | |
 
 ---
 
