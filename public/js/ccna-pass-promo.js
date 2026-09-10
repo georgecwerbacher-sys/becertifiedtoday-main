@@ -290,8 +290,7 @@
       !isActive() ||
       isPortalMember() ||
       dockDismissed() ||
-      document.getElementById(DOCK_ID) ||
-      document.getElementById("ccnaPricingModal")
+      document.getElementById(DOCK_ID)
     ) {
       return;
     }

@@ -905,104 +905,6 @@
       text-align: center;
       line-height: 1.5;
     }
-    .ccna-pricing-modal-trigger {
-      order: 3;
-      height: 1px;
-      margin: 0;
-      pointer-events: none;
-    }
-    .ccna-pricing-modal {
-      display: none;
-    }
-    .ccna-pricing-modal.is-open {
-      position: fixed;
-      inset: 0;
-      z-index: 21000;
-      display: grid;
-      place-items: center;
-      padding-top: max(16px, var(--secplus-bts-promo-h, 0px), env(safe-area-inset-top, 0px));
-      padding-right: max(16px, env(safe-area-inset-right, 0px));
-      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
-      padding-left: max(16px, env(safe-area-inset-left, 0px));
-      box-sizing: border-box;
-    }
-    .ccna-pricing-modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(4, 8, 18, 0.72);
-      backdrop-filter: blur(6px);
-    }
-    .ccna-pricing-modal-dialog {
-      position: relative;
-      z-index: 1;
-      width: min(440px, 100%);
-      max-height: min(92vh, 880px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      border-radius: 16px;
-    }
-    @supports (max-height: 92dvh) {
-      .ccna-pricing-modal-dialog {
-        max-height: min(92dvh, 880px);
-      }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .ccna-pricing-modal.is-open .ccna-pricing-modal-dialog {
-        animation: ccnaDialogIn 0.28s ease-out;
-      }
-    }
-    .ccna-pricing-modal-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 2;
-      width: 44px;
-      height: 44px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #e8eef8;
-      font-size: 1.35rem;
-      line-height: 1;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-    .ccna-pricing-modal-close:hover {
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-    }
-    .ccna-pricing-modal-close:focus-visible {
-      outline: 2px solid #9ec0ff;
-      outline-offset: 2px;
-    }
-    .ccna-pricing-modal .home-pricing-section {
-      margin: 0;
-      padding: 48px clamp(14px, 2.5vw, 20px) clamp(18px, 3vw, 26px);
-    }
-    .ccna-pricing-modal .home-pricing-grid {
-      grid-template-columns: 1fr;
-    }
-    .ccna-pricing-modal .home-pricing-inner {
-      width: 100%;
-    }
-    .ccna-pricing-modal .home-pricing-cta {
-      position: sticky;
-      bottom: 0;
-      z-index: 1;
-      margin-bottom: 0;
-      background: #121a2b;
-      box-shadow: 0 -12px 18px rgba(18, 26, 43, 0.95);
-    }
-    .ccna-pricing-modal .home-pricing-footnote {
-      margin-top: 14px;
-    }
-    html.ccna-pricing-modal-open {
-      overflow: hidden;
-    }
-    html.ccna-pricing-modal-open .ccna-mobile-sticky-cta {
-      display: none !important;
-    }
     .landing-gns3-compare h2 {
       margin: 0 0 12px;
       font-size: clamp(1.1rem, 2.5vw, 1.35rem);
@@ -3169,19 +3071,6 @@
             </section>
           </div>
 
-          <div id="ccnaPricingModalTrigger" class="ccna-pricing-modal-trigger" aria-hidden="true"></div>
-          <div id="ccnaPricingModal" class="ccna-pricing-modal" hidden>
-            <div class="ccna-pricing-modal-backdrop" data-ccna-pricing-dismiss></div>
-            <div
-              class="ccna-pricing-modal-dialog"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="ccna-pricing-heading"
-              tabindex="-1"
-            >
-              <button type="button" class="ccna-pricing-modal-close" data-ccna-pricing-dismiss aria-label="Close">
-                ×
-              </button>
           <section class="home-pricing-section purchase-fold" id="purchase" aria-labelledby="ccna-pricing-heading">
             <div class="home-pricing-inner">
               <h2 id="ccna-pricing-heading" class="home-pricing-choose-heading">Choose your access</h2>
@@ -3233,8 +3122,6 @@
               </p>
             </div>
           </section>
-            </div>
-          </div>
 
           <section class="landing-gns3-compare" id="ccna-gns3-compare" aria-labelledby="ccna-gns3-compare-title">
             <h2 id="ccna-gns3-compare-title">Browser Labs vs. GNS3 / Packet Tracer</h2>
@@ -3637,7 +3524,6 @@
   <script src="/CCNA-Study/js/ccna-portal-30d-storage.js" defer></script>
   <script src="/js/bcc-save50-promo.js" defer></script>
   <script src="/js/ccna-pass-promo.js" defer></script>
-  <script src="/js/ccna-pricing-modal.js" defer></script>
   <script src="/CCNA-Study/js/ccna-portal-30d-checkout.js" defer></script>
   <script>
     (function () {

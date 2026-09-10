@@ -268,8 +268,7 @@
       !isActive() ||
       isPortalMember() ||
       dockDismissed() ||
-      document.getElementById(DOCK_ID) ||
-      document.getElementById("secplusPricingModal")
+      document.getElementById(DOCK_ID)
     ) {
       return;
     }

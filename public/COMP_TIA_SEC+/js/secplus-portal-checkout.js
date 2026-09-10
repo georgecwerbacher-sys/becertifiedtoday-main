@@ -201,12 +201,6 @@
     });
   }
 
-  function leavePricingPopup() {
-    if (typeof window.bccCloseSecplusPricingModal === "function") {
-      window.bccCloseSecplusPricingModal(true);
-    }
-  }
-
   function startSecplus24hCheckout(triggerEl) {
     if (hasPaidPortalAccess() || is24hEntitlementActive()) {
       window.location.href = PORTAL_URL;
@@ -259,7 +253,6 @@
     }
     if (btn.dataset.loading === "1") {
       resetCheckoutButton(btn, product);
-      leavePricingPopup();
       return;
     }
     btn.dataset.loading = "1";
@@ -275,7 +268,6 @@
     if (started && typeof started.then === "function") {
       started.catch(function (err) {
         resetCheckoutButton(btn, product);
-        leavePricingPopup();
         window.alert(err && err.message ? err.message : "Could not start checkout.");
       });
     }

@@ -469,6 +469,9 @@
     .funnel > .secplus-home-reviews {
       order: 2;
     }
+    .funnel > #purchase {
+      order: 3;
+    }
     .funnel > #secplus-compare {
       order: 4;
     }
@@ -492,102 +495,6 @@
     .landing-page-intro__offer {
       margin-bottom: clamp(20px, 3vw, 26px);
       color: var(--page-muted);
-    }
-    .secplus-pricing-modal-trigger {
-      order: 3;
-      height: 1px;
-      margin: 0;
-      pointer-events: none;
-    }
-    .secplus-pricing-modal {
-      display: none;
-    }
-    .secplus-pricing-modal.is-open {
-      position: fixed;
-      inset: 0;
-      z-index: 21000;
-      display: grid;
-      place-items: center;
-      padding-top: max(16px, var(--secplus-bts-promo-h, 0px), env(safe-area-inset-top, 0px));
-      padding-right: max(16px, env(safe-area-inset-right, 0px));
-      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
-      padding-left: max(16px, env(safe-area-inset-left, 0px));
-      box-sizing: border-box;
-    }
-    .secplus-pricing-modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(4, 8, 18, 0.72);
-      backdrop-filter: blur(6px);
-    }
-    .secplus-pricing-modal-dialog {
-      position: relative;
-      z-index: 1;
-      width: min(520px, 100%);
-      max-height: min(92vh, 880px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      border-radius: 16px;
-    }
-    @supports (max-height: 92dvh) {
-      .secplus-pricing-modal-dialog {
-        max-height: min(92dvh, 880px);
-      }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .secplus-pricing-modal.is-open .secplus-pricing-modal-dialog {
-        animation: ccnaDialogIn 0.28s ease-out;
-      }
-    }
-    .secplus-pricing-modal-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 2;
-      width: 44px;
-      height: 44px;
-      border: none;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #e8eef8;
-      font-size: 1.35rem;
-      line-height: 1;
-      cursor: pointer;
-      touch-action: manipulation;
-    }
-    .secplus-pricing-modal-close:hover {
-      background: rgba(255, 255, 255, 0.18);
-      color: #fff;
-    }
-    .secplus-pricing-modal-close:focus-visible {
-      outline: 2px solid #c4b5fd;
-      outline-offset: 2px;
-    }
-    .secplus-pricing-modal .purchase-card {
-      margin: 0;
-      padding: 48px clamp(16px, 3vw, 24px) clamp(18px, 3vw, 24px);
-    }
-    .secplus-pricing-modal .purchase-cta-stack--single {
-      max-width: none;
-    }
-    .secplus-pricing-modal .purchase-track-cta-wrap {
-      position: sticky;
-      bottom: 0;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 8px;
-      padding-bottom: 4px;
-      background: var(--surface, #121a2b);
-      box-shadow: 0 -12px 18px rgba(18, 26, 43, 0.95);
-    }
-    html.secplus-pricing-modal-open {
-      overflow: hidden;
-    }
-    html.secplus-pricing-modal-open .secplus-mobile-sticky-cta {
-      display: none !important;
     }
     .funnel-intro {
       margin: 0 0 clamp(20px, 3.5vw, 28px);
@@ -3128,19 +3035,6 @@
             </ul>
           </section>
 
-          <div id="secplusPricingModalTrigger" class="secplus-pricing-modal-trigger" aria-hidden="true"></div>
-          <div id="secplusPricingModal" class="secplus-pricing-modal" hidden>
-            <div class="secplus-pricing-modal-backdrop" data-secplus-pricing-dismiss></div>
-            <div
-              class="secplus-pricing-modal-dialog"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="purchase-fold-title"
-              tabindex="-1"
-            >
-              <button type="button" class="secplus-pricing-modal-close" data-secplus-pricing-dismiss aria-label="Close">
-                ×
-              </button>
           <section class="card purchase-card purchase-fold" id="purchase" aria-labelledby="purchase-fold-title">
             <div class="purchase-card-inner">
               <div class="purchase-card-main purchase-card-main--30d" id="secplusPurchaseDefault">
@@ -3197,8 +3091,6 @@
               </div>
             </div>
           </section>
-            </div>
-          </div>
 
           <section class="landing-gns3-compare" id="secplus-compare" aria-labelledby="secplus-compare-title">
             <h2 id="secplus-compare-title">Browser Exam Prep vs. Static PDFs and Desktop Test Engines</h2>
@@ -3657,7 +3549,6 @@
   </script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-storage.js" defer></script>
   <script src="/js/bcc-save50-promo.js" defer></script>
-  <script src="/js/secplus-pricing-modal.js" defer></script>
   <script src="/COMP_TIA_SEC+/js/secplus-portal-checkout.js" defer></script>
   <script src="/js/secplus-google-paid-landing.js" defer></script>
   <script src="/js/secplus-home-conversion.js" defer></script>
