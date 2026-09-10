@@ -13,7 +13,7 @@ tags:
 
 # Sec+ Dump Intercept — RETIRED
 
-**Do not complete this checklist.** Pause the campaign in Google Ads. Add dump/cheat negatives on Launch 40 instead ([[Sec+ Launch 40 Keyword Lists]] · [[Advertising Ethics]]).
+**Do not complete this checklist.** Pause the campaign in Google Ads. Add dump/cheat negatives on Sep 430 instead ([[Sec+ Sep 430 Keyword Lists]] · [[Advertising Ethics]]).
 
 # Archive — do not build
 

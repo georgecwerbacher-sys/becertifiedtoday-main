@@ -10,7 +10,7 @@
  *   STRIPE_PRICE_CCNA_TEST_SIM     — price_… for one-time timed test simulation
  *   STRIPE_PRICE_CCNA_PORTAL_10D   — price_… for 10-day training portal / library access
  *   STRIPE_PRICE_CCNA_PORTAL_30D   — price_… for 30-day training portal / library access
- *   STRIPE_PRICE_SECPLUS_PORTAL_30D — optional price_… for Security+ 30-day; if unset, finds or creates $29.99
+ *   STRIPE_PRICE_SECPLUS_PORTAL_30D — optional price_… for Security+ 30-day; if unset, finds or creates $19.99
  *   PUBLIC_SITE_URL                — site origin (e.g. https://becertifiedtoday.com). Missing https:// is added;
  *                                    trailing slashes, paths, and stray quotes are stripped to avoid broken redirects.
  *
@@ -25,7 +25,7 @@ import { getStripeSecretKey } from "../server-lib/stripe-secret-key.js";
 import { normalizePublicSiteUrl } from "../server-lib/normalize-public-site-url.js";
 
 const DEFAULT_PRODUCT = "ccna-test-simulation";
-const SECPLUS_30D_AMOUNT = 2999;
+const SECPLUS_30D_AMOUNT = 1999;
 const SECPLUS_30D_NAME = "CompTIA Security+ SY0-701 - 30-day all-access pass";
 const SECPLUS_30D_DESCRIPTION =
   "30 days of SY0-701 exam prep on Be Certified Today: 1000+ interactive practice questions (SY0-701 objectives), PBQ-style hot-spot simulations, adaptive domain review, progress tracking, and a full 90-minute timed practice exam - all in your browser on phone, tablet, or desktop. One-time purchase; no subscription. Access starts at checkout on this device and browser.";
@@ -198,7 +198,18 @@ async function resolveSecplus30dLineItems(stripe, cfg, promotion) {
   }
 
   if (envPriceId && !restricted.length) {
-    return [{ price: envPriceId, quantity: 1 }];
+    try {
+      const envPrice = await stripe.prices.retrieve(envPriceId, { expand: ["product"] });
+      const productId =
+        typeof envPrice.product === "string" ? envPrice.product : envPrice.product?.id;
+      if (productId) {
+        const priceId = await priceOnProduct(stripe, productId, SECPLUS_30D_AMOUNT);
+        console.log("secplus-portal-30d using env product", productId, "price", priceId);
+        return [{ price: priceId, quantity: 1 }];
+      }
+    } catch (e) {
+      console.warn("secplus-portal-30d env price lookup failed:", e.message);
+    }
   }
 
   try {

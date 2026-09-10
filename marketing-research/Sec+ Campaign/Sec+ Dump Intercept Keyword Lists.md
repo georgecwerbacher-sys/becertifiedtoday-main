@@ -1,6 +1,6 @@
 # Sec+ Dump Intercept — RETIRED (do not paste)
 
-> **Do not add these keywords.** They target dump and cheat searches. Pause the campaign in Google Ads. Use them as **Launch 40 negatives** if they appear in Search terms. See [[Advertising Ethics]].
+> **Do not add these keywords.** They target dump and cheat searches. Pause the campaign in Google Ads. Use them as **Sep 430 negatives** if they appear in Search terms. See [[Advertising Ethics]].
 
 Archive only. Campaign: `Security+ SY0-701 · US Search · Dump Intercept` (retired).
 

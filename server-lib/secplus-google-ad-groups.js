@@ -1,6 +1,6 @@
 /**
  * Security+ Google Search ad groups — shared by marketing docs, registry, and /admin GA4.
- * Current flight: Launch 40 (24h trial) — marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md
+ * Current flight: Sep 430 — marketing-research/Sec+ Campaign/Sec+ Sep 430 Campaign Plan.md
  */
 
 /** @typedef {object} SecplusGoogleAdGroupDef */
@@ -16,12 +16,14 @@
  */
 
 export const SECPLUS_GOOGLE_CAMPAIGN = {
-  id: "secplus_portal_launch40",
-  googleAdsCampaignName: "Security+ SY0-701 · US Search · Launch 40",
+  id: "secplus_portal_sep430",
+  googleAdsCampaignName: "Security+ SY0-701 · US Search · Sep 430",
   /** Legacy GA4 / Ads names still seen in historical data */
   campaignAliases: [
+    "secplus_portal_sep430",
     "secplus_portal_launch40",
     "secplus_portal",
+    "Security+ SY0-701 · US Search · Sep 430",
     "Security+ SY0-701 · US Search · Launch 40",
     "Security+ SY0-701 · US Search",
     "Security+ SY0-701 · Exam prep · becertifiedtoday",
@@ -29,78 +31,88 @@ export const SECPLUS_GOOGLE_CAMPAIGN = {
     "Security+ SY0-701 · US Search · Dump Intercept",
     "secplus_portal_dump_intercept",
   ],
-  utmCampaign: "secplus_portal_launch40",
+  utmCampaign: "secplus_portal_sep430",
   utmSource: "google",
   utmMedium: "cpc",
-  dailyBudgetUsd: 15,
-  maxCpcUsd: 2.75,
+  dailyBudgetUsd: 14,
+  maxCpcUsd: 2.5,
   landingPath: "/comptia-sec+-home.html",
   primaryConversion: "begin_checkout",
-  conversionItemIds: ["secplus_portal_24h", "secplus_portal_30d"],
-  primaryOffer: "$465 total · $15/day · 24h free then $15.99 trial upgrade · list $29.99",
-  planDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Campaign Plan.md",
-  rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-  keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
-  checklistDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Build Checklist.md",
+  conversionItemIds: ["secplus_portal_30d"],
+  primaryOffer: "$430 total · $14/day · 30 days · $19.99 / 30-day access",
+  planDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 Campaign Plan.md",
+  rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 RSA Copy.md",
+  keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 Keyword Lists.md",
+  checklistDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 Build Checklist.md",
   adminAnalyticsPath: "/admin#section-secplus-ad-groups",
 };
 
 /** @type {SecplusGoogleAdGroupDef[]} */
 export const SECPLUS_GOOGLE_AD_GROUPS = [
   {
-    slug: "24h-trial",
-    adGroupName: "24h Trial",
-    utmContent: "24h-trial",
-    displayPath: "SY0-701 / 24h-Free",
-    pinH1: "Try 24 Hours Free",
-    intent: "24 hours free, then 30 days at $15.99",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
-  },
-  {
-    slug: "timed-sim",
-    adGroupName: "Timed Simulation",
-    utmContent: "timed-sim",
-    displayPath: "Security+ / Exam-Sim",
+    slug: "exam-prep",
+    adGroupName: "Exam Prep",
+    utmContent: "exam-prep",
+    displayPath: "SY0-701 / Prep",
     pinH1: "SY0-701 Exam Prep Online",
-    intent: "Timed sim, readiness, scorecard",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
-  },
-  {
-    slug: "verified-adaptive",
-    adGroupName: "Verified Adaptive Prep",
-    utmContent: "verified-adaptive",
-    displayPath: "Security+ / Verified-Prep",
-    pinH1: "SY0-701 Exam Prep Online",
-    intent: "Verified bank, adaptive review, PBQs, not PDF",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
-  },
-  {
-    slug: "after-study",
-    adGroupName: "After Study Sprint",
-    utmContent: "after-study",
-    displayPath: "Security+ / After-Study",
-    pinH1: "SY0-701 Exam Prep Online",
-    intent: "After free samples/courses — practice for the exam",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
-  },
-  {
-    slug: "student-college",
-    adGroupName: "Student College",
-    utmContent: "student-college",
-    displayPath: "Security+ / College-Prep",
-    pinH1: "Security+ College Prep",
-    intent: "College / capstone / graduation requirement",
-    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+    intent: "Single group · SY0-701 exam prep on the site · $19.99 / 30 days",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 Keyword Lists.md",
   },
 ];
 
 /** Legacy utm_content values — show in admin when still receiving traffic */
 export const SECPLUS_LEGACY_UTM_CONTENT = [
+  {
+    slug: "timed-sim",
+    adGroupName: "Legacy · Timed Simulation",
+    utmContent: "timed-sim",
+    displayPath: "Security+ / Exam-Sim",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "Launch 40 / prior split — Sep 430 uses one Exam Prep group",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
+  {
+    slug: "24h-trial",
+    adGroupName: "Legacy · 24h Trial",
+    utmContent: "24h-trial",
+    displayPath: "SY0-701 / 24h-Free",
+    pinH1: "Try 24 Hours Free",
+    intent: "Launch 40 — 24h trial RSA is stale; do not rebuild",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
+  {
+    slug: "verified-adaptive",
+    adGroupName: "Legacy · Verified Adaptive Prep",
+    utmContent: "verified-adaptive",
+    displayPath: "Security+ / Verified-Prep",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "Launch 40 — deferred on $14/day",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
+  {
+    slug: "after-study",
+    adGroupName: "Legacy · After Study Sprint",
+    utmContent: "after-study",
+    displayPath: "Security+ / After-Study",
+    pinH1: "SY0-701 Exam Prep Online",
+    intent: "Launch 40 — deferred on $14/day",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
+  {
+    slug: "student-college",
+    adGroupName: "Legacy · Student College",
+    utmContent: "student-college",
+    displayPath: "Security+ / College-Prep",
+    pinH1: "Security+ College Prep",
+    intent: "Launch 40 — deferred on $14/day",
+    rsaDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 RSA Copy.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+  },
   {
     slug: "core-exam-prep",
     adGroupName: "Legacy · Core Exam Prep",
@@ -139,7 +151,7 @@ export const SECPLUS_LEGACY_UTM_CONTENT = [
     pinH1: "—",
     intent: "Retired. Do not bid on dump or cheat intent.",
     rsaDoc: "marketing-research/Advertising Ethics.md",
-    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Launch 40 Keyword Lists.md",
+    keywordsDoc: "marketing-research/Sec+ Campaign/Sec+ Sep 430 Keyword Lists.md",
   },
   {
     slug: "pbq-wedge",
@@ -161,7 +173,8 @@ export function normalizeUtmContent(raw) {
 
 export function secplusFinalUrl(utmContent) {
   const content = String(utmContent || "").trim();
-  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=secplus_portal_launch40&utm_content=${encodeURIComponent(content)}`;
+  const campaign = SECPLUS_GOOGLE_CAMPAIGN.utmCampaign;
+  return `https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium=cpc&utm_campaign=${encodeURIComponent(campaign)}&utm_content=${encodeURIComponent(content)}`;
 }
 
 export function allSecplusAdGroupDefs() {

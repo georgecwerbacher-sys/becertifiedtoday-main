@@ -14,7 +14,7 @@ tags:
 
 # Sec+ Dump Intercept — RETIRED RSA (do not paste)
 
-> **Do not use this RSA.** Dump intercept is off-policy. Launch 40 copy: [[Sec+ Launch 40 RSA Copy]]. Policy: [[Advertising Ethics]].
+> **Do not use this RSA.** Dump intercept is off-policy. Current copy: [[Sec+ Sep 430 RSA Copy]]. Policy: [[Advertising Ethics]].
 
 # Archive — RSA copy (do not paste)
 

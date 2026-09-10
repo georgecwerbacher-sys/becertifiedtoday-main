@@ -1,24 +1,24 @@
 ---
-description: Be Certified Today product scope — Security+ public landing; CCNA/ENCOR portals retained but not on /.
+description: Be Certified Today product scope — multi-track (Sec+, CCNA, ENCOR); prefer explicit user ask for new product expansion.
 alwaysApply: true
 ---
 
-# Product scope — Security+ public landing
+# Product scope — multi-track active
 
-Be Certified Today’s public home (`/` / `index.html`) redirects to **CompTIA Security+ SY0-701** (`/comptia-sec+-home.html`). CCNA and CCNP ENCOR are not shown on the public chooser while Sec+ ads run; portal pages remain for existing access.
+Be Certified Today’s public landing is the **three-track chooser** (`public/index.html`): **CompTIA Security+ SY0-701**, **CCNA 200-301**, and **CCNP ENCOR 350-401**.
 
 ## Do
 
-- Keep `/` and `/index.html` redirecting to `/comptia-sec+-home.html`.
+- Keep `/` serving `public/index.html` with track cards to `comptia-sec+-home.html`, `ccna-home.html`, and `ccnp-home.html`.
 - Implement Sec+ practice/PBQ/portal/ads under **`public/COMP_TIA_SEC+/`**, **`public/comptia-sec+-home.html`**, and Sec+ campaign docs.
-- Preserve CCNA/ENCOR portal homes, magic-link restore, and admin reporting (do not delete track files).
+- Preserve CCNA/ENCOR portal homes, magic-link restore, and admin reporting for all three tracks.
 - Follow `.cursor/rules/secplus-pbq-dragdrop-pages.mdc` and `.cursor/rules/question-bank-template.mdc` for Sec+ banks.
-- Point guest brand/home links to `/comptia-sec+-home.html`, not the multi-track chooser.
+- Point guest brand/home links to `/index.html` (or `/`), not Sec+-only.
 
 ## Do not (unless the user explicitly asks)
 
-- Restore the three-track chooser on `/`.
-- Make CCNA/ENCOR the default public landing or paid Search focus.
-- Delete CCNA/ENCOR portal or restore-access flows.
+- Redirect `/` or `/index.html` only to Security+ (hide the chooser).
+- Remove CCNA/ENCOR track cards, portal access, or restore-access flows.
+- Treat legacy Cisco files as deleted; they are live products again alongside Sec+.
 
-When adding a **new** cert track or launching a CCNA paid campaign, wait for an explicit user request.
+When adding a **new** cert track or expanding CCNA Automation beyond “coming soon,” wait for an explicit user request.

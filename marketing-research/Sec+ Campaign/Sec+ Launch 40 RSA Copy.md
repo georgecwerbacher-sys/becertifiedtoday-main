@@ -2,7 +2,7 @@
 type: ad-copy
 product: secplus
 phase: launch-40
-status: ready-to-paste
+status: paused-do-not-paste
 tags:
   - marketing
   - google-ads
@@ -12,6 +12,8 @@ tags:
 ---
 
 # Sec+ Launch 40 — RSA copy
+
+**Paused.** Do not paste this RSA. Current flight: [[Sec+ Sep 430 RSA Copy]]. 24h-trial copy is stale.
 
 **Rule:** Headlines **≤30 characters** · Descriptions **≤90 characters**.  
 **Pin H1 + H2** only.

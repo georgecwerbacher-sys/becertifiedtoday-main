@@ -349,12 +349,12 @@
       typeof window.bccSave50DiscountedValue === "function"
     ) {
       return (
-        "<s>$29.99</s> <strong>$" +
-        window.bccSave50DiscountedValue("29.99") +
+        "<s>$19.99</s> <strong>$" +
+        window.bccSave50DiscountedValue("19.99") +
         "</strong> (50% off)"
       );
     }
-    return "<strong>$29.99</strong>";
+    return "<strong>$19.99</strong>";
   }
 
   function portalUpsellLead(session) {
@@ -518,14 +518,14 @@
     var purchaseUrl = (finishHome || FINISH_HOME).split("#")[0] + "#purchase";
     var lead = portalUpsellLead(session);
 
-    var saleLabel = "Get 30-day access · $29.99";
-    var eyebrow = "30-day full access · $29.99";
+    var saleLabel = "Get 30-day access · $19.99";
+    var eyebrow = "30-day full access · $19.99";
     if (
       typeof window.bccSave50PromoActive === "function" &&
       window.bccSave50PromoActive() &&
       typeof window.bccSave50DiscountedValue === "function"
     ) {
-      var sale = window.bccSave50DiscountedValue("29.99");
+      var sale = window.bccSave50DiscountedValue("19.99");
       saleLabel = "Get 30-day access · $" + sale + " · 50% off";
       eyebrow = "First visit · 50% off · $" + sale;
     }

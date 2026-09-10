@@ -15,7 +15,7 @@
     "30d": {
       id: "encor_portal_30d",
       name: "CCNP ENCOR 30-day access",
-      value: "29.99",
+      value: "19.99",
       defaultLabel: "Get 30-day access",
       labelKey: "encorPortal30dCheckoutLabel",
     },

@@ -11,7 +11,7 @@ tags:
 
 # Sec+ Notes — Step-by-Step Campaign Setup
 
-**Build:** one US-only Search campaign with three ad groups · see [[Sec+ One-Campaign Ad Group Plan]]  
+**Current flight:** [[Sec+ Sep 430 Build Checklist]] · [[Sec+ Sep 430 Campaign Plan]] ($430 · $14/day · one ad group). This note is the older $25/day three-group build.  
 **Budget:** **$25/day shared campaign budget** · max CPC **$2.75**  
 **Tracking:** `utm_campaign=secplus_portal`; use `utm_content` to identify each ad group.
 

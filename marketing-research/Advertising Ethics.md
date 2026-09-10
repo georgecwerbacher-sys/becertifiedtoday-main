@@ -30,9 +30,9 @@ Related: [[Writing Guidelines]] · [[Site Mission]] · [[Campaigns]]
 ## Google Ads ops (do this in the account)
 
 1. Pause or remove `Security+ SY0-701 · US Search · Dump Intercept` if it exists.
-2. On `Security+ SY0-701 · US Search · Launch 40`, paste campaign negatives from [[Sec+ Campaign/Sec+ Launch 40 Keyword Lists]].
+2. On the live Search campaign (`Security+ SY0-701 · US Search · Sep 430`), paste campaign negatives from [[Sec+ Campaign/Sec+ Sep 430 Keyword Lists]]. Pause Launch 40 so spend is not split.
 3. Search terms: any dump / cheat / actual-exam query → negative, never a positive keyword.
-4. RSA: do not use “dump,” “braindump,” “Not-A-Dump,” or “Not a PDF dump.”
+4. RSA and sitelinks: do not use “dump,” “braindump,” “Not-A-Dump,” “Not a PDF,” “exam sim,” “exam simulation,” “simulator,” “mock exam,” “90-min,” or “timed sim.” Never advertise 24 hours free, “not AI,” or the first-visit 50% off timer. Never use *walk in ready* or *like test day* in ads or on the Google Ads landing hero.
 
 ---
 

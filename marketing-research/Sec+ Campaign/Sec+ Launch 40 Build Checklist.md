@@ -2,7 +2,7 @@
 type: campaign-checklist
 product: secplus
 phase: launch-40
-status: active
+status: paused
 tags:
   - marketing
   - google-ads
@@ -12,6 +12,8 @@ tags:
 ---
 
 # Sec+ Launch 40 — build checklist
+
+**Paused.** Do not build this. Current flight: [[Sec+ Sep 430 Build Checklist]]. Pause `Security+ SY0-701 · US Search · Launch 40` in Google Ads.
 
 **Budget:** $465 total · **$15/day** · no end date (pause at cap) · `utm_campaign=secplus_portal_launch40`  
 **Offer:** 24 hours free, then $15.99 (`SECPLUS24`) · list $19.99  

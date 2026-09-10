@@ -2,7 +2,7 @@
 type: campaign-strategy
 product: secplus
 phase: launch-40
-status: active
+status: paused
 tags:
   - marketing
   - google-ads
@@ -14,7 +14,7 @@ tags:
 
 # Sec+ Launch Campaign Plan — $465 Search budget
 
-**Status:** Live in Google Ads · **total budget $465** · **no end date**  
+**Status:** **Paused** · superseded by [[Sec+ Sep 430 Campaign Plan]] · 24h-trial RSA is stale. Pause `Security+ SY0-701 · US Search · Launch 40` in Google Ads so Sep 430 spend is not split.  
 **Goal:** Conversions (checkout → purchase) on ethical Search traffic only  
 **Offer:** **24 hours free**, then **$15.99** / 30 days (`SECPLUS24`) while the trial is active · list **$19.99** without trial  
 **Daily budget:** **$15** shared  

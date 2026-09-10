@@ -547,8 +547,8 @@
       url: "https://buy.stripe.com/14A7sK58xccT4CI8ZCc3m03",
       id: "ccna_portal_30d",
       name: "CCNA 30-day access",
-      value: "29.99",
-      label: "Get 30-day access · $29.99",
+      value: "19.99",
+      label: "Get 30-day access · $19.99",
       sub: "30 days · one-time",
     },
   };
@@ -743,18 +743,18 @@
       '<div class="cisco-ccna-offer-tier cisco-ccna-offer-tier--featured">' +
       '<p class="cisco-ccna-offer-tier-label">30-day full access</p>' +
       (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()
-        ? '<p class="cisco-ccna-offer-tier-price"><s>$29.99</s> $' +
+        ? '<p class="cisco-ccna-offer-tier-price"><s>$19.99</s> $' +
           (typeof window.bccSave50DiscountedValue === "function"
-            ? window.bccSave50DiscountedValue("29.99")
+            ? window.bccSave50DiscountedValue("19.99")
             : "15.00") +
           " <span>/ 30 days · 50% off</span></p>"
         : typeof window.bccCcnaPassPromoActive === "function" &&
             window.bccCcnaPassPromoActive() &&
             typeof window.bccCcnaPassSalePrice === "function"
-          ? '<p class="cisco-ccna-offer-tier-price"><s>$29.99</s> $' +
+          ? '<p class="cisco-ccna-offer-tier-price"><s>$19.99</s> $' +
             window.bccCcnaPassSalePrice() +
             " <span>/ 30 days · 30% off</span></p>"
-          : '<p class="cisco-ccna-offer-tier-price">$29.99 <span>/ 30 days</span></p>') +
+          : '<p class="cisco-ccna-offer-tier-price">$19.99 <span>/ 30 days</span></p>') +
       '<p class="cisco-ccna-offer-tier-note">One-time · no subscription</p>' +
       '<button type="button" class="cisco-ccna-offer-tier-btn cisco-ccna-offer-tier-btn--featured" data-tier="30d"></button>' +
       "</div>" +

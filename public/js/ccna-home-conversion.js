@@ -15,7 +15,7 @@
 
   var WEDGE_LEAD =
     "Build CCNA readiness with CLI labs, drag-and-drop, and a <strong>120-minute timed simulation</strong> in your browser. " +
-    "<strong>Try the free samples below</strong> to judge quality first, then unlock <strong>30-day access for $29.99</strong> when you want the full library.";
+    "<strong>Try the free samples below</strong> to judge quality first, then unlock <strong>30-day access for $19.99</strong> when you want the full library.";
 
   var BASE_LEAD =
     "Practice CCNA online with labs, drag-and-drop, and questions in your browser. " +
@@ -39,7 +39,7 @@
       headline: "CCNA Browser CLI Labs and Practice",
       lead:
         "Run VLAN and routing CLI labs in our browser testing engine with no VM install. " +
-        "See the GNS3 comparison below, then unlock the full library with timed simulation for <strong>$29.99 / 30 days</strong>.",
+        "See the GNS3 comparison below, then unlock the full library with timed simulation for <strong>$19.99 / 30 days</strong>.",
       ctaPrimary: "Get 30-day CCNA access",
       ctaHref: "#purchase",
       stickyPrimary: "30-day access",
@@ -51,7 +51,7 @@
       headline: "120-Minute CCNA Timed Simulation — Mixed Item Types",
       lead:
         "Rehearse test-day pressure with a <strong>120-minute timed CCNA simulation</strong>: multiple-choice, drag-and-drop, and CLI-style items in your browser. " +
-        "Unlock full access for <strong>$29.99 / 30 days</strong> when your exam date is set.",
+        "Unlock full access for <strong>$19.99 / 30 days</strong> when your exam date is set.",
       ctaPrimary: "Get 30-day CCNA access",
       ctaHref: "#purchase",
       stickyPrimary: "30-day access",
@@ -204,7 +204,7 @@
       eyebrow: "CCNA exam practice · timed & interactive",
       headline: "CCNA Exam Practice — samples free, 30-day portal access",
       lead:
-        "CCNA exam practice with free samples or <strong>30-day portal access for $29.99</strong>. " +
+        "CCNA exam practice with free samples or <strong>30-day portal access for $19.99</strong>. " +
         "Labs, drag-and-drop, and questions in your browser—no PDFs or extra apps.",
       ctaPrimary: "Preview free CCNA samples",
       stickyPrimary: "Free samples",

@@ -1,7 +1,7 @@
 /**
  * Stripe checkout for CompTIA Security+ portal access.
  *
- * 30-day list price: $29.99 via POST /api/create-checkout-session (productId secplus-portal-30d).
+ * 30-day list price: $19.99 via POST /api/create-checkout-session (productId secplus-portal-30d).
  * Do not send buyers to the deactivated Payment Link buy.stripe.com/5kQ14mbwVgt93yEfo0c3m07.
  *
  * Stripe product name: CompTIA Security+ SY0-701 - 30-day all-access pass
@@ -57,9 +57,9 @@
     "30d": {
       id: "secplus_portal_30d",
       name: "CompTIA Security+ 30-day access",
-      listValue: "29.99",
+      listValue: "19.99",
       launchValue: "15.99",
-      value: "29.99",
+      value: "19.99",
       defaultLabel: "Get 30-day access",
       labelKey: "secplusPortal30dCheckoutLabel",
     },

@@ -6,7 +6,7 @@
  *
  * Optional metadata on the link: productId = ccna-portal-30d
  *
- * CCNAPASSTODAY - 30% off CCNA 30-day ($13.99 on $29.99). Public offer through
+ * CCNAPASSTODAY - 30% off CCNA 30-day ($13.99 on $19.99). Public offer through
  * August 2026 (see /js/ccna-pass-promo.js).
  */
 (function () {
@@ -20,7 +20,7 @@
     "30d": {
       id: "ccna_portal_30d",
       name: "CCNA 30-day access",
-      value: "29.99",
+      value: "19.99",
       launchValue: "13.99",
       defaultLabel: "Get 30-day access",
       labelKey: "ccnaPortal30dCheckoutLabel",
