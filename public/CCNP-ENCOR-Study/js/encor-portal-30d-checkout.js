@@ -21,13 +21,43 @@
     },
   };
 
+  function buildCheckoutUrl(tier) {
+    var url = LINKS[tier];
+    if (!url) return url;
+    if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
+      return window.bccBuildCheckoutUrlWithSave50(url);
+    }
+    return url;
+  }
+
+  function startEncorPortalCheckout(tier, triggerEl) {
+    var product = PRODUCTS[tier];
+    var url = buildCheckoutUrl(tier);
+    if (!product || !url) return false;
+
+    var trackEl = triggerEl || document.createElement("button");
+    if (typeof window.bccTrackBeginCheckout === "function") {
+      trackEl.setAttribute("data-bcc-item-id", product.id);
+      trackEl.setAttribute("data-bcc-item-name", product.name);
+      trackEl.setAttribute(
+        "data-bcc-value",
+        typeof window.bccSave50DiscountedValue === "function"
+          ? window.bccSave50DiscountedValue(product.value)
+          : product.value
+      );
+      trackEl.setAttribute("data-bcc-currency", "USD");
+      window.bccTrackBeginCheckout(trackEl);
+    }
+    if (typeof window.bccSetEncorPendingPortalTier === "function") {
+      window.bccSetEncorPendingPortalTier(tier);
+    }
+    window.location.href = url;
+    return true;
+  }
+
   function wireCheckout(btn, tier) {
     var product = PRODUCTS[tier];
-    var url = LINKS[tier];
-    if (!product || !url) return;
-    if (typeof window.bccBuildCheckoutUrlWithSave50 === "function") {
-      url = window.bccBuildCheckoutUrlWithSave50(url);
-    }
+    if (!product || !btn) return;
 
     if (!btn.dataset[product.labelKey]) {
       btn.dataset[product.labelKey] = btn.textContent.trim() || product.defaultLabel;
@@ -35,25 +65,10 @@
 
     btn.addEventListener("click", function () {
       if (btn.dataset.loading === "1") return;
-      if (typeof window.bccTrackBeginCheckout === "function") {
-        btn.setAttribute("data-bcc-item-id", product.id);
-        btn.setAttribute("data-bcc-item-name", product.name);
-        btn.setAttribute(
-          "data-bcc-value",
-          typeof window.bccSave50DiscountedValue === "function"
-            ? window.bccSave50DiscountedValue(product.value)
-            : product.value
-        );
-        btn.setAttribute("data-bcc-currency", "USD");
-        window.bccTrackBeginCheckout(btn);
-      }
       btn.dataset.loading = "1";
       btn.textContent = "Redirecting…";
       btn.disabled = true;
-      if (typeof window.bccSetEncorPendingPortalTier === "function") {
-        window.bccSetEncorPendingPortalTier(tier);
-      }
-      window.location.href = url;
+      startEncorPortalCheckout(tier, btn);
     });
   }
 
@@ -62,4 +77,6 @@
       wireCheckout(btn, "30d");
     });
   });
+
+  window.bccStartEncorPortalCheckout = startEncorPortalCheckout;
 })();

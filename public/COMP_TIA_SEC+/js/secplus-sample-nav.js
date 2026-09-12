@@ -489,10 +489,7 @@
       document.body.classList.remove("secplus-sample-scorecard-open");
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
-      if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
-        navigateAfterSample(finishHome || FINISH_HOME);
-        return;
-      }
+      if (requestSave50CouponPopup()) return;
       showPortalUpsellModal(finishHome);
     }
 
@@ -527,7 +524,7 @@
     ) {
       var sale = window.bccSave50DiscountedValue("19.99");
       saleLabel = "Get 30-day access · $" + sale + " · 50% off";
-      eyebrow = "First visit · 50% off · $" + sale;
+      eyebrow = "50% off · $" + sale;
     }
 
     var root = document.createElement("div");
@@ -604,6 +601,34 @@
     if (panel) panel.focus();
   }
 
+  function save50PromoActive() {
+    return typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive();
+  }
+
+  function markSave50CouponPopupPending() {
+    if (!save50PromoActive()) return;
+    if (typeof window.bccMarkSave50CouponPopupPending === "function") {
+      window.bccMarkSave50CouponPopupPending();
+      return;
+    }
+    try {
+      sessionStorage.setItem("bcc_save50_popup_pending_v1", "1");
+    } catch (e) {}
+  }
+
+  function requestSave50CouponPopup() {
+    if (!save50PromoActive()) return false;
+    try {
+      window.dispatchEvent(new CustomEvent("bcc-save50-sample-complete"));
+    } catch (e) {}
+    if (typeof window.bccOpenSave50CouponPopup === "function") {
+      window.bccOpenSave50CouponPopup();
+      return true;
+    }
+    markSave50CouponPopupPending();
+    return false;
+  }
+
   function completeSample(session, finishHome) {
     if (isMultiPbqSample(session)) {
       var index = currentItemIndex(session);
@@ -613,13 +638,11 @@
       return;
     }
     if (shouldOfferPortalUpsell(session)) {
-      if (typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive()) {
-        navigateAfterSample(finishHome || FINISH_HOME);
-        return;
-      }
+      if (requestSave50CouponPopup()) return;
       showPortalUpsellModal(finishHome);
       return;
     }
+    if (requestSave50CouponPopup()) return;
     navigateAfterSample(finishHome || FINISH_HOME);
   }
 

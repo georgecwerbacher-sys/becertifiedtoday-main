@@ -372,7 +372,12 @@
       document.body.classList.remove("cisco-sample-scorecard-open");
       document.body.style.overflow = prevOverflow;
       document.removeEventListener("keydown", onKey);
-      if (navigateHome) navigateAfterSample(finishHome, session);
+      if (navigateHome) {
+        markSave50CouponPopupPending();
+        navigateAfterSample(finishHome, session);
+        return;
+      }
+      requestSave50CouponPopup();
     }
 
     function onKey(ev) {
@@ -807,6 +812,34 @@
     return !!(item && item.type === "dnd");
   }
 
+  function save50PromoActive() {
+    return typeof window.bccSave50PromoActive === "function" && window.bccSave50PromoActive();
+  }
+
+  function markSave50CouponPopupPending() {
+    if (!save50PromoActive()) return;
+    if (typeof window.bccMarkSave50CouponPopupPending === "function") {
+      window.bccMarkSave50CouponPopupPending();
+      return;
+    }
+    try {
+      sessionStorage.setItem("bcc_save50_popup_pending_v1", "1");
+    } catch (e) {}
+  }
+
+  function requestSave50CouponPopup() {
+    if (!save50PromoActive()) return false;
+    try {
+      window.dispatchEvent(new CustomEvent("bcc-save50-sample-complete"));
+    } catch (e) {}
+    if (typeof window.bccOpenSave50CouponPopup === "function") {
+      window.bccOpenSave50CouponPopup();
+      return true;
+    }
+    markSave50CouponPopupPending();
+    return false;
+  }
+
   function completeSample(session, finishHome) {
     var home = finishHome || session.finishHome;
     var index = currentItemIndex(session);
@@ -817,7 +850,7 @@
       resolveLeadConfig(session).key === SESSIONS.ccna.key ||
       sampleKindHint().indexOf("ccna") === 0;
 
-    if (isCcna && !hasCcnaPortalAccess()) {
+    if (isCcna && !hasCcnaPortalAccess() && !save50PromoActive()) {
       if (ccnaPortalOfferShown) {
         navigateAfterSample(home, session);
         return;
@@ -832,6 +865,7 @@
     }
     ensureSampleLeadAnalytics();
     logSampleEvent(session, "sample_finished");
+    if (requestSave50CouponPopup()) return;
     navigateAfterSample(home, session);
   }
 

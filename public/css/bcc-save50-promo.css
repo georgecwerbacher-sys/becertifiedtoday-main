@@ -170,6 +170,216 @@ html.bcc-save50-promo-active body {
   padding-top: calc(var(--bcc-save50-promo-h, 88px) + env(safe-area-inset-top, 0px));
 }
 
+html.bcc-save50-popup-open,
+html.bcc-save50-popup-open body {
+  overflow: hidden;
+}
+
+.bcc-save50-popup-root {
+  position: fixed;
+  inset: 0;
+  z-index: 100050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.bcc-save50-popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 8, 8, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.bcc-save50-popup-panel {
+  position: relative;
+  z-index: 1;
+  width: min(440px, 100%);
+  max-height: min(92vh, 720px);
+  overflow: auto;
+  margin: 0;
+  padding: clamp(22px, 4vw, 30px);
+  border-radius: 16px;
+  border: 3px solid #7f1d1d;
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+  color: #fff;
+  box-shadow: 0 24px 64px rgba(127, 29, 29, 0.5);
+  outline: none;
+}
+
+.bcc-save50-popup-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: 0;
+  background: transparent;
+  color: #fecaca;
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+.bcc-save50-popup-close:hover,
+.bcc-save50-popup-close:focus-visible {
+  color: #fff;
+}
+
+.bcc-save50-popup-eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fecaca;
+}
+
+.bcc-save50-popup-panel h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.25rem, 3.4vw, 1.55rem);
+  line-height: 1.2;
+  color: #fff;
+  font-weight: 900;
+}
+
+.bcc-save50-popup-lead {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #ffe4e6;
+  font-weight: 600;
+}
+
+.bcc-save50-popup-code-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.bcc-save50-popup-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  padding: 8px 12px;
+  letter-spacing: 0.02em;
+}
+
+.bcc-save50-popup-copy {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.18);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bcc-save50-popup-copy:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.bcc-save50-popup-price {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.bcc-save50-popup-price s {
+  color: #fecaca;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.bcc-save50-popup-price span {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffe4e6;
+}
+
+.bcc-save50-popup-note {
+  margin: 0 0 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #fecaca;
+}
+
+.bcc-save50-popup-timer {
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fecaca;
+}
+
+.bcc-save50-popup-timer strong {
+  display: inline-block;
+  margin-left: 4px;
+  color: #fef08a;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.15rem;
+}
+
+.bcc-save50-popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bcc-save50-popup-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 18px;
+  text-decoration: none;
+  background: #fff;
+  border: 2px solid #fff;
+  color: #b91c1c;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.bcc-save50-popup-cta:hover {
+  background: #fef2f2;
+}
+
+.bcc-save50-popup-cta:focus-visible {
+  outline: 3px solid #fef08a;
+  outline-offset: 2px;
+}
+
+.bcc-save50-popup-secondary {
+  border: 0;
+  background: transparent;
+  color: #ffe4e6;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bcc-save50-popup-secondary:hover {
+  color: #fff;
+}
+
 @media (max-width: 720px) {
   .bcc-save50-promo-bar__inner {
     flex-direction: column;

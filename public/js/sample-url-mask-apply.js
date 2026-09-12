@@ -135,7 +135,7 @@
     }
 
     if (
-      onCcnaSample &&
+      (onCcnaSample || onEncorSample) &&
       !document.head.querySelector('script[src*="bcc-save50-promo.js"]') &&
       !document.querySelector('script[src*="bcc-save50-promo.js"]')
     ) {
