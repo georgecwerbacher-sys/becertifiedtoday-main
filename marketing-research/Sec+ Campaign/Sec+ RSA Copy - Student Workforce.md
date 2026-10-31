@@ -30,20 +30,21 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 **Display path:** `Security+` / `Career-Prep`
 
-Lead with degree, capstone, career-change, or workforce-placement intent — not generic exam prep alone.
+Lead with degree / career **and** the prep process — not the brand name.
 
-| Pin    | Headline                | Chars |
-| ------ | ----------------------- | ----- |
-| **H1** | `Security+ Career Prep` | 21    |
-| **H2** | `Timed 90-Min Exam Sim` | 21    |
+| Pin    | Headline                     | Chars |
+| ------ | ---------------------------- | ----- |
+| **H1** | `Interactive Security+ Prep` | 26    |
+| **H2** | `Timed 90-Min Exam Sim`      | 21    |
 
 ---
 
 ## All 15 headlines
 
 ```
-Security+ Career Prep           ← Pin H1
+Interactive Security+ Prep      ← Pin H1
 Timed 90-Min Exam Sim           ← Pin H2
+Security+ Career Prep
 College Capstone Prep
 Graduate With Security+
 Cyber Degree Cert Prep
@@ -54,28 +55,27 @@ Educator-Aligned Prep
 SY0-701 Browser Prep
 90-Min Timed Exam + Scorecard
 1000+ Verified SY0-701 Qs
-Blueprint-Verified Bank
 30-Day Access · $19.99
-Not a PDF · Browser Prep
+Browser-Based Exam Simulators
 ```
 
 | #   | Headline                      | Chars | Notes                             |
 | --- | ----------------------------- | ----- | --------------------------------- |
-| 1   | Security+ Career Prep         | 21    | Pin H1 — student + workforce lead |
-| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                            |
-| 3   | College Capstone Prep         | 21    | Graduation / capstone queries     |
-| 4   | Graduate With Security+       | 22    | Degree-completion intent          |
-| 5   | Cyber Degree Cert Prep        | 22    | Cybersecurity program students    |
-| 6   | Career Change Cyber Prep      | 24    | Retraining / pivot searches       |
-| 7   | Veteran Cyber Job Prep        | 22    | Civilian hire / transition        |
-| 8   | Workforce Cert Prep           | 21    | WIOA / job-center intent          |
-| 9   | Educator-Aligned Prep         | 21    | Faculty teaching SY0-701          |
-| 10  | SY0-701 Browser Prep          | 20    | Current exam + no install         |
-| 11  | 90-Min Timed Exam + Scorecard | 29    | Sim proof                         |
-| 12  | 1000+ Verified SY0-701 Qs     | 25    | Bank trust                        |
-| 13  | Blueprint-Verified Bank       | 23    | Objective alignment               |
-| 14  | 30-Day Access · $19.99        | 22    | Paid Search price                 |
-| 15  | Not a PDF · Browser Prep      | 24    | Anti-dump                         |
+| 1   | Interactive Security+ Prep    | 26    | Pin H1 — process, not brand   |
+| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                        |
+| 3   | Security+ Career Prep         | 21    | Student + workforce lead      |
+| 4   | College Capstone Prep         | 21    | Graduation / capstone queries |
+| 5   | Graduate With Security+       | 22    | Degree-completion intent      |
+| 6   | Cyber Degree Cert Prep        | 22    | Cybersecurity program students|
+| 7   | Career Change Cyber Prep      | 24    | Retraining / pivot searches   |
+| 8   | Veteran Cyber Job Prep        | 22    | Civilian hire / transition    |
+| 9   | Workforce Cert Prep           | 21    | WIOA / job-center intent      |
+| 10  | Educator-Aligned Prep         | 21    | Faculty teaching SY0-701      |
+| 11  | SY0-701 Browser Prep          | 20    | Current exam + no install     |
+| 12  | 90-Min Timed Exam + Scorecard | 29    | Sim proof                     |
+| 13  | 1000+ Verified SY0-701 Qs     | 25    | Bank trust                    |
+| 14  | 30-Day Access · $19.99        | 22    | Access length, not pass-by    |
+| 15  | Browser-Based Exam Simulators | 29    | How they practice             |
 
 ---
 
@@ -103,7 +103,7 @@ SY0-701 exam prep with adaptive review, PBQ scenarios, and blueprint-tagged item
 ## Google Ads UI
 
 1. Open ad group **`Student Workforce`** → create or edit RSA.
-2. Pin H1 → `Security+ Career Prep` · H2 → `Timed 90-Min Exam Sim`.
+2. Pin H1 → `Interactive Security+ Prep` · H2 → `Timed 90-Min Exam Sim`.
 3. Paste headlines and descriptions above (not Core or Military sets).
 4. Confirm final URL uses `utm_content=student-workforce`.
 5. Preview on **mobile** — H1 should read career/degree intent above the fold.

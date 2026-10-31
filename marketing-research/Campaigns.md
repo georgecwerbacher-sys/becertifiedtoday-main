@@ -13,6 +13,8 @@ Source of truth: [[Site Mission]] · [[Advertising Ethics]] · `server-lib/campa
 
 Do **not** bid on dump, brain dump, cheat, actual-exam, or pass-guaranteed queries. Those terms are **campaign negatives**, not positives. Do not run a dump-intercept campaign.
 
+**Required piracy negatives on every Search campaign:** `pdf` · `download` · `dump` · `"free download"`.
+
 **In Google Ads now:** pause `Security+ SY0-701 · US Search · Dump Intercept` if it exists. Pause Launch 40. Paste dump/cheat negatives from [[Sec+ Campaign/Sec+ Sep 430 Keyword Lists]] onto Sep 430. Full policy: [[Advertising Ethics]].
 
 ## Active: Security+ Google Search · Sep 430

@@ -28,6 +28,8 @@ Legacy `Security+ PBQ Practice` copy remains as baseline history only.
 
 **Google Ads policy:** Do **not** use *walk in ready*, *like test day*, *real exam*, *actual exam*, or *same as test day* in RSA.
 
+**Process over brand:** Pin and lead with what the buyer does — interactive prep, browser practice, timed runs — not the brand name. Prefer headlines like `Interactive Security+ Prep` or `Browser-Based Exam Simulators`. Do **not** use `Be Certified Today` as an RSA headline. Do **not** pin 10-day / 24-hour access as if it were a pass-by date (Google flags unrealistic certification timelines). `$19.99/30d` is **access length**, not time-to-cert.
+
 **Positioning:** [[Sec+ Positioning]] · US plan: [[Sec+ One-Campaign Ad Group Plan]] · Institutional: [[Sec+ Phase 2 Institutional Targeting]] · Keywords: [[Sec+ Keywords]] · Checklist: [[secplus-campaign-checklist.csv]]
 
 ---
@@ -46,13 +48,13 @@ Use these pins in **`Core Exam Prep`** only. Military and Student Workforce use 
 
 | Pin    | Headline                   | Chars |
 | ------ | -------------------------- | ----- |
-| **H1** | `SY0-701 Exam Prep Online` | 24    |
-| **H2** | `Timed 90-Min Exam Sim`    | 21    |
+| **H1** | `Interactive Security+ Prep` | 26    |
+| **H2** | `Timed 90-Min Exam Sim`      | 21    |
 
 ### All 15 headlines — Phase 2 set (exam prep lead)
 
 ```
-SY0-701 Exam Prep Online       ← Pin H1 (Phase 2)
+Interactive Security+ Prep     ← Pin H1 (Phase 2)
 Timed 90-Min Exam Sim            ← Pin H2
 Am I Ready? · Scorecard
 1000+ Verified SY0-701 Qs
@@ -66,26 +68,26 @@ Not a PDF · Browser Prep
 34 PBQ Scenarios Included
 Detailed Domain Scorecard
 Study Phone, Tablet, Desktop
-Interactive Exam Simulation
+Browser-Based Exam Simulators
 ```
 
 | #   | Headline                      | Chars | Notes                   |
 | --- | ----------------------------- | ----- | ----------------------- |
-| 1   | SY0-701 Exam Prep Online      | 24    | Pin H1 Phase 2          |
-| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                  |
-| 3   | Am I Ready? · Scorecard       | 22    | Primary job             |
-| 4   | 1000+ Verified SY0-701 Qs     | 25    | Bank + verify           |
-| 5   | Blueprint-Verified Bank       | 23    | Trust                   |
-| 6   | 90-Min Timed Exam + Scorecard | 29    | Sim proof               |
-| 7   | 30-Day Access · $19.99        | 22    | Price in pool           |
-| 8   | Adaptive Review Modes         | 21    |                         |
-| 9   | DoD 8140-Aligned Prep         | 21    | Federal/military intent |
-| 10  | Cert Required for Job         | 21    | Work-required           |
-| 11  | Not a PDF · Browser Prep      | 24    | Anti-dump               |
-| 12  | 34 PBQ Scenarios Included     | 27    | PBQ as included feature |
-| 13  | Detailed Domain Scorecard     | 25    |                         |
-| 14  | Study Phone, Tablet, Desktop  | 28    | Military/mobile         |
-| 15  | Interactive Exam Simulation   | 27    |                         |
+| 1   | Interactive Security+ Prep    | 26    | Pin H1 — process, not brand |
+| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                      |
+| 3   | Am I Ready? · Scorecard       | 22    | Primary job                 |
+| 4   | 1000+ Verified SY0-701 Qs     | 25    | Bank + verify               |
+| 5   | Blueprint-Verified Bank       | 23    | Trust                       |
+| 6   | 90-Min Timed Exam + Scorecard | 29    | Sim proof                   |
+| 7   | 30-Day Access · $19.99        | 22    | Access length, not pass-by  |
+| 8   | Adaptive Review Modes         | 21    |                             |
+| 9   | DoD 8140-Aligned Prep         | 21    | Federal/military intent     |
+| 10  | Cert Required for Job         | 21    | Work-required               |
+| 11  | Not a PDF · Browser Prep      | 24    | Anti-dump                   |
+| 12  | 34 PBQ Scenarios Included     | 27    | PBQ as included feature     |
+| 13  | Detailed Domain Scorecard     | 25    |                             |
+| 14  | Study Phone, Tablet, Desktop  | 28    | Military/mobile             |
+| 15  | Browser-Based Exam Simulators | 29    | Process — how they practice |
 
 ### Descriptions — Phase 2 (≤90 chars)
 
@@ -160,7 +162,7 @@ Adaptive Review Modes
 **Phase 1 (current):** PBQ pins remain valid until Phase 2 paste.
 
 1. Open **Security+ PBQ Practice** ad group → edit RSA.
-2. **Phase 2:** Pin H1 → `SY0-701 Exam Prep Online` · H2 → `Timed 90-Min Exam Sim`
+2. **Phase 2:** Pin H1 → `Interactive Security+ Prep` · H2 → `Timed 90-Min Exam Sim`
 3. Paste Phase 2 descriptions; keep `$19.99/30d` in description body, not H2 pin.
 4. **Sitelinks:** Phase 2 set from [[Extensions#Phase 2 sitelinks (paste when ready)]] when ready.
 5. Preview on mobile — confirm exam prep + timed sim show above fold in ad preview.
@@ -181,6 +183,8 @@ RSA must align with [[Sec+ Positioning#Product proof (checklist for landing + RS
 - [x] **PDF/course contrast** — use only policy-safe “not another course / not a PDF” phrasing
 - [x] **No policy-risk phrases** — no *walk in ready*, *like test day*, *real exam*
 - [x] **No “free” in RSA** — samples on landing only; negate `free*` in Search
+- [x] **Process over brand** — no `Be Certified Today` headline; lead with interactive / browser prep
+- [x] **No pass-in-N-days** — 30-day is access, not a certification deadline
 
 ---
 
@@ -195,5 +199,7 @@ RSA must align with [[Sec+ Positioning#Product proof (checklist for landing + RS
 | Public-service / verified learner discount in RSA | Separate verify URL; keeps paid Search clean |
 | Biggest question bank / 1000+ in H1 | Lose CPC war; OK in description body |
 | Guaranteed pass | Policy |
+| Be Certified Today (headline) | Brand-only; process-less; can look like a pass promise |
+| 10-day / 24-hour as H1 or “get certified by…” | Unrealistic timeline flags |
 
 [[Sec+ Notes|Setup steps]] · [[README|← Sec+ Campaign]]

@@ -127,10 +127,10 @@ Timed ENCOR Simulation
 Latest 350-401 Questions
 No PDFs — Interactive Prep
 30-Day Full Library Access
-Be Certified Today
+Interactive ENCOR Prep
 ```
 
-**Pin:** H1 `CCNP ENCOR Practice Test` · H2 `$19.99 for 30-Day Access` · H3 `ENCOR 350-401 Exam Prep`
+**Pin:** H1 `CCNP ENCOR Practice Test` · H2 `Browser ENCOR Exam Prep` · H3 `ENCOR 350-401 Exam Prep`
 
 ---
 

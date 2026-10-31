@@ -30,21 +30,21 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 
 **Display path:** `Security+` / `DoD-8140`
 
-Lead with work-required / 8140 intent — not generic exam prep alone.
+Lead with 8140 / work-required **and** the prep process (interactive, in-browser) — not the brand name.
 
-| Pin    | Headline                 | Chars |
-| ------ | ------------------------ | ----- |
-| **H1** | `Security+ for DoD 8140` | 22    |
-| **H2** | `Timed 90-Min Exam Sim`  | 21    |
+| Pin    | Headline                      | Chars |
+| ------ | ----------------------------- | ----- |
+| **H1** | `DoD 8140-Aligned Prep`       | 21    |
+| **H2** | `Interactive Security+ Prep`  | 26    |
 
 ---
 
 ## All 15 headlines
 
 ```
-Security+ for DoD 8140          ← Pin H1
-Timed 90-Min Exam Sim           ← Pin H2
-DoD 8140-Aligned Prep
+DoD 8140-Aligned Prep           ← Pin H1
+Interactive Security+ Prep      ← Pin H2
+Security+ for DoD 8140
 Federal Contractor Prep
 Military Cyber Cert Prep
 Cert Required for Job
@@ -56,14 +56,14 @@ Prep Between Duty Shifts
 Blueprint-Verified Bank
 30-Day Access · $19.99
 Not a PDF · Browser Prep
-Contractor Baseline Prep
+Browser-Based Exam Simulators
 ```
 
 | #   | Headline                      | Chars | Notes                         |
 | --- | ----------------------------- | ----- | ----------------------------- |
-| 1   | Security+ for DoD 8140        | 22    | Pin H1 — 8140 / work-required |
-| 2   | Timed 90-Min Exam Sim         | 21    | Pin H2                        |
-| 3   | DoD 8140-Aligned Prep         | 21    | Federal baseline language     |
+| 1   | DoD 8140-Aligned Prep         | 21    | Pin H1 — 8140 / work-required |
+| 2   | Interactive Security+ Prep    | 26    | Pin H2 — process, not brand   |
+| 3   | Security+ for DoD 8140        | 22    | Work-required queries         |
 | 4   | Federal Contractor Prep       | 22    | Contractor hire intent        |
 | 5   | Military Cyber Cert Prep      | 22    | MOS / cyber path              |
 | 6   | Cert Required for Job         | 21    | Job-requirement queries       |
@@ -73,9 +73,9 @@ Contractor Baseline Prep
 | 10  | 90-Min Timed Exam + Scorecard | 29    | Readiness proof               |
 | 11  | 1000+ Verified SY0-701 Qs     | 25    | Bank trust                    |
 | 12  | Blueprint-Verified Bank       | 23    | Objective alignment           |
-| 13  | 30-Day Access · $19.99        | 22    | Paid Search price             |
+| 13  | 30-Day Access · $19.99        | 22    | Access length, not pass-by    |
 | 14  | Not a PDF · Browser Prep      | 24    | Browser vs static PDF         |
-| 15  | Contractor Baseline Prep      | 23    | Cleared-contractor path       |
+| 15  | Browser-Based Exam Simulators | 29    | How they practice             |
 
 ---
 
@@ -103,7 +103,7 @@ SY0-701 exam prep with adaptive review, PBQ scenarios, and blueprint-tagged item
 ## Google Ads UI
 
 1. Open ad group **`Military Gov 8140`** → create or edit RSA.
-2. Pin H1 → `Security+ for DoD 8140` · H2 → `Timed 90-Min Exam Sim`.
+2. Pin H1 → `DoD 8140-Aligned Prep` · H2 → `Interactive Security+ Prep`.
 3. Paste headlines and descriptions above (not the Core or Student sets).
 4. Confirm final URL uses `utm_content=mil-gov-8140`.
 5. Preview on **mobile** — H1 should read 8140/work-required above the fold.

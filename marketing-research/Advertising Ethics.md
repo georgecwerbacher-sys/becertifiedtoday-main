@@ -25,6 +25,8 @@ Related: [[Writing Guidelines]] · [[Site Mission]] · [[Campaigns]]
 
 **Do add** those dump and cheat terms as **campaign negatives** on every live Search campaign.
 
+**Required piracy negatives (campaign level, every Search campaign):** `pdf` · `download` · `dump` · `"free download"`. These keep ads off people looking for pirated PDFs and exam dumps.
+
 ---
 
 ## Google Ads ops (do this in the account)
@@ -32,7 +34,8 @@ Related: [[Writing Guidelines]] · [[Site Mission]] · [[Campaigns]]
 1. Pause or remove `Security+ SY0-701 · US Search · Dump Intercept` if it exists.
 2. On the live Search campaign (`Security+ SY0-701 · US Search · Sep 430`), paste campaign negatives from [[Sec+ Campaign/Sec+ Sep 430 Keyword Lists]]. Pause Launch 40 so spend is not split.
 3. Search terms: any dump / cheat / actual-exam query → negative, never a positive keyword.
-4. RSA and sitelinks: do not use “dump,” “braindump,” “Not-A-Dump,” “Not a PDF,” “exam sim,” “exam simulation,” “simulator,” “mock exam,” “90-min,” or “timed sim.” Never advertise 24 hours free, “not AI,” or the first-visit 50% off timer. Never use *walk in ready* or *like test day* in ads or on the Google Ads landing hero.
+4. RSA and sitelinks: do not use “dump,” “braindump,” “Not-A-Dump,” “exam sim,” “exam simulation,” “simulator,” “mock exam,” “90-min,” or “timed sim” **on Sep 430** (prior disapproval). Never advertise 24 hours free, “not AI,” or the first-visit 50% off timer. Never use *walk in ready* or *like test day* in ads or on the Google Ads landing hero.
+5. **Process over brand.** RSA headlines must describe the prep (interactive Security+ practice, browser-based runs), not the brand name. Do not use `Be Certified Today` as a headline. Do not pin 10-day or 24-hour access as a pass-by date — Google flags unrealistic certification timelines. 30-day copy is access length, not “certified in 30 days.”
 
 ---
 
@@ -40,4 +43,4 @@ Related: [[Writing Guidelines]] · [[Site Mission]] · [[Campaigns]]
 
 Compare against **static PDF packs**, **desktop test engines**, and **video courses**. Do not name dump marketplaces or use dump as an SEO hook.
 
-Never in ads or paid landings: actual exam questions, real exam, dumps, pass guaranteed, competitor brand names.
+Never in ads or paid landings: actual exam questions, real exam, dumps, pass guaranteed, competitor brand names, brand-only RSA headlines.

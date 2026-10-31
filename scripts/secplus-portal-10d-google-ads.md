@@ -61,24 +61,24 @@ https://becertifiedtoday.com/comptia-sec+-home.html#purchase?utm_source=google&u
 **Use all 15** — each headline must be structurally different. Every line maps to **page copy** on `comptia-sec+-home.html`.
 
 ```
-Security+ Practice Test
+Interactive Security+ Prep
 SY0-701 Exam Prep
-$9.99 for 10-Day Access
+Browser Security+ Prep
 Security+ Practice Qs
 CompTIA Security+ Prep
 SY0-701 Question Bank
 Practice Tests & Sim
 1000+ Questions · v5.0
 28 PBQ Scenarios Prep
-Browser Security+ Prep
+Security+ Practice Test
 Timed Security+ Exam
 Latest SY0-701 Questions
 No PDFs — Interactive Prep
-10-Day Full Library Access
-Be Certified Today
+30-Day Full Library Access
+Browser-Based Exam Simulators
 ```
 
-**Pin:** H1 `Security+ Practice Test` · H2 `$9.99 for 10-Day Access` · H3 `SY0-701 Exam Prep`
+**Pin:** H1 `Interactive Security+ Prep` · H2 `Browser Security+ Prep` · H3 `SY0-701 Exam Prep`
 
 ---
 

@@ -377,6 +377,10 @@ V_2025 & V_2026 Questions | 700+ items updated often | Original study material |
 ## Campaign-level negatives (Phrase)
 
 ```
+pdf
+download
+dump
+"free download"
 "free course"
 "training course"
 "bootcamp"

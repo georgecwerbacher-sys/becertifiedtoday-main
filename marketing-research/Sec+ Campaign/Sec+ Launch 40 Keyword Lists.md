@@ -175,17 +175,21 @@ Also pause any Broad containing: `601` · `pdf` · `questions and answers`
 
 **Required (ethics):** Block dump, cheat, actual-exam, and static-PDF intent. Do **not** bid on these as positives. If they appear in Search terms, add them as negatives. See [[Advertising Ethics]].
 
+**Piracy / dump intent — paste these four first:** `pdf` · `download` · `dump` · `"free download"`
+
 **Do not use** a bare `free` campaign negative. That blocks 24-hour trial searches.
 
 ```
+pdf
+download
 dump
+"free download"
 dumps
 "brain dump"
 braindump
 "exam dump"
 "test dump"
 "pdf dump"
-pdf
 vce
 ete
 "guaranteed pass"

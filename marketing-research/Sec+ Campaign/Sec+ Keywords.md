@@ -518,7 +518,13 @@ Match notation: unquoted = **Broad** · `"quotes"` = **Phrase**
 
 **Campaign level:**
 
+Piracy / dump intent (paste first): `pdf` · `download` · `dump` · `"free download"`
+
 ```
+pdf
+download
+dump
+"free download"
 free
 bootcamp
 udemy

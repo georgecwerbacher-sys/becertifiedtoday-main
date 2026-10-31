@@ -126,6 +126,10 @@ All 15 headlines and 4 descriptions are in the checklist CSV — filter **Sectio
 Block course vendors, unauthorized-content intent, install intent, head terms, and **free-question** intent:
 
 ```
+pdf
+download
+dump
+"free download"
 "free course"
 "free questions"
 "free practice questions"

@@ -47,7 +47,16 @@ Copy into the one ad group (Keywords → Add keywords).
 
 ## Campaign negatives (paste first)
 
-Broad `free`, `sample`, `example`, `simulation`, and `mock` are required. Do not bid on exam-replica or dump intent.
+**Piracy / dump intent — add these four at campaign level first.** Keeps ads off people hunting pirated PDFs and exam dumps. Saves spend and protects the account.
+
+```
+pdf
+download
+dump
+"free download"
+```
+
+Broad `free`, `sample`, `example`, `simulation`, and `mock` are also required. Do not bid on exam-replica or dump intent.
 
 ```
 free
@@ -106,6 +115,8 @@ braindump
 "test dump"
 "pdf dump"
 pdf
+download
+"free download"
 vce
 ete
 "guaranteed pass"

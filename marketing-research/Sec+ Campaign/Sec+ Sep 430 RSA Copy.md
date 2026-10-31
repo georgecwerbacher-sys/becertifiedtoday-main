@@ -21,7 +21,11 @@ Campaign: `Security+ SY0-701 · US Search · Sep 430`
 Ad group: `Exam Prep`  
 Display path: `SY0-701` / `Prep`
 
-**Off limits (do not type these anywhere in the ad):** exam sim, simulation, simulator, mock, 90-min, timed sim, PDF, VCE, dump, cheat, real exam, actual exam, walk in ready, like test day, pass guaranteed, not AI, free, sample, example, 24 hour.
+**Off limits (do not type these anywhere in the ad):** PDF, VCE, dump, cheat, real exam, actual exam, walk in ready, like test day, pass guaranteed, not AI, free, sample, example, 24 hour, Be Certified Today.
+
+**Lead with process, not brand.** Pin `Interactive Security+ Prep`. Use browser/practice headlines. Do not use the brand name as a headline. Do not imply you will be certified in 10 days or 24 hours.
+
+This Sep 430 RSA still avoids the words *exam sim*, *simulation*, *simulator*, *mock*, *90-min*, and *timed sim* (prior disapproval). Use `Practice In Your Browser` instead of simulator wording on this campaign only.
 
 ---
 
@@ -29,7 +33,7 @@ Display path: `SY0-701` / `Prep`
 
 | Pin | Headline | Chars |
 |-----|----------|------:|
-| H1 | `SY0-701 Exam Prep Online` | 24 |
+| H1 | `Interactive Security+ Prep` | 26 |
 | H2 | `Practice In Your Browser` | 24 |
 
 ---
@@ -45,7 +49,7 @@ https://becertifiedtoday.com/comptia-sec+-home.html?utm_source=google&utm_medium
 ## Headlines (15) — paste all
 
 ```
-SY0-701 Exam Prep Online
+Interactive Security+ Prep
 Practice In Your Browser
 30-Day Access · $19.99
 Security+ Exam Prep
@@ -57,7 +61,7 @@ No Download Required
 Browser Study Portal
 Pay Once · 30-Day Access
 Study On Phone Or Desktop
-Security+ Study Online
+Browser-Based Exam Prep
 One Payment · 30 Days
 SY0-701 Browser Practice
 ```
