@@ -25,7 +25,8 @@ Prep and integration notes for adding **PayPal as a second payment option** alon
 
 | Note | Use when |
 |------|----------|
-| [[Setup checklist]] | **Start here** — account, developer app, sandbox, go-live |
+| [[This week checklist]] | **This week (Nov 1–7)** — the working list |
+| [[Setup checklist]] | Full account, developer app, sandbox, and go-live prep |
 | [[Product and price map]] | Mirror Stripe SKUs before building API routes |
 | [[Architecture — Stripe vs PayPal]] | How PayPal maps to existing fulfillment |
 
