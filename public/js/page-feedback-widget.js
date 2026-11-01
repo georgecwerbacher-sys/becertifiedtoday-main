@@ -32,7 +32,6 @@
       p.indexOf("/ccna-study/ccna_d_d/") !== -1 ||
       p.indexOf("/ccna-study/ccna_labs/") !== -1 ||
       p.indexOf("/ccna_sim_exam/") !== -1 ||
-      p.indexOf("/ccnp-encor-study/encor_questions/") !== -1 ||
       p.indexOf("/ccnp-encor-study/ccnp-encor-drag-drop/") !== -1 ||
       p.indexOf("/ccnp-encor-study/ccnp-encor-labs/") !== -1 ||
       p.indexOf("/ccnp-encor-study/encor_samples/") !== -1 ||
@@ -64,8 +63,13 @@
     return false;
   }
 
+  function isEncorBankQuestion(p) {
+    return p.indexOf("/ccnp-encor-study/encor_questions/") !== -1;
+  }
+
   function isPracticeFeedbackPage() {
     var path = practicePathForMatch();
+    if (isEncorBankQuestion(path)) return false;
     if (pathMatchesPracticeContent(path)) return true;
     return isMaskedSamplePath() && isActiveSampleSession();
   }
