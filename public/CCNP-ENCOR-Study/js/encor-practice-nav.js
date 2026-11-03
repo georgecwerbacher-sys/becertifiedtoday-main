@@ -14,7 +14,7 @@
   var VERSION_LABEL = "350-401 ENCOR v1.2";
 
   function questionIdFromPath() {
-    var m = (location.pathname || "").match(/question-(\d+)\.html/i);
+    var m = (location.pathname || "").match(/question-(\d+)(?:\.html)?\/?$/i);
     return m ? parseInt(m[1], 10) : null;
   }
 
@@ -39,14 +39,34 @@
 
   function hideShowAnswerInExamSim() {
     if (!isExamSimEmbed()) return;
-    var showBtn = document.getElementById("showBtn");
-    if (showBtn) showBtn.style.display = "none";
-    document.querySelectorAll(".nav-show-answer").forEach(function (el) {
-      el.style.display = "none";
-    });
     document.querySelectorAll(".review-mark-box").forEach(function (el) {
       el.style.display = "none";
     });
+  }
+
+  function removeShowAnswerButton() {
+    document.querySelectorAll("#showBtn, .nav-show-answer").forEach(function (el) {
+      el.remove();
+    });
+  }
+
+  function gradeOnChoice() {
+    if (isExamSimEmbed()) return;
+    var card = document.querySelector("main.card");
+    var checkBtn = document.getElementById("checkBtn");
+    if (!card || !checkBtn || card.dataset.encorAutoGrade === "1") return;
+    var inputs = card.querySelectorAll(
+      'label.choice input[type="radio"], label.choice input[type="checkbox"], .choice input[type="radio"], .choice input[type="checkbox"]'
+    );
+    if (!inputs.length) return;
+    card.dataset.encorAutoGrade = "1";
+    inputs.forEach(function (input) {
+      input.addEventListener("change", function () {
+        if (input.type === "radio" && !input.checked) return;
+        checkBtn.click();
+      });
+    });
+    checkBtn.remove();
   }
 
   function readHomeSampleSession() {
@@ -388,7 +408,9 @@
     var qid = questionIdFromPath();
     if (qid == null) return;
 
+    removeShowAnswerButton();
     hideShowAnswerInExamSim();
+    gradeOnChoice();
     applySessionNav(qid);
     syncProgressDisplay(qid);
     initMarkForReview(qid);
