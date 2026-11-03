@@ -67,9 +67,21 @@
     return p.indexOf("/ccnp-encor-study/encor_questions/") !== -1;
   }
 
+  function isQuestionBankPath(p) {
+    return (
+      isEncorBankQuestion(p) ||
+      p.indexOf("/ccna-study/ccna_questions/") !== -1 ||
+      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1
+    );
+  }
+
+  function isSampleQuestionPath(p) {
+    return /\/sample-question-\d+(?:\.html)?\/?$/i.test(p);
+  }
+
   function isPracticeFeedbackPage() {
     var path = practicePathForMatch();
-    if (isEncorBankQuestion(path)) return false;
+    if (isQuestionBankPath(path) || isSampleQuestionPath(path)) return false;
     if (pathMatchesPracticeContent(path)) return true;
     return isMaskedSamplePath() && isActiveSampleSession();
   }

@@ -1,6 +1,38 @@
 {
   "outputDirectory": "public",
+  "redirects": [
+    {
+      "source": "/encor",
+      "destination": "/ccnp-home.html",
+      "permanent": true
+    },
+    {
+      "source": "/encor/",
+      "destination": "/ccnp-home.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "encor.becertifiedtoday.com"
+        }
+      ],
+      "destination": "/ccnp-home.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "encore.becertifiedtoday.com"
+        }
+      ],
+      "destination": "/ccnp-home.html"
+    },
     {
       "source": "/",
       "destination": "/index.html"

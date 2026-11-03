@@ -22,9 +22,54 @@
 
   window.CCNA_PRACTICE_100 = window.CCNA_PRACTICE_100 || {};
 
+  function pagePath() {
+    var path = location.pathname || "";
+    var lower = path.toLowerCase();
+    if (lower === "/sample" || lower === "/sample/" || lower === "/secplus-sample" || lower === "/secplus-sample/") {
+      try {
+        var remembered = sessionStorage.getItem("ccnaLastRealPath");
+        if (remembered) return remembered;
+      } catch (e) {}
+    }
+    return path;
+  }
+
   function slugFromPath() {
-    var m = location.pathname.match(/\/([^/]+)\.html$/);
+    var m = pagePath().match(/\/([^/]+?)(?:\.html)?\/?$/i);
     return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  function isExamSimEmbed() {
+    try {
+      return new URLSearchParams(location.search).get("examSim") === "1";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function removeShowAnswerButton() {
+    document.querySelectorAll("#showBtn, .nav-show-answer").forEach(function (el) {
+      el.remove();
+    });
+  }
+
+  function gradeOnChoice() {
+    if (isExamSimEmbed()) return;
+    var card = document.querySelector("main.card");
+    var checkBtn = document.getElementById("checkBtn");
+    if (!card || !checkBtn || card.dataset.ccnaAutoGrade === "1") return;
+    var inputs = card.querySelectorAll(
+      'label.choice input[type="radio"], label.choice input[type="checkbox"], .choice input[type="radio"], .choice input[type="checkbox"]'
+    );
+    if (!inputs.length) return;
+    card.dataset.ccnaAutoGrade = "1";
+    inputs.forEach(function (input) {
+      input.addEventListener("change", function () {
+        if (input.type === "radio" && !input.checked) return;
+        checkBtn.click();
+      });
+    });
+    checkBtn.remove();
   }
 
   function readSession() {
@@ -229,7 +274,7 @@
   }
 
   function staticSampleQuestionIndex() {
-    var m = /\/CCNA_Samples\/sample-question-(\d+)\.html$/i.exec(location.pathname);
+    var m = /\/CCNA_Samples\/sample-question-(\d+)(?:\.html)?\/?$/i.exec(pagePath());
     return m ? parseInt(m[1], 10) : 0;
   }
 
@@ -869,6 +914,9 @@
   function run() {
     var slug = slugFromPath();
     if (!slug) return;
+
+    removeShowAnswerButton();
+    gradeOnChoice();
 
     if (shouldUseSampleBottomNav()) {
       ensureSampleBottomNav();

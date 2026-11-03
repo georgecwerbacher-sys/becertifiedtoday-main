@@ -13,8 +13,20 @@
   var SUBJECTS_URL = "/CCNP-ENCOR-Study/js/question-subjects.json";
   var VERSION_LABEL = "350-401 ENCOR v1.2";
 
+  function pagePath() {
+    var path = location.pathname || "";
+    var lower = path.toLowerCase();
+    if (lower === "/sample" || lower === "/sample/" || lower === "/secplus-sample" || lower === "/secplus-sample/") {
+      try {
+        var remembered = sessionStorage.getItem("ccnaLastRealPath");
+        if (remembered) return remembered;
+      } catch (e) {}
+    }
+    return path;
+  }
+
   function questionIdFromPath() {
-    var m = (location.pathname || "").match(/question-(\d+)(?:\.html)?\/?$/i);
+    var m = pagePath().match(/question-(\d+)(?:\.html)?\/?$/i);
     return m ? parseInt(m[1], 10) : null;
   }
 
@@ -404,6 +416,11 @@
   }
 
   function run() {
+    if (document.body.classList.contains("encor-static-sample")) {
+      removeShowAnswerButton();
+      gradeOnChoice();
+      return;
+    }
     if (!document.body.classList.contains("encor-question-ui")) return;
     var qid = questionIdFromPath();
     if (qid == null) return;
