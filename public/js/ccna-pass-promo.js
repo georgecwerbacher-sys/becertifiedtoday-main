@@ -203,9 +203,7 @@
         LIST_PRICE +
         " - code <code>" +
         PROMO_CODE +
-        "</code> is applied at Stripe. No subscription. Access is tied to this browser. " +
-        'Eligible for a deeper verified discount? ' +
-        '<a href="/verified-learner-discounts.html">Check verified learner pricing</a>.';
+        "</code> is applied at Stripe. No subscription. Access is tied to this browser.";
     }
 
     var heroUpgrade = document.querySelector(".hero-atf-upgrade a");
