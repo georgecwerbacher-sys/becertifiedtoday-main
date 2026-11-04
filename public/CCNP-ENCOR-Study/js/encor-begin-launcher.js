@@ -137,6 +137,7 @@
           sessionStorage.removeItem("ccnpLinearScope");
           sessionStorage.removeItem("ccnpReviewMode");
           sessionStorage.removeItem("ccnpReviewQueue");
+          sessionStorage.removeItem("ccnpReviewTotal");
           sessionStorage.removeItem("ccnpQueueExitHref");
           sessionStorage.removeItem("ccnpUrlMaskPath");
           sessionStorage.removeItem("ccnpMaskedPageQid");
@@ -145,6 +146,7 @@
           } else if (sessionKind === "review") {
             sessionStorage.setItem("ccnpReviewMode", "1");
             sessionStorage.setItem("ccnpReviewQueue", JSON.stringify(ids));
+            sessionStorage.setItem("ccnpReviewTotal", String(ids.length));
           } else {
             sessionStorage.setItem("ccnpQuestionQueue", JSON.stringify(ids));
             sessionStorage.setItem("ccnpQuestionQueueIndex", "0");

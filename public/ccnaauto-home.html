@@ -70,7 +70,15 @@
       ]
     }
   </script>
-  <style>html { -webkit-text-size-adjust: 100%; }</style>
+  <style>html { -webkit-text-size-adjust: 100%; }
+    a.header-nav-link {
+      color: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    a.header-nav-link:hover { text-decoration: underline; }
+</style>
   <link rel="stylesheet" href="/css/bcc-save50-promo.css" />
 </head>
 <body class="ccnaauto-portal">
@@ -85,6 +93,13 @@
         />
       </a>
       <div class="header-actions">
+        <a
+          class="header-nav-link"
+          href="/account/"
+          data-bcc-account-link
+          data-bcc-account-label
+          >Sign in</a
+        >
         <a
           class="portal-header-btn"
           href="/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html"
@@ -232,5 +247,6 @@
       );
     });
   </script>
+  <script src="/js/bcc-learner-account.js" defer></script>
 </body>
 </html>

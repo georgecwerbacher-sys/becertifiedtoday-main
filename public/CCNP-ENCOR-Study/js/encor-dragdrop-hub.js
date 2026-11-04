@@ -3,10 +3,10 @@
 
   var STUDY_CFG_URL = "/CCNP-ENCOR-Study/js/study-config.json";
   var BEGIN_RANDOM = "/CCNP-ENCOR-Study/begin-questions-random.html";
-  var BEGIN_REVIEW = "/CCNP-ENCOR-Study/begin-questions-review.html";
 
   function launch(sessionKind) {
-    var base = sessionKind === "review" ? BEGIN_REVIEW : BEGIN_RANDOM;
+    if (sessionKind !== "random") return;
+    var base = BEGIN_RANDOM;
     location.href = base + "?mode=dragdrop";
   }
 
@@ -23,7 +23,7 @@
           (ids.length === 1 ? "" : "s") +
           " from " +
           (cfg.dragDropDirectory || "CCNP-ENCOR-Drag-Drop") +
-          ". Random shuffles once at start; Review sends misses to the back of the queue.";
+          ". Random shuffles once at start.";
       }
     }
     document.querySelectorAll("[data-encor-dnd-mode]").forEach(function (btn) {
@@ -45,7 +45,7 @@
       var btn = t.closest("[data-encor-dnd-mode]");
       if (!btn || btn.disabled) return;
       var mode = btn.getAttribute("data-encor-dnd-mode");
-      if (mode !== "random" && mode !== "review") return;
+      if (mode !== "random") return;
       e.preventDefault();
       launch(mode);
     },

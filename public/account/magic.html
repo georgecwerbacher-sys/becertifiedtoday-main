@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Opening account… | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="stylesheet" href="/account/account.css" />
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Learner account</p>
+    <h1>Signing you in</h1>
+    <p id="status" class="status">Checking your link…</p>
+    <p class="fine"><a href="/account/login.html">Request a new sign-in link</a></p>
+  </div>
+  <script src="/js/bcc-learner-account.js" defer></script>
+  <script>
+    (function () {
+      function run() {
+        var status = document.getElementById("status");
+        var token = "";
+        try {
+          token = new URLSearchParams(location.search).get("token") || "";
+        } catch (e) {}
+        if (!token) {
+          status.className = "status status--err";
+          status.textContent = "Missing sign-in token. Request a new link.";
+          return;
+        }
+        window.BCC_LEARNER.redeemLogin(token).then(function (res) {
+          if (res.ok && res.data && res.data.ok) {
+            status.className = "status status--ok";
+            status.textContent = "Signed in as " + (res.data.email || "your account") + ". Redirecting…";
+            location.replace(res.data.redirect || "/account/");
+            return;
+          }
+          status.className = "status status--err";
+          status.textContent =
+            (res.data && res.data.error) || "This link is invalid or expired.";
+        });
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
+          setTimeout(run, 0);
+        });
+      } else {
+        setTimeout(run, 0);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -224,8 +224,14 @@
     if (isReviewMode()) {
       var rq = parseReviewQueue();
       if (rq && rq.length) {
-        var ri = rq.indexOf(qid);
-        if (ri >= 0) return "Review " + (ri + 1) + " of " + rq.length;
+        var total = 0;
+        try {
+          total = parseInt(sessionStorage.getItem("ccnpReviewTotal") || "0", 10);
+        } catch (e) {}
+        if (!total || total < rq.length) total = rq.length;
+        var pos = total - rq.length + 1;
+        if (pos < 1) pos = 1;
+        return "Review " + pos + " of " + total;
       }
     }
 
@@ -290,12 +296,76 @@
     });
   }
 
+  function detectAnswerOutcome() {
+    function visible(el) {
+      if (!el) return false;
+      var s = window.getComputedStyle(el);
+      return s.display !== "none" && s.visibility !== "hidden" && s.opacity !== "0";
+    }
+    var box = document.getElementById("answerBox");
+    if (visible(box)) {
+      var cn = box.className || "";
+      if (/\bincorrect\b/.test(cn)) return "wrong";
+      if (/\bcorrect\b/.test(cn)) return "correct";
+    }
+    var ans = document.querySelector(".answer.incorrect, .answer.correct");
+    if (visible(ans)) {
+      if (ans.classList.contains("incorrect")) return "wrong";
+      if (ans.classList.contains("correct")) return "correct";
+    }
+    return "unknown";
+  }
+
+  function reviewExitHref() {
+    return GUEST_HOME + "?review=complete";
+  }
+
+  function advanceReviewAndGo(qid) {
+    var rq = parseReviewQueue();
+    if (!rq || !rq.length) {
+      location.href = reviewExitHref();
+      return;
+    }
+    if (rq[0] !== qid) {
+      location.href = questionHref(rq[0]);
+      return;
+    }
+    var cur = rq.shift();
+    if (detectAnswerOutcome() === "wrong") rq.push(cur);
+    try {
+      if (rq.length) sessionStorage.setItem(REVIEW_QUEUE_KEY, JSON.stringify(rq));
+      else {
+        sessionStorage.removeItem(REVIEW_MODE_KEY);
+        sessionStorage.removeItem(REVIEW_QUEUE_KEY);
+        sessionStorage.removeItem("ccnpReviewTotal");
+      }
+    } catch (e) {}
+    if (!rq.length) {
+      location.href = reviewExitHref();
+      return;
+    }
+    location.href = questionHref(rq[0]);
+  }
+
+  function bindReviewAdvance(qid) {
+    if (!isReviewMode()) return;
+    var nextEl = document.querySelector("a.nav-next");
+    if (!nextEl || nextEl.dataset.reviewAdvance === "1") return;
+    nextEl.dataset.reviewAdvance = "1";
+    nextEl.addEventListener("click", function (e) {
+      if (!isReviewMode()) return;
+      e.preventDefault();
+      advanceReviewAndGo(qid);
+    });
+  }
+
   function resolveNext(qid) {
     if (isReviewMode()) {
       var rq = parseReviewQueue();
       if (rq && rq.length) {
-        if (rq[0] !== qid && rq.indexOf(qid) < 0) return { href: questionHref(rq[0]), label: "Next" };
+        if (rq[0] !== qid) return { href: questionHref(rq[0]), label: "Next" };
         if (rq.length >= 2) return { href: questionHref(rq[1]), label: "Next" };
+        return { href: reviewExitHref(), label: "Finish review" };
       }
     }
     var queue = parseQueue();
@@ -425,10 +495,19 @@
     var qid = questionIdFromPath();
     if (qid == null) return;
 
+    if (isReviewMode()) {
+      var rqNow = parseReviewQueue();
+      if (rqNow && rqNow[0] !== qid) {
+        location.replace(questionHref(rqNow[0]));
+        return;
+      }
+    }
+
     removeShowAnswerButton();
     hideShowAnswerInExamSim();
     gradeOnChoice();
     applySessionNav(qid);
+    bindReviewAdvance(qid);
     syncProgressDisplay(qid);
     initMarkForReview(qid);
 

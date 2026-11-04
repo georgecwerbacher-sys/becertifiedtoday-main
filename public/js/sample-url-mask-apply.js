@@ -1063,8 +1063,46 @@
     return (
       isEncorBankQuestion(p) ||
       p.indexOf("/ccna-study/ccna_questions/") !== -1 ||
-      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1
+      p.indexOf("/comp_tia_sec+/sec+_questions/") !== -1 ||
+      p.indexOf("/ccnaauto-study/ccnaauto_questions/") !== -1
     );
+  }
+
+  function ensureBankLeaveRetry() {
+    if (!isQuestionBankPath(practicePathForMatch())) return;
+    if (document.querySelector("script[data-bcc-bank-leave-retry]")) return;
+    if (window.__bccBankLeaveRetryBound) return;
+    var s = document.createElement("script");
+    s.src = "/js/bcc-bank-leave-retry.js";
+    s.defer = true;
+    s.setAttribute("data-bcc-bank-leave-retry", "1");
+    document.head.appendChild(s);
+  }
+
+  function ensureLearnerAccountScript() {
+    var path = practicePathForMatch();
+    if (!isQuestionBankPath(path) && !isSampleQuestionPath(path) && path.indexOf("/account/") === -1) {
+      // Also load on cert homes for Account link labels
+      if (
+        path !== "/ccna-home.html" &&
+        path !== "/ccnp-home.html" &&
+        path !== "/comptia-sec+-home.html" &&
+        path !== "/ccnaauto-home.html" &&
+        path.indexOf("/ccna_training_portal.html") === -1 &&
+        path.indexOf("/encor_training_portal.html") === -1 &&
+        path.indexOf("/sec+_training_portal.html") === -1 &&
+        path.indexOf("/ccnaauto_training_portal.html") === -1
+      ) {
+        return;
+      }
+    }
+    if (document.querySelector("script[data-bcc-learner-account]")) return;
+    if (window.BCC_LEARNER) return;
+    var s = document.createElement("script");
+    s.src = "/js/bcc-learner-account.js";
+    s.defer = true;
+    s.setAttribute("data-bcc-learner-account", "1");
+    document.head.appendChild(s);
   }
 
   function isSampleQuestionPath(p) {
@@ -1100,6 +1138,8 @@
     if (window.cliLabContainer && typeof window.cliLabContainer.initCcnaLabTopChrome === "function") {
       window.cliLabContainer.initCcnaLabTopChrome();
     }
+    ensureBankLeaveRetry();
+    ensureLearnerAccountScript();
     ensurePageFeedbackWidget();
     if (!isSampleExperience()) return;
     document.body.classList.add("bcc-sample-experience");

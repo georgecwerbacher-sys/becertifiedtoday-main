@@ -6,7 +6,6 @@
   var OBJECTIVES_URL = "/CCNP-ENCOR-Study/data/encor-exam-objectives-350-401-v1.2.json";
   var QUESTION_HUB_DIR = "/CCNP-ENCOR-Study/ENCOR_Questions";
   var BEGIN_RANDOM = "/CCNP-ENCOR-Study/begin-questions-random.html";
-  var BEGIN_REVIEW = "/CCNP-ENCOR-Study/begin-questions-review.html";
   var BANK_SIZE = 100;
   var BANK_COUNT = 4;
 
@@ -91,8 +90,8 @@
     try {
       sessionStorage.setItem("encorPracticeAdaptive", getAdaptiveEnabled() ? "1" : "");
     } catch (e) {}
-    var base = mode === "review" ? BEGIN_REVIEW : BEGIN_RANDOM;
-    var url = base + "?bank=" + encodeURIComponent(String(bankIndex));
+    if (mode !== "random") return;
+    var url = BEGIN_RANDOM + "?bank=" + encodeURIComponent(String(bankIndex));
     if (domain) url += "&domain=" + encodeURIComponent(domain);
     location.href = url;
   }
@@ -150,7 +149,7 @@
             countInBank +
             " question" +
             (countInBank === 1 ? "" : "s") +
-            " · use Random or Review for this bank only.";
+            " · use Random for this bank only.";
         }
       }
 
@@ -189,7 +188,7 @@
       }
       summaryText += domain
         ? "Showing " + totalFiltered + " questions in the selected domain across all banks."
-        : "Each bank has its own Random and Review session. Domain filter above applies to the bank you start.";
+        : "Each bank has its own Random session. Domain filter above applies to the bank you start.";
       summary.textContent = summaryText;
       summary.hidden = false;
     }
@@ -265,7 +264,7 @@
       if (!el || el.disabled) return;
       var mode = el.getAttribute("data-encor-mode");
       var bank = parseInt(el.getAttribute("data-encor-bank") || "1", 10);
-      if (mode !== "random" && mode !== "review") return;
+      if (mode !== "random") return;
       if (bank < 1 || bank !== bank) bank = 1;
       e.preventDefault();
       launchBank(mode, bank);

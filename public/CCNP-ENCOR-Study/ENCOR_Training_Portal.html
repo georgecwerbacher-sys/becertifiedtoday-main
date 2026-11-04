@@ -721,6 +721,9 @@
           alt=""
         />
       </a>
+      <div class="header-actions" style="display:flex;gap:10px;align-items:center;margin-left:auto;">
+        <a href="/account/" data-bcc-account-link data-bcc-account-label style="color:#e6edf3;font-weight:700;text-decoration:none;">Sign in</a>
+      </div>
     </header>
     <main id="main">
       <div class="hero-content">
@@ -857,7 +860,7 @@
             </p>
             <p class="study-meta">
               Four banks with up to <strong>100</strong> questions each. Each bank has its own
-              <strong>Random</strong> and <strong>Review</strong> session.
+              <strong>Random</strong> session.
             </p>
             <div class="encor-practice-subject-filter" id="encor-practice-subject-filter">
               <p class="encor-practice-subject-title">Practice by subject</p>
@@ -865,7 +868,7 @@
                 Matches the <a href="#encor-domains">ENCOR 350-401 domain weights</a> and section numbers from the
                 <a href="/CCNP-ENCOR-Study/misc/350-401-ENCORE-v1.2.pdf">v1.2 exam topics PDF</a>. Leave on
                 <strong>All subjects</strong> for every question in the bank you start, or pick one domain before you click
-                <strong>Random</strong> or <strong>Review</strong>.
+                <strong>Random</strong>.
               </p>
               <label for="encor-practice-domain-select">Limit session to</label>
               <select
@@ -905,7 +908,7 @@
                   </label>
                 </div>
                 <p class="encor-practice-subject-hint encor-practice-random-review-hint">
-                  <strong>Random</strong>: shuffled order. <strong>Review</strong>: misses go to the back of the queue for another try.
+                  <strong>Random</strong>: shuffled order for the bank you start.
                 </p>
               </fieldset>
             </div>
@@ -913,41 +916,37 @@
             <div class="sim-grid" id="encor-practice-banks-grid" aria-label="Practice question banks: 4 banks of up to 100 questions each">
               <article class="sim-box" data-encor-bank-index="1" aria-labelledby="encor-bank-title-1">
                 <h4 class="sim-box-title" id="encor-bank-title-1">Bank 1 · questions 1–100</h4>
-                <p class="study-meta" data-encor-bank-meta="1">100 questions · use Random or Review for this bank only.</p>
+                <p class="study-meta" data-encor-bank-meta="1">100 questions · use Random for this bank only.</p>
                 <div class="study-actions" role="group" aria-label="Practice modes for bank 1">
                   <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="1">Random</button>
-                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="1">Review</button>
                 </div>
               </article>
               <article class="sim-box" data-encor-bank-index="2" aria-labelledby="encor-bank-title-2">
                 <h4 class="sim-box-title" id="encor-bank-title-2">Bank 2 · questions 101–200</h4>
-                <p class="study-meta" data-encor-bank-meta="2">100 questions · use Random or Review for this bank only.</p>
+                <p class="study-meta" data-encor-bank-meta="2">100 questions · use Random for this bank only.</p>
                 <div class="study-actions" role="group" aria-label="Practice modes for bank 2">
                   <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="2">Random</button>
-                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="2">Review</button>
                 </div>
               </article>
               <article class="sim-box" data-encor-bank-index="3" aria-labelledby="encor-bank-title-3">
                 <h4 class="sim-box-title" id="encor-bank-title-3">Bank 3 · questions 201–300</h4>
-                <p class="study-meta" data-encor-bank-meta="3">100 questions · use Random or Review for this bank only.</p>
+                <p class="study-meta" data-encor-bank-meta="3">100 questions · use Random for this bank only.</p>
                 <div class="study-actions" role="group" aria-label="Practice modes for bank 3">
                   <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="3">Random</button>
-                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="3">Review</button>
                 </div>
               </article>
               <article class="sim-box encor-practice-bank--remainder" data-encor-bank-index="4" aria-labelledby="encor-bank-title-4">
                 <h4 class="sim-box-title" id="encor-bank-title-4">Bank 4 · questions 301–378</h4>
-                <p class="study-meta" data-encor-bank-meta="4">78 questions · use Random or Review for this bank only.</p>
+                <p class="study-meta" data-encor-bank-meta="4">78 questions · use Random for this bank only.</p>
                 <div class="study-actions" role="group" aria-label="Practice modes for bank 4">
                   <button type="button" class="start-btn" data-encor-mode="random" data-encor-bank="4">Random</button>
-                  <button type="button" class="start-btn" data-encor-mode="review" data-encor-bank="4">Review</button>
                 </div>
               </article>
             </div>
             <p id="encor-study-load-error" class="study-meta" role="alert" hidden></p>
             <noscript>
               <p class="study-meta">
-                Practice banks require JavaScript. Enable scripts to start Random or Review sessions from the portal.
+                Practice banks require JavaScript. Enable scripts to start Random sessions from the portal.
               </p>
             </noscript>
           </section>
@@ -967,7 +966,6 @@
                 </p>
                 <div class="study-actions" role="group" aria-label="Standard drag-and-drop modes">
                   <button type="button" class="start-btn" data-encor-dnd-mode="random">Random</button>
-                  <button type="button" class="start-btn" data-encor-dnd-mode="review">Review</button>
                 </div>
               </article>
             </div>
@@ -1163,5 +1161,6 @@
     });
   </script>
   <script src="/js/visitor-question-widget.js" defer></script>
+  <script src="/js/bcc-learner-account.js" defer></script>
 </body>
 </html>

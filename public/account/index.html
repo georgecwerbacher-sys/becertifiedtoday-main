@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>My account | Be Certified Today</title>
+  <link rel="icon" href="/images/logo/becertifiedtoday_logo_trans.png" type="image/png" />
+  <link rel="stylesheet" href="/account/account.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Learner profile</p>
+        <h1>Your study account</h1>
+      </div>
+      <div class="actions" id="topActions">
+        <a class="btn-secondary" href="/">Site home</a>
+        <a class="btn-primary" id="signInBtn" href="/account/login.html">Sign in</a>
+        <button type="button" class="btn-secondary hidden" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+
+    <section id="guestPanel" class="card">
+      <h2>Sign in to track results</h2>
+      <p class="meta">
+        Free accounts save practice outcomes, show weak domains, schedule an exam date, and generate small
+        weak-area drills. Full banks still need a paid portal unlock per cert.
+      </p>
+      <a class="btn-primary" href="/account/login.html">Email me a sign-in link</a>
+    </section>
+
+    <section id="profilePanel" class="hidden">
+      <p class="meta" id="identityLine"></p>
+      <p class="meta" id="usageLine"></p>
+
+      <div class="grid" id="trackGrid" aria-label="Tracks"></div>
+
+      <section class="card" style="margin-top:14px">
+        <h2>Schedule an exam date</h2>
+        <form id="scheduleForm">
+          <label for="schedTrack">Track</label>
+          <select id="schedTrack">
+            <option value="ccna">CCNA</option>
+            <option value="encor">ENCOR</option>
+            <option value="secplus">Security+</option>
+            <option value="ccnaauto">CCNAAUTO</option>
+          </select>
+          <label for="schedDate">Exam date</label>
+          <input id="schedDate" type="date" required />
+          <label for="schedNotes">Notes (optional)</label>
+          <textarea id="schedNotes" rows="2" maxlength="500" placeholder="Pearson VUE site, morning slot…"></textarea>
+          <div class="actions">
+            <button type="submit" class="btn-primary">Save schedule</button>
+          </div>
+          <p id="schedStatus" class="status hidden"></p>
+        </form>
+        <div id="schedulesList" style="margin-top:14px"></div>
+      </section>
+    </section>
+  </div>
+
+  <script src="/js/bcc-learner-account.js" defer></script>
+  <script>
+    (function () {
+      var guest = document.getElementById("guestPanel");
+      var profile = document.getElementById("profilePanel");
+      var identity = document.getElementById("identityLine");
+      var usage = document.getElementById("usageLine");
+      var grid = document.getElementById("trackGrid");
+      var logoutBtn = document.getElementById("logoutBtn");
+      var signInBtn = document.getElementById("signInBtn");
+      var schedulesList = document.getElementById("schedulesList");
+      var meCache = null;
+
+      function portalHref(track) {
+        if (track === "ccna") return "/CCNA-Study/CCNA_Training_Portal.html";
+        if (track === "encor") return "/CCNP-ENCOR-Study/ENCOR_Training_Portal.html";
+        if (track === "secplus") return "/COMP_TIA_SEC+/SEC+_Training_Portal.html";
+        if (track === "ccnaauto") return "/CCNAAUTO-Study/CCNAAUTO_Training_Portal.html";
+        return "/";
+      }
+
+      function buyHref(track) {
+        if (track === "ccna") return "/ccna-home.html";
+        if (track === "encor") return "/ccnp-home.html";
+        if (track === "secplus") return "/comptia-sec+-home.html";
+        if (track === "ccnaauto") return "/ccnaauto-home.html";
+        return "/";
+      }
+
+      function renderSchedules(schedules) {
+        if (!schedules || !schedules.length) {
+          schedulesList.innerHTML = '<p class="meta">No exam dates saved yet.</p>';
+          return;
+        }
+        schedulesList.innerHTML =
+          "<ul class=\"weak-list\">" +
+          schedules
+            .map(function (s) {
+              var label = window.BCC_LEARNER.TRACK_LABELS[s.track] || s.track;
+              var days = window.BCC_LEARNER.daysUntil(String(s.exam_date).slice(0, 10));
+              var when =
+                days == null
+                  ? ""
+                  : days === 0
+                    ? " (today)"
+                    : days > 0
+                      ? " (" + days + " day" + (days === 1 ? "" : "s") + " left)"
+                      : " (" + Math.abs(days) + " day" + (Math.abs(days) === 1 ? "" : "s") + " ago)";
+              return (
+                "<li><strong>" +
+                label +
+                "</strong>: " +
+                String(s.exam_date).slice(0, 10) +
+                when +
+                (s.notes ? " — " + s.notes : "") +
+                "</li>"
+              );
+            })
+            .join("") +
+          "</ul>";
+      }
+
+      function renderTracks(me) {
+        var tracks = (me.results && me.results.tracks) || {};
+        grid.innerHTML = "";
+        ["ccna", "encor", "secplus", "ccnaauto"].forEach(function (t) {
+          var row = tracks[t] || { attempts: 0, correct: 0, accuracy: null, weakDomains: [] };
+          var paid = me.access && me.access[t] && me.access[t].paidPortal;
+          var card = document.createElement("article");
+          card.className = "card";
+          var weak = (row.weakDomains || [])
+            .slice(0, 4)
+            .map(function (d) {
+              return (
+                "<li>" +
+                d.domain +
+                ": " +
+                d.accuracy +
+                "% (" +
+                d.correct +
+                "/" +
+                d.attempts +
+                ")</li>"
+              );
+            })
+            .join("");
+          card.innerHTML =
+            "<h2>" +
+            (window.BCC_LEARNER.TRACK_LABELS[t] || t) +
+            ' <span class="badge ' +
+            (paid ? "badge--paid" : "") +
+            '">' +
+            (paid ? "Portal unlocked" : "Limited free") +
+            "</span></h2>" +
+            '<p class="meta">Attempts: <strong>' +
+            row.attempts +
+            "</strong> · Accuracy: <strong>" +
+            (row.accuracy == null ? "—" : row.accuracy + "%") +
+            "</strong></p>" +
+            (weak
+              ? "<p class=\"meta\">Weak domains</p><ul class=\"weak-list\">" + weak + "</ul>"
+              : '<p class="meta">No domain history yet—practice a few questions to populate this.</p>') +
+            '<div class="actions">' +
+            '<button type="button" class="btn-primary" data-gen="' +
+            t +
+            '">Practice weak areas</button>' +
+            '<a class="btn-secondary" href="' +
+            (paid ? portalHref(t) : buyHref(t)) +
+            '">' +
+            (paid ? "Open portal" : "Get portal access") +
+            "</a>" +
+            "</div>" +
+            '<p class="meta gen-status" data-gen-status="' +
+            t +
+            '" hidden></p>';
+          grid.appendChild(card);
+        });
+
+        grid.querySelectorAll("[data-gen]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var track = btn.getAttribute("data-gen");
+            var st = grid.querySelector('[data-gen-status="' + track + '"]');
+            if (st) {
+              st.hidden = false;
+              st.textContent = "Building practice set…";
+            }
+            window.BCC_LEARNER.generateExam(track, 10).then(function (res) {
+              if (!res.ok || !res.data || !res.data.ok) {
+                if (st) {
+                  st.textContent =
+                    (res.data && res.data.error) || "Could not generate a practice set.";
+                }
+                return;
+              }
+              if (st) st.textContent = "Starting " + res.data.exam.items.length + " items…";
+              window.BCC_LEARNER.startGeneratedSession(res.data.exam);
+            });
+          });
+        });
+      }
+
+      function showSignedIn(me) {
+        meCache = me;
+        guest.classList.add("hidden");
+        profile.classList.remove("hidden");
+        signInBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        identity.textContent = "Signed in as " + me.learner.email;
+        var fu = me.freeUsage || {};
+        usage.textContent =
+          "Free weak-area drills today: " +
+          (fu.generatedToday || 0) +
+          " / " +
+          (fu.generatedDailyCap || 20) +
+          " (remaining " +
+          (fu.remaining == null ? "—" : fu.remaining) +
+          ")";
+        renderTracks(me);
+        renderSchedules(me.schedules || []);
+      }
+
+      function showGuest() {
+        guest.classList.remove("hidden");
+        profile.classList.add("hidden");
+        signInBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+      }
+
+      logoutBtn.addEventListener("click", function () {
+        window.BCC_LEARNER.logout().then(function () {
+          location.href = "/account/login.html";
+        });
+      });
+
+      document.getElementById("scheduleForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var st = document.getElementById("schedStatus");
+        st.classList.remove("hidden");
+        st.className = "status";
+        st.textContent = "Saving…";
+        window.BCC_LEARNER
+          .saveSchedule(
+            document.getElementById("schedTrack").value,
+            document.getElementById("schedDate").value,
+            document.getElementById("schedNotes").value
+          )
+          .then(function (res) {
+            if (!res.ok || !res.data || !res.data.ok) {
+              st.className = "status status--err";
+              st.textContent = (res.data && res.data.error) || "Could not save.";
+              return;
+            }
+            st.className = "status status--ok";
+            st.textContent = "Saved.";
+            return window.BCC_LEARNER.fetchMe().then(function (me) {
+              if (me) {
+                meCache = me;
+                renderSchedules(me.schedules || []);
+              }
+            });
+          });
+      });
+
+      window.BCC_LEARNER.fetchMe().then(function (me) {
+        if (me) showSignedIn(me);
+        else showGuest();
+      });
+    })();
+  </script>
+</body>
+</html>
