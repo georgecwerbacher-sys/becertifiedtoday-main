@@ -1,12 +1,13 @@
-# Learner account setup
+# Learner account storage
 
-1. Provision **Vercel Postgres** (Neon) for the project.
-2. Set env vars:
-   - `POSTGRES_URL` (or `DATABASE_URL`)
-   - `LEARNER_MAGIC_LINK_SECRET` (or reuse `PORTAL_MAGIC_LINK_SECRET`)
-   - `RESEND_API_KEY` / `RESEND_FROM` (same as portal mail)
-   - `PUBLIC_SITE_URL` (e.g. `https://becertifiedtoday.com`)
-3. Run [`learner-account-schema.sql`](./learner-account-schema.sql) against the database.
-4. Deploy. Free accounts sign in at `/account/login.html`.
+Production uses **Vercel KV / Upstash Redis** (`KV_REST_API_URL`, `KV_REST_API_TOKEN`).
 
-Paid portal unlock remains separate (Stripe + portal localStorage entitlement).
+Required env (already on becertifiedtoday-main):
+
+- `KV_REST_API_URL` / `KV_REST_API_TOKEN` — learner profiles, sessions, attempts, schedules
+- `PORTAL_MAGIC_LINK_SECRET` (or `LEARNER_MAGIC_LINK_SECRET`) — magic-link JWT
+- `RESEND_API_KEY` / `RESEND_FROM` — magic-link email
+
+Optional Postgres schema (`learner-account-schema.sql`) is kept for a future Neon/Postgres migration; the live runtime path is Redis via `server-lib/learner-db.js`.
+
+Key prefixes: `bcc:learner:*`
